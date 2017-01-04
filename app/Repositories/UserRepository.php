@@ -37,7 +37,7 @@ class UserRepository extends DbRepository{
         
         $exists = Storage::disk('public')->exists('avatars/'. $user->id.'/avatar.jpg');
         
-        if(! $exists ) Storage::disk('public')->copy('avatars/default-avatar.jpg', 'avatars/'. $user->id.'/avatar.jpg');
+        if(! $exists ) Storage::disk('public')->copy('img/default-avatar.jpg', 'avatars/'. $user->id.'/avatar.jpg');
 
         return $user;
     }
