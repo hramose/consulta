@@ -118,13 +118,14 @@ $(function () {
           },
           eventResize: function(event, delta, revertFunc) {
 
-              updateAppointment(event);
-
+              updateAppointment(event, revertFunc);
+          
            
           },
           eventDrop: function(event, delta, revertFunc) {
-
-              updateAppointment(event);
+            
+              updateAppointment(event, revertFunc);
+              
 
           },
           eventRender: function(event, element) {
@@ -139,7 +140,7 @@ $(function () {
 
     
     /* SAVE UPDATE DELETE EVENTS */
-    function crud(method, url, data) {
+    function crud(method, url, data, revertFunc) {
       
       $.ajax({
             type: method || 'POST',
@@ -167,6 +168,26 @@ $(function () {
                   }
 
                   $('#calendar').fullCalendar('removeEvents',data.idRemove);
+              
+               }
+               
+               if(method == "PUT")
+               {
+                 if(resp == '')
+                 {
+                  $('#infoBox').addClass('alert-danger').html('No se puede cambiar de dia la consulta ya que se encuentra iniciada!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+
+                    revertFunc();
+                    
+                   return
+                  }
+
+                  
               
                }
                 
@@ -197,7 +218,7 @@ $(function () {
 
     }
 
-     function updateAppointment(event)
+     function updateAppointment(event, revertFunc)
     {
       
       var appointment = {
@@ -212,7 +233,7 @@ $(function () {
         id: event.id,
       };
       
-      crud('PUT', '/appointments/'+appointment.id, appointment)
+      crud('PUT', '/appointments/'+appointment.id, appointment, revertFunc)
 
     }
 

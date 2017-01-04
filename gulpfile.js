@@ -21,6 +21,7 @@ elixir(mix => {
             'appointments.js'
         ],'public/js/appointments.min.js','resources/assets/js');
 
+ 
     mix.version([
         'public/js/app.js',
         
