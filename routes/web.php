@@ -30,6 +30,7 @@ Route::get('/patients/list', 'PatientController@list');
 Route::resource('patients', 'PatientController');
 
 Route::get('/appointments/list', 'AppointmentController@getAppointments');
+Route::get('/appointments/{id}/print', 'AppointmentController@printSummary');
 Route::delete('/appointments/{id}/delete', 'AppointmentController@delete');
 Route::resource('appointments', 'AppointmentController');
 

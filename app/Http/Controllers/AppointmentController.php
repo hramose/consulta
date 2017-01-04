@@ -120,4 +120,17 @@ class AppointmentController extends Controller
         
     }
 
+    /**
+     * imprime resumen de la consulta
+     */
+    public function printSummary($id)
+    {
+
+        $appointment =  $this->appointmentRepo->findById($id);
+
+        
+        return view('appointments.print-summary',compact('appointment'));
+        
+    }
+
 }

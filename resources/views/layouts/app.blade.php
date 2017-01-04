@@ -73,7 +73,7 @@
       Consulta
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Avotz</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="#">Consulta</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

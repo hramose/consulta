@@ -5,7 +5,8 @@
 	<div class="box-header with-border">
 	  <i class="fa fa-book"></i>
 
-	  <h3 class="box-title">Resumen</h3>
+	  <h3 class="box-title"><slot>Resumen</slot></h3>
+   
 	</div>
 	<!-- /.box-header -->
 	<div class="box-body">
