@@ -1,0 +1,93 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.form-control{
+	border-radius: 0;
+}
+.help-block{
+	color: #C23321;
+}
+.alert{
+	position: absolute;
+	left: 50%;
+	z-index: 999;
+	min-width: 20%;
+	transform: translate(-50%, 0);
+	text-align:center;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s ease;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+.inputfile{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label{
+	max-width: 80%;
+	text-overflow: ellipsis;
+	cursor: pointer !important;
+	font-size: 1em !important;
+	font-weight: 700 !important;
+	text-transform: none !important;
+	color: white !important;
+	background-color: $brand-primary !important;
+	display: inline-block !important;
+	padding: 0.625rem 1.25rem;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.inputfile + label svg{
+	width: 1em;
+	height: 1em;
+	vertical-align: middle;
+	fill: white;
+	margin-top: -0.25em;
+	margin-right: 0.25em;
+}
+.inputfile + label *{
+	pointer-events: none;
+}
+
+
+.inputfile:focus + label,
+.inputfile + label:hover{
+	background-color: red;
+}
+
+.inputfile:focus + label{
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+#infoBox{
+	display:none;
+}
+.UploadButton form{
+	right:0;
+	bottom:0;
+}
+#medicines-list{
+	margin-top: 5px;
+}
+.closeon{
+	position: absolute;
+    right: 5px;
+    top: 3px;
+    z-index: 100;
+}
+.activesHistory{
+	margin-right:2px;
+}
