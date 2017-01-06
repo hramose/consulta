@@ -44,17 +44,19 @@ class AppointmentRepository extends DbRepository{
         $appointment = $this->model->findOrFail($id);
         $data = $this->prepareData($data);
         
-        if(!$appointment->status)
-        {
 
-            $appointment->fill($data);
-            $appointment->save();
-            
-            return $appointment;
+        if($appointment->status && isset($data['date']))
+        {
+           return '';
         }
 
 
-        return '';
+        $appointment->fill($data);
+        $appointment->save();
+            
+        return $appointment;
+
+        
     }
 
     /**
