@@ -40,7 +40,7 @@ $(function () {
                 var appointments = [];
 
                 $.each(resp, function( index, item ) {
-                    
+                    debugger
                     item.allDay = 0;// = false;
                     if(item.patient_id == 0){
                       item.rendering = 'background';
