@@ -262,9 +262,15 @@ $(function () {
                     
                    return
                   }
+                   
+                   $('#calendar').fullCalendar( 'removeEvents', data.id)
+                   
+                    resp.allDay = parseInt(resp.allDay);
+                   
 
+                    $('#calendar').fullCalendar('renderEvent', resp, true);
                   
-              
+                  
                }
                 
             },
