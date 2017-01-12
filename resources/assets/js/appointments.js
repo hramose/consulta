@@ -42,8 +42,9 @@ $(function () {
                 $.each(resp, function( index, item ) {
                    
                     item.allDay = false;
-                    if(!item.patient_id)
+                    if(item.patient_id == 0){
                       item.rendering = 'background'
+                    }
 
                     appointments.push(item);
                 });
