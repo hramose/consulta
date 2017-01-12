@@ -22,6 +22,7 @@ class CreateAppointmentsTable extends Migration
             $table->dateTime('date');
             $table->string('start');
             $table->string('end');
+            $table->tinyInteger('allDay')->default(0); //1 iniciada
             $table->string('title');
             $table->string('backgroundColor');
             $table->string('borderColor');
