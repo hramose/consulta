@@ -40,8 +40,9 @@ $(function () {
                 var appointments = [];
 
                 $.each(resp, function( index, item ) {
-                    //debugger
-                    item.allDay = parseInt(item.allDay);// = false;
+                   
+                    item.allDay = parseInt(item.allDay); // = false;
+                    
                     if(item.patient_id == 0){
                       item.rendering = 'background';
                     }
@@ -223,6 +224,7 @@ $(function () {
                  //debugger
                   /*if(isOverlapping(resp))
                     resp.allDay = 1; // si se montan poner el evento en todo el dia*/
+                
                 resp.allDay = parseInt(resp.allDay);
                
 
