@@ -88,7 +88,7 @@ class AppointmentRepository extends DbRepository{
         $order = 'date';
         $dir = 'desc';
 
-        $appointments = $this->model->where('user_id', $id);
+        $appointments = $this->model->where('user_id', $id)->where('patient_id','<>',0);
        
         if (! count($search) > 0) return $appointments->orderBy('appointments.'.$order , $dir)->paginate($limit);
 

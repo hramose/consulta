@@ -29,7 +29,7 @@ class HomeController extends Controller
         //dd(Carbon::now()->toDateTimeString());
         $search['date'] = Carbon::today()->toDateTimeString();
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);
-        
+       
         if(auth()->user()->hasRole('paciente'))
             return view('home-patient',compact('appointments'));
        

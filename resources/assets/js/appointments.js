@@ -45,6 +45,8 @@ $(function () {
                     if(item.patient_id == 0){
                       item.rendering = 'background'
                     }
+                    
+                    //debugger
 
                     appointments.push(item);
                 });
@@ -135,9 +137,7 @@ $(function () {
           forceEventDuration: true,
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
-          eventOverlap: function(stillEvent, movingEvent) {
-              return stillEvent.allDay && movingEvent.allDay;
-          },
+          eventOverlap: false,
           drop: function (date, allDay) { // this function is called when something is dropped
 
             // retrieve the dropped element's stored Event Object
@@ -153,7 +153,7 @@ $(function () {
             copiedEventObject.allDay = allDay;
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color");
-
+            copiedEventObject.overlap = false;
             // render the event on the calendar
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 
@@ -188,11 +188,27 @@ $(function () {
             if (event.rendering == 'background') {
                 element.append('<h3>'+ event.title + '</h3>');
             }
-        }
+
+            
+
+        },
+        
       });
 
     }
 
+    function isOverlapping(event) {
+     
+        var array = $('#calendar').fullCalendar('clientEvents');
+        
+         
+          for(i in array){
+              if (event.end >= array[i].start && event.start <= array[i].end){
+                 return true;
+              }
+          }
+          return false;
+    }
     
     /* SAVE UPDATE DELETE EVENTS */
     function crud(method, url, data, revertFunc) {
@@ -206,6 +222,11 @@ $(function () {
               if(method == "POST")
               {
                 $('#calendar').fullCalendar( 'removeEvents', data.idRemove)
+               
+                if(isOverlapping(data))
+                  resp.allDay = true; // si se montan poner el evento en todo el dia
+
+               
 
                 $('#calendar').fullCalendar('renderEvent', resp, true);
               }
@@ -267,6 +288,7 @@ $(function () {
         user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
         idRemove: idRemove,
+        
       };
 
       crud('POST', '/medic/appointments', appointment)

@@ -41,23 +41,25 @@
                     <th></th>
                   </tr>
                   @foreach($appointments as $appointment)
-                    <tr>
-                      <td>{{ $appointment->id }}</td>
-                      <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ $appointment->patient->first_name }}">{{ $appointment->patient->first_name }}</a></td>
-                      <td>{{ $appointment->title }}</td>
-                      <td>{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
-                      <td>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
-                      <td>{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
-                      <td>
-                        <div class="btn-group">
-                          <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i></a>
-                         
-                          @if(!$appointment->status)
-                          <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
-                          @endif
-                        </div>
-                      </td>
-                    </tr>
+                     
+                      <tr>
+                        <td>{{ $appointment->id }}</td>
+                        <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ $appointment->patient->first_name }}">{{ $appointment->patient->first_name }}</a></td>
+                        <td>{{ $appointment->title }}</td>
+                        <td>{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
+                        <td>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
+                        <td>
+                          <div class="btn-group">
+                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i></a>
+                           
+                            @if(!$appointment->status)
+                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
+                            @endif
+                          </div>
+                        </td>
+                      </tr>
+                    
                   @endforeach
                    <tr>
 

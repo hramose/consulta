@@ -24,6 +24,7 @@
                   <div class="box-body">
                     <ul class="products-list product-list-in-box">
                        @foreach($appointments as $appointment)
+                          
                           <li class="item">
                             <div class="product-img">
                               <img class="profile-user-img img-responsive img-circle" src="{{ (Storage::disk('public')->exists('patients/'.$appointment->patient->id.'/photo.jpg')) ? Storage::url('patients/'.$appointment->patient->id.'/photo.jpg') : Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture">
@@ -36,6 +37,7 @@
                                   </span>
                             </div>
                           </li>
+                          
                        @endforeach
                     </ul>
                   </div>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'user_id','patient_id','date','start','end','title','backgroundColor','borderColor','medical_instructions'
+        'user_id','patient_id','date','start','end','allday','title','backgroundColor','borderColor','medical_instructions'
     ];
 
      public function scopeSearch($query, $search)
