@@ -41,7 +41,7 @@ $(function () {
 
                 $.each(resp, function( index, item ) {
                     
-                    console.log(item.allDay);// = false;
+                    item.allDay = 0;// = false;
                     if(item.patient_id == 0){
                       item.rendering = 'background';
                     }
