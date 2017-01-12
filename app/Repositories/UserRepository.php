@@ -33,7 +33,7 @@ class UserRepository extends DbRepository{
 
         $user->assignRole($role);
 
-        $user->createOffice();
+        //$user->createOffice();
         
         $exists = Storage::disk('public')->exists('avatars/'. $user->id.'/avatar.jpg');
         

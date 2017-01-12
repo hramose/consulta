@@ -267,7 +267,7 @@
           
           updateHistory () {
 
-            var resource = this.$resource('/patients{/id}/history');
+            var resource = this.$resource('/medic/patients{/id}/history');
 
                 resource.update({id: this.history.patient_id}, {data: JSON.stringify(this.dataHistories)}).then((response) => {
                      

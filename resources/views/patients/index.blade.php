@@ -10,7 +10,7 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
-                <a href="{{ url('/patients/create') }}" class="btn btn-success">Nuevo paciente</a>
+                <a href="{{ url('/medic/patients/create') }}" class="btn btn-success">Nuevo paciente</a>
 
                 <div class="box-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
@@ -36,13 +36,13 @@
                   @foreach($patients as $patient)
                     <tr>
                       <td>{{ $patient->id }}</td>
-                      <td><a href="{{ url('/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }}</a></td>
+                      <td><a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }}</a></td>
                       <td>{{ $patient->last_name }}</td>
                       <td>{{ $patient->email }}</td>
                       <td>{{ $patient->address }}</td>
                       <td>
                         <div class="btn-group">
-                          <a href="{{ url('/patients/'.$patient->id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                          <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                           <button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button>
                         </div>

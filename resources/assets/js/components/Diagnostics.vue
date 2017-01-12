@@ -70,7 +70,7 @@
 
             
             
-            this.$http.post('/diagnostics', {appointment_id: this.appointment_id, name: diagnostic}).then((response) => {
+            this.$http.post('/medic/diagnostics', {appointment_id: this.appointment_id, name: diagnostic}).then((response) => {
 
                   
                   console.log(response);
@@ -95,7 +95,7 @@
           remove(item){
            
 
-            this.$http.delete('/diagnostics/'+item.id).then((response) => {
+            this.$http.delete('/medic/diagnostics/'+item.id).then((response) => {
 
                  
                   console.log(response);

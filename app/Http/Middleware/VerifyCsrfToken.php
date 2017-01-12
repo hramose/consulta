@@ -12,11 +12,11 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        '/patients/files',
-        '/patients/files/delete',
-        '/patients/photos',
-        '/account/avatars',
-        '/appointments',
-        '/appointments/*'
+        '/medic/patients/files',
+        '/medic/patients/files/delete',
+        '/medic/patients/photos',
+        '/medic/account/avatars',
+        '/medic/appointments',
+        '/medic/appointments/*'
     ];
 }

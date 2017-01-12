@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Medic;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;

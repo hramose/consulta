@@ -39,33 +39,25 @@
         ]); ?>
     </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-blue layout-top-nav">
 <div id="app" class="wrapper">
 
   <!-- Main Header -->
   <header class="main-header">
-      @include('layouts/partials/header')
+      @include('layouts/partials/header-patient')
   </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-      
-      @include('layouts/partials/sidebar')
-    
-  </aside>
-
+  
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- @include('layouts/partials/flash-message') -->
-    @if (session()->has('flash_message'))
+    <div class="container">
+        @if (session()->has('flash_message'))
 
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+          <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
-    @endif
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    @if(!auth()->user()->offices->count())
-       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
-     @endif
-    @yield('content')
+        @endif
+        <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+        @yield('content')
+    </div>
   </div>
   <!-- /.content-wrapper -->
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Medic;
 
 
 
+use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Speciality;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ class UserController extends Controller
 
         flash('Cuenta Actualizada','success');
 
-    	return Redirect('/account/edit');
+    	return Redirect('/medic/account/edit');
 
     }
 

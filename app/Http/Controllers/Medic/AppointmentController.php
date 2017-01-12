@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Medic;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\findAllByDoctor;
 use Illuminate\Http\Request;
@@ -74,7 +75,7 @@ class AppointmentController extends Controller
      */
     public function update($id)
     {
-
+        
         $appointment = $this->appointmentRepo->update($id, request()->all());
 
         return $appointment;

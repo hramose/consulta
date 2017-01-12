@@ -42,13 +42,13 @@
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="{{ url('/patients') }}">Pacientes</a>
+                    <a href="{{ url('/medic/patients') }}">Pacientes</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="{{ url('/appointments') }}">Consultas</a>
+                    <a href="{{ url('/medic/appointments') }}">Consultas</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="{{ url('/account/edit') }}">Perfil</a>
+                    <a href="{{ url('/medic/account/edit') }}">Perfil</a>
                   </div>
                 </div>
                 <!-- /.row -->
@@ -57,7 +57,7 @@
 
               <li class="user-footer">
                  <div class="pull-left">
-                  <a href="{{ url('/account/edit') }}" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="{{ url('/medic/account/edit') }}" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sign out</a>

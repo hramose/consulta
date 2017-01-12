@@ -10,10 +10,10 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
-                <a href="{{ url('/appointments/create') }}" class="btn btn-success">Nueva cita</a>
+                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Nueva cita</a>
 
                 <div class="box-tools">
-                  <form action="/appointments" method="GET">
+                  <form action="/medic/appointments" method="GET">
                     <div class="input-group input-group-sm" style="width: 150px;">
                       
                         
@@ -43,17 +43,17 @@
                   @foreach($appointments as $appointment)
                     <tr>
                       <td>{{ $appointment->id }}</td>
-                      <td><a href="{{ url('/appointments/'.$appointment->id.'/edit') }}" title="{{ $appointment->patient->first_name }}">{{ $appointment->patient->first_name }}</a></td>
+                      <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ $appointment->patient->first_name }}">{{ $appointment->patient->first_name }}</a></td>
                       <td>{{ $appointment->title }}</td>
                       <td>{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
                       <td>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
                       <td>{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
                       <td>
                         <div class="btn-group">
-                          <a href="{{ url('/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i></a>
+                          <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i></a>
                          
                           @if(!$appointment->status)
-                          <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
+                          <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
                           @endif
                         </div>
                       </td>

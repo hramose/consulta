@@ -50,7 +50,7 @@
          
           updateUser (data) {
 
-            var resource = this.$resource('/account/edit');
+            var resource = this.$resource('/medic/account/edit');
 
                 resource.update(data).then((response) => {
                       console.log(response.status);

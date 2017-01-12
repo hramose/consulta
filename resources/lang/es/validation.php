@@ -119,6 +119,12 @@ return [
         'respiratory_rate' => 'Frecuencia Respiratoria',
         'blood' => 'Presión Arterial',
         'heart_rate' =>'Frecuencia Cardiaca',
+        'name' =>'Nombre',
+        'address' =>'Dirección',
+        'province' =>'Provincia',
+        'city' =>'Ciudad',
+        'phone' =>'Teléfono',
+
         ],
 
 ];

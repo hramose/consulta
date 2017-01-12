@@ -22,7 +22,7 @@
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="basic">
-	                <form method="POST" action="{{ url('/patients') }}" class="form-horizontal">
+	                <form method="POST" action="{{ url('/medic/patients') }}" class="form-horizontal">
       				         {{ csrf_field() }}
       				         @include('patients/partials/form')
       			    	</form>

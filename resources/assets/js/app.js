@@ -22,7 +22,7 @@ Vue.component('diagnostics', require('./components/Diagnostics.vue'));
 Vue.component('instructions', require('./components/Instructions.vue'));
 Vue.component('signs', require('./components/Signs.vue'));
 Vue.component('summary-appointment', require('./components/Summary.vue'));
-
+Vue.component('office', require('./components/Office.vue'));
 /*import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);**/

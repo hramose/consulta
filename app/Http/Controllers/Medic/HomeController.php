@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Medic;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\AppointmentRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,13 +30,11 @@ class HomeController extends Controller
         //dd(Carbon::now()->toDateTimeString());
         $search['date'] = Carbon::today()->toDateTimeString();
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);
-        
+
         if(auth()->user()->hasRole('paciente'))
             return view('home-patient',compact('appointments'));
-       
-        return view('home',compact('appointments'));
 
-       
+        return view('home',compact('appointments'));
     }
 
     

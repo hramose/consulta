@@ -3,7 +3,7 @@
 		<h2>Consultas agendadas</h2>
 		@forelse($scheduledAppointments as $appointment)
 			
-				<a class="info-box" href="/appointments/{{ $appointment->id }}/edit">
+				<a class="info-box" href="/medic/appointments/{{ $appointment->id }}/edit">
 		            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
@@ -21,7 +21,7 @@
 		<h2>Consultas iniciadas</h2>
 		@forelse($initAppointments as $appointment)
 			
-				<a class="info-box" href="/appointments/{{ $appointment->id }}/edit">
+				<a class="info-box" href="/medic/appointments/{{ $appointment->id }}/edit">
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">

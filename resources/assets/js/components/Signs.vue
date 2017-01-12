@@ -147,7 +147,7 @@
          update () {
             //this.loader = true;
             this.loader_message = "Guardando..."
-            var resource = this.$resource('/signs/'+ this.signs.id);
+            var resource = this.$resource('/medic/signs/'+ this.signs.id);
 
                 resource.update(this.vital_signs).then((response) => {
                     

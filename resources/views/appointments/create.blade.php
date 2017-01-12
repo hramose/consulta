@@ -6,7 +6,7 @@
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
-  @include('layouts/partials/header-pages',['page'=>'Cita'])
+  @include('layouts/partials/header-pages',['page'=>'Arma tu agenda'])
 
 
     <section class="content">
@@ -61,16 +61,18 @@
 
           <div class="box box-solid">
             <div class="box-header with-border">
-              <h4 class="box-title">Citas sin agendar</h4>
+              <h4 class="box-title">Agenda</h4>
             </div>
             <div class="box-body">
               <!-- the events -->
               <div id="external-events">
-                
+                <div class="external-event bg-red" data-doctor="{{ auth()->id() }}">No disponible</div>
               </div>
             </div>
             <!-- /.box-body -->
           </div>
+          
+          
         </div>
         <!-- /.col -->
         <div class="col-md-9">

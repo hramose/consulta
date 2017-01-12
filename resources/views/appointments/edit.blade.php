@@ -99,7 +99,7 @@
 		          <!-- /.nav-tabs-custom -->
 		    </div>
 		    <div class="col-md-3" style="position: relative;">
-		    	<a href="/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Print</a>
+		    	<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Print</a>
 	           <summary-appointment :history="{{ $appointment->patient->history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" instructions="{{ $appointment->medical_instructions }}" ></summary-appointment>
 	        </div>
 	    </div>
@@ -113,7 +113,7 @@
   $(function () {
 
   	$("#UploadFile").ajaxUpload({
-      url : "/patients/files",
+      url : "/medic/patients/files",
       name: "file",
       data: {patient_id: {{ $appointment->patient->id }} },
       onSubmit: function() {
@@ -160,7 +160,7 @@
     function deleteFile()
     {
         var btn_delete = $(this),
-            url = "/patients/files/delete";
+            url = "/medic/patients/files/delete";
 
         $.post(url,{file: btn_delete.attr("data-file") }, function(data){
             btn_delete.parents('li').fadeOut("slow");

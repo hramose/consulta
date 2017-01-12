@@ -1,0 +1,84 @@
+
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../../index2.html" class="navbar-brand"><b>Consulta</b></a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Historial de Citas</a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            
+            <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+              <!-- Menu Toggle Button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- The user image in the navbar-->
+                <!-- <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
+                <img src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" class="user-image" alt="User Image">
+                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                <span class="hidden-xs">{{ auth()->user()->name }}</span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- The user image in the menu -->
+                <li class="user-header">
+                  <!-- <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+                  <img src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" class="img-circle" alt="User Image">
+                  <p>
+                     {{ auth()->user()->name }}
+                    <small>Member since {{ auth()->user()->created_at->diffForHumans() }}</small>
+                  </p>
+                </li>
+                <!-- Menu Body -->
+                <li class="user-body">
+                  <div class="row">
+                    <div class="col-xs-4 text-center">
+                      <a href="{{ url('/patients') }}">Pacientes</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="{{ url('/appointments') }}">Consultas</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="{{ url('/account/edit') }}">Perfil</a>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                </li>
+                <!-- Menu Footer-->
+
+                <li class="user-footer">
+                   <div class="pull-left">
+                    <a href="{{ url('/account/edit') }}" class="btn btn-default btn-flat">Perfil</a>
+                  </div>
+                  <div class="pull-right">
+                    <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sign out</a>
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-custom-menu -->
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+
+
+
+
+
+
+   

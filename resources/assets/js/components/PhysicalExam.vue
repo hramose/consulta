@@ -322,7 +322,7 @@
           update () {
             //this.loader = true;
             this.loader_message = "Guardando..."
-            var resource = this.$resource('/physicalexams/'+ this.physical.id);
+            var resource = this.$resource('/medic/physicalexams/'+ this.physical.id);
 
                 resource.update({data: this.physical_exams}).then((response) => {
 

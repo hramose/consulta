@@ -27,7 +27,7 @@
 	            </ul>
 	            <div class="tab-content">
 	              	<div class="active tab-pane" id="basic">
-						<form method="POST" action="{{ url('patients/'.$patient->id) }}" class="form-horizontal">
+						<form method="POST" action="{{ url('/medic/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
 					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente'])
 					    </form>
@@ -102,7 +102,7 @@
   });
 
     $("#UploadFile").ajaxUpload({
-      url : "/patients/files",
+      url : "/medic/patients/files",
       name: "file",
       data: {patient_id: {{ $patient->id }} },
       onSubmit: function() {
@@ -149,7 +149,7 @@
     function deleteFile()
     {
         var btn_delete = $(this),
-            url = "/patients/files/delete";
+            url = "/medic/patients/files/delete";
 
         $.post(url,{file: btn_delete.attr("data-file") }, function(data){
             btn_delete.parents('li').fadeOut("slow");

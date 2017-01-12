@@ -32,8 +32,8 @@
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li><a href="{{ url('/')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
-        <li><a href="{{ url('/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
-        <li><a href="{{ url('/appointments')}}"><i class="fa fa-calendar"></i> <span>Consultas</span></a></li>
+        <li><a href="{{ url('/medic/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
+        <li><a href="{{ url('/medic/appointments')}}"><i class="fa fa-calendar"></i> <span>Consultas</span></a></li>
         
       </ul>
       <!-- /.sidebar-menu -->

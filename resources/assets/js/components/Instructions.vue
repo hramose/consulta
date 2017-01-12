@@ -39,7 +39,7 @@
          
          update () {
             this.loader_message = "Guardando...";
-            var resource = this.$resource('/appointments{/id}/');
+            var resource = this.$resource('/medic/appointments{/id}/');
 
                 resource.update({ id: this.appointment.id },{medical_instructions: this.medical_instructions}).then((response) => {
                       console.log(response.status);

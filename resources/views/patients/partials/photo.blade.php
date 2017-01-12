@@ -8,7 +8,7 @@
 
                 <p class="text-muted text-center">{{ $patient->city }}</p>
                 
-                <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/patients/photos">Subir Foto</a> 
+                <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/patients/photos">Subir Foto</a> 
               @else
                 <img class="profile-user-img img-responsive img-circle" src="{{ Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture">
               @endif

@@ -9,7 +9,7 @@ $(function () {
           title: $.trim($(this).text()), // use the element's text as the event title
           user_id: $(this).data('doctor'),
           patient_id: $(this).data('patient')
-
+          
         };
 
         // store the Event Object in the DOM element so we can get to it later
@@ -32,7 +32,7 @@ $(function () {
 
         $.ajax({
             type: 'GET',
-            url: '/appointments/list',
+            url: '/medic/appointments/list',
             data: {},
             success: function (resp) {
                 console.log(resp);
@@ -42,6 +42,8 @@ $(function () {
                 $.each(resp, function( index, item ) {
                    
                     item.allDay = false;
+                    if(!item.patient_id)
+                      item.rendering = 'background'
 
                     appointments.push(item);
                 });
@@ -57,8 +59,54 @@ $(function () {
 
 
     }
+    function fetch_offices() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/medic/account/offices/list',
+            data: {},
+            success: function (resp) {
+                console.log(resp);
+
+                var offices = [];
+                var currColor = "#3c8dbc";
+                $.each(resp, function( index, item ) {
+                   
+                    
+
+                    offices.push(item);
+                    
+                    var event = $("<div />");
+                    event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+                    event.attr('data-patient', 0);
+                    event.attr('data-doctor', $('input[name=user_id]').val());
+                    event.html('');
+                    event.html(item.name);
+                    $('#external-events').prepend(event);
+
+                    //Add draggable funtionality
+                    ini_events(event);
+
+
+
+                });
+               
+                //initCalendar(offices);
+                
+                console.log(offices);
+                
+            },
+            error: function () {
+                console.log('Error - '+ resp);
+
+            }
+        });
+
+
+    }
 
     fetch_events();
+    fetch_offices();
 
 
     /* initialize the calendar
@@ -86,6 +134,9 @@ $(function () {
           forceEventDuration: true,
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
+          eventOverlap: function(stillEvent, movingEvent) {
+              return stillEvent.allDay && movingEvent.allDay;
+          },
           drop: function (date, allDay) { // this function is called when something is dropped
 
             // retrieve the dropped element's stored Event Object
@@ -111,8 +162,8 @@ $(function () {
             saveAppointment(copiedEventObject, _id);
 
            
-        
-            $(this).remove(); // remover de citas sin agendar
+            if($(this).data('patient'))
+              $(this).remove(); // remover de citas sin agendar
          
            
           },
@@ -133,6 +184,9 @@ $(function () {
             element.find(".closeon").click(function() {
                deleteAppointment(event._id, event);
             });
+            if (event.rendering == 'background') {
+                element.append('<h3>'+ event.title + '</h3>');
+            }
         }
       });
 
@@ -210,11 +264,11 @@ $(function () {
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
         user_id: event.user_id,
-        patient_id: event.patient_id,
+        patient_id: (event.patient_id) ? event.patient_id : 0,
         idRemove: idRemove,
       };
 
-      crud('POST', '/appointments', appointment)
+      crud('POST', '/medic/appointments', appointment)
 
     }
 
@@ -233,14 +287,14 @@ $(function () {
         id: event.id,
       };
       
-      crud('PUT', '/appointments/'+appointment.id, appointment, revertFunc)
+      crud('PUT', '/medic/appointments/'+appointment.id, appointment, revertFunc)
 
     }
 
     function deleteAppointment(id)
     {
 
-      crud('DELETE', '/appointments/'+ id + '/delete', {idRemove:id})
+      crud('DELETE', '/medic/appointments/'+ id + '/delete', {idRemove:id})
      
     }
 
@@ -299,7 +353,7 @@ $(function () {
     $(".search-patients").select2({
             placeholder: "Buscar paciente",
             ajax: {
-              url: "/patients/list",
+              url: "/medic/patients/list",
               dataType: 'json',
               delay: 250,
               data: function (params) {
@@ -361,7 +415,7 @@ $(function () {
                  
                  $.ajax({
                   type: 'GET',
-                  url: '/patients/list',
+                  url: '/medic/patients/list',
                   data: {search: key},
                   success: function (resp) {
                       console.log(resp.data);

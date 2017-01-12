@@ -75,9 +75,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Patient::class);
     }
 
-    public function office()
+    public function offices()
     {
-        return $this->hasOne(Office::class);
+        return $this->hasMany(Office::class);
     }
 
 
@@ -85,7 +85,7 @@ class User extends Authenticatable
     {
         $office = ($office) ? $office : new Office();
 
-        return $this->office()->save($office);
+        return $this->offices()->save($office);
     }
 
     public function getSpecialityName()
