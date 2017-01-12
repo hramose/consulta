@@ -223,7 +223,7 @@ $(function () {
                  //debugger
                   /*if(isOverlapping(resp))
                     resp.allDay = 1; // si se montan poner el evento en todo el dia*/
-                resp.allDay = parseInt(resp.allDay)
+                resp.allDay = parseInt(resp.allDay);
                
 
                 $('#calendar').fullCalendar('renderEvent', resp, true);
@@ -286,12 +286,13 @@ $(function () {
         user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
         idRemove: idRemove,
-        allDay: 0,
+        allDay: 0
         
       };
 
-      if(isOverlapping(appointment))
+      if(isOverlapping(appointment)){
         appointment.allDay = 1;
+      }
 
       crud('POST', '/medic/appointments', appointment)
 
@@ -310,7 +311,7 @@ $(function () {
         user_id: event.user_id,
         patient_id: event.patient_id,
         id: event.id,
-        allDay: 0,
+        allDay: 0
       };
       
       crud('PUT', '/medic/appointments/'+appointment.id, appointment, revertFunc)
