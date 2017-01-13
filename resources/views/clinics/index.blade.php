@@ -110,7 +110,7 @@
                   @foreach($clinics as $clinic)
                     <tr>
                      
-                      <td>Dr. {{ $clinic->name }}</td>
+                      <td>{{ $clinic->name }}</td>
                       <td>
                          <span class="label bg-yellow">{{ $clinic->province }} - {{ $clinic->city }}</span>
 
