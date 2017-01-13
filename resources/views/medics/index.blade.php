@@ -119,42 +119,54 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                  <tr>
-                    
-                    <th>Nombre</th>
-                    <th>Lugar</th>
-                    <th></th>
-                  </tr>
-                  @foreach($medics as $medic)
-                    <tr>
-                      
-                      <td>Dr. {{ $medic->name }}</td>
-                      <td>
-                         @forelse($medic->offices as $office)
-                            <span class="label bg-yellow">{{ $office->province }} - {{ $office->city }}</span> <br/>
-                         @empty
-                            <span class="label bg-default">Desconocido</span>
-                         @endforelse
-                      </td>
-                      <td>
-                        <div class="btn-group">
-                          <a href="{{ url('/medics/'.$medic->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
-                          <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                          <a href="{{ url('/medics/'.$medic->id.'/share') }}" class="btn btn-default"><i class="fa fa-share"></i> Enviar Dirección</a>
-                        </div>
-                      </td>
-                    </tr>
-                  @endforeach
-                  <tr>
+                @if ($medics)
+                    @if (!count($medics))
+                      <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                        No se encontraron elementos con esos terminos de busqueda
+                      </p>
+                    @else
+                      <table class="table table-hover">
+                        <tr>
+                          
+                          <th>Nombre</th>
+                          <th>Lugar</th>
+                          <th></th>
+                        </tr>
+                        @foreach($medics as $medic)
+                          <tr>
+                            
+                            <td>Dr. {{ $medic->name }}</td>
+                            <td>
+                               @forelse($medic->offices as $office)
+                                  <span class="label bg-yellow">{{ $office->province }} - {{ $office->city }}</span> <br/>
+                               @empty
+                                  <span class="label bg-default">Desconocido</span>
+                               @endforelse
+                            </td>
+                            <td>
+                              <div class="btn-group">
+                                <a href="{{ url('/medics/'.$medic->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
+                                <a href="{{ url('/medics/'.$medic->id.'/share') }}" class="btn btn-default"><i class="fa fa-share"></i> Enviar Dirección</a>
+                              </div>
+                            </td>
+                          </tr>
+                        @endforeach
+                        <tr>
 
-                    @if ($medics)
-                        <td  colspan="4" class="pagination-container">{!!$medics->appends(['q' => $search['q'],'speciality' => $selectedSpeciality , 'province' => $search['province'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
+                         
+                              <td  colspan="4" class="pagination-container">{!!$medics->appends(['q' => $search['q'],'speciality' => $selectedSpeciality , 'province' => $search['province'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
+                         
+
+
+                          </tr>
+                      </table>
                     @endif
-
-
-                    </tr>
-                </table>
+              @else
+                   <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                      Realiza una busqueda para mostrar elementos
+                    </p>
+              @endif
               </div>
               <!-- /.box-body -->
             </div>

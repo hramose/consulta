@@ -103,39 +103,54 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                  <tr>
+                 @if ($clinics)
+                    @if (!count($clinics))
+                      <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                        No se encontraron elementos con esos terminos de busqueda
+                      </p>
+                    @else
+                      <table class="table table-hover">
+                        <tr>
+                          
+                          <th>Nombre</th>
+                          <th>Lugar</th>
+                          <th></th>
+                        </tr>
+                        @foreach($clinics as $clinic)
+                          <tr>
+                           
+                            <td>{{ $clinic->name }}</td>
+                            <td>
+                               <span class="label bg-yellow">{{ $clinic->province }} - {{ $clinic->city }}</span>
+
+                            </td>
+                            <td>
+                              <div class="btn-group">
+                                <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a>
+                                <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
+                                <a href="tel:26665859" class="btn btn-default"><i class="fa fa-share"></i> Llamar</a>
+                              </div>
+                            </td>
+                          </tr>
+                        @endforeach
+                        <tr>
+
+                         
+                              <td  colspan="3" class="pagination-container">{!!$clinics->appends(['q' => $search['q'], 'province' => $search['province'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
+                         
+
+
+                          </tr>
+                      </table>
+                     @endif
                     
-                    <th>Nombre</th>
-                    <th>Lugar</th>
-                    <th></th>
-                  </tr>
-                  @foreach($clinics as $clinic)
-                    <tr>
-                     
-                      <td>{{ $clinic->name }}</td>
-                      <td>
-                         <span class="label bg-yellow">{{ $clinic->province }} - {{ $clinic->city }}</span>
-
-                      </td>
-                      <td>
-                        <div class="btn-group">
-                          <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a>
-                          <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                          <a href="tel:26665859" class="btn btn-default"><i class="fa fa-share"></i> Llamar</a>
-                        </div>
-                      </td>
-                    </tr>
-                  @endforeach
-                  <tr>
-
-                    @if ($clinics)
-                        <td  colspan="3" class="pagination-container">{!!$clinics->appends(['q' => $search['q'], 'province' => $search['province'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
-                    @endif
-
-
-                    </tr>
-                </table>
+                @else
+                 
+                    <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                      Realiza una busqueda para mostrar elementos
+                    </p>
+                  
+                @endif
               </div>
               <!-- /.box-body -->
             </div>
