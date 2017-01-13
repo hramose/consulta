@@ -3,6 +3,8 @@
 
 use App\Office;
 use App\Role;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class ClinicRepository extends DbRepository{
@@ -29,7 +31,7 @@ class ClinicRepository extends DbRepository{
      */
     public function findAll($search = null)
     {
-        $order = 'created_at';
+        $order = 'distance';
         $dir = 'desc';
 
         if (! count($search) > 0) return $this->model-paginate($this->limit);
@@ -46,23 +48,8 @@ class ClinicRepository extends DbRepository{
         if (isset($search['lat']) && $search['lat'] != "" && isset($search['lon']) && $search['lon'] != "")
         {
             
-
-             $offices = \DB::table('offices')
-                     ->select(\DB::raw('id, name,province, (6371 * ACOS( 
-                                                                    SIN(RADIANS(lat)) * SIN(RADIANS('.$search['lat'].')) 
-                                                                    + COS(RADIANS(lon - '.$search['lon'].')) * COS(RADIANS(lat)) 
-                                                                    * COS(RADIANS('.$search['lat'].'))
-                                                                    )
-                                                       ) AS distance
-                                    '))
-                    
-                     ->having('distance','<', 1)
-                     ->orderBy('distance', 'ASC');
-
-             
-             
-            
-            
+            $offices = $offices->NearLatLng($search['lat'], $search['lon'], 5, 'K');
+            $offices = $offices->orderBy('distance');
 
         }
 
@@ -84,7 +71,7 @@ class ClinicRepository extends DbRepository{
         }
 
 
-        return $offices->orderBy('offices.'.$order , $dir)->paginate($this->limit);
+        return $offices->paginate($this->limit);
 
     }
 

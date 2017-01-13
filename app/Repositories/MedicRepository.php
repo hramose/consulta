@@ -1,6 +1,7 @@
 <?php namespace App\Repositories;
 
 
+use App\Office;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Storage;
@@ -62,7 +63,7 @@ class MedicRepository extends DbRepository{
                                     HAVING distance < 1 /* 1 KM  a la redonda */
                                    /* ORDER BY distance ASC');*/
 
-             $officesNearIds = \DB::table('offices')
+             /*$officesNearIds = \DB::table('offices')
                      ->select(\DB::raw('id, name,province, (6371 * ACOS( 
                                                                     SIN(RADIANS(lat)) * SIN(RADIANS('.$search['lat'].')) 
                                                                     + COS(RADIANS(lon - '.$search['lon'].')) * COS(RADIANS(lat)) 
@@ -73,9 +74,11 @@ class MedicRepository extends DbRepository{
                     
                      ->having('distance','<', 1)
                      ->orderBy('distance', 'ASC')
-                     ->pluck('id')->all();
+                     ->pluck('id')->all();*/
 
-             
+             $offices = Office::NearLatLng($search['lat'], $search['lon'], 5, 'K');
+             $officesNearIds = $offices->orderBy('distance', 'ASC')->pluck('id')->all();
+            
              
              $users = $users->whereHas('offices', function($q) use($officesNearIds){
                                     $q->whereIn('id', $officesNearIds);
