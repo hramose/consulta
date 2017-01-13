@@ -59,25 +59,37 @@
 
         
              <div class="col-sm-3">
-              <div class="input-group">
-                <span class="input-group-addon">lat:</span>
-                <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat">
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon">lat:</span>
+                    <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat">
+                  </div>
+                </div>
               </div>
+              
                
             </div>
             <div class="col-sm-3">
-              <div class="input-group">
-                <span class="input-group-addon">lon:</span>
-                <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon">
+               <div class="form-group">
+                <div class="col-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon">lon:</span>
+                    <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon">
+                  </div>
+                </div>
               </div>
                
             </div>
             <div class="col-sm-3">
           
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Ver ejemplo
-              </button>
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                    Ver ejemplo
+                  </button>
+                </div>
+              </div>
               
 
               <!-- Modal -->
@@ -106,8 +118,13 @@
        
       </div>
       <div class="form-group">
-          
-         
+          <div v-show="office.lat">
+             <label for="lat" class="col-sm-2 control-label">Prueba</label>
+              <a v-bind:href="'waze://?ll='+ office.lat +','+ office.lon +'&amp;navigate=yes'"  target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Waze</strong></a>
+
+              <a v-bind:href="'http://maps.google.com/?saddr=Current+Location&daddr='+ office.lat +',' + office.lon" target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abir en Google Maps</strong></a>
+          </div>            
+                          
       </div>
      
       <div class="form-group">

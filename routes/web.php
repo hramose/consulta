@@ -15,7 +15,8 @@ Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
 
-
+Route::get('/medics/search', 'MedicController@index');
+Route::get('/clinics/search', 'ClinicController@index');
 
 Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 {

@@ -13,23 +13,23 @@
         <div class="row">
 
           <div class="row">
-              <div class=" col-xs-6">
+              <div class=" col-xs-12 col-sm-6">
                 <!-- small box -->
                 <div class="small-box bg-aqua" style="position: relative;">
                   <div class="inner">
-                    <h3>Buscar un Médico</h3>
+                    <h3>Buscar Médico</h3>
 
                     <p>General o Especialista</p>
                   </div>
                   <div class="icon">
                     <i class="fa fa-user-md"></i>
                   </div>
-                  <a href="#" class="small-box-footer">Iniciar <i class="fa fa-arrow-circle-right"></i></a>
-                  <a href="#" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                  <a href="/medics/search" class="small-box-footer">Iniciar <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="/medics/search" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
                 </div>
               </div>
               <!-- ./col -->
-              <div class=" col-xs-6">
+              <div class=" col-xs-12 col-sm-6">
                 <!-- small box -->
                 <div class="small-box bg-green" style="position: relative;">
                   <div class="inner">
@@ -40,8 +40,8 @@
                   <div class="icon">
                     <i class="fa fa-hospital-o"></i>
                   </div>
-                  <a href="#" class="small-box-footer">Iniciar <i class="fa fa-arrow-circle-right"></i></a>
-                   <a href="#" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                  <a href="/clinics/search" class="small-box-footer">Iniciar <i class="fa fa-arrow-circle-right"></i></a>
+                   <a href="/clinics/search" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
                 </div>
               </div>
               <!-- ./col -->

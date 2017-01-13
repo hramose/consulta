@@ -10,7 +10,7 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
-                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Nueva cita</a>
+                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Agenda</a>
 
                 <div class="box-tools">
                   <form action="/medic/appointments" method="GET">
