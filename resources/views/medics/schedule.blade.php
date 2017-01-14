@@ -23,7 +23,7 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-events">
-                <div class="external-event bg-red" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : '' }}" data-doctor="{{ $id }}" data-createdby="{{ auth()->id() }}">Cita</div>
+                <div class="external-event bg-red" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : auth()->id() }}" data-doctor="{{ $id }}" data-createdby="{{ auth()->id() }}">Cita</div>
               </div>
               <input name="medic_id" type="hidden" value="{{ $id }}">
               <input name="created_by" type="hidden" value="{{ auth()->id() }}">
