@@ -51,6 +51,8 @@ class AppointmentController extends Controller
     {
 
         $appointment = $this->appointmentRepo->store(request()->all());
+        $appointment['patient'] = $appointment->patient;
+        $appointment['user'] = $appointment->user;
 
         return $appointment;
 
@@ -77,7 +79,9 @@ class AppointmentController extends Controller
     {
         
         $appointment = $this->appointmentRepo->update($id, request()->all());
-
+        $appointment['patient'] = $appointment->patient;
+        $appointment['user'] = $appointment->user;
+        
         return $appointment;
 
     }

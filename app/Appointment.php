@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'user_id','patient_id','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions'
+        'user_id','patient_id','created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions'
     ];
 
      public function scopeSearch($query, $search)
@@ -21,7 +21,7 @@ class Appointment extends Model
     }
    
 
-     public function doctor()
+     public function user()
     {
         return $this->belongsTo(User::class);
     }

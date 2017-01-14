@@ -76,7 +76,134 @@
             diagnostics: [],
             medical_instructions:""
           },
-          loader:false
+          loader:false,
+          defaultHistory: {
+            version: "1.0",
+            alergias: [{
+              name: 'Alergias',
+              value: ""
+            }],
+            patologicos:[{
+              name:"Hospitalizacion Previa",
+              value: ""
+            },
+            {
+              name:"Cirugías Previas",
+              value: ""
+            },
+            {
+              name:"Diabetes",
+              value: ""
+            },
+            {
+              name: "Enfermedades Tiroideas",
+              value: ""
+            },
+            {
+              name: "Hipertensión Arterial",
+              value: ""
+            },
+            {
+              name: "Cardiopatías",
+              value: ""
+            },
+            {
+              name: "Traumatismos",
+              value: ""
+            },
+            {
+              name: "Cáncer",
+              value: ""
+            },
+            {
+              name: "Tuberculosis",
+              value: ""
+            },
+            {
+              name: "Transfusiones",
+              value: ""
+            },
+            {
+              name: "Otros (patologicos)",
+              value: ""
+            }],
+            no_patologicos:[{
+              name:"Actividad Física",
+              value: ""
+            },
+            {
+              name:"Tabaquismo",
+              value: ""
+            },
+            {
+              name:"Alcoholismo",
+              value: ""
+            },
+            {
+              name:"Uso de otras sustancias (Drogas)",
+              value: ""
+            },
+            {
+              name:"Otros (No Patológicos)",
+              value: ""
+            }],
+            heredofamiliares:[{
+               name:"Diabetes (Heredofamiliares)",
+               value: ""
+            },
+            {
+               name:"Cardiopatías (Heredofamiliares)",
+               value: ""
+            },
+            {
+               name:"Hipertensión Arterial (Heredofamiliares)",
+               value: ""
+            },
+            {
+               name:"Enfermedades Tiroideas (Heredofamiliares)",
+               value: ""
+            },
+            {
+               name:"Otros (Heredofamiliares)",
+               value: ""
+            }],
+            gineco_obstetricios:[
+            {
+               name:"Fecha de primera menstruación",
+               value: ""
+            },
+            {
+               name:"Fecha de última menstruación",
+               value: ""
+            },
+            {
+               name:"Características menstruación",
+               value: ""
+            },
+            {
+               name:"Embarazos",
+               value: ""
+            },
+            {
+               name:"Cáncer Cérvico",
+               value: ""
+            },
+            {
+               name:"Cáncer Uterino",
+               value: ""
+            },
+            {
+               name:"Cáncer de Mama",
+               value: ""
+            },
+            {
+               name:"Otros (Gineco-Obstetricios)",
+               value: ""
+            }
+
+            ],
+        
+          }
  
         }
       },
@@ -142,6 +269,8 @@
                 this.summary.history = JSON.parse(this.history.histories);
                  
                
+           }else{
+            this.summary.history = this.defaultHistory;
            }
            this.summary.notes = this.notes;
            this.summary.medicines = this.medicines;

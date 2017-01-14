@@ -50,7 +50,7 @@ class PatientController extends Controller
 
         flash('Paciente Creado','success');
 
-        return Redirect('/patients/'.$patient->id.'/edit');
+        return Redirect('/medic/patients/'.$patient->id.'/edit');
 
     }
     /**

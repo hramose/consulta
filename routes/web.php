@@ -15,8 +15,24 @@ Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
 
+Route::get('/account/edit', 'UserController@edit');
+Route::put('/account/edit', 'UserController@update');
+Route::post('/account/avatars', 'UserController@avatars');
+Route::post('/account/patients', 'UserController@storePatient');
+Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
+Route::put('/account/patients/{id}', 'UserController@updatePatient');
+
 Route::get('/medics/search', 'MedicController@index');
+Route::get('/medics/{medic}/schedule', 'MedicController@schedule');
+Route::get('/medics/{medic}/appointments/list', 'MedicController@getAppointments');
+Route::post('/medics/appointments', 'MedicController@storeAppointment');
+Route::put('/medics/appointments/{appointment}', 'MedicController@updateAppointment');
+Route::delete('/medics/appointments/{appointment}/delete', 'MedicController@deleteAppointment');
 Route::get('/clinics/search', 'ClinicController@index');
+
+Route::post('/patients', 'MedicController@storePatient');
+Route::put('/patients/{patient}', 'MedicController@updatePatient');
+
 
 Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 {

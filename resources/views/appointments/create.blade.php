@@ -99,6 +99,7 @@
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/appointments.min.js"></script>
 
 @endsection

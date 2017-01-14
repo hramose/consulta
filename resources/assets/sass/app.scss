@@ -96,6 +96,20 @@
     right: 5px;
     top: 3px;
     z-index: 100;
+    cursor:pointer;
+    
+}
+.closeon:hover{
+    color:black;
+ }
+.appointment-details{
+	position: absolute;
+	right: 0;
+	left: 0;
+	bottom: 8px;
+	top:0;
+	z-index: 90;
+	cursor:pointer;
 }
 .activesHistory{
 	margin-right:2px;
@@ -104,8 +118,17 @@
 	h3{
 		color:white;
 		text-shadow:1px 1px 2px rgba(0,0,0,.8);
+		font-size: 1.5rem;
+		text-align:center;
 	}
 	.closeon{
 		color:white;
 	}
+}
+.btn-close-cita{
+	display: none;
+}
+.popover-title{
+	background-color:#3C8DBC;
+	color:white;
 }

@@ -101,6 +101,19 @@ class PatientRepository extends DbRepository{
      
         return $medicine;
     }
+    /**
+     * Delete patient
+     * @param $id
+     * @param $data
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function delete($id)
+    {
+        
+        $patient = $this->model->findOrFail($id)->delete();
+     
+        return $patient;
+    }
 
     
 
