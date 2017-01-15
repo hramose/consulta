@@ -10,12 +10,12 @@
 
 
     <section class="content">
-      
+       @if(auth()->user()->patients->count())
         <div class="row">
         <div class="col-md-3">
           
           <!-- /. box -->
-
+        
           <div class="box box-solid">
             <div class="box-header with-border">
               <h4 class="box-title">Tu cita</h4>
@@ -57,7 +57,9 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-     
+     @else
+          <div class="callout callout-danger"><h4>Recuerda !</h4> <p>Necesitas tener al menos un paciente registrado para poder realizar citas en linea.</p></div>
+     @endif
     </section>
 
 

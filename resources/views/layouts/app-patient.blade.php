@@ -56,6 +56,9 @@
 
         @endif
         <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+         @if(!auth()->user()->patients->count())
+           <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/account/edit#timeline" title="Ir a pacientes">pacientes</a> para poder realizar citas en linea!</div> 
+         @endif
         @yield('content')
     </div>
   </div>
