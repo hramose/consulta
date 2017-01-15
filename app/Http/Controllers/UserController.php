@@ -128,11 +128,17 @@ class UserController extends Controller
     {
        
 
-        $patient = $this->patientRepo->delete($id);
+      
+         $patient = $this->patientRepo->delete($id);
+
+        //($patient === true) ? flash('Paciente eliminado correctamente!','success') : flash('No se puede eliminar paciente por que tiene citas asignadas','error');
+
+       $result = ($patient === true) ? 'ok' : $patient;
+        
 
        
 
-        return '';
+        return $result;
 
     }
 

@@ -56,10 +56,10 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="paciente_phone" class="col-sm-2 control-label">Teléfono 2</label>
+        <label for="paciente_phone" class="col-sm-2 control-label">Teléfono Celular</label>
 
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="phone2" placeholder="Teléfono" v-model="paciente.phone2">
+          <input type="text" class="form-control" name="phone2" placeholder="Celular" v-model="paciente.phone2">
           <form-error v-if="errors.phone2" :errors="errors" style="float:right;">
               {{ errors.phone2[0] }}
           </form-error>
@@ -215,12 +215,16 @@
            
 
             this.$http.delete('/account/patients/'+item.id).then((response) => {
-
-                  if(response.status == 200)
+                  
+                  if(response.status == 200 && response.data == 'ok')
                   {
                      var index = this.pacientes.indexOf(item)
                     this.pacientes.splice(index, 1);
                     bus.$emit('alert', 'Paciente Eliminado','success');
+                  }else{
+                      
+                      bus.$emit('alert', 'No se puede eliminar paciente por que tiene citas asignadas','danger');
+
                   }
 
               }, (response) => {

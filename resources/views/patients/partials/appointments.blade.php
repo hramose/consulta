@@ -7,10 +7,10 @@
 		            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
-		              <span class="info-box-text">{{ $appointment->title }}</span>
+		              <span class="info-box-text">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></span>
 		              <span class="info-box-number">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</span>
 		              <span class="info-box-text"><small>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }} - {{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</small></span>
-		              <span class="info-box-text"><small>Dr. {{ $appointment->user->name }}</small></span>
+		            
 		            </div>
 		            <!-- /.info-box-content -->
 		          </a>
@@ -26,9 +26,9 @@
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
-		              <span class="info-box-text">{{ $appointment->title }}</span>
+		              <span class="info-box-text">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></span>
 		              <span class="info-box-number">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}<small></small></span>
-		              <span class="info-box-text"><small>Dr. {{ $appointment->user->name }}</small></span>
+		              
 		            </div>
 		            <!-- /.info-box-content -->
 		          </a>
