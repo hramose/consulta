@@ -65,12 +65,12 @@
 
 @endsection
 @section('scripts')
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/plugins/select2/select2.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
-<script src="/js/bootstrap.min.js"></script>
 <script src="/js/schedule.min.js"></script>
 
 @endsection

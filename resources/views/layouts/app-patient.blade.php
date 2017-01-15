@@ -89,7 +89,7 @@
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 2.2.3 -->
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script> -->
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->

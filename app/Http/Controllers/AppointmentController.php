@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Appointment;
 use App\Repositories\AppointmentRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -22,7 +23,28 @@ class AppointmentController extends Controller
 
     }
 
+    /**
+     * Mostrar vista de todas las consulta(citas) de un doctor
+     */
+    public function index()
+    {
+        
+        $appointments = Appointment::where('created_by',auth()->id())->get();
+        
 
+        $initAppointments = $appointments->filter(function ($item, $key) {
+                return $item->status > 0;
+            });
+
+        $scheduledAppointments = $appointments->filter(function ($item, $key) {
+                return $item->status == 0;
+            });
+      
+        
+
+        return view('appointments.history',compact('initAppointments','scheduledAppointments'));
+
+    }
 
     /**
      * Lista de todas las citas de un doctor sin paginar

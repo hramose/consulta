@@ -1,5 +1,6 @@
 $(function () {
 
+    $(".dropdown-toggle").dropdown();
     /* initialize the external events
      -----------------------------------------------------------------*/
     function ini_events(ele) {

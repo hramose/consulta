@@ -1,5 +1,7 @@
 $(function () {
 
+    $(".dropdown-toggle").dropdown();
+    
     //para quitar el popup tocando fuera del item
     $('body').on('click', function (e) {
         $('[data-toggle="popover"],[data-original-title]').each(function () {

@@ -26,6 +26,7 @@ Route::get('/medics/search', 'MedicController@index');
 Route::get('/medics/{medic}/schedule', 'MedicController@schedule');
 Route::get('/medics/{medic}/appointments/list', 'MedicController@getAppointments');
 
+Route::get('/appointments', 'AppointmentController@index');
 Route::post('/appointments', 'AppointmentController@store');
 Route::put('/appointments/{appointment}', 'AppointmentController@update');
 Route::delete('/appointments/{appointment}/delete', 'AppointmentController@delete');
