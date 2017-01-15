@@ -65,9 +65,9 @@ class AppointmentController extends Controller
     {
 
         $appointment =  $this->appointmentRepo->update_status($id, 1);
-
-        $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
         
+        $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
+       
         return view('appointments.edit',compact('appointment', 'files'));
 
     }
@@ -79,8 +79,11 @@ class AppointmentController extends Controller
     {
         
         $appointment = $this->appointmentRepo->update($id, request()->all());
-        $appointment['patient'] = $appointment->patient;
-        $appointment['user'] = $appointment->user;
+        
+        if($appointment){
+            $appointment['patient'] = $appointment->patient;
+            $appointment['user'] = $appointment->user;
+        }
         
         return $appointment;
 

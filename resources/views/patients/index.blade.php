@@ -44,7 +44,9 @@
                         <div class="btn-group">
                           <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                          <button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button>
+                           @if(!$patient->appointments->count())
+                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/patients/'.$patient->id) !!}"><i class="fa fa-remove"></i></button>
+                          @endif
                         </div>
                       </td>
                     </tr>
@@ -59,7 +61,9 @@
 
     </section>
 
-
+<form method="post" id="form-delete" data-confirm="Estas Seguro?">
+  <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
+</form>
 @endsection
 @section('scripts')
 

@@ -92,6 +92,20 @@ class PatientController extends Controller
 
     }
 
+     /**
+     * Eliminar consulta(cita)
+     */
+    public function destroy($id)
+    {
+
+        $patient = $this->patientRepo->delete($id);
+
+        ($patient === true) ? flash('Paciente eliminado correctamente!','success') : flash('No se puede eliminar paciente por que tiene citas asignadas','error');
+
+        return back();
+
+    }
+
     /**
      * Guardar foto de paciente
      */

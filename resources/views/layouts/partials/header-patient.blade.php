@@ -41,17 +41,7 @@
                 </li>
                 <!-- Menu Body -->
                 <li class="user-body">
-                  <div class="row">
-                    <div class="col-xs-4 text-center">
-                      <a href="{{ url('/patients') }}">Pacientes</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="{{ url('/appointments') }}">Consultas</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="{{ url('/account/edit') }}">Perfil</a>
-                    </div>
-                  </div>
+                  
                   <!-- /.row -->
                 </li>
                 <!-- Menu Footer-->

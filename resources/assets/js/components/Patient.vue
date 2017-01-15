@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog " role="document">
       <div class="modal-content">
         <div class="modal-header">
         
@@ -12,7 +12,7 @@
             
            <div class="box box-widget widget-user-2" v-show="!newPatient" v-bind:data-patient="paciente.id " v-bind:data-title=" paciente.first_name ">
               <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-yellow" >
+              <div class="widget-user-header bg-green" >
                 <div class="widget-user-image">
                   <!-- <img class="profile-user-img img-responsive img-circle" src="{{ (Storage::disk('public')->exists('patients/'.auth()->user()->patients->first()->id.'/photo.jpg')) ? Storage::url('patients/'.auth()->user()->patients->first()->id.'/photo.jpg') : Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture"> -->
                   <!-- <img class="profile-user-img img-responsive img-circle" v-bind:src="'/storage/avatars/'+ paciente.id +'/avatar.jpg'" alt="User profile picture"> -->
@@ -36,14 +36,14 @@
                       </ul>
                  
                 
-
+                <a href="#" @click="nuevo()" class="">Es un paciente distinto?</a>
               </div>
               
-              <a href="#" @click="nuevo()">Es un paciente distinto?</a>
+              
              
           </div>  
           <div class="form-horizontal" v-show="newPatient">
-              
+              <div class="callout callout-info"><h4>Información !</h4> <p>Agrega un paciente nuevo o selecciona uno de la lista de abajo.</p></div>
               <div class="form-group">
                 <label for="paciente_name" class="col-sm-2 control-label">Nombre</label>
 
@@ -68,7 +68,7 @@
                 <label for="paciente_birth_date" class="col-sm-2 control-label">Fecha de Nacimiento</label>
 
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="birth_date" pplaceholder="dd/mm/yyyy"  v-model="paciente.birth_date">
+                  <input type="text" class="form-control" name="birth_date" placeholder="dd/mm/yyyy"  v-model="paciente.birth_date">
                   <form-error v-if="errors.birth_date" :errors="errors" style="float:right;">
                       {{ errors.birth_date[0] }}
                   </form-error>
@@ -100,10 +100,20 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="paciente_phone" class="col-sm-2 control-label">Email</label>
+                <label for="paciente_phone2" class="col-sm-2 control-label">Celular</label>
 
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="email" placeholder="Teléfono" v-model="paciente.email">
+                  <input type="text" class="form-control" name="phone2" placeholder="Celular" v-model="paciente.phone2">
+                  <form-error v-if="errors.phone2" :errors="errors" style="float:right;">
+                      {{ errors.phone2[0] }}
+                  </form-error>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="paciente_email" class="col-sm-2 control-label">Email</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="email" placeholder="Email" v-model="paciente.email">
                   <form-error v-if="errors.email" :errors="errors" style="float:right;">
                       {{ errors.email[0] }}
                   </form-error>

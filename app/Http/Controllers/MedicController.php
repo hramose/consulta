@@ -75,6 +75,12 @@ class MedicController extends Controller
         $appointment = $this->appointmentRepo->store(request()->all());
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
+        
+        if(request('medic_id')) //agregar paciente del usuario al medico tambien
+        {
+            $medic = User::find(request('medic_id'));
+            $medic->patients()->save($appointment->patient);
+        }
 
         return $appointment;
 

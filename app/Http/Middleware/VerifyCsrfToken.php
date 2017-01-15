@@ -18,7 +18,8 @@ class VerifyCsrfToken extends BaseVerifier
         '/medic/account/avatars',
         '/medic/appointments',
         '/medic/appointments/*',
-        '/medics/appointments',
-        '/medics/appointments/*',
+        '/appointments',
+        '/appointments/*',
+        '/account/avatars',
     ];
 }

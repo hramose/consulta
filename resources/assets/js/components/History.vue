@@ -231,7 +231,7 @@
                value: ""
             }
 
-            ],
+            ]
         
           },
           loader:false

@@ -25,6 +25,13 @@ class PatientRequest extends FormRequest
     {
         return [
             'first_name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'phone' => 'required',
+            'birth_date' => 'required',
+            'email' => 'required|email',
+            'province' => 'required',
+            
         ];
     }
 }

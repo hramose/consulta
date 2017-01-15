@@ -110,7 +110,23 @@ class PatientRepository extends DbRepository{
     public function delete($id)
     {
         
-        $patient = $this->model->findOrFail($id)->delete();
+       // $patient = $this->model->findOrFail($id)->delete();
+
+        $patient = $this->model->findOrFail($id);
+
+        
+        if(!$patient->appointments->count())
+        {
+            if($patient->created_by == auth()->id())
+            {
+                return $patient = $patient->delete();
+            }
+
+            $patient = auth()->user()->patients()->detach($id); 
+
+            return true;
+        }
+
      
         return $patient;
     }
@@ -168,7 +184,9 @@ class PatientRepository extends DbRepository{
 
     private function prepareData($data)
     {
-       
+        
+        $data['created_by'] = auth()->id();
+
         return $data;
     }
 

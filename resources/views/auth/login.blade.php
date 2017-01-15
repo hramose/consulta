@@ -57,6 +57,7 @@
 
     <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>
     <a href="{{ url('/register') }}"" class="text-center">Crea una nueva cuenta</a>
+    <a href="{{ url('/medic/register') }}"" class="text-center pull-right">Crear cuenta de médico</a>
 
   </div>
   <!-- /.login-box-body -->

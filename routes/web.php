@@ -25,14 +25,19 @@ Route::put('/account/patients/{id}', 'UserController@updatePatient');
 Route::get('/medics/search', 'MedicController@index');
 Route::get('/medics/{medic}/schedule', 'MedicController@schedule');
 Route::get('/medics/{medic}/appointments/list', 'MedicController@getAppointments');
-Route::post('/medics/appointments', 'MedicController@storeAppointment');
-Route::put('/medics/appointments/{appointment}', 'MedicController@updateAppointment');
-Route::delete('/medics/appointments/{appointment}/delete', 'MedicController@deleteAppointment');
+
+Route::post('/appointments', 'AppointmentController@store');
+Route::put('/appointments/{appointment}', 'AppointmentController@update');
+Route::delete('/appointments/{appointment}/delete', 'AppointmentController@delete');
+
+
+Route::post('/patients', 'PatientController@store');
+Route::put('/patients/{patient}', 'PatientController@update');
+
+Route::get('/patients/create', 'PatientController@create');
+Route::post('/patients/register', 'PatientController@register');
+
 Route::get('/clinics/search', 'ClinicController@index');
-
-Route::post('/patients', 'MedicController@storePatient');
-Route::put('/patients/{patient}', 'MedicController@updatePatient');
-
 
 Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 {
@@ -65,8 +70,17 @@ Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medi
 	Route::resource('signs', 'Medic\VitalSignController');
 
 });
+Route::get('/register', 'Auth\RegisterPatientController@showRegistrationForm');
+Route::post('/register', 'Auth\RegisterPatientController@register');
 
-Auth::routes();
+Route::get('/medic/register', 'Auth\RegisterController@showRegistrationForm');
+Route::post('/medic/register', 'Auth\RegisterController@register');
+
+Route::get('/login', 'Auth\LoginController@showLoginForm');
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout');
+
+//Auth::routes();
 
 
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
      protected $fillable = [
-		'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'phone2', 'email', 'address', 'province', 'city'
+		'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'phone2', 'email', 'address', 'province', 'city','created_by'
 	];
 
     public function scopeSearch($query, $search)
@@ -21,6 +21,10 @@ class Patient extends Model
     }
 
 
+     public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
 	 public function user()
     {

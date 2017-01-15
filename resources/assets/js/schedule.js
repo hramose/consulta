@@ -228,9 +228,12 @@ $(function () {
                     $('#calendar').fullCalendar('renderEvent', resp, true);
                     
                     $('#myModal').modal({backdrop:'static', show:true });
-                    $('#myModal').find('.btn-finalizar-cita').attr('data-appointment', resp.id).show();
+                    $('#myModal').find('.btn-finalizar-cita').attr('data-appointment', resp.id).attr('data-date', moment(resp.date).format("dddd, MMMM Do YYYY")).attr('data-hour', moment(resp.start).locale('en').format("hh:mm a" )).show();
+                    
                     $('#myModal').find('.btn-cancelar-cita').attr('data-appointment', resp.id).show();
-                   
+
+                   /* content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
+                   */
                    
                   }
               }
@@ -308,7 +311,7 @@ $(function () {
         appointment.allDay = 1;
       }
 
-      crud('POST', '/medics/appointments', appointment)
+      crud('POST', '/appointments', appointment)
 
     }
 
@@ -329,7 +332,7 @@ $(function () {
         allDay: 0
       };
       
-      crud('PUT', '/medics/appointments/'+appointment.id, appointment, revertFunc)
+      crud('PUT', '/appointments/'+appointment.id, appointment, revertFunc)
     
 
     }
@@ -337,35 +340,38 @@ $(function () {
     function deleteAppointment(id)
     {
 
-      crud('DELETE', '/medics/appointments/'+ id + '/delete', {idRemove:id})
+      crud('DELETE', '/appointments/'+ id + '/delete', {idRemove:id})
      
     }
 
    
 
-    /*$('#myModal').on('show.bs.modal', function (event) {
+    $('#myModal').on('shown.bs.modal', function (event) {
       //debugger
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var recipient = button.data('whatever') // Extract info from data-* attributes
+     // var button = $(event.relatedTarget) // Button that triggered the modal
+      var date = $('.btn-finalizar-cita').attr('data-date') // Extract info from data-* attributes
+      var hour = $('.btn-finalizar-cita').attr('data-hour')
+     
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
       var modal = $(this)
-      modal.find('.modal-title').text('New message to ' + recipient)
+      modal.find('.modal-title').html('Su cita se programará para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
       //modal.find('.modal-body').data('appointment','');
-    });*/
+    });
    
    
      $('.btn-finalizar-cita').on('click', function (e) {
        
        var patient_id = $('#myModal').find('.widget-user-2').attr('data-patient');
+       var user_id = $('input[name="medic_id"]').val();
        var appointment_id = $(this).attr('data-appointment'); //data('appointment');
        var title = $('#myModal').find('.widget-user-2').attr('data-title');
       
          
               $.ajax({
                   type: 'PUT',
-                  url: '/medics/appointments/'+ appointment_id,
-                  data: { patient_id : patient_id, title: 'Cita - '+ title  },
+                  url: '/appointments/'+ appointment_id,
+                  data: { patient_id : patient_id, title: 'Cita - '+ title, medic_id: user_id },
                   success: function (resp) {
                       console.log(resp);
                     
@@ -394,7 +400,7 @@ $(function () {
 
               $.ajax({
                   type: 'DELETE',
-                  url: '/medics/appointments/'+ appointment_id + '/delete',
+                  url: '/appointments/'+ appointment_id + '/delete',
                   data: { id : appointment_id  },
                   success: function (resp) {
                       console.log(resp);

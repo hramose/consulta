@@ -124,6 +124,13 @@ return [
         'province' =>'Provincia',
         'city' =>'Ciudad',
         'phone' =>'Teléfono',
+        'first_name' => 'Nombre',
+        'last_name' => 'Apellidos',
+        'gender' => 'Genero',
+        'phone2' => 'Celular',
+        'birth_date' => 'Fecha de Nacimiento',
+        'email' => 'Email',
+    
 
         ],
 

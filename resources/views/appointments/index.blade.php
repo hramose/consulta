@@ -44,7 +44,7 @@
                      
                       <tr>
                         <td>{{ $appointment->id }}</td>
-                        <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ $appointment->patient->first_name }}">{{ $appointment->patient->first_name }}</a></td>
+                        <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a></td>
                         <td>{{ $appointment->title }}</td>
                         <td>{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
                         <td>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>

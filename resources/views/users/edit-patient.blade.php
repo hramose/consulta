@@ -23,7 +23,7 @@
 
               <p class="text-muted text-center">{{ $user->gender }}</p>
 
-               <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/account/avatars">Subir Foto</a>
+               <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/account/avatars">Subir Foto</a>
                <small class="center txt-center">Medidas recomendadas (128 x 128)</small>
               
               
@@ -46,7 +46,7 @@
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
-                 <form method="POST" action="{{ url('/medic/account/edit') }}" class="form-horizontal">
+                 <form method="POST" action="{{ url('/account/edit') }}" class="form-horizontal">
                     {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                   <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Nombre</label>

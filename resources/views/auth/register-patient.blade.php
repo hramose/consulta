@@ -11,9 +11,9 @@
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Registra una nueva cuenta como Médico</p>
+    <p class="login-box-msg">Registra una nueva cuenta</p>
 
-    <form  role="form" method="POST" action="{{ url('/medic/register') }}">
+    <form  role="form" method="POST" action="{{ url('/register') }}">
         {{ csrf_field() }}
       <div class="form-group has-feedback">
         <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="Nombre">
@@ -48,21 +48,7 @@
         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmación de contraseña">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
-      <div class="form-group has-feedback">
-        <select class="form-control select2" style="width: 100%;" name="speciality_id" placeholder="-- Selecciona Especialidad --">
-            <option value="0">Especialidad</option>
-            @foreach ($specialities as $speciality)
-              <option value="{{ $speciality->id }}">{{ $speciality->name }}</option>
-            @endforeach
-          </select>
-          <!--<input type="text" class="form-control" name="province" placeholder="Provincia" value="{{ old('province') ?: isset($user->office) ? $user->office->province : '' }}">-->
-           @if ($errors->has('speciality_id'))
-              <span class="help-block">
-                  <strong>{{ $errors->first('speciality_id') }}</strong>
-              </span>
-          @endif
-        
-      </div>
+      
       <div class="row">
         
         <!-- /.col -->
