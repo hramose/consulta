@@ -46,18 +46,18 @@
       </div>
     </form>
 
-    <div class="social-auth-links text-center">
+    <!--<div class="social-auth-links text-center">
       <p>- O -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Inicia usando
         Facebook</a>
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Inicia usando
         Google+</a>
-    </div>
+    </div>-->
     <!-- /.social-auth-links -->
 
     <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>
-    <a href="{{ url('/register') }}"" class="text-center">Crea una nueva cuenta</a>
-    <a href="{{ url('/medic/register') }}"" class="text-center pull-right">Crear cuenta de médico</a>
+    <a href="{{ url('/register') }}"" class="btn btn-flat text-center btn-facebook" >Crear cuenta nueva </a>
+    <a href="{{ url('/medic/register') }}"" class="btn btn-flat text-center pull-right btn-google">Crear cuenta de médico</a>
 
   </div>
   <!-- /.login-box-body -->
