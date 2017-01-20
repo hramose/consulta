@@ -76,7 +76,8 @@ class MedicRepository extends DbRepository{
                      ->orderBy('distance', 'ASC')
                      ->pluck('id')->all();*/
 
-             $offices = Office::NearLatLng($search['lat'], $search['lon'], 5, 'K');
+             $offices = Office::NearLatLng($search['lat'], $search['lon'], 25, 'K');
+             
              $officesNearIds = $offices->orderBy('distance', 'ASC')->pluck('id')->all();
             
              
