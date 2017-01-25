@@ -130,7 +130,7 @@
                             <td>
                               <div class="btn-group">
                                 <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->province }} - {{ $clinic->city }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->city }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
                                   <i class="fa fa-address"></i> Compartir ubicación
                                 </button>
                                
@@ -177,7 +177,7 @@
                     </div>
                     <div class="modal-body">
                       <div class="share"></div>
-                      <input type="hidden" name="latlong" value="">
+                      
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
