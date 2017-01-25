@@ -1,5 +1,8 @@
 @extends('layouts.app-patient')
-
+@section('css')
+  <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css" />
+  <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css" />
+@endsection
 @section('content')
      
      @include('layouts/partials/header-pages',['page'=>'Busqueda de Clinicas o Hospitales'])
@@ -126,7 +129,11 @@
                             </td>
                             <td>
                               <div class="btn-group">
-                                <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a>
+                                <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->province }} - {{ $clinic->city }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
+                                  <i class="fa fa-address"></i> Compartir ubicación
+                                </button>
+                               
                                 <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                                 <a href="tel:26665859" class="btn btn-default"><i class="fa fa-share"></i> Llamar</a>
                               </div>
@@ -159,13 +166,62 @@
         </div>
 
     </section>
-
+    
+     <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Compartir Ubicación</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="share"></div>
+                      <input type="hidden" name="latlong" value="">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 @endsection
 @section('scripts')
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
   <script>
     $(function () {
-    
+       
+       $('#myModal').on('shown.bs.modal', function (event) {
+          
+          var button = $(event.relatedTarget)
+          var lat = button.attr('data-lat');
+          var lon = button.attr('data-lon');
+          var address = button.attr('data-address');
+              
+      
+        $(".share").jsSocials({
+            shares: ["email", "twitter", "facebook", "googleplus", "whatsapp"],
+            url: "http://maps.google.com/?saddr=Current+Location&daddr="+lat +"," + lon,
+            text: address,
+            showLabel: false,
+            showCount: false,
+            shareIn: "popup",
+            /*on: {
+                click: function(e) {},
+                mouseenter: function(e) {},
+                mouseleave: function(e) {},
+                ...
+            }*/
+        });
+          
+        
+     
+       
+      });
+
+       
       function obtainGeolocation(){
        //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
        window.navigator.geolocation.getCurrentPosition(localitation);
