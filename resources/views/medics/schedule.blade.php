@@ -16,7 +16,7 @@
           
           <!-- /. box -->
         
-          <div class="box box-solid">
+          <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
               <h4 class="box-title">Tu cita</h4>
             </div>
@@ -30,15 +30,20 @@
               <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
                 Arrastra el elemento de arriba llamado cita dentro del calendario en la fecha y hora deseado!
               </p>
+             
+              
             </div>
             <!-- /.box-body -->
           </div>
+          <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                Puedes hacer click en una celda del calendario para crear la cita en la hora deseada!
+              </p>
           
           
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="box box-primary">
+          <div class="box box-primary box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
               <div id="calendar"></div>

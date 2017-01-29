@@ -15,7 +15,7 @@
         <div class="col-md-3">
           
           <!-- /. box -->
-          <div class="box box-solid">
+          <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
               <h3 class="box-title">Crear Cita</h3>
             </div>
@@ -63,7 +63,7 @@
             </div>
           </div>
 
-          <div class="box box-solid">
+          <div class="box box-solid box-offices">
             <div class="box-header with-border">
               <h4 class="box-title">Agenda</h4>
             </div>
@@ -80,7 +80,7 @@
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="box box-primary">
+          <div class="box box-primary box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
               <div id="calendar"></div>
