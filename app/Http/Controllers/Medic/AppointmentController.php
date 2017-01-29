@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
+use App\Patient;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\findAllByDoctor;
 use Illuminate\Http\Request;
@@ -37,10 +38,18 @@ class AppointmentController extends Controller
      */
     public function create()
     {
+    
+         // por si le da desde el formulario de paciente crear la cita a este paciente sin tener que buscarlo
+        $p = null;
+        
+        if(request('p'))
+            $p = Patient::find(request('p'));
 
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id());
 
-    	return view('appointments.create',compact('appointments'));
+       
+
+    	return view('appointments.create',compact('appointments', 'p'));
 
     }
 

@@ -20,10 +20,13 @@ class CreateOfficesTable extends Migration
             $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('province')->nullable();
+            $table->string('canton')->nullable();
+            $table->string('district')->nullable();
             $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('lat')->nullable();
             $table->string('lon')->nullable();
+            $table->string('address_map')->nullable();
             $table->timestamps();
         });
     }

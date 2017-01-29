@@ -29,25 +29,6 @@
                             </div>
                           </div>
                         </div>
-                        
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="form-group">
-                              <label for="province" class="control-label col-sm-2 col-md-2">Provincia</label>
-                              <div class="col-sm-10 col-md-10">
-                                <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
-                                  <option></option>
-                                  <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
-                                  <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == 'San Jose' ? 'selected' : '' : '' }}>San Jose</option>
-                                  <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
-                                  <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
-                                  <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
-                                  <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
-                                  <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
-                                </select>
-                              </div>
-                            </div>
-                          
-                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
@@ -93,6 +74,80 @@
                                 
                                       
                         </div>
+                        
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                          
+                             <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                   <div class="form-group">
+                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-6">Provincia</label>
+                                      <div class="col-sm-12">
+                                      <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
+                                        <option></option>
+                                        <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
+                                        <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == "San Jose" ? "selected" : "" : "" }}>San Jose</option>
+                                        <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
+                                        <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
+                                        <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
+                                        <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
+                                        <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
+                                      </select>
+                                       
+                                      </div>
+                                  </div>
+                                    
+                                   
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-lg-4">
+                                   <div class="form-group">
+                                        <label for="canton" class="control-label col-sm-2">Canton</label>
+                                       <div class="col-sm-12">
+                                          <select class="form-control select2" style="width: 100%;" name="canton" placeholder="-- Selecciona canton --">
+                                            <option></option>
+                                            
+                                          </select>
+                                          <input type="hidden" name="selectedCanton" value="{{ isset($search['canton']) ? $search['canton'] : '' }}">
+                                        </div>
+                                    </div>
+                                  <!-- /input-group -->
+                                </div>
+                                <!-- /.col-lg-6 -->
+                                <div class="col-xs-12 col-sm-4 col-lg-4">
+                                   <div class="form-group">
+                                      <label for="district" class="control-label col-sm-2">Distrito</label>
+                                       <div class="col-sm-12">
+                                          <select class="form-control select2" style="width: 100%;" name="district" placeholder="-- Selecciona canton --">
+                                            <option></option>
+                                            
+                                          </select>
+                                          <input type="hidden" name="selectedDistrict" value="{{ isset($search['district']) ? $search['district'] : '' }}">
+                                        </div>
+                                    </div>
+                                 
+                                  <!-- /input-group -->
+                                </div>
+                                <!-- /.col-lg-6 -->
+                              </div>
+                          </div>
+                        <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                              <label for="province" class="control-label col-sm-2 col-md-2">Provincia</label>
+                              <div class="col-sm-10 col-md-10">
+                                <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
+                                  <option></option>
+                                  <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
+                                  <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == 'San Jose' ? 'selected' : '' : '' }}>San Jose</option>
+                                  <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
+                                  <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
+                                  <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
+                                  <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
+                                  <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
+                                </select>
+                              </div>
+                            </div>
+                          
+                        </div> -->
+                        
                           
                       </div>
                          
@@ -117,6 +172,9 @@
                           
                           <th>Nombre</th>
                           <th>Lugar</th>
+                           @if(isset($search['lat']) && $search['lat'] != '')
+                          <th>Distancia</th>
+                          @endif
                           <th></th>
                         </tr>
                         @foreach($clinics as $clinic)
@@ -124,13 +182,18 @@
                            
                             <td>{{ $clinic->name }}</td>
                             <td>
-                               <span class="label bg-yellow">{{ $clinic->province }} - {{ $clinic->city }}</span>
+                               <span class="label bg-yellow">{{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }} </span>
 
                             </td>
+                            @if(isset($search['lat']) && $search['lat'] != '')
+                            <td>
+                                 Aprox. {{ number_format($clinic->distance, 2, '.', ',')  }} Km
+                            </td>
+                             @endif
                             <td>
                               <div class="btn-group">
                                 <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->city }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
                                   <i class="fa fa-address"></i> Compartir ubicación
                                 </button>
                                
@@ -143,7 +206,7 @@
                         <tr>
 
                          
-                              <td  colspan="3" class="pagination-container">{!!$clinics->appends(['q' => $search['q'], 'province' => $search['province'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
+                              <td  colspan="3" class="pagination-container">{!!$clinics->appends(['q' => $search['q'], 'province' => $search['province'],'canton' => $search['canton'],'district' => $search['district'],'lat' => $search['lat'],'lon' => $search['lon']])->render()!!}</td>
                          
 
 
@@ -154,7 +217,7 @@
                 @else
                  
                     <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
-                      Realiza una busqueda para mostrar elementos
+                      Utiliza al menos uno de los filtros de busqueda para mostrar elementos
                     </p>
                   
                 @endif
@@ -190,8 +253,10 @@
 @section('scripts')
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/provinces.min.js"></script>
+  <script src="{{ elixir('/js/search.min.js') }}"></script>
   <script>
-    $(function () {
+    /*$(function () {
        
        $('#myModal').on('shown.bs.modal', function (event) {
           
@@ -208,12 +273,7 @@
             showLabel: false,
             showCount: false,
             shareIn: "popup",
-            /*on: {
-                click: function(e) {},
-                mouseenter: function(e) {},
-                mouseleave: function(e) {},
-                ...
-            }*/
+           
         });
           
         
@@ -240,7 +300,7 @@
        $('.btn-geo').on('click', function (e) {
            obtainGeolocation();
        })
-    });
+    });*/
 </script>
   
 @endsection

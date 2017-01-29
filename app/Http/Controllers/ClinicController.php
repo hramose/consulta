@@ -32,16 +32,21 @@ class ClinicController extends Controller
 
        if(request()->all())
        {
-            $search['q'] = trim(request('q'));
-            $search['province'] = request('province');
-            $search['lat'] = request('lat');
-            $search['lon'] = request('lon');
-           
+            if(trim(request('q')) != '' || request('province') != '' || request('canton') != '' || request('district') != '' || request('lat') != '' || request('lon') != ''){
+
+                $search['q'] = trim(request('q'));
+                $search['province'] = request('province');
+                $search['canton'] = request('canton');
+                $search['district'] = request('district');
+                $search['lat'] = request('lat');
+                $search['lon'] = request('lon');
+
+                
+                $clinics = $this->clinicRepo->findAll($search);
+                //dd( $medics);
             
-            $clinics = $this->clinicRepo->findAll($search);
-            //dd( $medics);
-        
-            return view('clinics.index',compact('clinics','search'));
+                return view('clinics.index',compact('clinics','search'));
+            }
         }
 
         return view('clinics.index',compact('clinics'));

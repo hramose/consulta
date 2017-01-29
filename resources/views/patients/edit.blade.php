@@ -3,7 +3,11 @@
 @section('content')
 	<div id="infoBox" class="alert"></div> 
 	@include('layouts/partials/header-pages',['page'=>'Pacientes'])
-
+	<div class="row">
+		<div class="col-md-8">
+			<a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a>
+		</div>
+	</div>
 	<section class="content">
       
       <div class="row">

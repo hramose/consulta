@@ -23,6 +23,8 @@ Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
 Route::put('/account/patients/{id}', 'UserController@updatePatient');
 
 Route::get('/medics/search', 'MedicController@index');
+Route::get('/medics/general/search', 'MedicController@search');
+Route::get('/medics/specialist/search', 'MedicController@search');
 Route::get('/medics/{medic}/schedule', 'MedicController@schedule');
 Route::get('/medics/{medic}/appointments/list', 'MedicController@getAppointments');
 
@@ -40,7 +42,8 @@ Route::post('/patients/register', 'PatientController@register');
 
 Route::get('/clinics/search', 'ClinicController@index');
 
-Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
+//Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
+Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 {
 
 	Route::get('/account/edit', 'Medic\UserController@edit');

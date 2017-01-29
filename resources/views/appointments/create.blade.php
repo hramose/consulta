@@ -24,7 +24,11 @@
               <!-- /btn-group -->
               <div class="form-group">
                 <select class="search-patients select2 form-control" style="width:100%;">
-                  <option value="" selected="selected"></option>
+                   @if(isset($p))
+                    <option value="{{ $p->id }}" selected="selected">{{ $p->first_name }}</option>
+                  @else
+                    <option value="" selected="selected"></option>
+                  @endif
                 </select>
                 <ul class="search-list todo-list">
                   
@@ -90,7 +94,63 @@
       <!-- /.row -->
      
     </section>
-
+  <!-- Modal -->
+              <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      
+                      <h4 class="modal-title" id="myModalLabel">Crea cita</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="form-group">
+                          <select class="modal-search-patients select2 form-control" style="width:100%;">
+                            
+                            @if(isset($p))
+                              <option value="{{ $p->id }}" selected="selected">{{ $p->first_name }}</option>
+                            @else
+                              <option value="" selected="selected"></option>
+                            @endif
+                          </select>
+                          <ul class="search-list todo-list">
+                            
+                           </ul>
+                        </div>
+                         <div class="form-group">
+                          <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita">
+                          <input name="modal-user_id" type="hidden" value="{{ auth()->id() }}">
+                          <input type="hidden" name="modal-date" value="">
+                        </div>
+                        <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                          <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+                          <ul class="fc-color-picker" id="color-chooser">
+                            <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
+                            <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
+                          </ul>
+                        </div>
+                        <div class="form-group">
+                            <button id="modal-add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
+                          </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 @endsection
 @section('scripts')
@@ -100,6 +160,6 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/appointments.min.js"></script>
+<script src="{{ elixir('/js/appointments.min.js') }}"></script>
 
 @endsection

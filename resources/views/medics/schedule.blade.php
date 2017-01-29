@@ -71,6 +71,6 @@
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
-<script src="/js/schedule.min.js"></script>
+<script src="{{ elixir('/js/schedule.min.js') }}"></script>
 
 @endsection

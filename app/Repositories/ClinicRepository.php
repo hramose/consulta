@@ -48,8 +48,8 @@ class ClinicRepository extends DbRepository{
         if (isset($search['lat']) && $search['lat'] != "" && isset($search['lon']) && $search['lon'] != "")
         {
             
-            $offices = $offices->NearLatLng($search['lat'], $search['lon'], 5, 'K');
-            $offices = $offices->orderBy('distance');
+            $offices = $offices->NearLatLng($search['lat'], $search['lon'], 25, 'K');
+            $offices = $offices->orderBy('distance','ASC');
 
         }
 
@@ -58,6 +58,17 @@ class ClinicRepository extends DbRepository{
         {
             $offices = $offices->where('province', $search['province']);
                                
+        }
+
+         if (isset($search['canton']) && $search['canton'] != "")
+        {
+            $offices = $offices->where('canton', $search['canton']);
+                               
+        }
+         if (isset($search['district']) && $search['district'] != "")
+        {
+            $offices = $offices->where('district', $search['district']);
+                                
         }
 
 
@@ -70,8 +81,9 @@ class ClinicRepository extends DbRepository{
             $dir = $search['dir'];
         }
 
-
-        return $offices->paginate($this->limit);
+        $paginator = paginate($offices->get()->all(), $this->limit);
+          
+        return $paginator; //$offices->paginate($this->limit);
 
     }
 

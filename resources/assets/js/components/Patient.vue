@@ -93,22 +93,13 @@
                 <label for="paciente_phone" class="col-sm-2 control-label">Teléfono</label>
 
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="phone" placeholder="Teléfono" v-model="paciente.phone">
+                  <input type="text" class="form-control" name="phone" placeholder="Celular" v-model="paciente.phone">
                   <form-error v-if="errors.phone" :errors="errors" style="float:right;">
                       {{ errors.phone[0] }}
                   </form-error>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="paciente_phone2" class="col-sm-2 control-label">Celular</label>
-
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" name="phone2" placeholder="Celular" v-model="paciente.phone2">
-                  <form-error v-if="errors.phone2" :errors="errors" style="float:right;">
-                      {{ errors.phone2[0] }}
-                  </form-error>
-                </div>
-              </div>
+              
               <div class="form-group">
                 <label for="paciente_email" class="col-sm-2 control-label">Email</label>
 

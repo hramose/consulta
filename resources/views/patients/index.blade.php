@@ -28,7 +28,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Apellido</th>
+                    <th>Teléfono</th>
                     <th>email</th>
                     <th>address</th>
                     <th></th>
@@ -36,8 +36,8 @@
                   @foreach($patients as $patient)
                     <tr>
                       <td>{{ $patient->id }}</td>
-                      <td><a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }}</a></td>
-                      <td>{{ $patient->last_name }}</td>
+                      <td><a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }} {{ $patient->last_name }}</a></td>
+                      <td>{{ $patient->phone }}</td>
                       <td>{{ $patient->email }}</td>
                       <td>{{ $patient->address }}</td>
                       <td>

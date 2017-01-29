@@ -55,7 +55,7 @@
     <label for="phone" class="col-sm-2 control-label">Teléfono</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="phone" placeholder="Teléfono" value="{{ old('phone') ?: isset($patient) ? $patient->phone : '' }}" >
+      <input type="text" class="form-control" name="phone" placeholder="Celular" value="{{ old('phone') ?: isset($patient) ? $patient->phone : '' }}" >
        @if ($errors->has('phone'))
           <span class="help-block">
               <strong>{{ $errors->first('phone') }}</strong>
@@ -63,18 +63,7 @@
       @endif
     </div>
   </div>
-  <div class="form-group">
-    <label for="phone2" class="col-sm-2 control-label">Teléfono móvil</label>
-
-    <div class="col-sm-10">
-      <input type="text" class="form-control" name="phone2" placeholder="Celular" value="{{ old('phone2') ?: isset($patient) ? $patient->phone2 : '' }}" >
-       @if ($errors->has('phone2'))
-          <span class="help-block">
-              <strong>{{ $errors->first('phone2') }}</strong>
-          </span>
-      @endif
-    </div>
-  </div>
+  
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Email</label>
 

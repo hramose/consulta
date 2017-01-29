@@ -25,9 +25,20 @@ elixir(mix => {
             'schedule.js'
         ],'public/js/schedule.min.js','resources/assets/js');
 
+    mix.scripts([
+            'provinces.js'
+        ],'public/js/provinces.min.js','resources/assets/js');
+
+    mix.scripts([
+            'search.js'
+        ],'public/js/search.min.js','resources/assets/js');
+
  
     mix.version([
         'public/js/app.js',
+        'public/js/appointments.min.js',
+        'public/js/schedule.min.js',
+        'public/js/search.min.js',
         
     
     ]);

@@ -11,7 +11,7 @@ class Office extends Model
     const DISTANCE_UNIT_MILES      = 69.0;
 
     protected $fillable = [
-        'user_id','name','address','province','city','phone','lat','lon'
+        'user_id','name','address','province','canton','district','city','phone','lat','lon','address_map'
     ];
 
      public function scopeSearch($query, $search)
@@ -52,7 +52,7 @@ class Office extends Model
         $subselect = clone $query;
         $subselect
             ->selectRaw(\DB::raw($haversine));
-
+       
         // Optimize the query, see details here:
         // http://www.plumislandmedia.net/mysql/haversine-mysql-nearest-loc/
 
@@ -66,9 +66,14 @@ class Office extends Model
         $lngWestBoundary = $lng + $lngDistance;
         $subselect->whereRaw(sprintf("lon BETWEEN %f AND %f", $lngEastBoundary, $lngWestBoundary));
 
-        $query
+        /*$query
             ->from(\DB::raw('(' . $subselect->toSql() . ') as d'))
-            ->where('distance', '<=', $radius);
+            ->where('distance', '<=', $radius);*/
+        $query->selectRaw(\DB::raw($haversine))
+              //->whereRaw(sprintf("lat BETWEEN %f AND %f", $latNorthBoundary, $latSouthBoundary))
+              //->whereRaw(sprintf("lon BETWEEN %f AND %f", $lngEastBoundary, $lngWestBoundary))
+              ->having('distance', '<=', $radius);
+           
     }
 
     /**

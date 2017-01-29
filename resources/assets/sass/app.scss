@@ -133,3 +133,24 @@
 	background-color:#3C8DBC;
 	color:white;
 }
+.box-search-medic
+{
+	min-height: 134px;
+	.small-box-footer 
+	{
+		position: absolute !important;
+		bottom: 0;
+		width: 50%;
+
+	}
+	.footer-general{
+	  left: 0 !important;
+	}
+	.footer-specialist{
+	  right: 0 !important;
+	}
+	.footer-general:hover,
+	.footer-specialist:hover{
+		background-color: #00A3CB !important;
+	}
+}

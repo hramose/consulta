@@ -22,8 +22,10 @@ class CreateVitalSignsTable extends Migration
             $table->double('mass')->default(0);
             $table->double('temp')->default(0);
             $table->double('respiratory_rate')->default(0);
-            $table->double('blood')->default(0);
+            $table->double('blood_ps')->default(0);
+            $table->double('blood_pd')->default(0);
             $table->double('heart_rate')->default(0);
+        
             $table->timestamps();
         });
     }

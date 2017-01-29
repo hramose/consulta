@@ -17,6 +17,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'api_token','speciality_id'
     ];
+    protected $appends = array('distance');
+
+    public function getDistanceAttribute()
+    {
+        return 0;  
+    }
+
 
     /**
      * The attributes that should be hidden for arrays.

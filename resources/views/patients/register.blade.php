@@ -66,7 +66,7 @@
            <div class="form-group">
 
             <div class="col-sm-12">
-              <input type="text" class="form-control" name="phone" placeholder="Teléfono" value="{{ old('phone') }}" required>
+              <input type="text" class="form-control" name="phone" placeholder="Teléfono (celular)" value="{{ old('phone') }}" required>
                @if ($errors->has('phone'))
                   <span class="help-block">
                       <strong>{{ $errors->first('phone') }}</strong>
@@ -74,17 +74,7 @@
               @endif
             </div>
           </div>
-          <div class="form-group">
           
-            <div class="col-sm-12">
-              <input type="text" class="form-control" name="phone2" placeholder="Celular" value="{{ old('phone2') }}" >
-               @if ($errors->has('phone2'))
-                  <span class="help-block">
-                      <strong>{{ $errors->first('phone2') }}</strong>
-                  </span>
-              @endif
-            </div>
-          </div>
           <div class="form-group">
            
             <div class="col-sm-12">

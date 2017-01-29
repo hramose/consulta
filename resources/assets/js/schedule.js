@@ -185,6 +185,42 @@ $(function () {
             }
 
         },
+         dayClick: function(date, jsEvent, view) {
+
+              var event = $('div.external-event');
+              
+              var eventObject = {
+                title: $.trim(event.text()), // use the element's text as the event title
+                user_id: event.data('doctor'),
+                patient_id: event.data('patient'),
+                created_by: event.data('createdby')
+                
+              };
+              
+              var originalEventObject = eventObject;
+          
+              // we need to copy it, so that multiple events don't have a reference to the same object
+              var copiedEventObject = $.extend({}, originalEventObject);
+              
+              // assign it the date that was reported
+              copiedEventObject.start = date;
+             
+              copiedEventObject.allDay = false;//allDay;
+              copiedEventObject.backgroundColor = event.css("background-color");
+              copiedEventObject.borderColor = event.css("border-color");
+              copiedEventObject.overlap = false;
+              
+              // render the event on the calendar
+              // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+
+              var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
+              
+             
+              saveAppointment(copiedEventObject, _id);
+              
+                    
+           
+          }
         
       });
 

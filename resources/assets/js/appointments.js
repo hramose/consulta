@@ -210,6 +210,23 @@ $(function () {
             
 
         },
+        dayClick: function(date, jsEvent, view) {
+
+              /*alert('Clicked on: ' + date.format());
+
+              alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+              alert('Current view: ' + view.name);*/
+
+              // change the day's background color just for fun
+              //$(this).css('background-color', 'red');
+
+              $('#myModal').modal({backdrop:'static', show:true });
+              $('#myModal').find('input[name="modal-date"]').attr('value', date.format());
+              
+                    
+           
+          }
         
       });
 
@@ -372,6 +389,7 @@ $(function () {
       currColor = $(this).css("color");
       //Add color effect to button
       $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+      $('#modal-add-new-event').css({"background-color": currColor, "border-color": currColor});
     });
 
     function createEvent()
@@ -429,6 +447,97 @@ $(function () {
               },
               processResults: function (data) {
                
+               // console.log(data.data);
+               $(".search-patients").empty();
+                var items = []
+                
+                $.each(data.data, function (index, value) {
+                    item = {
+                      id: value.id,
+                      text: value.first_name
+                    }
+                    items.push(item);
+                })
+              
+                    
+                return {
+                  results: items,
+                  
+                };
+              }
+
+            
+             
+            }
+     });
+
+    function createEventFromModal()
+    {
+      var val = $("#modal-new-event").val();
+      var valSelect = $(".modal-search-patients").val();
+      if (val.length == 0 || valSelect.length == 0) {
+        return;
+      }
+     
+
+      //Create events
+
+      var eventObject = {
+          title: $.trim(val + ' - '+ $(".modal-search-patients").text()), // use the element's text as the event title
+          user_id: $('input[name=user_id]').val(),
+          patient_id: $(".modal-search-patients").val(),
+          created_by: $('input[name=user_id]').val()
+         
+        };
+
+       var originalEventObject = eventObject;//event.data('eventObject');
+        
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+        var date = moment($('input[name="modal-date"]').val());
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+       
+        
+        copiedEventObject.allDay = false;//allDay;
+        copiedEventObject.backgroundColor = currColor; //event.css("background-color");
+        copiedEventObject.borderColor = currColor;//event.css("border-color");
+        copiedEventObject.overlap = false;
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+
+        var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
+        
+       
+        saveAppointment(copiedEventObject, _id);
+
+      //Remove event from text input
+      $("#modal-new-event").val("");
+      $(".modal-search-patients").val("").trigger('change');
+      $(".modal-search-patients").text("").trigger('change');
+      $('#myModal').modal('hide');
+    }
+
+     $("#modal-add-new-event").click(function (e) {
+      e.preventDefault();
+
+      createEventFromModal();
+      
+    });
+   $(".modal-search-patients").select2({
+            placeholder: "Buscar paciente",
+            ajax: {
+              url: "/medic/patients/list",
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                return {
+                  q: params.term // search term
+                  
+                };
+              },
+              processResults: function (data) {
+               $(".modal-search-patients").empty();
                // console.log(data.data);
                 var items = []
                 

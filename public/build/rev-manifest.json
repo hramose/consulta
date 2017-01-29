@@ -1,3 +1,6 @@
 {
-  "js/app.js": "js/app-711e45925a.js"
+  "js/app.js": "js/app-bcde03fac9.js",
+  "js/appointments.min.js": "js/appointments-67a5bf2dba.min.js",
+  "js/schedule.min.js": "js/schedule-1d89c2829b.min.js",
+  "js/search.min.js": "js/search-6945aaac95.min.js"
 }

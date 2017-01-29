@@ -38,8 +38,9 @@ class OfficeController extends Controller
         $this->validate(request(),[
                 'name' => 'required',
                 'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
+                'province' => 'required',
+                'canton' => 'required', 
+                'district' => 'required', 
                 'phone' => 'required',      
         ]);
 
@@ -64,7 +65,8 @@ class OfficeController extends Controller
                 'name' => 'required',
                 'address' => 'required',  
                 'province' => 'required',  
-                'city' => 'required', 
+                'canton' => 'required', 
+                'district' => 'required',  
                 'phone' => 'required',      
         ]);
 
