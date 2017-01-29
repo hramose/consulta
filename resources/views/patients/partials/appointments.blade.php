@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-sm-6 col-xs-12">
-		<h2>Consultas agendadas</h2>
+		<h2>Consultas programadas</h2>
 		@forelse($scheduledAppointments as $appointment)
 			
 				<a class="info-box" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
@@ -19,7 +19,7 @@
 		@endforelse
 	</div>
 	<div class="col-sm-6 col-xs-12">
-		<h2>Consultas iniciadas</h2>
+		<h2>Historial de consultas</h2>
 		@forelse($initAppointments as $appointment)
 			
 				<a class="info-box" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
