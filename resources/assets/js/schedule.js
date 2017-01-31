@@ -50,8 +50,9 @@ $(function () {
         var eventObject = {
           title: $.trim($(this).text()), // use the element's text as the event title
           user_id: $(this).data('doctor'),
-          patient_id: $(this).data('patient'),
-          created_by: $(this).data('createdby')
+          patient_id: $(this).data('patient')
+          //created_by: $(this).data('createdby')
+         
           
         };
 
@@ -75,7 +76,7 @@ $(function () {
 
         $.ajax({
             type: 'GET',
-            url: '/medics/'+ $('input[name="medic_id"]').val() +'/appointments/list',
+            url: '/medics/'+ $('.external-event').data('doctor') +'/appointments/list',
             data: {},
             success: function (resp) {
                 console.log(resp);
@@ -86,7 +87,7 @@ $(function () {
                    
                     item.allDay = parseInt(item.allDay); // = false;
                     
-                    if(item.patient_id == 0 || item.created_by != $('input[name="created_by"]').val()){
+                    if(item.patient_id == 0 || item.created_by != $('.external-event').data('createdby')){
                       item.rendering = 'background';
                     }
                     
@@ -183,7 +184,7 @@ $(function () {
 
           },
           eventRender: function(event, element) {
-            if(event.created_by == $('input[name="created_by"]').val())
+            if(event.created_by == $('.external-event').data('createdby'))
             {
                 element.append( "<span class='closeon fa fa-trash'></span>" );
                 element.append( "<span class='appointment-details' ></span>" );
@@ -219,8 +220,8 @@ $(function () {
               var eventObject = {
                 title: $.trim(event.text()), // use the element's text as the event title
                 user_id: event.data('doctor'),
-                patient_id: event.data('patient'),
-                created_by: event.data('createdby')
+                patient_id: event.data('patient')
+                //created_by: event.data('createdby')
                 
               };
               
@@ -304,6 +305,7 @@ $(function () {
               }
                if(method == "DELETE")
                {
+                
                  if(resp)
                  {
                   $('#infoBox').addClass('alert-danger').html('No se puede eliminar consulta ya que se encuentra iniciada!!').show();
@@ -360,13 +362,13 @@ $(function () {
       var appointment = {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
-        start : event.start.format(),
-        end : (event.end) ? event.end.format() : event.start.add(1, 'hours').format(),
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
         user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
-        created_by: event.created_by,
+        /*created_by: event.created_by,*/
         idRemove: idRemove,
         allDay: 0
         
@@ -384,17 +386,17 @@ $(function () {
     {
       
       var appointment = {
-        subject : event.title,
+        title : event.title,
         date : event.start.format("YYYY-MM-DD"),
-        start : event.start.format(),
-        end : (event.end) ? event.end.format() : event.start.add(2, 'hours').format(),
-        backgroundColor: event.backgroundColor, //Success (green)
-        borderColor: event.borderColor,
-        user_id: event.user_id,
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
+        //backgroundColor: event.backgroundColor, //Success (green)
+       // borderColor: event.borderColor,
+        //user_id: event.user_id,
         patient_id: event.patient_id,
-        created_by: event.created_by,
+        //created_by: event.created_by,
         id: event.id,
-        allDay: 0
+        allDay: event.allDay
       };
       
       crud('PUT', '/appointments/'+appointment.id, appointment, revertFunc)
@@ -428,7 +430,7 @@ $(function () {
      $('.btn-finalizar-cita').on('click', function (e) {
        
        var patient_id = $('#myModal').find('.widget-user-2').attr('data-patient');
-       var user_id = $('input[name="medic_id"]').val();
+       var user_id = $('.external-event').data('doctor');//$('input[name="medic_id"]').val();
        var appointment_id = $(this).attr('data-appointment'); //data('appointment');
        var title = $('#myModal').find('.widget-user-2').attr('data-title');
       
@@ -436,18 +438,32 @@ $(function () {
               $.ajax({
                   type: 'PUT',
                   url: '/appointments/'+ appointment_id,
-                  data: { patient_id : patient_id, title: 'Cita - '+ title, medic_id: user_id },
+                  data: { patient_id : patient_id, title: 'Cita - '+ title, medic_id: user_id},
                   success: function (resp) {
                       console.log(resp);
-                    
-                      $('#myModal').modal('hide');
-                      
-                      $('#calendar').fullCalendar( 'removeEvents', resp.id)
-                   
-                      resp.allDay = parseInt(resp.allDay);
-                     
+                     $('#myModal').modal('hide');
+                      if(resp == '')
+                      {
+                        $('#infoBox').addClass('alert-danger').html('No se puede finalizar la consulta!!').show();
+                            setTimeout(function()
+                            { 
+                              $('#infoBox').removeClass('alert-danger').hide();
+                            },3000);
 
-                      $('#calendar').fullCalendar('renderEvent', resp, true);
+
+                        
+                        
+                       return
+                      }
+
+                       
+                        
+                        $('#calendar').fullCalendar( 'removeEvents', resp.id)
+                     
+                        resp.allDay = parseInt(resp.allDay);
+                       
+
+                        $('#calendar').fullCalendar('renderEvent', resp, true);
                   },
                   error: function () {
                     console.log('error saving appointment');
@@ -469,6 +485,19 @@ $(function () {
                   data: { id : appointment_id  },
                   success: function (resp) {
                       console.log(resp);
+                    
+                    if(resp){
+
+                        $('#infoBox').addClass('alert-danger').html('No se puede eliminar la consulta!!').show();
+                          setTimeout(function()
+                          { 
+                            $('#infoBox').removeClass('alert-danger').hide();
+                          },3000);
+
+                         return
+                      }
+                      
+                    
                       $('#calendar').fullCalendar('removeEvents',appointment_id);
                       $('#myModal').modal('hide');
                   },

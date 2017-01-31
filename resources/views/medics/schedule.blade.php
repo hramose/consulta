@@ -25,8 +25,8 @@
               <div id="external-events">
                 <div class="external-event bg-red" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : auth()->id() }}" data-doctor="{{ $id }}" data-createdby="{{ auth()->id() }}">Cita</div>
               </div>
-              <input name="medic_id" type="hidden" value="{{ $id }}">
-              <input name="created_by" type="hidden" value="{{ auth()->id() }}">
+              <!-- <input name="medic_id" type="hidden" value="{{ $id }}"> -->
+              <!-- <input name="created_by" type="hidden" value="{{ auth()->id() }}"> -->
               <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
                 Arrastra el elemento de arriba llamado cita dentro del calendario en la fecha y hora deseado!
               </p>

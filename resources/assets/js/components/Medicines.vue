@@ -51,7 +51,7 @@
 
             
             
-              this.$http.post('/medic/patients/'+this.patient_id +'/medicines', {patient_id: this.patient_id, name: medicine}).then((response) => {
+              this.$http.post('/medic/patients/'+this.patient_id +'/medicines', {name: medicine}).then((response) => {
     
                   if(response.status == 200)
                   {

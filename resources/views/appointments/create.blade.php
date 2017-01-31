@@ -36,7 +36,7 @@
               </div>
                <div class="form-group">
                 <input id="new-event" type="text" class="form-control" placeholder="Motivo de la cita">
-                <input name="user_id" type="hidden" value="{{ auth()->id() }}">
+                <!-- <input name="user_id" type="hidden" value="{{ auth()->id() }}"> -->
               </div>
               <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
                 <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
@@ -118,9 +118,9 @@
                            </ul>
                         </div>
                          <div class="form-group">
-                          <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita">
-                          <input name="modal-user_id" type="hidden" value="{{ auth()->id() }}">
-                          <input type="hidden" name="modal-date" value="">
+                          <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita" data-modaldate>
+                          <!-- <input name="modal-user_id" type="hidden" value="{{ auth()->id() }}"> -->
+                          <!-- <input type="hidden" name="modal-date" value=""> -->
                         </div>
                         <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
                           <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->

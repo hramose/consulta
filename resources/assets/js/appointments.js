@@ -36,9 +36,9 @@ $(function () {
 
         var eventObject = {
           title: $.trim($(this).text()), // use the element's text as the event title
-          user_id: $(this).data('doctor'),
+          //user_id: $(this).data('doctor'),
           patient_id: $(this).data('patient'),
-          created_by: $(this).data('createdby')
+          //created_by: $(this).data('createdby')
           
         };
 
@@ -113,7 +113,7 @@ $(function () {
                     var event = $("<div />");
                     event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
                     event.attr('data-patient', 0);
-                    event.attr('data-doctor', $('input[name=user_id]').val());
+                    //event.attr('data-doctor', $('input[name=user_id]').val());
                     event.html('');
                     event.html(item.name);
                     $('#external-events').prepend(event);
@@ -170,7 +170,7 @@ $(function () {
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
           drop: function (date, allDay) { // this function is called when something is dropped
-
+            
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
           
@@ -248,9 +248,9 @@ $(function () {
 
               // change the day's background color just for fun
               //$(this).css('background-color', 'red');
-
+              
               $('#myModal').modal({backdrop:'static', show:true });
-              $('#myModal').find('input[name="modal-date"]').attr('value', date.format());
+              $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
               
                     
            
@@ -283,23 +283,33 @@ $(function () {
               
               if(method == "POST")
               {
+                
                 $('#calendar').fullCalendar( 'removeEvents', data.idRemove)
-                 //debugger
-                  /*if(isOverlapping(resp))
-                    resp.allDay = 1; // si se montan poner el evento en todo el dia*/
                 
-                resp.allDay = parseInt(resp.allDay);
+                if(resp){
 
-                if(resp.allDay)
-                {
-                  
-                  deleteAppointment(resp.id);
-                
+                      
+                      resp.allDay = parseInt(resp.allDay);
+
+                      if(resp.allDay)
+                      {
+                        
+                        deleteAppointment(resp.id);
+                      
+                      }else{
+                          
+                          $('#calendar').fullCalendar('renderEvent', resp, true);
+
+                        }
                 }else{
-                    
-                    $('#calendar').fullCalendar('renderEvent', resp, true);
+                  $('#infoBox').addClass('alert-danger').html('No se pudo crear la consulta!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
 
-                  }
+                   return
+                }
 
               }
                if(method == "DELETE")
@@ -359,13 +369,13 @@ $(function () {
       var appointment = {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
-        start : event.start.format(),
-        end : (event.end) ? event.end.format() : event.start.add(1, 'hours').format(),
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
-        user_id: event.user_id,
+        //user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
-        created_by: event.created_by,
+        //created_by: event.created_by,
         idRemove: idRemove,
         allDay: 0
         
@@ -383,17 +393,17 @@ $(function () {
     {
       
       var appointment = {
-        subject : event.title,
+        //title : event.title,
         date : event.start.format("YYYY-MM-DD"),
-        start : event.start.format(),
-        end : (event.end) ? event.end.format() : event.start.add(1, 'hours').format(),
-        backgroundColor: event.backgroundColor, //Success (green)
-        borderColor: event.borderColor,
-        user_id: event.user_id,
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
+        //backgroundColor: event.backgroundColor, //Success (green)
+        //borderColor: event.borderColor,
+        //user_id: event.user_id,
         patient_id: event.patient_id,
-        created_by: event.created_by,
+        //created_by: event.created_by,
         id: event.id,
-        allDay: 0
+        allDay: event.allDay
       };
       
       crud('PUT', '/medic/appointments/'+appointment.id, appointment, revertFunc)
@@ -433,8 +443,8 @@ $(function () {
       var event = $("<div />");
       event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
       event.attr('data-patient', $(".search-patients").val());
-      event.attr('data-doctor', $('input[name=user_id]').val());
-      event.attr('data-createdby', $('input[name=user_id]').val());
+      /*event.attr('data-doctor', $('input[name=user_id]').val());
+      event.attr('data-createdby', $('input[name=user_id]').val());*/
       event.html('');
       event.html(val + ' - '+ $(".search-patients").text());
       $('#external-events').prepend(event);
@@ -503,6 +513,7 @@ $(function () {
     {
       var val = $("#modal-new-event").val();
       var valSelect = $(".modal-search-patients").val();
+      var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
       if (val.length == 0 || valSelect.length == 0) {
         return;
       }
@@ -512,9 +523,9 @@ $(function () {
 
       var eventObject = {
           title: $.trim(val + ' - '+ $(".modal-search-patients").text()), // use the element's text as the event title
-          user_id: $('input[name=user_id]').val(),
-          patient_id: $(".modal-search-patients").val(),
-          created_by: $('input[name=user_id]').val()
+          //user_id: $('input[name=user_id]').val(),
+          patient_id: $(".modal-search-patients").val()
+          //created_by: $('input[name=user_id]').val()
          
         };
 
@@ -522,10 +533,13 @@ $(function () {
         
         // we need to copy it, so that multiple events don't have a reference to the same object
         var copiedEventObject = $.extend({}, originalEventObject);
-        var date = moment($('input[name="modal-date"]').val());
+        
+        
         // assign it the date that was reported
         copiedEventObject.start = date;
-       
+        if( date.isValid())
+        {
+         
         
         copiedEventObject.allDay = false;//allDay;
         copiedEventObject.backgroundColor = currColor; //event.css("background-color");
@@ -538,11 +552,12 @@ $(function () {
         
        
         saveAppointment(copiedEventObject, _id);
-
+      }
       //Remove event from text input
       $("#modal-new-event").val("");
       $(".modal-search-patients").val("").trigger('change');
       $(".modal-search-patients").text("").trigger('change');
+      $('#myModal').find('#modal-new-event').attr('data-modaldate', '');
       $('#myModal').modal('hide');
     }
 

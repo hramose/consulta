@@ -191,7 +191,9 @@
                               <td>Dr. {{ $medic->user->name }}</td>
                               <td>
                                 
-                                  <span class="label bg-yellow">{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> <br/>
+                                  <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
+                                    <i class="fa fa-address"></i> Compartir ubicación
+                                  </button><br/>
                                  
                               </td>
                               <td>
@@ -201,9 +203,7 @@
                                 <div class="btn-group">
                                   <a href="{{ url('/medics/'.$medic->user->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
                                   <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                                   <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
-                                  <i class="fa fa-address"></i> Compartir ubicación
-                                </button>
+                                   
                                 </div>
                               </td>
                             </tr>
@@ -213,19 +213,19 @@
                               <td>Dr. {{ $medic->name }}</td>
                               <td>
                                  @forelse($medic->offices as $office)
-                                    <span class="label bg-yellow">{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span> <br/>
+                                    <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span> <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
+                                    <i class="fa fa-address"></i> Compartir ubicación
+                                  </button> <br/>
                                  @empty
                                     <span class="label bg-default">Desconocido</span>
                                  @endforelse
                               </td>
                               <td>
-                                <div class="btn-group">
+                                <!-- <div class="btn-group"> -->
                                   <a href="{{ url('/medics/'.$medic->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
                                   <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $medic->offices->first()->province }}, {{ $medic->offices->first()->canton }}. {{ $medic->offices->first()->address }}" data-lat="{{ $medic->offices->first()->lat }}" data-lon="{{ $medic->offices->first()->lon }}">
-                                  <i class="fa fa-address"></i> Compartir ubicación
-                                </button>
-                                </div>
+                                  
+                                <!-- </div> -->
                               </td>
                             </tr>
                           @endif

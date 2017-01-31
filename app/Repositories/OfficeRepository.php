@@ -24,9 +24,8 @@ class OfficeRepository extends DbRepository{
     public function store($data)
     {
         
-        //$data = $this->prepareData($data);
        
-        $office = $this->model->create($data);
+        $office = auth()->user()->offices()->create($data);
 
 
         return $office;

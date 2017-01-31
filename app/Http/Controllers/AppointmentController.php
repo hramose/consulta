@@ -52,7 +52,7 @@ class AppointmentController extends Controller
     public function store()
     {
         
-        $appointment = $this->appointmentRepo->store(request()->all());
+        $appointment = $this->appointmentRepo->store(request()->all(), request('user_id'));
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
         
@@ -70,7 +70,7 @@ class AppointmentController extends Controller
     {
         
         $appointment = $this->appointmentRepo->update($id, request()->all());
-        
+     
         if($appointment){
 
             $appointment['patient'] = $appointment->patient;
@@ -101,7 +101,7 @@ class AppointmentController extends Controller
     {
 
         $appointment = $this->appointmentRepo->delete($id);
-        
+       
         if($appointment !== true)  return $appointment; //no se elimino correctamente
 
         return '';

@@ -2,6 +2,8 @@
 
 
 use App\Appointment;
+use App\Patient;
+use App\User;
 
 class AppointmentRepository extends DbRepository{
 
@@ -20,17 +22,45 @@ class AppointmentRepository extends DbRepository{
      * save a appointment
      * @param $data
      */
-    public function store($data)
+    public function store($data, $user_id = null)
     {
+       
         
-        $data = $this->prepareData($data);
+        $medic = User::find( ($user_id) ? $user_id : auth()->id() ); // buscar doctor
+
+        $data['created_by'] = auth()->id(); // asignar el usuario que creo la cita, ya sea doctor o paciente
+
+        $patient = Patient::find( $data['patient_id'] );
         
-        $appointment = $this->model->create($data);
-        
-        $appointment->createDiseaseNotes();
-        $appointment->createPhysicalExams();
+        if($patient)
+        {
+            $appointment = $medic->appointments()->create($data); //$this->model->create($data);
+            $appointment->createDiseaseNotes();
+            $appointment->createPhysicalExams();
+
+            $appointment->patient()->associate($patient); // asociar la cita con el paciente
+            $appointment->save();
+
+        }else{
+
+            if($data['patient_id']) // verificar si lo que viene es 0 o un numero que no existe por lo cual enviar mensaje de error o crear la cita como background
+            {     
+             
+               return false;
+            
+            }
+
+            $appointment = $medic->appointments()->create($data); //$this->model->create($data);
+            $appointment->createDiseaseNotes();
+            $appointment->createPhysicalExams();
+            
+        }
+
+       
+
 
         return $appointment;
+        
     }
 
     /**
@@ -41,18 +71,38 @@ class AppointmentRepository extends DbRepository{
      */
     public function update($id, $data)
     {
-        $appointment = $this->model->findOrFail($id);
-        $data = $this->prepareData($data);
-        
+        $appointment = $this->model->find($id);
+        //$data = $this->prepareData($data);
+        if(!$appointment) return '';
 
-        if($appointment->status && isset($data['date']))
-        {
-           return '';
+         if(auth()->user()->hasRole('paciente')){
+
+            if($appointment->isStarted() || $appointment->isBackgroundEvent() || !$appointment->isOwner() )
+            {
+               return '';
+            }
+
+        }else{
+
+            if($appointment->isStarted() && isset($data['date']))
+            {
+               return '';
+            }
         }
 
 
         $appointment->fill($data);
         $appointment->save();
+
+        $patient = Patient::find( $data['patient_id'] );
+        
+        if($patient)
+        {
+
+            $appointment->patient()->associate($patient); // asociar la cita con el paciente
+            $appointment->save();
+
+        }
             
         return $appointment;
 
@@ -67,15 +117,24 @@ class AppointmentRepository extends DbRepository{
      */
     public function delete($id)
     {
-        $appointment = $this->model->findOrFail($id);
+        $appointment = $this->model->find($id);
         
-        if(!$appointment->status)
-            return $appointment = $appointment->delete();
+        if(!$appointment) return -1;
+
+        if(auth()->user()->hasRole('paciente')){
+
+            if( !$appointment->isStarted() && $appointment->isOwner() )
+                return $appointment = $appointment->delete();
+        }else{
+
+            if( !$appointment->isStarted() )
+                return $appointment = $appointment->delete();
+        }
 
 
         return $appointment;
     }
-   
+
 
     /**
      * Find all the appointments by Doctor

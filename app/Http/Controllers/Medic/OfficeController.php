@@ -46,7 +46,6 @@ class OfficeController extends Controller
 
         $data = request()->all();
         
-        $data['user_id'] = auth()->id();
 
         $office = $this->officeRepo->store($data);
 

@@ -83,8 +83,9 @@ class PatientRepository extends DbRepository{
      */
     public function addMedicine($id, $data)
     {
-       
-        $medicine = Medicine::create($data);
+        $patient = $this->model->findOrFail($id);
+        
+        $medicine = $patient->medicines()->create($data);
      
         return $medicine;
     }
