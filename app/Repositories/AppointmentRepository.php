@@ -94,7 +94,7 @@ class AppointmentRepository extends DbRepository{
         $appointment->fill($data);
         $appointment->save();
 
-        $patient = Patient::find( $data['patient_id'] );
+        $patient = Patient::find( isset($data['patient_id']) ? $data['patient_id'] : 0 );
         
         if($patient)
         {
