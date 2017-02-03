@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "prod": "gulp --production",
-    "dev": "gulp watch"
+    "dev": "rm -rf public/build && gulp watch"
   },
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
@@ -16,5 +16,4 @@
     "vue-resource": "^1.0.3",
     "vee-validate": "^2.0.0-beta.15"
   }
-
 }

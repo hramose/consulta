@@ -18,6 +18,10 @@ elixir(mix => {
        .webpack('app.js');
 
     mix.scripts([
+            'app-theme.js'
+        ],'public/js/app-theme.min.js','resources/assets/js');
+
+    mix.scripts([
             'appointments.js'
         ],'public/js/appointments.min.js','resources/assets/js');
 
@@ -39,6 +43,8 @@ elixir(mix => {
         'public/js/appointments.min.js',
         'public/js/schedule.min.js',
         'public/js/search.min.js',
+        'public/js/app-theme.min.js',
+        'public/css/app.css',
         
     
     ]);
