@@ -147,7 +147,7 @@ class PatientRepository extends DbRepository{
 
         $patients = auth()->user()->patients();
 
-        if (! count($search) > 0) return $patients->paginate($this->limit);
+        if (! count($search) > 0) return $patients->with('appointments')->paginate($this->limit);
 
         if (trim($search['q']))
         {
@@ -165,8 +165,13 @@ class PatientRepository extends DbRepository{
         }
 
 
-        return $patients->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        return $patients->with('appointments')->orderBy('users.'.$order , $dir)->paginate($this->limit);
 
+    }
+
+    public function findById($id)
+    {
+        return $this->model->with('vitalSigns','medicines','history')->findOrFail($id);
     }
 
     /**

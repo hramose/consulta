@@ -149,7 +149,7 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('user_id', $id)->where('patient_id','<>',0);
        
-        if (! count($search) > 0) return $appointments->orderBy('appointments.'.$order , $dir)->paginate($limit);
+        if (! count($search) > 0) return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->paginate($limit);
 
         if (isset($search['q']) && trim($search['q'] != ""))
         {
@@ -174,7 +174,7 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->orderBy('appointments.'.$order , $dir)->paginate($limit);
+        return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->paginate($limit);
 
     }
     /**
@@ -224,7 +224,7 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('patient_id', $id);
 
-        if (! count($search) > 0) return $appointments->paginate($this->limit);
+        if (! count($search) > 0) return $appointments->with('user')->paginate($this->limit);
 
         if (trim($search['q']))
         {
@@ -242,9 +242,14 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->orderBy('appointments.'.$order , $dir)->paginate($this->limit);
+        return $appointments->with('user')->orderBy('appointments.'.$order , $dir)->paginate($this->limit);
 
     }
+
+   /*   public function findById($id)
+    {
+        return $this->model->with('diseaseNotes')->findOrFail($id);
+    }*/
 
     private function prepareData($data)
     {
