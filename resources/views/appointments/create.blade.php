@@ -160,6 +160,7 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins/jquery.ui.touch-punch.min.js"></script>
 <script src="{{ elixir('/js/appointments.min.js') }}"></script>
 
 @endsection
