@@ -5,7 +5,7 @@
 @section('content')
     
     <div id="infoBox" class="alert alert-success" ></div>
-  @include('layouts/partials/header-pages',['page'=>'Cuenta'])
+  @include('layouts/partials/header-pages',['page'=>'Perfil'])
 
 
     <section class="content">
@@ -21,7 +21,7 @@
               
               <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
-              <p class="text-muted text-center">{{ $user->getSpecialityName() }}</p>
+              <p class="text-muted text-center">{{ $user->specialities->first()->name }}</p>
 
                <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/account/avatars">Subir Foto</a>
                <small class="center txt-center">Medidas recomendadas (128 x 128)</small>
@@ -83,11 +83,12 @@
                     <label for="speciality_id" class="col-sm-2 control-label">Especialidad</label>
 
                     <div class="col-sm-10">
-                      <select class="form-control select2" style="width: 100%;" name="speciality_id" placeholder="-- Selecciona Especialidad --">
-                        <option value="0">Especialidad</option>
-                        @foreach ($specialities as $speciality)
-                          <option value="{{ $speciality->id }}" {{ $user->speciality_id == $speciality->id ? 'selected' : '' }}>{{ $speciality->name }}</option>
+                      <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple required>
+                        <option value="">Especialidad</option>
+                        @foreach($specialities as $speciality)
+                            <option value="{{$speciality->id}}" @foreach($user->specialities as $s) @if($speciality->id == $s->id)selected="selected"@endif @endforeach>{{$speciality->name}}</option>
                         @endforeach
+                       
                       </select>
                     </div>
                   </div>
@@ -104,7 +105,7 @@
                   <div class="callout callout-info">
                     <h4>Informacion importante!</h4>
 
-                    <p>Agrega todos los consultorios en donde trabajas.</p>
+                    <p>Agrega los consultorios donde brindarás consulta privada</p>
                   </div>
                    <office :offices="{{ $user->offices }}"></office>
               </div>

@@ -17,15 +17,41 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua box-search-medic" style="position: relative;">
                   <div class="inner">
-                    <h3>Buscar Médico</h3>
-
-                    <p>General o Especialista</p>
+                   <h3>Buscar Medico</h3>
+                    <div class="row">
+                      <div class=" col-xs-12 col-sm-4">
+                        <div class="small-box bg-white">
+                          <div class="inner">
+                            <span>Por Nombre <i class="fa fa-arrow-circle-right"></i></span>
+                            <a href="/medics/search"></a>
+                          </div>
+                          
+                        </div>
+                      </div>
+                      <div class=" col-xs-12 col-sm-4">
+                        <div class="small-box bg-white">
+                          <div class="inner">
+                            <span>General <i class="fa fa-arrow-circle-right"></i></span>
+                            <a href="/medics/search?general=1"></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class=" col-xs-12 col-sm-4">
+                        <div class="small-box bg-blank">
+                          <div class="inner">
+                            <span>Especialista <i class="fa fa-arrow-circle-right"></i></span>
+                            <a href="/medics/search?specialist=1"></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                     
                   </div>
                   <div class="icon">
                     <i class="fa fa-user-md"></i>
                   </div>
-                  <a href="/medics/search" class="small-box-footer bg-green footer-general">General <i class="fa fa-arrow-circle-right"></i></a>
-                  <a href="/medics/search?specialist=1" class="small-box-footer bg-yellow footer-specialist">Especialista <i class="fa fa-arrow-circle-right"></i></a>
+                  
+                  
 
                   <!-- <a href="/medics/search?specialist=1" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a> -->
                 </div>

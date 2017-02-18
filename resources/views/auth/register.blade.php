@@ -49,16 +49,16 @@
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <select class="form-control select2" style="width: 100%;" name="speciality_id" placeholder="-- Selecciona Especialidad --">
-            <option value="0">Especialidad</option>
+        <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple required>
+            <option value="">Especialidad</option>
             @foreach ($specialities as $speciality)
-              <option value="{{ $speciality->id }}">{{ $speciality->name }}</option>
+              <option value="{{ $speciality->id }}" @if($speciality->id == 53) selected @endif >{{ $speciality->name }}</option>
             @endforeach
           </select>
           <!--<input type="text" class="form-control" name="province" placeholder="Provincia" value="{{ old('province') ?: isset($user->office) ? $user->office->province : '' }}">-->
-           @if ($errors->has('speciality_id'))
+           @if ($errors->has('speciality'))
               <span class="help-block">
-                  <strong>{{ $errors->first('speciality_id') }}</strong>
+                  <strong>{{ $errors->first('speciality') }}</strong>
               </span>
           @endif
         
@@ -66,7 +66,7 @@
       <div class="row">
         
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-12 col-sm-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
         </div>
         <!-- /.col -->

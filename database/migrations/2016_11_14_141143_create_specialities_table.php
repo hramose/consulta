@@ -18,6 +18,15 @@ class CreateSpecialitiesTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        Schema::create('speciality_user', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('speciality_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
+            
+            
+        });
     }
 
     /**
@@ -27,6 +36,7 @@ class CreateSpecialitiesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('speciality_user');
         Schema::dropIfExists('specialities');
     }
 }

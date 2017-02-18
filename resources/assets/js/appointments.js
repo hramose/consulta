@@ -54,6 +54,7 @@ $(function () {
        
       });
     }
+   
 
     ini_events($('#external-events div.external-event'));
 
@@ -74,7 +75,9 @@ $(function () {
                     item.allDay = parseInt(item.allDay); // = false;
                     
                     if(item.patient_id == 0){
-                      item.rendering = 'background';
+                      //item.rendering = 'background';
+                      
+
                     }
                     
                     //debugger
@@ -103,7 +106,7 @@ $(function () {
                 console.log(resp);
 
                 var offices = [];
-                var currColor = "#3c8dbc";
+                var currColor = "#00a65a";
                 $.each(resp, function( index, item ) {
                    
                     
@@ -116,10 +119,28 @@ $(function () {
                     //event.attr('data-doctor', $('input[name=user_id]').val());
                     event.html('');
                     event.html(item.name);
+
                     $('#external-events').prepend(event);
 
                     //Add draggable funtionality
-                    ini_events(event);
+                    var eventObject = {
+                      title: $.trim(item.name), // use the element's text as the event title
+                      //user_id: $(this).data('doctor'),
+                      patient_id: 0,
+                      office_info: JSON.stringify(item)
+                      //created_by: $(this).data('createdby')
+                      
+                    };
+
+                    // store the Event Object in the DOM element so we can get to it later
+                    event.data('eventObject', eventObject);
+                   
+                    // make the event draggable using jQuery UI
+                    event.draggable({
+                      zIndex: 1070,
+                      revert: true, // will cause the event to go back to its
+                      revertDuration: 0  //  original position after the drag
+                    });
 
 
 
@@ -219,6 +240,7 @@ $(function () {
             });
             if (event.rendering == 'background') {
                 element.append('<h3>'+ event.title + '</h3>');
+                
             }
 
 
@@ -234,6 +256,26 @@ $(function () {
                   trigger: 'click focus', 
                   content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
               });
+            }else{
+        
+                var officeInfoDisplay = '';
+
+                if(event.office_info)
+                {
+                     var officeInfo = JSON.parse(event.office_info);
+
+                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +'<br>'+
+                      'Teléfono: '+ officeInfo.phone;
+                }
+
+                element.find(".appointment-details").popover({
+                    title:  event.title,
+                    placement: 'top',
+                    html:true,
+                    container:'#calendar',
+                    trigger: 'click focus', 
+                    content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
+                });
             }
             
 
@@ -377,6 +419,7 @@ $(function () {
         patient_id: (event.patient_id) ? event.patient_id : 0,
         //created_by: event.created_by,
         idRemove: idRemove,
+        office_info: (event.office_info) ? event.office_info : '',
         allDay: 0
         
       };
@@ -403,6 +446,7 @@ $(function () {
         patient_id: event.patient_id,
         //created_by: event.created_by,
         id: event.id,
+        office_info: event.office_info,
         allDay: event.allDay
       };
       
@@ -434,7 +478,7 @@ $(function () {
     {
       var val = $("#new-event").val();
       var valSelect = $(".search-patients").val();
-      if (val.length == 0 || valSelect.length == 0) {
+      if (valSelect.length == 0) {
         return;
       }
      
@@ -514,7 +558,7 @@ $(function () {
       var val = $("#modal-new-event").val();
       var valSelect = $(".modal-search-patients").val();
       var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
-      if (val.length == 0 || valSelect.length == 0) {
+      if (valSelect.length == 0) {
         return;
       }
      

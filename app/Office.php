@@ -11,7 +11,7 @@ class Office extends Model
     const DISTANCE_UNIT_MILES      = 69.0;
 
     protected $fillable = [
-        'name','address','province','canton','district','city','phone','lat','lon','address_map'
+        'type','name','address','province','canton','district','city','phone','lat','lon','address_map'
     ];
 
      public function scopeSearch($query, $search)

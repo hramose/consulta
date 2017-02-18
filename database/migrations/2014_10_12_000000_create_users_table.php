@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('api_token', 60)->nullable();
             $table->string('avatar')->nullable();
-            $table->integer('speciality_id')->default(0)->unsigned()->index();
+            //$table->integer('speciality_id')->default(0)->unsigned()->index();
             $table->tinyInteger('active')->default(1);
             $table->rememberToken();
             $table->timestamps();

@@ -4265,8 +4265,8 @@ table.text-center th {
   color: #444;
 }
 .select2-container--default .select2-selection--multiple {
-  border: 1px solid #d2d6de;
-  border-radius: 0;
+  border: 1px solid #d2d6de !important;
+  border-radius: 0 !important;
 }
 .select2-container--default .select2-selection--multiple:focus {
   border-color: #3c8dbc;
@@ -4275,17 +4275,17 @@ table.text-center th {
   border-color: #d2d6de;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #3c8dbc;
-  border-color: #367fa9;
-  padding: 1px 10px;
-  color: #fff;
+  background-color: #3c8dbc !important;
+  border-color: #367fa9 !important;
+  padding: 1px 10px !important;
+  color: #fff !important;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-  margin-right: 5px;
-  color: rgba(255, 255, 255, 0.7);
+  margin-right: 5px !important;
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-  color: #fff;
+  color: #fff !important;
 }
 .select2-container .select2-selection--single .select2-selection__rendered {
   padding-right: 10px;

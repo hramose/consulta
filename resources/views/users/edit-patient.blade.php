@@ -117,6 +117,7 @@
 @section('scripts')
 <script src="/js/plugins/select2/select2.full.min.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
+<script src="/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
 <script>
   $(function () {
     //Initialize Select2 Elements

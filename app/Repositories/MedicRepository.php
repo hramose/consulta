@@ -68,7 +68,7 @@ class MedicRepository extends DbRepository{
 
             $offices = Office::whereHas('user', function($q) use($search){
 
-                                        $q->where('speciality_id', '=', $search['speciality']);
+                                        //$q->where('speciality_id', '=', $search['speciality']);
                                            //->where('name', 'like', '%' . $search['q'] . '%');
                                         if (trim($search['q']))
                                         {
@@ -145,15 +145,22 @@ class MedicRepository extends DbRepository{
 
             if (isset($search['speciality']) && $search['speciality'] != "")
             {
-                $users = $users->where('speciality_id', '=', $search['speciality']);
+                $users = $users->whereHas('specialities', function($q) use($search){
+                                        $q->where('specialities.id', $search['speciality']);
+                                    });
+                                //$users->where('speciality_id', '=', $search['speciality']);
             
-            }else{
+            }
+            
+            if (isset($search['general']) && $search['general'] != ""){
 
-                $users = $users->where(function($q) use($search){
+                $users = $users->whereHas('specialities', function($q) use($search){
+                                        $q->where('specialities.id', 53);
+                                    });
+                /*$users->where(function($q) use($search){
                                         $q->where('speciality_id', 53)
                                         ->orWhere('speciality_id', 0);
-                                    });
-                    
+                                    });*/               
             }
 
 

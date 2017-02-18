@@ -36,6 +36,7 @@ class OfficeController extends Controller
     {
        
         $this->validate(request(),[
+                'type' => 'required',
                 'name' => 'required',
                 'address' => 'required',  
                 'province' => 'required',
@@ -61,6 +62,7 @@ class OfficeController extends Controller
     {
        
     	 $this->validate(request(),[
+                'type' => 'required',
                 'name' => 'required',
                 'address' => 'required',  
                 'province' => 'required',  

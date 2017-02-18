@@ -12,7 +12,8 @@
         <div class="row">
         
           <div class="col-xs-12">
-            <div class="callout callout-info">
+            <div class="callout callout-info callout-search">
+              <button type="button" class="close" data-dismiss="callout" aria-hidden="true">×</button>
               <h4>Filtros !</h4>
 
               <p>Utiliza uno o varios de los filtros de abajo para realizar la busqueda más exacta!</p>
@@ -21,7 +22,7 @@
               <div class="box-header">
                     <form method="GET" action="{{ url('/clinics/search') }}" class="form-horizontal">
                       <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
                            <div class="form-group">
                             <label for="q" class="control-label col-sm-2">Clínica</label>
                             <div class="col-sm-10">
@@ -29,124 +30,126 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
-                                    <div class="form-group">
-                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-5">Cerca de aquí</label>
-                                      <div class="col-sm-6">
-                                          <button type="button" class="btn btn-default btn-geo"><i class="fa fa-"></i>Tu ubicación</button>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-3 col-lg-3">
-                                  <div class="form-group">
-                                       <div class="col-sm-12">
-                                          <div class="input-group">
-                                                <span class="input-group-addon">
-                                                  lat
-                                                </span>
-                                            <input type="text" class="form-control" name="lat" value="{{ isset($search['lat']) ? $search['lat'] : ''}}">
-                                          </div>
-                                        </div>
-                                    </div>
-                                  <!-- /input-group -->
-                                </div>
-                                <!-- /.col-lg-6 -->
-                                <div class="col-xs-12 col-sm-3 col-lg-3">
-                                  <div class="form-group">
-                                       <div class="col-sm-12">
-                                          <div class="input-group">
-                                                <span class="input-group-addon">
-                                                  lon
-                                                </span>
-                                            <input type="text" class="form-control" name="lon" value="{{ isset($search['lon']) ? $search['lon'] : ''}}">
-                                          </div>
-                                        </div>
-                                    </div>
-                                  <!-- /input-group -->
-                                </div>
-                                <!-- /.col-lg-6 -->
-                            </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="box box-default collapsed-box box-search-filters box-solid">
+                              <div class="box-header with-border ">
+                                <h3 class="box-title">Filtros</h3>
 
-                            
-                                
-                                
-                                      
-                        </div>
-                        
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                          
-                             <div class="row">
-                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                   <div class="form-group">
-                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-6">Provincia</label>
-                                      <div class="col-sm-12">
-                                      <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
-                                        <option></option>
-                                        <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
-                                        <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == "San Jose" ? "selected" : "" : "" }}>San Jose</option>
-                                        <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
-                                        <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
-                                        <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
-                                        <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
-                                        <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
-                                      </select>
-                                       
-                                      </div>
-                                  </div>
-                                    
-                                   
+                                <div class="box-tools">
+                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                  </button>
                                 </div>
-                                <div class="col-xs-12 col-sm-4 col-lg-4">
-                                   <div class="form-group">
-                                        <label for="canton" class="control-label col-sm-2">Canton</label>
-                                       <div class="col-sm-12">
-                                          <select class="form-control select2" style="width: 100%;" name="canton" placeholder="-- Selecciona canton --">
-                                            <option></option>
-                                            
-                                          </select>
-                                          <input type="hidden" name="selectedCanton" value="{{ isset($search['canton']) ? $search['canton'] : '' }}">
-                                        </div>
-                                    </div>
-                                  <!-- /input-group -->
-                                </div>
-                                <!-- /.col-lg-6 -->
-                                <div class="col-xs-12 col-sm-4 col-lg-4">
-                                   <div class="form-group">
-                                      <label for="district" class="control-label col-sm-2">Distrito</label>
-                                       <div class="col-sm-12">
-                                          <select class="form-control select2" style="width: 100%;" name="district" placeholder="-- Selecciona canton --">
-                                            <option></option>
-                                            
-                                          </select>
-                                          <input type="hidden" name="selectedDistrict" value="{{ isset($search['district']) ? $search['district'] : '' }}">
-                                        </div>
-                                    </div>
-                                 
-                                  <!-- /input-group -->
-                                </div>
-                                <!-- /.col-lg-6 -->
+                                <!-- /.box-tools -->
                               </div>
-                          </div>
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="form-group">
-                              <label for="province" class="control-label col-sm-2 col-md-2">Provincia</label>
-                              <div class="col-sm-10 col-md-10">
-                                <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
-                                  <option></option>
-                                  <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
-                                  <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == 'San Jose' ? 'selected' : '' : '' }}>San Jose</option>
-                                  <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
-                                  <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
-                                  <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
-                                  <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
-                                  <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
-                                </select>
+                              <!-- /.box-header -->
+                              <div class="box-body" style="display: none;">
+                                    <div class="row">
+                                      
+                                    
+                                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        
+                                           <div class="row">
+                                              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                                 <div class="form-group">
+                                                     <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-6">Provincia</label>
+                                                    <div class="col-sm-12">
+                                                    <select class="form-control select2" style="width: 100%;" name="province" placeholder="-- Selecciona provincia --">
+                                                      <option></option>
+                                                      <option value="Guanacaste" {{ isset($search['province']) ?  $search['province'] == "Guanacaste" ? 'selected' : '' : '' }}>Guanacaste</option>
+                                                      <option value="San Jose" {{ isset($search['province']) ?  $search['province'] == "San Jose" ? "selected" : "" : "" }}>San Jose</option>
+                                                      <option value="Heredia" {{ isset($search['province']) ?  $search['province'] == 'Heredia' ? 'selected' : '' : '' }}>Heredia</option>
+                                                      <option value="Limon" {{ isset($search['province']) ?  $search['province'] == 'Limon' ? 'selected' : '' : '' }}>Limon</option>
+                                                      <option value="Cartago" {{ isset($search['province']) ?  $search['province'] == 'Cartago' ? 'selected' : '' : '' }}>Cartago</option>
+                                                      <option value="Puntarenas" {{ isset($search['province']) ?  $search['province'] == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
+                                                      <option value="Alajuela" {{ isset($search['province']) ?  $search['province'] == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
+                                                    </select>
+                                                     
+                                                    </div>
+                                                </div>
+                                                  
+                                                 
+                                              </div>
+                                              <div class="col-xs-12 col-sm-4 col-lg-4">
+                                                 <div class="form-group">
+                                                      <label for="canton" class="control-label col-sm-2">Canton</label>
+                                                     <div class="col-sm-12">
+                                                        <select class="form-control select2" style="width: 100%;" name="canton" placeholder="-- Selecciona canton --">
+                                                          <option></option>
+                                                          
+                                                        </select>
+                                                        <input type="hidden" name="selectedCanton" value="{{ isset($search['canton']) ? $search['canton'] : '' }}">
+                                                      </div>
+                                                  </div>
+                                                <!-- /input-group -->
+                                              </div>
+                                              <!-- /.col-lg-6 -->
+                                              <div class="col-xs-12 col-sm-4 col-lg-4">
+                                                 <div class="form-group">
+                                                    <label for="district" class="control-label col-sm-2">Distrito</label>
+                                                     <div class="col-sm-12">
+                                                        <select class="form-control select2" style="width: 100%;" name="district" placeholder="-- Selecciona canton --">
+                                                          <option></option>
+                                                          
+                                                        </select>
+                                                        <input type="hidden" name="selectedDistrict" value="{{ isset($search['district']) ? $search['district'] : '' }}">
+                                                      </div>
+                                                  </div>
+                                               
+                                                <!-- /input-group -->
+                                              </div>
+                                              <!-- /.col-lg-6 -->
+                                            </div>
+                                        </div>
+                                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-5">Cerca de aquí</label>
+                                                      <div class="col-sm-6">
+                                                          <button type="button" class="btn btn-default btn-geo"><i class="fa fa-"></i>Tu ubicación</button>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-3 col-lg-3">
+                                                  <div class="form-group">
+                                                       <div class="col-sm-12">
+                                                          <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                  lat
+                                                                </span>
+                                                            <input type="text" class="form-control" name="lat" value="{{ isset($search['lat']) ? $search['lat'] : ''}}">
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                  <!-- /input-group -->
+                                                </div>
+                                                <!-- /.col-lg-6 -->
+                                                <div class="col-xs-12 col-sm-3 col-lg-3">
+                                                  <div class="form-group">
+                                                       <div class="col-sm-12">
+                                                          <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                  lon
+                                                                </span>
+                                                            <input type="text" class="form-control" name="lon" value="{{ isset($search['lon']) ? $search['lon'] : ''}}">
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                  <!-- /input-group -->
+                                                </div>
+                                                <!-- /.col-lg-6 -->
+                                            </div>
+             
+                                        </div>
+                                    </div>
+
                               </div>
                             </div>
-                          
-                        </div> -->
+                        </div>
+
+                  
                         
                           
                       </div>
@@ -160,7 +163,7 @@
                    </form>
               </div>
               <!-- /.box-header -->
-              <div class="box-body table-responsive no-padding">
+              <div class="box-body table-responsive no-padding" id="no-more-tables">
                  @if ($clinics)
                     @if (!count($clinics))
                       <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
@@ -168,33 +171,36 @@
                       </p>
                     @else
                       <table class="table table-hover">
-                        <tr>
+                        <thead>
+                            <tr>
                           
-                          <th>Nombre</th>
-                          <th>Lugar</th>
-                           @if(isset($search['lat']) && $search['lat'] != '')
-                          <th>Distancia</th>
-                          @endif
-                          <th></th>
-                        </tr>
+                              <th>Nombre</th>
+                              <th>Lugar</th>
+                               @if(isset($search['lat']) && $search['lat'] != '')
+                              <th>Distancia</th>
+                              @endif
+                              <th></th>
+                            </tr>
+                        </thead>
+                        
                         @foreach($clinics as $clinic)
                           <tr>
                            
-                            <td>{{ $clinic->name }}</td>
-                            <td>
-                               <span class="label bg-yellow">{{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }} </span>
+                            <td data-title="Nombre">{{ $clinic->name }}</td>
+                            <td data-title="Lugar">
+                               {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }} 
 
                             </td>
                             @if(isset($search['lat']) && $search['lat'] != '')
-                            <td>
+                            <td data-title="Distancia">
                                  Aprox. {{ number_format($clinic->distance, 2, '.', ',')  }} Km
                             </td>
                              @endif
-                            <td>
+                            <td data-title="Compartir">
                               <div class="btn-group">
                                 <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
-                                  <i class="fa fa-address"></i> Compartir ubicación
+                                  <i class="fa fa-address"></i> Compartir
                                 </button>
                                
                                 <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->

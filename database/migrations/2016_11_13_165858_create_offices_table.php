@@ -17,11 +17,12 @@ class CreateOfficesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name')->nullable();
-            $table->string('address')->nullable();
-            $table->string('province')->nullable();
-            $table->string('canton')->nullable();
-            $table->string('district')->nullable();
+            $table->string('type');
+            $table->string('name');
+            $table->string('address');
+            $table->string('province');
+            $table->string('canton');
+            $table->string('district');
             $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('lat')->nullable();

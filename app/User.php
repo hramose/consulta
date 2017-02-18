@@ -85,6 +85,44 @@ class User extends Authenticatable
         return !! $role->intersect($this->roles)->count();
     }
 
+
+    public function specialities()
+    {
+        return $this->belongsToMany(Speciality::class);
+    }
+
+    /**
+     * Assign the given role to the user.
+     *
+     * @param  string $role
+     * @return mixed
+     */
+    public function assignSpeciality($speciality)
+    {
+        if (is_object($speciality)) {
+            return $this->specialities()->attach($speciality);
+       
+        }
+       
+        return $this->specialities()->sync($speciality);
+       
+    }
+
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function hasSpeciality($speciality)
+    {
+        if (is_string($speciality)) {
+            return $this->specialities->contains('name', $speciality);
+        }
+
+        return !! $speciality->intersect($this->specialities)->count();
+    }
+
     public function patients()
     {
         return $this->belongsToMany(Patient::class);

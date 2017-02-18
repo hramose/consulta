@@ -1,6 +1,8 @@
 @extends('layouts.login')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
+  <link rel="stylesheet" href="/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
+ 
 @endsection
 @section('content')
 
@@ -11,7 +13,7 @@
    
   <div class="register-box-body">
     <div class="callout callout-info"><h4>Ya casi terminas!</h4> <p>Agrega los siguientes datos de paciente para poder reservar citas con los médicos.</p></div>
-    <form method="POST" action="{{ url('/patients/register') }}" class="form-horizontal">
+    <form method="POST" action="{{ url('/patients/register') }}" class="form-horizontal register-patient">
          {{ csrf_field() }}
          
          <div class="form-group">
@@ -129,6 +131,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group">
+           
+            <div class="col-sm-12">
+              <input type="text" class="form-control" name="conditions" placeholder="Padecimientos" data-role="tagsinput" value="{{ old('coditions') }}" >
+               @if ($errors->has('conditions'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('conditions') }}</strong>
+                  </span>
+              @endif
+            </div>
+          </div>
          
           <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
@@ -148,7 +161,9 @@
 <script src="/js/plugins/input-mask/jquery.inputmask.js"></script>
 <script src="/js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="/js/plugins/select2/select2.full.min.js"></script>
-<script>
+<script src="/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="/js/patient_register.min.js"></script>
+<!-- <script>
   $(function () {
     $("select[name='province']").select2({
       placeholder: "Selecciona Provincia",
@@ -160,5 +175,5 @@
     });
     $("[data-mask]").inputmask();
   });
-</script>
+</script> -->
 @endsection

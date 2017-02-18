@@ -87,8 +87,8 @@ $(function () {
                    
                     item.allDay = parseInt(item.allDay); // = false;
                     
-                    if(item.patient_id == 0 || item.created_by != $('.external-event').data('createdby')){
-                      item.rendering = 'background';
+                    if(item.patient_id != 0 && item.created_by != $('.external-event').data('createdby')){
+                       item.rendering = 'background';
                     }
                     
                     //debugger
@@ -184,10 +184,12 @@ $(function () {
 
           },
           eventRender: function(event, element) {
+            element.append( "<span class='appointment-details' ></span>" );
+
             if(event.created_by == $('.external-event').data('createdby'))
             {
                 element.append( "<span class='closeon fa fa-trash'></span>" );
-                element.append( "<span class='appointment-details' ></span>" );
+                
                 element.find(".closeon").click(function() {
                    deleteAppointment(event._id, event);
                 });
@@ -210,6 +212,26 @@ $(function () {
                   trigger: 'click focus', 
                   content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
               });
+            }else{
+
+                var officeInfoDisplay = '';
+
+                if(event.office_info)
+                {
+                     var officeInfo = JSON.parse(event.office_info);
+
+                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +'<br>'+
+                      'Teléfono: '+ officeInfo.phone;
+                }
+                
+                element.find(".appointment-details").popover({
+                    title:  event.title,
+                    placement: 'top',
+                    html:true,
+                    container:'#calendar',
+                    trigger: 'click focus', 
+                    content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
+                });
             }
 
         },
@@ -370,6 +392,7 @@ $(function () {
         patient_id: (event.patient_id) ? event.patient_id : 0,
         /*created_by: event.created_by,*/
         idRemove: idRemove,
+        office_info: (event.office_info) ? event.office_info : '',
         allDay: 0
         
       };
@@ -396,6 +419,7 @@ $(function () {
         patient_id: event.patient_id,
         //created_by: event.created_by,
         id: event.id,
+        office_info: event.office_info,
         allDay: event.allDay
       };
       

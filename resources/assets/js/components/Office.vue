@@ -1,5 +1,19 @@
 <template>	
 	<div class="form-horizontal">
+     <div class="form-group">
+        <label for="office_type" class="col-sm-2 control-label">Tipo</label>
+
+        <div class="col-sm-10">
+          <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona distrito --"  v-model="office.type">
+            <option></option>
+            <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
+            
+          </select>
+          <form-error v-if="errors.type" :errors="errors" style="float:right;">
+              {{ errors.type[0] }}
+          </form-error>
+        </div>
+      </div>
       <div class="form-group">
         <label for="office_name" class="col-sm-2 control-label">Nombre</label>
 
@@ -156,7 +170,7 @@
        
         <li v-for="item in consultorios">
           <!-- todo text -->
-          <a href="#"><i class="fa fa-building"></i><span><span class="text" @click="edit(item)"> {{ item.name }} - {{ item.province }}, {{ item.city }} - {{ item.phone }}</span></span></a>
+          <a href="#"><i class="fa fa-building"></i><span><span class="text" @click="edit(item)"> ({{ item.type }}) {{ item.name }} - {{ item.province }}, {{ item.city }} - {{ item.phone }}</span></span></a>
           <!-- General tools such as edit or delete-->
           <div class="tools">
             <i class="fa fa-edit" @click="edit(item)"></i>
@@ -549,6 +563,7 @@
           }
 
           ],
+          tipos:['Consultorio Independiente', 'Clínica','Hospital Privado'],
           cantones: [],
           distritos: [],
           loader:false,

@@ -24,10 +24,12 @@
 
 .alert{
 	position: absolute;
-	left: 50%;
+	bottom: 0;
+	left: 0;/*50%;*/
+	right: 0;
 	z-index: 999;
-	min-width: 20%;
-	transform: translate(-50%, 0);
+	min-width: 100%; /*20%;*/
+	/*transform: translate(-50%, 0);*/
 	text-align:center;
 }
 .fade-enter-active, .fade-leave-active {
@@ -133,7 +135,8 @@
 }
 .box-search-medic
 {
-	min-height: 134px;
+
+	min-height: 128px;
 	.small-box-footer 
 	{
 		position: absolute !important;
@@ -151,6 +154,24 @@
 	.footer-specialist:hover{
 		background-color: #00A3CB !important;
 	}
+	.small-box{
+		position:relative;
+		background-color: white;
+		color: #00A3CB;
+		z-index: 1;
+		a{ 
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom:0;
+		}
+	}
+	.small-box:hover{
+		background-color: #3C8DBC !important;
+		color: white !important;
+	}
+
 }
 .box-create-appointment{
 	display: none;
@@ -161,6 +182,86 @@
 	}
 
 }
+.box-search-filters{
+	position: relative;
+	.box-header{
+		text-align:center;
+	}
+	.box-tools{
+		position:static !important;
+	}
+	.btn-box-tool{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		width: 100%;
+		padding: 1.2rem 0;
+		i{
+			float: right;
+			margin-right: 1rem;
+		}
+	}
+}
+.callout-search{
+		display:none;
+	}
+@media screen and (min-width:768px){
+	.callout-search{
+		display:block;
+	}
+
+}
+
+ @media only screen and (max-width: 800px) {
+  
+        /* Force table to not be like tables anymore */
+        #no-more-tables table, 
+        #no-more-tables thead, 
+        #no-more-tables tbody, 
+        #no-more-tables th, 
+        #no-more-tables td, 
+        #no-more-tables tr { 
+          display: block; 
+        }
+       
+        /* Hide table headers (but not display: none;, for accessibility) */
+        #no-more-tables thead tr { 
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+       
+        #no-more-tables tr { border: 1px solid #ccc; }
+       
+        #no-more-tables td { 
+          /* Behave  like a "row" */
+          border: none;
+          border-bottom: 1px solid #eee; 
+          position: relative;
+          padding-left: 50%; 
+          white-space: normal;
+          text-align:left;
+        }
+       
+        #no-more-tables td:before { 
+          /* Now like a table header */
+          position: absolute;
+          /* Top/left values mimic padding */
+          top: 6px;
+          left: 6px;
+          width: 45%; 
+          padding-right: 10px; 
+          white-space: nowrap;
+          text-align:left;
+          font-weight: bold;
+        }
+       
+        /*
+        Label the data
+        */
+        #no-more-tables td:before { content: attr(data-title); }
+      }
 
 /**** AdminLTE.css *****/
 @import "AdminLTE";

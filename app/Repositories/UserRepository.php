@@ -30,8 +30,11 @@ class UserRepository extends DbRepository{
         $user = $this->model->create($data);
 
         $role = (isset($data['role'])) ? $data['role'] : Role::whereName('medico')->first();
-
+        
         $user->assignRole($role);
+        
+        if(isset($data['speciality']))
+            $user->assignSpeciality($data['speciality']);
 
         //$user->createOffice();
         
@@ -54,6 +57,7 @@ class UserRepository extends DbRepository{
         $data = $this->prepareData($data);
 
         $user->fill($data);
+        $user->assignSpeciality($data['speciality']);
         $user->save();
 
 

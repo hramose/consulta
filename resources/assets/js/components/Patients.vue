@@ -99,6 +99,16 @@
           </form-error>
         </div>
       </div>
+      <!--<div class="form-group">
+        <label for="paciente_conditions" class="col-sm-2 control-label">Padecimientos</label>
+
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="conditions" placeholder="Padecimientos" v-model="paciente.conditions" >
+          <form-error v-if="errors.conditions" :errors="errors" style="float:right;">
+              {{ errors.conditions[0] }}
+          </form-error>
+        </div>
+      </div>-->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-danger" @click="save()">Guardar</button>
@@ -126,6 +136,7 @@
 
     export default {
       props: ['patients'],
+      
       data () {
         return {
           pacientes: [],

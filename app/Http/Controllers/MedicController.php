@@ -34,8 +34,9 @@ class MedicController extends Controller
     {
        $medics = [];
        $specialist = request('specialist');
+       $general = request('general');
        
-        return view('medics.index',compact('medics','specialist'));
+        return view('medics.index',compact('medics','specialist','general'));
 
     }
     /**
@@ -55,6 +56,7 @@ class MedicController extends Controller
                 $search['district'] = request('district');
                 $search['lat'] = request('lat');
                 $search['lon'] = request('lon');
+                $search['general'] = request('general');
                 $selectedSpeciality = $search['speciality'];
                 
                 
@@ -64,6 +66,11 @@ class MedicController extends Controller
                 {
                     $specialist = 1;
                     return view('medics.index',compact('medics','search','selectedSpeciality','specialist'));   
+                }
+                if(request('general'))
+                {
+                    $general = 1;
+                    return view('medics.index',compact('medics','search','selectedSpeciality','general'));   
                 }
 
                     

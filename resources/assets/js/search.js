@@ -1,4 +1,31 @@
 $(function () {
+
+      var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+
+  if( isMobile.any() ) {
+      $('.box-create-appointment').hide();
+    }else{
+      //$('.box-create-appointment').show();
+    }
     
       function obtainGeolocation(){
        //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
@@ -27,6 +54,10 @@ $(function () {
        $('.btn-geo').on('click', function (e) {
            obtainGeolocation();
        });
+      $('.callout button.close').on('click', function (e) {
+           $(this).parents('.callout').hide();
+       });
+       
 
 
         // provincias cantones y distritos

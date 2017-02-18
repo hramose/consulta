@@ -37,12 +37,17 @@ elixir(mix => {
             'search.js'
         ],'public/js/search.min.js','resources/assets/js');
 
+     mix.scripts([
+            'patient_register.js'
+        ],'public/js/patient_register.min.js','resources/assets/js');
+
  
     mix.version([
         'public/js/app.js',
         'public/js/appointments.min.js',
         'public/js/schedule.min.js',
         'public/js/search.min.js',
+        'public/js/patient_register.min.js',
         'public/js/app-theme.min.js',
         'public/css/app.css',
         

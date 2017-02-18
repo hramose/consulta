@@ -39,7 +39,8 @@ class UserController extends Controller
     	
         $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ]
+                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ],
+                'speciality' => 'required'
             ]);
 
     	$user = $this->userRepo->update(auth()->id(), request()->all());

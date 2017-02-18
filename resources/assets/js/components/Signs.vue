@@ -97,13 +97,13 @@
       data () {
         return {
           vital_signs: {
-            height: 0,
-            weight: 0,
-            mass: 0,
-            temp: 0,
-            respiratory_rate: 0,
-            blood: 0,
-            heart_rate:0
+            height: '',
+            weight: '',
+            mass: '',
+            temp: '',
+            respiratory_rate: '',
+            blood: '',
+            heart_rate:''
 
           },
           loader:false,
@@ -121,7 +121,7 @@
          keydown :_.debounce(
           function ()  {
 
-              if(this.vital_signs.height == "")
+              /*if(this.vital_signs.height == "")
                   this.vital_signs.height = 0;
 
               if(this.vital_signs.weight == "")
@@ -141,7 +141,7 @@
 
               if(this.vital_signs.heart_rate == "")
                   this.vital_signs.heart_rate = 0;
-
+            */
               this.update();
             },
         500
@@ -171,8 +171,16 @@
          
            console.log('Component ready. Vital Signs')
 
-           this.vital_signs = this.signs;
+           //this.vital_signs = this.signs;
           
+           this.vital_signs.height = (this.signs.height == 0) ? '' : this.signs.height;
+           this.vital_signs.weight = (this.signs.weight == 0) ? '' : this.signs.weight;
+           this.vital_signs.mass = (this.signs.mass == 0) ? '' : this.signs.mass;
+           this.vital_signs.temp = (this.signs.temp == 0) ? '' : this.signs.temp;
+           this.vital_signs.respiratory_rate = (this.signs.respiratory_rate == 0) ? '' : this.signs.respiratory_rate;
+           this.vital_signs.blood_ps = (this.signs.blood_ps == 0) ? '' : this.signs.blood_ps;
+           this.vital_signs.blood_pd = (this.signs.blood_pd == 0) ? '' : this.signs.blood_pd;
+           this.vital_signs.heart_rate = (this.signs.heart_rate == 0) ? '' : this.signs.heart_rate;
            
           
       }

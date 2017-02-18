@@ -26,6 +26,7 @@ class CreatePatientsTable extends Migration
             $table->string('province');
             $table->string('city');
             $table->string('photo')->nullable();
+            $table->text('conditions')->nullable();
             $table->integer('created_by')->unsigned()->default(0);
             $table->timestamps();
         });
