@@ -5,7 +5,12 @@
 
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
+td.fc-day.fc-past {
+    background-color: #EEEEEE;
+}
+#calendar .fc-center h2{
+	font-size:22px;
+}
 .form-control{
 	border-radius: 0;
 }

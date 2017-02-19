@@ -7,10 +7,10 @@
         
           <h4 class="modal-title" id="myModalLabel">Confirmacion de la cita</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" data-modaldate>
             
             
-           <div class="box box-widget widget-user-2" v-show="!newPatient" v-bind:data-patient="paciente.id " v-bind:data-title=" paciente.first_name ">
+           <div class="box box-widget widget-user-2"  v-show="!newPatient" v-bind:data-patient="paciente.id " v-bind:data-title=" paciente.first_name ">
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-green" >
                 <div class="widget-user-image">
@@ -177,8 +177,8 @@
         </div>
          <div class="modal-footer" v-show="!newPatient">
          
-          <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal" data-appointment="">Cancelar</button>
-          <button type="button" class="btn btn-primary btn-finalizar-cita" data-appointment="">Finalizar</button>
+          <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary btn-finalizar-cita">Crear cita</button>
           <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button>
         </div>
       </div>

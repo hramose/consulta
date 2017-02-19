@@ -186,12 +186,25 @@ $(function () {
           //Random default events
           events: appointments,
           forceEventDuration: true,
-          defaultTimedEventDuration: '01:00:00',
+          slotDuration:'00:20:00',
+          defaultTimedEventDuration: '00:20:00',
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
+          businessHours: {
+              // days of week. an array of zero-based day of week integers (0=Sunday)
+              dow: [ 1, 2, 3, 4, 5,6], // Monday - Thursday
+
+              start: '07:00', // a start time (10am in this example)
+              end: '18:00', // an end time (6pm in this example)
+          },
+          //weekends: false,
+          scrollTime: '07:00:00',
+          nowIndicator: true,
+          timezone: 'local',
           drop: function (date, allDay) { // this function is called when something is dropped
             
+
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
           
@@ -236,7 +249,20 @@ $(function () {
             element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
             element.find(".closeon").click(function() {
-               deleteAppointment(event._id, event);
+               swal({
+                      title: "Deseas cancelar la cita?",
+                      text: " Requerda que se eliminara del sistema!",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Si, Cancelar!",
+                      closeOnConfirm: false
+                    },
+                    function(){
+                      deleteAppointment(event._id, event);
+                      swal("Cita cancelada!", "Tu cita ha sido eliminada.", "success");
+                    });
+               
             });
             if (event.rendering == 'background') {
                 element.append('<h3>'+ event.title + '</h3>');
@@ -248,14 +274,27 @@ $(function () {
 
             if(event.patient_id && event.patient)
             {
-              element.find(".appointment-details").popover({
+
+              element.find(".appointment-details").click(function() {
+                  swal({
+                    title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
+                    text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
+                    html: true
+                     
+                    });
+                   
+                    
+                     
+                  });
+             /* element.find(".appointment-details").popover({
                   title: 'Cita con el Dr. '+ event.user.name,
                   placement: 'top',
                   html:true,
                   container:'#calendar',
                   trigger: 'click focus', 
                   content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
-              });
+              });*/
+
             }else{
         
                 var officeInfoDisplay = '';
@@ -268,19 +307,50 @@ $(function () {
                       'Teléfono: '+ officeInfo.phone;
                 }
 
-                element.find(".appointment-details").popover({
+                 element.find(".appointment-details").click(function() {
+                  swal({
+                    title: event.title,
+                    text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
+                    html: true
+                     
+                    });
+                   
+                });
+
+                /*element.find(".appointment-details").popover({
                     title:  event.title,
                     placement: 'top',
                     html:true,
                     container:'#calendar',
                     trigger: 'click focus', 
                     content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
-                });
+                });*/
             }
             
 
         },
+        dayRender: function( date, cell ) {
+             // It's an example, do your own test here
+            /*if(cell.hasClass("fc-other-month")) {
+                  cell.addClass('disabled');
+             } */
+             
+              var currentDate = new Date();
+             if(date < currentDate) {
+                   cell.addClass('disabled');
+              }
+
+        },
         dayClick: function(date, jsEvent, view) {
+              var currentDate = new Date();
+              
+             /* if($(jsEvent.target).hasClass("disabled")){
+                  return false;
+              }*/
+
+              if(date < currentDate) {
+                   return false;
+              }
 
               /*alert('Clicked on: ' + date.format());
 
@@ -307,8 +377,11 @@ $(function () {
         var array = $('#calendar').fullCalendar('clientEvents');
          
           for(i in array){
-              if (event.end > array[i].start._i && event.start < array[i].end._i){
-                 return true;
+              if(event.idRemove != array[i]._id)
+              {
+                if (event.end > array[i].start._i && event.start < array[i].end._i){
+                   return true;
+                }
               }
           }
           return false;
@@ -412,7 +485,7 @@ $(function () {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
         //user_id: event.user_id,
@@ -423,7 +496,7 @@ $(function () {
         allDay: 0
         
       };
-
+     
       if(isOverlapping(appointment)){
         appointment.allDay = 1;
       }
@@ -439,7 +512,7 @@ $(function () {
         //title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(1, 'hours').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
         //backgroundColor: event.backgroundColor, //Success (green)
         //borderColor: event.borderColor,
         //user_id: event.user_id,
@@ -510,7 +583,7 @@ $(function () {
 
     $("#add-new-event").click(function (e) {
       e.preventDefault();
-
+      
       createEvent();
       
     });
@@ -593,7 +666,7 @@ $(function () {
         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 
         var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
-        
+       
        
         saveAppointment(copiedEventObject, _id);
       }
