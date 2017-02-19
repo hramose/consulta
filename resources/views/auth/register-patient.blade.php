@@ -52,7 +52,7 @@
       <div class="row">
         
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-12 col-sm-5">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
         </div>
         <!-- /.col -->
