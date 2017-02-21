@@ -181,7 +181,7 @@ $(function () {
           header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'agendaWeek,agendaDay'
           },
           //Random default events
           events: appointments,
@@ -202,6 +202,7 @@ $(function () {
           scrollTime: '07:00:00',
           nowIndicator: true,
           timezone: 'local',
+          allDaySlot: false,
           drop: function (date, allDay) { // this function is called when something is dropped
             
 
@@ -330,16 +331,32 @@ $(function () {
 
         },
         dayRender: function( date, cell ) {
+            /*console.log(date);
              // It's an example, do your own test here
             /*if(cell.hasClass("fc-other-month")) {
                   cell.addClass('disabled');
              } */
              
-              var currentDate = new Date();
+            /*  var currentDate = new Date();
              if(date < currentDate) {
-                   cell.addClass('disabled');
-              }
 
+                   cell.addClass('bg-red disabled');
+              }*/
+             /* if (moment().diff(date,'days') > 0){
+                 
+                  cell.css("background-color","silver");
+              }*/
+              /*var currentDate = new Date();
+              var beginningTime = moment(date, 'h:mma');
+              var endTime = moment(currentDate, 'h:mma');
+              debugger
+              console.log(beginningTime.isBefore(endTime)); // true
+              console.log(beginningTime.toDate()); // Mon May 12 2014 08:45:00
+              console.log(endTime.toDate());
+               if(beginningTime.isBefore(endTime)) {
+
+                   cell.addClass('bg-red disabled');
+              }*/
         },
         dayClick: function(date, jsEvent, view) {
               var currentDate = new Date();
@@ -347,8 +364,16 @@ $(function () {
              /* if($(jsEvent.target).hasClass("disabled")){
                   return false;
               }*/
+              
+              if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
+                   
+                   swal({
+                    title: 'Hora no permitida!',
+                    text: 'Debes seleccionar una hora valida',
+                    html: true
+                     
+                    });
 
-              if(date < currentDate) {
                    return false;
               }
 
@@ -363,6 +388,8 @@ $(function () {
               
               $('#myModal').modal({backdrop:'static', show:true });
               $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
+              $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
+              $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
               
                     
            
@@ -722,6 +749,20 @@ $(function () {
              
             }
      });
+
+
+    $('#myModal').on('shown.bs.modal', function (event) {
+      //debugger
+     // var button = $(event.relatedTarget) // Button that triggered the modal
+      var date = $(this).find('.modal-body').attr('data-date') // Extract info from data-* attributes
+      var hour = $(this).find('.modal-body').attr('data-hour')
+     
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
+      //modal.find('.modal-body').data('appointment','');
+    });
 
 
 

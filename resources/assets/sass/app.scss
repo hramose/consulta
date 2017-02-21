@@ -5,8 +5,18 @@
 
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-td.fc-day.fc-past {
-    background-color: #EEEEEE;
+td.fc-day.fc-past{
+    /*background-color: #dd4b39 !important;
+    opacity: .65 !important;
+    cursor: not-allowed !important;*/
+}
+/*.fc-day:hover{background:lightblue;cursor: pointer;}
+.fc-content:hover{background:lightblue;cursor: pointer;}
+.fc-content td:hover{background: #adf4fa;}*/
+.fc-nonbusiness {
+    background-color: #dd4b39 !important;
+    opacity: .65;
+    cursor: not-allowed;
 }
 #calendar .fc-center h2{
 	font-size:22px;

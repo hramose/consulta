@@ -131,7 +131,7 @@ $(function () {
           header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'agendaWeek,agendaDay'
           },
           //Random default events
           events: appointments,
@@ -151,6 +151,7 @@ $(function () {
           scrollTime: '07:00:00',
           nowIndicator: true,
           timezone: 'local',
+          allDaySlot: false,
           drop: function (date, allDay) { // this function is called when something is dropped
 
             var currentDate = new Date();
@@ -311,7 +312,7 @@ $(function () {
               /*if($(jsEvent.target).hasClass("disabled")){
                   return false;
               }*/
-              if(date < currentDate) {
+              if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                    return false;
               }
               /*var event = $('div.external-event');
