@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="form-group">
-          <v-select :debounce="250" :on-search="getOptions"  :options="options" placeholder="Search Pacientes..." label="first_name" :on-change="select" :value.sync="paciente"></v-select>
+          <v-select :debounce="250" :on-search="getOptions"  :options="options" placeholder="Search Pacientes..." label="fullname" :on-change="select" :value.sync="paciente"></v-select>
         </div>
         
                 
