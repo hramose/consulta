@@ -53,7 +53,7 @@
               
           
               <!-- Modal -->
-              <patient :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></patient>
+              <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></modal-schedule>
               
             </div>
             <!-- /.box-body -->

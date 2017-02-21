@@ -210,7 +210,7 @@ class PatientController extends Controller
     {
           
         $patients = $this->patientRepo->list(request('q'));
-        
+       
         return $patients;
 
     }

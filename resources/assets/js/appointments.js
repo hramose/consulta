@@ -550,7 +550,8 @@ $(function () {
     function createEvent()
     {
       var val = $("#new-event").val();
-      var valSelect = $(".search-patients").val();
+      var valSelect = $(".box-create-appointment").find('.widget-user-2').attr('data-patient');
+      var valName = $(".box-create-appointment").find('.widget-user-2').attr('data-title');
       if (valSelect.length == 0) {
         return;
       }
@@ -559,11 +560,11 @@ $(function () {
       //Create events
       var event = $("<div />");
       event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-      event.attr('data-patient', $(".search-patients").val());
+      event.attr('data-patient', valSelect);
       /*event.attr('data-doctor', $('input[name=user_id]').val());
       event.attr('data-createdby', $('input[name=user_id]').val());*/
       event.html('');
-      event.html(val + ' - '+ $(".search-patients").text());
+      event.html(val + ' - '+ valName);
       $('#external-events').prepend(event);
 
       //Add draggable funtionality
@@ -629,7 +630,8 @@ $(function () {
     function createEventFromModal()
     {
       var val = $("#modal-new-event").val();
-      var valSelect = $(".modal-search-patients").val();
+      var valSelect = $(".modal-body").find('.widget-user-2').attr('data-patient');//val();
+      var valName = $(".modal-body").find('.widget-user-2').attr('data-title');
       var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
       if (valSelect.length == 0) {
         return;
@@ -639,9 +641,9 @@ $(function () {
       //Create events
 
       var eventObject = {
-          title: $.trim(val + ' - '+ $(".modal-search-patients").text()), // use the element's text as the event title
+          title: $.trim(val + ' - '+ valName), // use the element's text as the event title
           //user_id: $('input[name=user_id]').val(),
-          patient_id: $(".modal-search-patients").val()
+          patient_id: valSelect
           //created_by: $('input[name=user_id]').val()
          
         };
@@ -672,13 +674,13 @@ $(function () {
       }
       //Remove event from text input
       $("#modal-new-event").val("");
-      $(".modal-search-patients").val("").trigger('change');
-      $(".modal-search-patients").text("").trigger('change');
+      //$(".modal-search-patients").val("").trigger('change');
+      //$(".modal-search-patients").text("").trigger('change');
       $('#myModal').find('#modal-new-event').attr('data-modaldate', '');
       $('#myModal').modal('hide');
     }
 
-     $("#modal-add-new-event").click(function (e) {
+     $(".btn-finalizar-cita").click(function (e) {
       e.preventDefault();
 
       createEventFromModal();

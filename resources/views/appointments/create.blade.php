@@ -24,9 +24,14 @@
               <h3 class="box-title">Crear Cita</h3>
             </div>
             <div class="box-body">
-              
+             @if(isset($p))
+              <appointment-create :patient="{{ $p }}"></appointment-create>
+            @else
+                <appointment-create></appointment-create>
+            @endif
+            
               <!-- /btn-group -->
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <select class="search-patients select2 form-control" style="width:100%;">
                    @if(isset($p))
                     <option value="{{ $p->id }}" selected="selected">{{ $p->first_name }}</option>
@@ -41,18 +46,19 @@
                <div class="form-group">
                 <input id="new-event" type="text" class="form-control" placeholder="Motivo de la cita">
                 <!-- <input name="user_id" type="hidden" value="{{ auth()->id() }}"> -->
-              </div>
+              <!--</div>
               
               <div class="form-group">
                   <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
-                </div>
+                </div> -->
               <!-- /input-group -->
             </div>
           </div>
 
           <div class="box box-solid box-offices">
             <div class="box-header with-border">
-              <h4 class="box-title">Agenda</h4>
+              <h4 class="box-title">Agenda </h4>
+              <div><small>(Arrastra los elementos en la hora deseada dentro del calendario)</small></div>
             </div>
             <div class="box-body">
               <!-- the events -->
@@ -81,8 +87,15 @@
       <!-- /.row -->
      
     </section>
+
   <!-- Modal -->
-              <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+
+       @if(isset($p))
+        <modal-appointments :patient="{{ $p }}"></modal-appointments>
+      @else
+         <modal-appointments></modal-appointments>
+      @endif
+              <!-- <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog modal-sm" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -108,7 +121,7 @@
                           <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita" data-modaldate>
                           <!-- <input name="modal-user_id" type="hidden" value="{{ auth()->id() }}"> -->
                           <!-- <input type="hidden" name="modal-date" value=""> -->
-                        </div>
+                       <!--</div>
                         
                         <div class="form-group">
                             <button id="modal-add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
@@ -120,11 +133,12 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
 @endsection
 @section('scripts')
-<script src="/js/plugins/select2/select2.full.min.js"></script>
+<!-- <script src="https://unpkg.com/vue-select@1.3.3"></script>cv -->
+<script src="/js/plugins/select2/select2.full.min.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>

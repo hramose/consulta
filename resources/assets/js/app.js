@@ -23,8 +23,12 @@ Vue.component('instructions', require('./components/Instructions.vue'));
 Vue.component('signs', require('./components/Signs.vue'));
 Vue.component('summary-appointment', require('./components/Summary.vue'));
 Vue.component('office', require('./components/Office.vue'));
-Vue.component('patient', require('./components/Patient.vue'));
-Vue.component('patients', require('./components/Patients.vue'));
+Vue.component('modal-schedule', require('./components/ModalSchedule.vue'));
+Vue.component('modal-appointments', require('./components/ModalAppointments.vue'));
+Vue.component('patient-form', require('./components/PatientForm.vue'));
+Vue.component('patient-list', require('./components/PatientList.vue'));
+Vue.component('patient-search', require('./components/PatientSearch.vue'));
+Vue.component('appointment-create', require('./components/AppointmentCreate.vue'));
 /*import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);**/

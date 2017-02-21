@@ -1,5 +1,5 @@
 <template>	
-	<div class="form-horizontal">
+	<div>
       <div class="form-group">
         <label for="paciente_name" class="col-sm-2 control-label">Nombre</label>
 
@@ -133,10 +133,11 @@
 
 <script>
     import FormError from './FormError.vue';
+    import PatientForm from './PatientForm.vue';
+    import PatientList from './PatientList.vue';
 
     export default {
       props: ['patients'],
-      
       data () {
         return {
           pacientes: [],
@@ -161,7 +162,9 @@
         }
       },
       components:{
-        FormError
+        FormError,
+        PatientForm,
+        PatientList
       },
       methods: {
         edit(patient) {

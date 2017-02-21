@@ -95,7 +95,10 @@
 
                     <p>Agrega los pacientes que desees.</p>
                   </div>
-                   <patients :patients="{{ $user->patients }}"></patients>
+                   <!-- <patients :patients="{{ $user->patients }}"></patients> -->
+                   <patient-form></patient-form>
+                   <h3>Tus Pacientes registrados</h3> 
+                   <patient-list :patients="{{ $user->patients }}"></patient-list>
               </div>
               <!-- /.tab-pane -->
 
