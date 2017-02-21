@@ -249,6 +249,7 @@ $(function () {
           eventRender: function(event, element) {
             element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
+
             element.find(".closeon").click(function() {
                swal({
                       title: "Deseas cancelar la cita?",
@@ -331,22 +332,24 @@ $(function () {
 
         },
         dayRender: function( date, cell ) {
+            debugger
             /*console.log(date);
              // It's an example, do your own test here
             /*if(cell.hasClass("fc-other-month")) {
                   cell.addClass('disabled');
              } */
+              
              
-            /*  var currentDate = new Date();
+            /*var currentDate = new Date();
              if(date < currentDate) {
-
-                   cell.addClass('bg-red disabled');
+                  debugger
+                   cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
+              }
+              if (moment().diff(date,'days') > 0){
+                 debugger
+                  cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
               }*/
-             /* if (moment().diff(date,'days') > 0){
-                 
-                  cell.css("background-color","silver");
-              }*/
-              /*var currentDate = new Date();
+             /* var currentDate = new Date();
               var beginningTime = moment(date, 'h:mma');
               var endTime = moment(currentDate, 'h:mma');
               debugger
@@ -355,7 +358,7 @@ $(function () {
               console.log(endTime.toDate());
                if(beginningTime.isBefore(endTime)) {
 
-                   cell.addClass('bg-red disabled');
+                    cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
               }*/
         },
         dayClick: function(date, jsEvent, view) {
@@ -366,13 +369,14 @@ $(function () {
               }*/
               
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
-                   
+                  
                    swal({
                     title: 'Hora no permitida!',
                     text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
                     html: true
                      
                     });
+
 
                   return false;
               }

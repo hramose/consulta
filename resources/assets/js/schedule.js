@@ -157,6 +157,14 @@ $(function () {
             var currentDate = new Date();
             
             if(date < currentDate) {
+
+                  swal({
+                    title: 'Hora no permitida!',
+                    text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
+                    html: true
+                     
+                    });
+
                    return false;
               }
             // retrieve the dropped element's stored Event Object
@@ -295,24 +303,21 @@ $(function () {
 
         },
         dayRender: function( date, cell ) {
-             // It's an example, do your own test here
-            /*if(cell.hasClass("fc-other-month")) {
-                  cell.addClass('disabled');
-             } */
-             
-             /* var currentDate = new Date();
-             if(date < currentDate) {
-                   cell.addClass('disabled');
-              }*/
+          
 
         },
-         dayClick: function(date, jsEvent, view) {
+        dayClick: function(date, jsEvent, view) {
               var currentDate = new Date();
 
-              /*if($(jsEvent.target).hasClass("disabled")){
-                  return false;
-              }*/
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
+
+                  swal({
+                    title: 'Hora no permitida!',
+                    text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
+                    html: true
+                     
+                    });
+
                    return false;
               }
               /*var event = $('div.external-event');
@@ -355,6 +360,7 @@ $(function () {
           }
         
       });
+
       $('#calendar').fullCalendar('today');
     }
 
