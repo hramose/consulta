@@ -3,7 +3,7 @@
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.print.css" media="print">
-  <link rel="stylesheet" href="/js/plugins/sweetalert/sweetalert.css">
+  <link rel="stylesheet" href="/js/plugins/bootstrap-sweetalert/sweetalert.css">
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
@@ -145,7 +145,7 @@
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/plugins/jquery.ui.touch-punch.min.js"></script>
-<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="/js/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
 <script src="{{ elixir('/js/appointments.min.js') }}"></script>
 
 @endsection

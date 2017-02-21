@@ -369,12 +369,12 @@ $(function () {
                    
                    swal({
                     title: 'Hora no permitida!',
-                    text: 'Debes seleccionar una hora valida',
+                    text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
                     html: true
                      
                     });
 
-                   return false;
+                  return false;
               }
 
               /*alert('Clicked on: ' + date.format());
@@ -385,13 +385,14 @@ $(function () {
 
               // change the day's background color just for fun
               //$(this).css('background-color', 'red');
+             
+
+                $('#myModal').modal({backdrop:'static', show:true });
+                $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
+                $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
+                $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
+                
               
-              $('#myModal').modal({backdrop:'static', show:true });
-              $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
-              $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
-              $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
-              
-                    
            
           }
         
