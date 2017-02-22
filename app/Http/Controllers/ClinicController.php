@@ -43,8 +43,10 @@ class ClinicController extends Controller
 
                 
                 $clinics = $this->clinicRepo->findAll($search);
-                //dd( $medics);
-            
+                $count = $clinics->count();
+
+                flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Clinica(s) u hospital(es)','success');
+                
                 return view('clinics.index',compact('clinics','search'));
             }
         }

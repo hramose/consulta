@@ -72,8 +72,10 @@ class MedicController extends Controller
                     $general = 1;
                     return view('medics.index',compact('medics','search','selectedSpeciality','general'));   
                 }
-
+                
+                $count = $medics->count();
                     
+                flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Médico(s)','success');
 
                  return view('medics.index',compact('medics','search','selectedSpeciality'));
             }
