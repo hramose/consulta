@@ -26,6 +26,8 @@ $(function () {
     }else{
       //$('.box-create-appointment').show();
     }
+
+   $(".dropdown-toggle").dropdown();
     
       function obtainGeolocation(){
        //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
