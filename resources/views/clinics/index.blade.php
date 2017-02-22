@@ -166,7 +166,7 @@
               <div class="box-body table-responsive no-padding" id="no-more-tables">
                  @if ($clinics)
                     @if (!count($clinics))
-                      <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
+                      <p class="bg-red disabled text-muted well well-sm no-shadow text-center " style="margin-top: 10px;">
                         No se encontraron elementos con esos terminos de busqueda
                       </p>
                     @else
