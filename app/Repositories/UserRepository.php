@@ -57,7 +57,10 @@ class UserRepository extends DbRepository{
         $data = $this->prepareData($data);
 
         $user->fill($data);
-        $user->assignSpeciality($data['speciality']);
+
+        if(isset($data['speciality']))
+            $user->assignSpeciality($data['speciality']);
+        
         $user->save();
 
 
