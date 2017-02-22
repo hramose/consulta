@@ -47,7 +47,7 @@ class UserController extends Controller
 
         flash('Cuenta Actualizada','success');
 
-    	return Redirect('/medic/account/edit');
+    	return Redirect('/account/edit');
 
     }
 
