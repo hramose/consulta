@@ -61,7 +61,9 @@ class MedicController extends Controller
                 
                 
                 $medics = $this->medicRepo->findAll($search);
-                //dd($medics->toArray());
+
+                flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Médico(s)','success');
+                
                 if(request('speciality'))
                 {
                     $specialist = 1;
@@ -75,7 +77,7 @@ class MedicController extends Controller
                 
                 $count = $medics->count();
                     
-                flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Médico(s)','success');
+                
 
                  return view('medics.index',compact('medics','search','selectedSpeciality'));
             }
