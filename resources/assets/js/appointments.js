@@ -370,13 +370,17 @@ $(function () {
               
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                   
-                   swal({
+                   /*swal({
                     title: 'Hora no permitida!',
                     text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
                     html: true
                      
-                    });
-
+                    });*/
+                    $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                      setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                        },3000);
 
                   return false;
               }
