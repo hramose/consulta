@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
+   <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
 @endsection
 @section('content')
     
@@ -129,9 +130,41 @@
 @section('scripts')
 <script src="/js/plugins/select2/select2.full.min.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/es.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+ <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script>
   $(function () {
     //Initialize Select2 Elements
+    $('#datetimepicker1').datetimepicker({
+            format:'YYYY-MM-DD hh:mm',
+            locale: 'es',
+            
+         });
+    $('#modalOfficeNotification').find('.btn-save-notification').on('click',function (e) {
+      e.preventDefault();
+      var office_id = $(this).attr('data-office');
+      if(office_id)
+      {
+        $.ajax({
+              type: 'PUT',
+              url: '/medic/account/offices/'+ office_id + '/notification',
+              data: { notification: 1, notification_date: $('#modalOfficeNotification').find('#datetimepicker1').val() },
+              success: function (resp) {
+                
+               console.log('Notificacion actualizada')
+              },
+              error: function () {
+                console.log('error updating Notificacion');
+
+              }
+          });
+      }
+
+    });
+
     $(".select2").select2();
 
     $("#UploadPhoto").ajaxUpload({

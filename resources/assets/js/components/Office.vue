@@ -151,6 +151,45 @@
                 </div>
               </div>
 
+              <!-- Modal -->
+              <div class="modal fade" id="modalOfficeNotification" tabindex="-1" role="dialog" aria-labelledby="modalOfficeNotificationLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="modalOfficeNotificationLabel">Recordatorio</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                          <div class="callout callout-info">
+                            <h4>Recordatorio de actualizacion de ubicación de consultorio o clinica</h4>
+
+                            <p>Selecciona el dia y la hora del recordatorio</p>
+                          </div>
+                                
+                            <div class="input-group">
+                              <input type="text" class="form-control"  name="notification_date" id="datetimepicker1" v-model="office.notification_date" @blur="onBlur">
+
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                            </div>
+
+
+                               
+                          
+                          
+                       
+                    </div>
+                    <div class="modal-footer">
+                      <!-- <button type="button" class="btn btn-primary btn-save-notification" v-bind:data-office="office.id">Guardar</button> -->
+                      <button type="button" class="btn btn-danger" v-show="office.notification_date" @click="office.notification_date = ''">Quitar Notificación</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
 
             </div>
              <div class="col-sm-3">
@@ -158,6 +197,15 @@
                   <div class="col-sm-5">
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                         Ver ejemplo
+                      </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                  <div class="col-sm-5">
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification">
+                        Recordatorio de actualizacion
                       </button>
                     </div>
                 </div>
@@ -598,6 +646,19 @@
         FormError
       },
       methods: {
+        onBlur(e){
+          const value = e.target.value;
+          console.log('onInput fired', value)
+          
+          //Add this line
+          this.$emit('input', value)
+          
+        
+        },
+        changeValue(value)
+        {
+          this.office.notification_date = value;
+        },
         getGeolocation(){
        //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
     
@@ -733,7 +794,7 @@
              console.log('Component ready. office')
 
              this.consultorios = this.offices;
-            
+             this.$on('input', this.changeValue);
         }
     }
 </script>

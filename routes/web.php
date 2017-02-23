@@ -55,6 +55,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::delete('/account/offices/{id}', 'Medic\OfficeController@destroy');
 	Route::get('/account/offices/list', 'Medic\OfficeController@getOffices');
 	Route::put('/account/offices/{id}', 'Medic\OfficeController@update');
+	Route::put('/account/offices/{id}/notification', 'Medic\OfficeController@updateOfficeNotification');
 
 	Route::post('/patients/photos', 'Medic\PatientController@photos');
 	Route::post('/patients/files', 'Medic\PatientController@files');

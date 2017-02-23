@@ -17,6 +17,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/medic/patients/photos',
         '/medic/account/avatars',
         '/medic/account/settings',
+        '/medic/account/offices/*',
         '/medic/appointments',
         '/medic/appointments/*',
         '/appointments',

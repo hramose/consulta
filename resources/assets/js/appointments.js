@@ -420,7 +420,7 @@ $(function () {
           },
           eventRender: function(event, element) {
             
-            if($(element).hasClass("fc-nonbusiness"))
+            if(element.hasClass("fc-nonbusiness"))
             {
                 $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
@@ -1020,7 +1020,7 @@ $(function () {
 
              return false;
         }
-        debugger
+       
         if(moment(start).isAfter(end))
         {
            $('#infoBox').addClass('alert-danger').html('Fecha invalida. La hora de inicio no puede ser mayor que la hora final!!!').show();

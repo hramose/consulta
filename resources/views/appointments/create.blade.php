@@ -189,7 +189,7 @@
           <div class="box box-solid box-offices">
             <div class="box-header with-border">
               <h4 class="box-title">Agenda </h4>
-              <div><small>(Arrastra los elementos en la hora deseada dentro del calendario)</small></div>
+              <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div>
             </div>
             <div class="box-body">
               <!-- the events -->

@@ -46,6 +46,11 @@ class OfficeController extends Controller
         ]);
 
         $data = request()->all();
+
+         if($data['notification_date'])
+         {
+             $data['notification'] = 1;
+         }
         
 
         $office = $this->officeRepo->store($data);
@@ -70,12 +75,36 @@ class OfficeController extends Controller
                 'district' => 'required',  
                 'phone' => 'required',      
         ]);
+         
+         $data = request()->all();
 
-    	$office = $this->officeRepo->update($id, request()->all());
+         if($data['notification_date'])
+         {
+             $data['notification'] = 1;
+         }else{
+            
+             $data['notification'] = 0;
+         }
+
+    	$office = $this->officeRepo->update($id, $data);
 
         //flash('Consultorio Actualizado','success');
 
     	return $office;
+
+    }
+    public function updateOfficeNotification($id)
+    {
+        $this->validate(request(),[
+                'notification_date' => 'required',      
+        ]);
+
+        $data = request()->all();
+        $data['notification'] = 1;
+
+        $office = $this->officeRepo->update($id,  $data);
+
+        return $office;
 
     }
     /**

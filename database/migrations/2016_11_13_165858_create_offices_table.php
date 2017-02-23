@@ -27,6 +27,8 @@ class CreateOfficesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('lat')->nullable();
             $table->string('lon')->nullable();
+            $table->tinyInteger('notification')->default(0);
+            $table->dateTime('notification_date');
             $table->string('address_map')->nullable();
             $table->timestamps();
         });
