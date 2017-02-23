@@ -28,17 +28,18 @@ $(function () {
    $('#datetimepicker1').datetimepicker({
       format:'YYYY-MM-DD',
       locale: 'es',
-      useCurrent: false
+      
    });
         $('#datetimepicker2').datetimepicker({
-                    format: 'LT',
+                    format: 'HH:mm',
                     stepping: stepping,
-                    useCurrent: false
+                    //useCurrent: false
+                    
                 });
        $('#datetimepicker3').datetimepicker({
-            format: 'LT',
+            format: 'HH:mm',
             stepping: stepping,
-             useCurrent: false//Important! See issue #1075
+            useCurrent: false//Important! See issue #1075
         });
         
         $("#datetimepicker2").on("dp.change", function (e) {
@@ -244,7 +245,7 @@ $(function () {
        $('#datetimepicker2').datetimepicker({
                     format: 'LT',
                     stepping: stepping,
-                    useCurrent: false
+                    //useCurrent: false
                 });
        $('#datetimepicker3').datetimepicker({
             format: 'LT',
@@ -962,18 +963,18 @@ $(function () {
 
     $("#setupSchedule").find('.add-cita').on('click', function (e) {
       e.preventDefault();
-        debugger
+       
         var title = $("#setupSchedule").find('#search-offices').val();
         var date = $("#setupSchedule").find('input[name="date"]').val();
         var ini = $("#setupSchedule").find('input[name="start"]').val();
         var fin = $("#setupSchedule").find('input[name="end"]').val();
        
-        var dataSelect = $("#setupSchedule").find('#search-offices').select2("data");
-        console.log("ssss " + dataSelect[0].office_info);
-        var office_info = (dataSelect[0].office_info) ? dataSelect[0].office_info : '';
+        var dataSelect = (title) ? $("#setupSchedule").find('#search-offices').select2("data") : '';
+        
+        var office_info = (dataSelect) ? ((dataSelect[0].office_info) ? dataSelect[0].office_info : '') : '';
         var start = date + 'T'+ ini;
         var end = date + 'T'+ fin;
-        
+      
        if(!title)
        {
        
