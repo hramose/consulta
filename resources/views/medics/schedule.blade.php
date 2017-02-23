@@ -24,10 +24,9 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-events">
-                <div class="external-event bg-primary" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : auth()->id() }}" data-doctor="{{ $id }}" data-createdby="{{ auth()->id() }}">Cita</div>
+                <div class="external-event bg-primary" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : auth()->id() }}" data-doctor="{{ $medic->id }}" data-createdby="{{ auth()->id() }}">Cita</div>
               </div>
-              <!-- <input name="medic_id" type="hidden" value="{{ $id }}"> -->
-              <!-- <input name="created_by" type="hidden" value="{{ auth()->id() }}"> -->
+            
               <p class="text-muted well well-sm no-shadow text-center" style="margin-top: 10px;">
                 Arrastra el elemento de arriba llamado cita dentro del calendario en la fecha y hora deseado!
               </p>
@@ -47,10 +46,8 @@
           <div class="box box-primary box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
-              <div id="calendar"></div>
+              <div id="calendar" data-slotDuration="{{ ($medic->settings) ? $medic->settings->slotDuration : '' }}"></div>
 
-             <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-patient="{{ auth()->id() }}" data-doctor="{{ $id }}">Open modal for @mdo</button> -->
-              
           
               <!-- Modal -->
               <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></modal-schedule>

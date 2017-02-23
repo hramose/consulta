@@ -98,11 +98,12 @@ class OfficeController extends Controller
      */
     public function getOffices()
     {
-
-        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->id());
+        
+        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->id(),request()->all());
 
         return $offices;
         
     }
+   
 
 }

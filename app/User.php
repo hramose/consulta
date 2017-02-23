@@ -150,6 +150,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Appointment::class);
     }
+    public function settings()
+    {
+        return $this->hasOne(Setting::class);
+    }
+    /**
+     * create a setting to user
+     * @param null $profile
+     * @return mixed
+     */
+    public function createSettings($setting = null)
+    {
+        $setting = ($setting) ? $setting : new Setting();
+
+        return $this->settings()->save($setting);
+    }
 
     
  

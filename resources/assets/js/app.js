@@ -29,6 +29,7 @@ Vue.component('patient-form', require('./components/PatientForm.vue'));
 Vue.component('patient-list', require('./components/PatientList.vue'));
 Vue.component('patient-search', require('./components/PatientSearch.vue'));
 Vue.component('appointment-create', require('./components/AppointmentCreate.vue'));
+//Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);**/

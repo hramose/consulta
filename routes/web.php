@@ -48,6 +48,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 
 	Route::get('/account/edit', 'Medic\UserController@edit');
 	Route::put('/account/edit', 'Medic\UserController@update');
+	Route::put('/account/settings', 'Medic\UserController@updateSettings');
+	
 	Route::post('/account/avatars', 'Medic\UserController@avatars');
 	Route::post('/account/offices', 'Medic\OfficeController@store');
 	Route::delete('/account/offices/{id}', 'Medic\OfficeController@destroy');

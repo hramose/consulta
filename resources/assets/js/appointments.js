@@ -21,6 +21,49 @@ $(function () {
       }
   };
 
+    var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
+    var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       
+
+   $('#datetimepicker1').datetimepicker({
+      format:'YYYY-MM-DD',
+      locale: 'es',
+      useCurrent: false
+   });
+        $('#datetimepicker2').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping,
+                    
+                });
+       $('#datetimepicker3').datetimepicker({
+            format: 'LT',
+            stepping: stepping,
+             //useCurrent: false//Important! See issue #1075
+        });
+        
+        $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker3").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
+        });
+  /* $('#datetimepicker2').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping
+                });
+  $('#datetimepicker3').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping
+                });*/
+  /*$('#datepicker').datepicker({
+      autoclose: true
+    });*/
+   /*$(".timepicker").timepicker({
+      showInputs: false
+    });*/
+
+  $('#setupSchedule').modal({backdrop:'static', show:true });
+
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
     }else{
@@ -171,10 +214,89 @@ $(function () {
         m = date.getMonth(),
         y = date.getFullYear();
 
+     var $calendar = $('#calendar');
+     var slotDuration = $('#selectSlotDuration').val();//$calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
+     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+
+     $('#selectSlotDuration').on('change',function (e) {
+        e.preventDefault();
+
+       onChangeSlotDurarion($(this).val());
+
+     });
+     $('#selectSlotDurationModal').on('change',function (e) {
+        e.preventDefault();
+  
+        onChangeSlotDurarion($(this).val());
+        resetTimePicker($(this).val());
+     });
+
+     function resetTimePicker(slotDuration) {
+       $('#datetimepicker2').data("DateTimePicker").clear();
+       $('#datetimepicker3').data("DateTimePicker").clear();
+       $('#datetimepicker2').data("DateTimePicker").destroy();
+        $('#datetimepicker3').data("DateTimePicker").destroy();
+
+  
+        var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+
+       $('#datetimepicker2').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping,
+                    
+                });
+       $('#datetimepicker3').datetimepicker({
+            format: 'LT',
+            stepping: stepping,
+             //useCurrent: false//Important! See issue #1075
+        });
+        
+       /* $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker3").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
+        });*/
+       /*$('#datetimepicker2').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping
+                });
+        $('#datetimepicker3').datetimepicker({
+                    format: 'LT',
+                    stepping: stepping
+                });*/
+      
+     }
+
+     function onChangeSlotDurarion(slotDuration) {
+       
+
+        eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+        eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+
+        $calendar.fullCalendar('option','slotDuration', slotDuration);
+
+         $.ajax({
+            type: 'PUT',
+            url: '/medic/account/settings',
+            data: { slotDuration: slotDuration },
+            success: function (resp) {
+              
+             console.log('slotDuration actualizado')
+            },
+            error: function () {
+              console.log('error updating slotDuration');
+
+            }
+        });
+     }
+
     function initCalendar(appointments)
     {
-
-      $('#calendar').fullCalendar({
+      
+     
+      $calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaWeek',
           timeFormat: 'h(:mm)a',
@@ -186,8 +308,8 @@ $(function () {
           //Random default events
           events: appointments,
           forceEventDuration: true,
-          slotDuration:'00:20:00',
-          defaultTimedEventDuration: '00:20:00',
+          slotDuration:  slotDuration,
+          defaultTimedEventDuration: slotDuration,
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
@@ -521,7 +643,7 @@ $(function () {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
         //user_id: event.user_id,
@@ -548,7 +670,7 @@ $(function () {
         //title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         //backgroundColor: event.backgroundColor, //Success (green)
         //borderColor: event.borderColor,
         //user_id: event.user_id,
@@ -761,16 +883,173 @@ $(function () {
 
 
     $('#myModal').on('shown.bs.modal', function (event) {
-      //debugger
-     // var button = $(event.relatedTarget) // Button that triggered the modal
-      var date = $(this).find('.modal-body').attr('data-date') // Extract info from data-* attributes
+     
+      var date = $(this).find('.modal-body').attr('data-date') 
       var hour = $(this).find('.modal-body').attr('data-hour')
      
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  
       var modal = $(this)
       modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
-      //modal.find('.modal-body').data('appointment','');
+   
+    });
+
+
+    //search offices
+
+    $(".search-offices").select2({
+            placeholder: "Buscar Consultorios o crea un evento nuevo...",
+            tags: true,
+             minimumInputLength: 1,
+             createTag: function (params) {
+              return {
+                id: params.term,
+                text: params.term,
+                newOption: true
+              }
+            },
+            templateResult: function (data) {
+              var $result = $("<span></span>");
+
+              $result.text(data.text);
+
+              if (data.newOption) {
+                $result.append(" <em>(Nuevo)</em>");
+              }
+
+              return $result;
+            },
+            ajax: {
+              url: "/medic/account/offices/list",
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                return {
+                  q: params.term // search term
+                  
+                };
+              },
+              processResults: function (data) {
+               
+                
+               $(".search-offices").empty();
+                var items = []
+                
+                $.each(data, function (index, value) {
+
+                    item = {
+                      id: value.name,
+                      text: value.name,
+                      office_info: JSON.stringify(value)
+                    }
+                    items.push(item);
+                })
+              
+                    
+                return {
+                  results: items,
+                  
+                };
+              }
+             
+            },
+            templateSelection: function(container) {
+                  $(container.element).attr("data-office", container.office_info);
+                  
+                  return container.text;
+              }
+     });
+
+    $("#setupSchedule").find('.add-cita').on('click', function (e) {
+      e.preventDefault();
+        debugger
+        var title = $("#setupSchedule").find('#search-offices').val();
+        var date = $("#setupSchedule").find('input[name="date"]').val();
+        var ini = $("#setupSchedule").find('input[name="start"]').val();
+        var fin = $("#setupSchedule").find('input[name="end"]').val();
+       
+        var dataSelect = $("#setupSchedule").find('#search-offices').select2("data");
+        console.log("ssss " + dataSelect[0].office_info);
+        var office_info = (dataSelect[0].office_info) ? dataSelect[0].office_info : '';
+        var start = date + 'T'+ ini;
+        var end = date + 'T'+ fin;
+        
+       if(!title)
+       {
+       
+         $("#setupSchedule").find('#search-offices').select2('focus');
+         $("#setupSchedule").find('#search-offices').select2('open');
+
+         $('#infoBox').addClass('alert-danger').html('Escribe un consultorio o evento. Por favor revisar!!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+          return false;
+       }
+
+        if(!date || !ini || !fin)
+        {
+          $('#infoBox').addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+             return false;
+        }
+
+       var appointment = {
+        title : title,
+        date :  date,
+        start : start,
+        end : end,
+        backgroundColor: (office_info) ? '#00a65a': '#dd4b39', //Success (green)
+        borderColor: (office_info) ? '#00a65a': '#dd4b39',
+        patient_id: 0,
+        office_info: office_info,
+        allDay: 0
+        
+      };
+     
+      if(isOverlapping(appointment)){
+         $('#infoBox').addClass('alert-danger').html('No se puede agregar el evento por que hay colision de horarios. Por favor revisar!!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+        return false;
+      }
+
+      $.ajax({
+            type: 'POST',
+            url: '/medic/appointments',
+            data: appointment,
+            success: function (resp) {
+
+                  resp.allDay = parseInt(resp.allDay);
+                  
+                  $('#calendar').fullCalendar('renderEvent', resp, true);
+              
+                  $('#infoBox').addClass('alert-success').html('Evento Agregado Correctamente!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-success').hide();
+                        },3000);
+              
+                
+            },
+            error: function () {
+              console.log('error saving appointment');
+
+            }
+        });
+
+     
+
+      
+
+
     });
 
 

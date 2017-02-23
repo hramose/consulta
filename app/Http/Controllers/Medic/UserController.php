@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use App\Setting;
 use App\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -48,6 +49,23 @@ class UserController extends Controller
         flash('Cuenta Actualizada','success');
 
     	return Redirect('/medic/account/edit');
+
+    }
+    public function updateSettings()
+    {  
+        
+        $settings = Setting::where('user_id',auth()->id())->first();
+        if($settings)
+        {
+            $settings->fill(request()->all());
+            $settings->save();
+        }
+        else{
+           $settings = auth()->user()->settings()->create(request()->all());  
+        }
+
+        return $settings;
+        
 
     }
 

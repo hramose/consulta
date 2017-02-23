@@ -41,15 +41,19 @@ class AppointmentController extends Controller
     
          // por si le da desde el formulario de paciente crear la cita a este paciente sin tener que buscarlo
         $p = null;
+        $wizard = null;
         
         if(request('p'))
             $p = Patient::find(request('p'));
+
+        if(request('wizard'))
+            $wizard = 1;
 
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id());
 
        
 
-    	return view('appointments.create',compact('appointments', 'p'));
+    	return view('appointments.create',compact('appointments', 'p','wizard'));
 
     }
 

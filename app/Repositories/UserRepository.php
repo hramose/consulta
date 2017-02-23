@@ -36,7 +36,7 @@ class UserRepository extends DbRepository{
         if(isset($data['speciality']))
             $user->assignSpeciality($data['speciality']);
 
-        //$user->createOffice();
+        $user->createSettings();
         
         $exists = Storage::disk('public')->exists('avatars/'. $user->id.'/avatar.jpg');
         

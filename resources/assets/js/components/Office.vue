@@ -89,7 +89,8 @@
       </div>
        <div class="form-group">
         <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
-
+            
+                                                  
         
              <div class="col-sm-3">
               <div class="form-group">
@@ -114,15 +115,22 @@
               </div>
                
             </div>
+           
             <div class="col-sm-3">
           
               <div class="form-group">
-                <div class="col-sm-10">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                    Ver ejemplo
-                  </button>
+
+                 
+                <div class="col-sm-6">
+                
+                  
+                   <button type="button" class="btn btn-default btn-geo" @click="getGeolocation"><i class="fa fa-"></i>Tu ubicación Actual</button>
+                 
                 </div>
+         
+                
               </div>
+
               
 
               <!-- Modal -->
@@ -144,6 +152,15 @@
               </div>
 
 
+            </div>
+             <div class="col-sm-3">
+              <div class="form-group">
+                  <div class="col-sm-5">
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Ver ejemplo
+                      </button>
+                    </div>
+                </div>
             </div>
             
           
@@ -567,7 +584,10 @@
           cantones: [],
           distritos: [],
           loader:false,
-          office: {},
+          office: {
+            lat : '',
+            lon: ''
+          },
           errors: []
          
         
@@ -578,6 +598,21 @@
         FormError
       },
       methods: {
+        getGeolocation(){
+       //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
+    
+          var vm = this;
+          window.navigator.geolocation.getCurrentPosition(vm.localitation);
+
+       },
+       localitation(geo){
+       
+      
+          this.office.lat = geo.coords.latitude;
+          this.office.lon = geo.coords.longitude;
+          
+         
+       },
         onChangeProvince: function (event) {
           
           var cant = [];

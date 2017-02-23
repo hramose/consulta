@@ -93,8 +93,9 @@ class MedicController extends Controller
      */
     public function schedule($id)
     {
-      
-        return view('medics.schedule',compact('id'));
+        $medic = $this->medicRepo->findbyId($id);
+        
+        return view('medics.schedule',compact('medic'));
 
     }
 

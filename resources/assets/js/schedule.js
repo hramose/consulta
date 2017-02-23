@@ -121,10 +121,15 @@ $(function () {
         m = date.getMonth(),
         y = date.getFullYear();
 
+    var $calendar = $('#calendar');
+     var slotDuration = $calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
+     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+
     function initCalendar(appointments)
     {
 
-      $('#calendar').fullCalendar({
+      $calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaWeek',
           timeFormat: 'h(:mm)a',
@@ -136,8 +141,8 @@ $(function () {
           //Random default events
           events: appointments,
           forceEventDuration: true,
-          slotDuration:'00:20:00',
-          defaultTimedEventDuration: '00:20:00',
+          slotDuration: slotDuration,
+          defaultTimedEventDuration: slotDuration,
           editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
@@ -473,7 +478,7 @@ $(function () {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
         user_id: event.user_id,
@@ -500,7 +505,7 @@ $(function () {
         title : event.title,
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
-        end : (event.end) ? event.end.stripZone().format() : event.start.add(20, 'minutes').stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         //backgroundColor: event.backgroundColor, //Success (green)
        // borderColor: event.borderColor,
         //user_id: event.user_id,
