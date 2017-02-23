@@ -153,6 +153,8 @@ $(function () {
               start: '07:00', // a start time (10am in this example)
               end: '18:00', // an end time (6pm in this example)
           },
+          minTime: "07:00:00",
+          maxTime: "18:00:00",
           scrollTime: '07:00:00',
           nowIndicator: true,
           timezone: 'local',
@@ -201,6 +203,7 @@ $(function () {
            
           },
           eventResize: function(event, delta, revertFunc) {
+
 
               updateAppointment(event, revertFunc);
           
@@ -304,10 +307,6 @@ $(function () {
                     content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
                 });*/
             }
-
-        },
-        dayRender: function( date, cell ) {
-          
 
         },
         dayClick: function(date, jsEvent, view) {

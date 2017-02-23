@@ -336,6 +336,8 @@ $(function () {
               start: '07:00', // a start time (10am in this example)
               end: '18:00', // an end time (6pm in this example)
           },
+          minTime: "07:00:00",
+          maxTime: "18:00:00",
           selectable: true,
           selectOverlap: false,
           selectHelper: true,
@@ -344,29 +346,21 @@ $(function () {
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
-          select: function(start, end) {
-            /*var title = prompt('Event Title:');
-            var eventData;
-            if (title) {
-              eventData = {
-                title: title,
-                start: start,
-                end: end
-              };
-              $calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
-            }
-            $calendar.fullCalendar('unselect');*/
+          select: function(start, end, jsEvent) {
+            
             var currentDate = new Date();
           
               
-              if(start < currentDate /*|| $(jsEvent.target).hasClass("fc-nonbusiness")*/) {
-                  
+              if(start < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
+                    
                     $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
                           $('#infoBox').removeClass('alert-danger').html('').hide();
                         },3000);
 
+                  $calendar.fullCalendar('unselect');
+                  
                   return false;
               }
 
@@ -377,6 +371,8 @@ $(function () {
                 $('#myModal').find('.modal-body').attr('data-modaldate', start.format());
                 $('#myModal').find('.modal-body').attr('data-modaldate-end', end.format());
                 $('#myModal').find('.modal-body').attr('data-date', start.format("dddd, MMMM Do YYYY")).attr('data-hour', start.format("hh:mm a" ));
+
+               // $calendar.fullCalendar('unselect');
                 
           },
           drop: function (date, allDay) { // this function is called when something is dropped
@@ -410,8 +406,8 @@ $(function () {
          
            
           },
-          eventResize: function(event, delta, revertFunc) {
-
+          eventResize: function(event, delta, revertFunc, jsEvent) {
+             
               updateAppointment(event, revertFunc);
           
            
@@ -519,36 +515,7 @@ $(function () {
             
 
         },
-        dayRender: function( date, cell ) {
-            debugger
-            /*console.log(date);
-             // It's an example, do your own test here
-            /*if(cell.hasClass("fc-other-month")) {
-                  cell.addClass('disabled');
-             } */
-              
-             
-            /*var currentDate = new Date();
-             if(date < currentDate) {
-                  debugger
-                   cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
-              }
-              if (moment().diff(date,'days') > 0){
-                 debugger
-                  cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
-              }*/
-             /* var currentDate = new Date();
-              var beginningTime = moment(date, 'h:mma');
-              var endTime = moment(currentDate, 'h:mma');
-              debugger
-              console.log(beginningTime.isBefore(endTime)); // true
-              console.log(beginningTime.toDate()); // Mon May 12 2014 08:45:00
-              console.log(endTime.toDate());
-               if(beginningTime.isBefore(endTime)) {
-
-                    cell.append( "<span class='tooltip-pastday' data-toggle='tooltip' data-placement='left' title='' data-original-title='Tooltip on left'></span>" );
-              }*/
-        },
+      
         dayClick: function(date, jsEvent, view) {
               var currentDate = new Date();
               
