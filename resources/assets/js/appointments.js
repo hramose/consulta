@@ -22,52 +22,57 @@ $(function () {
   };
 
     var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
-    var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
     
-    if(stepping == '01')
+    if(slotDuration)
     {
-      stepping = '60';
-    }   
+          var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+          
+          if(stepping == '01')
+          {
+            stepping = '60';
+          }   
 
-   $('#datetimepicker1').datetimepicker({
-      format:'YYYY-MM-DD',
-      locale: 'es',
-      
-   });
-        $('#datetimepicker2').datetimepicker({
-                    format: 'HH:mm',
-                    stepping: stepping,
-                    //useCurrent: false
-                    
-                });
-       $('#datetimepicker3').datetimepicker({
-            format: 'HH:mm',
-            stepping: stepping,
-            useCurrent: false//Important! See issue #1075
-        });
-        
-        $("#datetimepicker2").on("dp.change", function (e) {
-            $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker3").on("dp.change", function (e) {
-            $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
-        });
-  /* $('#datetimepicker2').datetimepicker({
-                    format: 'LT',
-                    stepping: stepping
-                });
-  $('#datetimepicker3').datetimepicker({
-                    format: 'LT',
-                    stepping: stepping
-                });*/
-  /*$('#datepicker').datepicker({
-      autoclose: true
-    });*/
-   /*$(".timepicker").timepicker({
-      showInputs: false
-    });*/
+         $('#datetimepicker1').datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
+              $('#datetimepicker2').datetimepicker({
+                          format: 'HH:mm',
+                          stepping: stepping,
+                          //useCurrent: false
+                          
+                      });
+             $('#datetimepicker3').datetimepicker({
+                  format: 'HH:mm',
+                  stepping: stepping,
+                  useCurrent: false//Important! See issue #1075
+              });
+              
+              /*$("#datetimepicker2").on("dp.change", function (e) {
+                  $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
+              });
+              $("#datetimepicker3").on("dp.change", function (e) {
+                  $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
+              });*/
+        /* $('#datetimepicker2').datetimepicker({
+                          format: 'LT',
+                          stepping: stepping
+                      });
+        $('#datetimepicker3').datetimepicker({
+                          format: 'LT',
+                          stepping: stepping
+                      });*/
+        /*$('#datepicker').datepicker({
+            autoclose: true
+          });*/
+         /*$(".timepicker").timepicker({
+            showInputs: false
+          });*/
 
-  $('#setupSchedule').modal({backdrop:'static', show:true });
+        $('#setupSchedule').modal({backdrop:'static', show:true });
+  }
+
 
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
@@ -331,11 +336,49 @@ $(function () {
               start: '07:00', // a start time (10am in this example)
               end: '18:00', // an end time (6pm in this example)
           },
+          selectable: true,
+          selectOverlap: false,
+          selectHelper: true,
           //weekends: false,
           scrollTime: '07:00:00',
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
+          select: function(start, end) {
+            /*var title = prompt('Event Title:');
+            var eventData;
+            if (title) {
+              eventData = {
+                title: title,
+                start: start,
+                end: end
+              };
+              $calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
+            }
+            $calendar.fullCalendar('unselect');*/
+            var currentDate = new Date();
+          
+              
+              if(start < currentDate /*|| $(jsEvent.target).hasClass("fc-nonbusiness")*/) {
+                  
+                    $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                      setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                        },3000);
+
+                  return false;
+              }
+
+
+                $('#myModal').modal({backdrop:'static', show:true });
+                $('#myModal').find('#modal-new-event').attr('data-modaldate', start.format());
+                 $('#myModal').find('#modal-new-event').attr('data-modaldate-end', end.format());
+                $('#myModal').find('.modal-body').attr('data-modaldate', start.format());
+                $('#myModal').find('.modal-body').attr('data-modaldate-end', end.format());
+                $('#myModal').find('.modal-body').attr('data-date', start.format("dddd, MMMM Do YYYY")).attr('data-hour', start.format("hh:mm a" ));
+                
+          },
           drop: function (date, allDay) { // this function is called when something is dropped
             
 
@@ -380,6 +423,18 @@ $(function () {
 
           },
           eventRender: function(event, element) {
+            
+            if($(element).hasClass("fc-nonbusiness"))
+            {
+                $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                      setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                        },3000);
+
+                  return false;
+            }
+
             element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
 
@@ -495,20 +550,12 @@ $(function () {
               }*/
         },
         dayClick: function(date, jsEvent, view) {
-              var currentDate = new Date();
+              /*var currentDate = new Date();
               
-             /* if($(jsEvent.target).hasClass("disabled")){
-                  return false;
-              }*/
-              
+          
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                   
-                   /*swal({
-                    title: 'Hora no permitida!',
-                    text: 'No puedes selecionar horas pasadas o fuera del horario de atención',
-                    html: true
-                     
-                    });*/
+                  
                     $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
@@ -518,22 +565,14 @@ $(function () {
                   return false;
               }
 
-              /*alert('Clicked on: ' + date.format());
-
-              alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-
-              alert('Current view: ' + view.name);*/
-
-              // change the day's background color just for fun
-              //$(this).css('background-color', 'red');
-             
+              
 
                 $('#myModal').modal({backdrop:'static', show:true });
                 $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
                 $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
                 $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
                 
-              
+              */
            
           }
         
@@ -802,6 +841,7 @@ $(function () {
       var valSelect = $(".modal-body").find('.widget-user-2').attr('data-patient');//val();
       var valName = $(".modal-body").find('.widget-user-2').attr('data-title');
       var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
+      var end = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate-end'));
       if (valSelect.length == 0) {
         return;
       }
@@ -825,6 +865,10 @@ $(function () {
         
         // assign it the date that was reported
         copiedEventObject.start = date;
+        
+        if(end)
+          copiedEventObject.end = end;
+
         if( date.isValid())
         {
          
@@ -1009,6 +1053,17 @@ $(function () {
 
              return false;
         }
+        debugger
+        if(moment(start).isAfter(end))
+        {
+           $('#infoBox').addClass('alert-danger').html('Fecha invalida. La hora de inicio no puede ser mayor que la hora final!!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+             return false;
+        }
 
        var appointment = {
         title : title,
@@ -1047,6 +1102,15 @@ $(function () {
                         { 
                           $('#infoBox').removeClass('alert-success').hide();
                         },3000);
+
+                  $("#setupSchedule").find('#search-offices').val([]);
+                  $("#setupSchedule").find('#search-offices').text('');
+                  $('#datetimepicker1').data("DateTimePicker").clear();
+                  $('#datetimepicker2').data("DateTimePicker").clear();
+                  $('#datetimepicker3').data("DateTimePicker").clear();
+                  //$("#setupSchedule").find('input[name="start"]').val('');
+                 // $("#setupSchedule").find('input[name="end"]').val('');
+
               
                 
             },
