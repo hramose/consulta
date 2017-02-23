@@ -33,7 +33,7 @@ $(function () {
         $('#datetimepicker2').datetimepicker({
                     format: 'LT',
                     stepping: stepping,
-                    
+                    useCurrent: false
                 });
        $('#datetimepicker3').datetimepicker({
             format: 'LT',
@@ -244,7 +244,7 @@ $(function () {
        $('#datetimepicker2').datetimepicker({
                     format: 'LT',
                     stepping: stepping,
-                    
+                    useCurrent: false
                 });
        $('#datetimepicker3').datetimepicker({
             format: 'LT',
