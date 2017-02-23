@@ -373,7 +373,7 @@ $(function () {
 
                 $('#myModal').modal({backdrop:'static', show:true });
                 $('#myModal').find('#modal-new-event').attr('data-modaldate', start.format());
-                 $('#myModal').find('#modal-new-event').attr('data-modaldate-end', end.format());
+                $('#myModal').find('#modal-new-event').attr('data-modaldate-end', end.format());
                 $('#myModal').find('.modal-body').attr('data-modaldate', start.format());
                 $('#myModal').find('.modal-body').attr('data-modaldate-end', end.format());
                 $('#myModal').find('.modal-body').attr('data-date', start.format("dddd, MMMM Do YYYY")).attr('data-hour', start.format("hh:mm a" ));
@@ -550,7 +550,7 @@ $(function () {
               }*/
         },
         dayClick: function(date, jsEvent, view) {
-              /*var currentDate = new Date();
+              var currentDate = new Date();
               
           
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
@@ -572,7 +572,7 @@ $(function () {
                 $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
                 $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
                 
-              */
+              
            
           }
         
