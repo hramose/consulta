@@ -23,7 +23,11 @@ $(function () {
 
     var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
     var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-       
+    
+    if(stepping == '01')
+    {
+      stepping = '60';
+    }   
 
    $('#datetimepicker1').datetimepicker({
       format:'YYYY-MM-DD',
@@ -241,6 +245,11 @@ $(function () {
 
   
         var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       
+       if(stepping == '01')
+       {
+          stepping = '60';
+       }
 
        $('#datetimepicker2').datetimepicker({
                     format: 'LT',

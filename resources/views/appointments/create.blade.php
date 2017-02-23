@@ -45,6 +45,7 @@
                                            <select name="selectSlotDurationModal" id="selectSlotDurationModal" class="form-control">
                                              <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
                                              <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
+                                             <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 hora</option>
                                           </select>
                                         </div>
                                   </div>
@@ -142,6 +143,7 @@
                  <select name="selectSlotDuration" id="selectSlotDuration" class="form-control">
                    <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
                    <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
+                   <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 hora</option>
                 </select>
               </div>
              
