@@ -38,7 +38,7 @@ $(function () {
        $('#datetimepicker3').datetimepicker({
             format: 'LT',
             stepping: stepping,
-             //useCurrent: false//Important! See issue #1075
+             useCurrent: false//Important! See issue #1075
         });
         
         $("#datetimepicker2").on("dp.change", function (e) {
@@ -249,6 +249,7 @@ $(function () {
        $('#datetimepicker3').datetimepicker({
             format: 'LT',
             stepping: stepping,
+             useCurrent: false
              //useCurrent: false//Important! See issue #1075
         });
         
