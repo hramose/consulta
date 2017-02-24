@@ -95,16 +95,17 @@ class OfficeController extends Controller
     }
     public function updateOfficeNotification($id)
     {
-        $this->validate(request(),[
+        /*$this->validate(request(),[
                 'notification_date' => 'required',      
-        ]);
+        ]);*/
 
         $data = request()->all();
-        $data['notification'] = 1;
+        //$data['notification'] = 1;
 
         $office = $this->officeRepo->update($id,  $data);
 
         return $office;
+        //return redirect()->back();
 
     }
     /**

@@ -68,6 +68,42 @@ const app = new Vue({
     }
 });
 
+$('.form-update-location').on('submit', function (e) {
+   e.preventDefault();
+   var form = $(this);
+
+   window.navigator.geolocation.getCurrentPosition(function (geo) {
+      
+
+    var office_id = form.find('input[name="id"]').val();
+    var lat = geo.coords.latitude;
+    var lon = geo.coords.longitude;
+    
+      if(office_id)
+      {
+        $.ajax({
+              type: 'PUT',
+              url: '/medic/account/offices/'+ office_id + '/notification',
+              data: { notification: 0, lat: lat, lon: lon },
+              success: function (resp) {
+                
+               console.log('Notificacion actualizada')
+               form.parent('.notification-app').hide();
+              },
+              error: function () {
+                console.log('error updating Notificacion');
+
+              }
+          });
+      }
+   });
+    
+    console.log('update location');
+    
+    
+});
+
+
 
 
 

@@ -144,7 +144,7 @@
             locale: 'es',
             
          });
-    $('#modalOfficeNotification').find('.btn-save-notification').on('click',function (e) {
+    /*$('#modalOfficeNotification').find('.btn-save-notification').on('click',function (e) {
       e.preventDefault();
       var office_id = $(this).attr('data-office');
       if(office_id)
@@ -164,7 +164,7 @@
           });
       }
 
-    });
+    });*/
 
     $(".select2").select2();
 
