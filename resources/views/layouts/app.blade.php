@@ -66,7 +66,7 @@
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif
      @foreach(auth()->user()->offices as $office)
-       @if($office->notification)
+       @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">Recordatorio de Actualizacion de la ubicacion (lat, lng) del consultorio o clinica {{ $office->name }} 
           <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
                 {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
