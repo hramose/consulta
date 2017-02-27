@@ -140,10 +140,16 @@
   $(function () {
     //Initialize Select2 Elements
     $('#datetimepicker1').datetimepicker({
-            format:'YYYY-MM-DD HH:mm',
+            format:'YYYY-MM-DD',
             locale: 'es',
             
          });
+     $('#datetimepicker2').datetimepicker({
+                          format: 'HH:mm',
+                          stepping: 30,
+                          //useCurrent: false
+                          
+     });
     /*$('#modalOfficeNotification').find('.btn-save-notification').on('click',function (e) {
       e.preventDefault();
       var office_id = $(this).attr('data-office');

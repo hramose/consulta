@@ -47,10 +47,10 @@ class OfficeController extends Controller
 
         $data = request()->all();
 
-         if($data['notification_date'])
+         /*if($data['notification_date'])
          {
              $data['notification'] = 1;
-         }
+         }*/
         
 
         $office = $this->officeRepo->store($data);
@@ -78,13 +78,13 @@ class OfficeController extends Controller
          
          $data = request()->all();
 
-         if($data['notification_date'])
+         /*if($data['notification_date'])
          {
              $data['notification'] = 1;
          }else{
             
              $data['notification'] = 0;
-         }
+         }*/
 
     	$office = $this->officeRepo->update($id, $data);
 

@@ -166,14 +166,28 @@
 
                             <p>Selecciona el dia y la hora del recordatorio</p>
                           </div>
-                                
-                            <div class="input-group">
-                              <input type="text" class="form-control"  name="notification_date" id="datetimepicker1" v-model="office.notification_date" @blur="onBlur">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <div class="input-group">
+                                  <input type="text" class="form-control"  name="notification_date" id="datetimepicker1" v-model="office.notification_datetime" @blur="onBlurDatetime">
 
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                                  <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                              <div class="col-sm-6">
+                                <div class="input-group">
+                                  <input type="text" class="form-control"  name="notification_date" id="datetimepicker2" v-model="office.notification_hour" @blur="onBlurHour">
+
+                                  <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                              
+                            </div> 
 
 
                                
@@ -634,7 +648,9 @@
           loader:false,
           office: {
             lat : '',
-            lon: ''
+            lon: '',
+            notification_datetime: '',
+            notification_hour: ''
           },
           errors: []
          
@@ -646,18 +662,28 @@
         FormError
       },
       methods: {
-        onBlur(e){
+        onBlurDatetime(e){
           const value = e.target.value;
           console.log('onInput fired', value)
           
           //Add this line
-          this.$emit('input', value)
           
-        
+
+          this.office.notification_datetime = value;
+          this.$emit('input')
+        },
+         onBlurHour(e){
+          const value = e.target.value;
+          console.log('onInput fired', value)
+          
+          //Add this line
+
+          this.office.notification_hour = value;
+          this.$emit('input')
         },
         changeValue(value)
         {
-          this.office.notification_date = value;
+          this.office.notification_date = this.office.notification_datetime + ' ' + this.office.notification_hour;
         },
         getGeolocation(){
        //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
@@ -722,6 +748,7 @@
 
 
           this.office = office;
+        
         
         },
         save() {

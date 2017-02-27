@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 
@@ -13,6 +14,17 @@ class Office extends Model
     protected $fillable = [
         'type','name','address','province','canton','district','city','phone','lat','lon','address_map','notification','notification_date'
     ];
+
+    protected $appends = ['notification_datetime','notification_hour'];
+
+    public function getNotificationDatetimeAttribute()
+    {
+        return Carbon::parse($this->notification_date)->format('Y-m-d');
+    }
+     public function getNotificationHourAttribute()
+    {
+        return Carbon::parse($this->notification_date)->toTimeString();
+    }
 
      public function scopeSearch($query, $search)
     {

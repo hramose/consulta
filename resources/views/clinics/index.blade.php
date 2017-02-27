@@ -16,7 +16,7 @@
               <button type="button" class="close" data-dismiss="callout" aria-hidden="true">×</button>
               <h4>Filtros !</h4>
 
-              <p>Utiliza uno o varios de los filtros de abajo para realizar la busqueda más exacta!</p>
+              <p>Utiliza una o varias caracteristicas de busqueda de abajo para realizar la busqueda más exacta!</p>
             </div>
             <div class="box">
               <div class="box-header">
@@ -35,7 +35,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="box box-default collapsed-box box-search-filters box-solid">
                               <div class="box-header with-border ">
-                                <h3 class="box-title">Filtros</h3>
+                                <h3 class="box-title">Caracteristicas de busqueda</h3>
 
                                 <div class="box-tools">
                                   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
