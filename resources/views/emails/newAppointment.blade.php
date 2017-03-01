@@ -7,6 +7,6 @@ Cita con el Dr. {{ $appointment->user->name }}
 - Paciente: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}
 
 
-Thanks,<br>
+Gracias,<br>
 {{ config('app.name') }}
 @endcomponent

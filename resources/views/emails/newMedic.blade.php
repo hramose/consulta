@@ -10,6 +10,6 @@ Se ha registrado un nuevo usuario como médico en el sistema. Verfícalo
 Ir a usuarios
 @endcomponent
 
-Thanks,<br>
+Gracias,<br>
 {{ config('app.name') }}
 @endcomponent
