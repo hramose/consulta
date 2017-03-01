@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
      
-     protected $guarded = ['user_id'];
+     protected $fillable = ['slotDuration','minTime','maxTime'];
      public $timestamps = false;
 
      public function user()

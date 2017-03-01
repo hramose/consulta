@@ -2,6 +2,7 @@
 
 
 use App\Role;
+use App\Setting;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,6 +61,18 @@ class UserRepository extends DbRepository{
 
         if(isset($data['speciality']))
             $user->assignSpeciality($data['speciality']);
+
+        if(isset($data['minTime']) || isset($data['maxTime']))
+        {
+           $settings = Setting::where('user_id',$user->id)->first();
+           
+           if($settings)
+            {
+                $settings->fill($data);
+                $settings->save();
+            }
+            
+        }
         
         $user->save();
 

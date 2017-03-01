@@ -214,7 +214,7 @@
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 
-              <div id="calendar" data-slotDuration="00:20:00"></div>
+              <div id="calendar" data-slotDuration="00:20:00" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}"></div>
             </div>
             <!-- /.box-body -->
           </div>

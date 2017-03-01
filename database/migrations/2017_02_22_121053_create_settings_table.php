@@ -18,6 +18,8 @@ class CreateSettingsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('slotDuration')->default('00:30:00')->nullable();
+            $table->string('minTime')->default('06:00:00')->nullable();
+            $table->string('maxTime')->default('18:00:00')->nullable();
             
         });
          

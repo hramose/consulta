@@ -22,6 +22,7 @@ $(function () {
   };
 
     var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
+   
     
     if(slotDuration)
     {
@@ -225,6 +226,8 @@ $(function () {
         y = date.getFullYear();
 
      var $calendar = $('#calendar');
+     var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
+     var maxTime = $calendar.attr('data-maxTime') ? $calendar.attr('data-maxTime') : '18:00:00';
      var slotDuration = $('#selectSlotDuration').val();//$calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
@@ -331,18 +334,18 @@ $(function () {
           eventOverlap: false,
           businessHours: {
               // days of week. an array of zero-based day of week integers (0=Sunday)
-              dow: [ 1, 2, 3, 4, 5,6], // Monday - Thursday
+              dow: [ 1, 2, 3, 4, 5, 6], // Monday - Thursday
 
-              start: '07:00', // a start time (10am in this example)
-              end: '18:00', // an end time (6pm in this example)
+              start: minTime, // a start time (10am in this example)
+              end: maxTime, // an end time (6pm in this example)
           },
-          minTime: "07:00:00",
-          maxTime: "18:00:00",
+          minTime: minTime,
+          maxTime: maxTime,
           selectable: true,
           selectOverlap: false,
           selectHelper: true,
           //weekends: false,
-          scrollTime: '07:00:00',
+          scrollTime: minTime,
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,

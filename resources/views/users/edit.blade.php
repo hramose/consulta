@@ -93,6 +93,31 @@
                       </select>
                     </div>
                   </div>
+                   <div class="form-group">
+                   <label for="minTime" class="col-sm-2 control-label">Horario de atención</label>
+                    <div class="col-sm-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control"  name="minTime" id="timepicker1" value="{{ old('minTime') ?: $user->settings->minTime }}">
+
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control"  name="maxTime" id="timepicker2" value="{{ old('maxTime') ?: $user->settings->maxTime }}">
+
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                  </div> 
                  
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -145,6 +170,18 @@
             
          });
      $('#datetimepicker2').datetimepicker({
+                          format: 'HH:mm',
+                          stepping: 30,
+                          //useCurrent: false
+                          
+     });
+     $('#timepicker1').datetimepicker({
+                          format: 'HH:mm',
+                          stepping: 30,
+                          //useCurrent: false
+                          
+     });
+     $('#timepicker2').datetimepicker({
                           format: 'HH:mm',
                           stepping: 30,
                           //useCurrent: false
