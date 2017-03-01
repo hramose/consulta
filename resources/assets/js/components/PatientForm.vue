@@ -197,7 +197,7 @@
 		                    {
 		                      if(this.fromModal)
 		                      {
-		                      	bus.$emit('patientCreated', response.data); 
+		                      	bus.$emit('selectedPatient', response.data); 
 		                      }
 		                      bus.$emit('addToList', response.data); //this.pacientes.push(response.data);
 		                      bus.$emit('alert', 'Paciente Agregado','success');

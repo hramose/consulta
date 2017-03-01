@@ -163,6 +163,7 @@
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script>
   $(function () {
+     $(".dropdown-toggle").dropdown();
     //Initialize Select2 Elements
     $('#datetimepicker1').datetimepicker({
             format:'YYYY-MM-DD',

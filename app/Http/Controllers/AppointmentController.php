@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Appointment;
+use App\Mail\NewAppointment;
 use App\Repositories\AppointmentRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ class AppointmentController extends Controller
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
         
+        \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
 
         return $appointment;
 

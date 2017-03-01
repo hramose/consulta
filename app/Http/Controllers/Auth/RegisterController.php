@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewMedic;
 use App\Repositories\UserRepository;
 use App\Speciality;
 use App\User;
@@ -82,7 +83,12 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);*/
-        return $this->userRepo->store($data);
+
+        $user = $this->userRepo->store($data);
+
+        \Mail::to('alonso@avotz.com')->send(new NewMedic($user));
+
+        return $user;
 
 
     }
