@@ -56,6 +56,17 @@ class AppointmentController extends Controller
         $appointment = $this->appointmentRepo->store(request()->all(), request('user_id'));
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
+
+        if($appointment->user) //agregar paciente del usuario al medico tambien
+            {
+                $medic = User::find($appointment->user->id);
+
+                $ids_patients = $medic->patients()->pluck('patient_id')->all();
+
+                $ids_patients[] = $appointment->patient->id;
+
+                $medic->patients()->sync($ids_patients);
+            }
         
         \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
 
