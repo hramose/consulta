@@ -5,7 +5,7 @@
 
         <div class="col-sm-10">
           <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona distrito --"  v-model="office.type">
-            <option></option>
+            <option disabled="disabled"></option>
             <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
             
           </select>
@@ -39,7 +39,7 @@
 
         <div class="col-sm-10">
           <select class="form-control " style="width: 100%;" name="province" placeholder="-- Selecciona provincia --"  v-model="office.province" v-on:change="onChangeProvince">
-            <option></option>
+            <option disabled="disabled"></option>
             <option v-for="item in provincias" v-bind:value="item.title">{{ item.title }}</option>
             
           </select>
@@ -53,7 +53,7 @@
 
         <div class="col-sm-10">
           <select class="form-control " style="width: 100%;" name="canton" placeholder="-- Selecciona canton --"  v-model="office.canton" v-on:change="onChangeCanton">
-            <option></option>
+            <option disabled="disabled"></option>
             <option v-for="item in cantones" v-bind:value="item.title">{{ item.title }}</option>
             
           </select>
@@ -67,7 +67,7 @@
 
         <div class="col-sm-10">
           <select class="form-control " style="width: 100%;" name="district" placeholder="-- Selecciona distrito --"  v-model="office.district">
-            <option></option>
+            <option disabled="disabled"></option>
             <option v-for="item in distritos" v-bind:value="item">{{ item }}</option>
             
           </select>
@@ -206,7 +206,7 @@
 
 
             </div>
-             <div class="col-sm-3">
+            <!-- <div class="col-sm-3">
               <div class="form-group">
                   <div class="col-sm-5">
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
@@ -214,12 +214,12 @@
                       </button>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-sm-3">
               <div class="form-group">
                   <div class="col-sm-5">
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification">
-                        Recordatorio de actualizacion
+                        Actualizar coordenadas despues
                       </button>
                     </div>
                 </div>
