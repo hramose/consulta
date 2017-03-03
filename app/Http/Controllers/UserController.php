@@ -25,10 +25,10 @@ class UserController extends Controller
      */
     public function edit()
     {
-    	
+    	$tab = request('tab');
         $user = auth()->user();
 
-    	return view('users.edit-patient',compact('user'));
+    	return view('users.edit-patient',compact('user','tab'));
 
     }
 

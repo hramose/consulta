@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/medic/account/edit';
+    protected $redirectTo = '/medic/account/edit?tab=clinics';
 
     /**
      * Create a new controller instance.

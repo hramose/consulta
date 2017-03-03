@@ -42,11 +42,11 @@
          
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#activity" data-toggle="tab">Perfil</a></li>
-              <li><a href="#timeline" data-toggle="tab">Consultorios</a></li>
+              <li class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }}"><a href="#profile" data-toggle="tab">Perfil</a></li>
+              <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab">Consultorios</a></li>
             </ul>
             <div class="tab-content">
-              <div class="active tab-pane" id="activity">
+              <div class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }} tab-pane" id="profile">
                  <form method="POST" action="{{ url('/medic/account/edit') }}" class="form-horizontal">
                     {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                   <div class="form-group">
@@ -127,7 +127,7 @@
                 </form>
               </div>
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="timeline">
+              <div class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }} tab-pane" id="clinics">
                   <div class="callout callout-info">
                     <h4>Informacion importante!</h4>
 

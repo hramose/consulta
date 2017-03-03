@@ -63,7 +63,7 @@
     @endif
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     @if(!auth()->user()->offices->count())
-       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
+       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif
      @foreach(auth()->user()->offices as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')

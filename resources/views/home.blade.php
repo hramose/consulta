@@ -50,8 +50,8 @@
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="/medic/account/edit" class="small-box-footer">Ir a consultorios <i class="fa fa-arrow-circle-right"></i></a>
-                <a href="/medic/account/edit" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                <a href="/medic/account/edit?tab=clinics" class="small-box-footer">Ir a consultorios <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/medic/account/edit?tab=clinics" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
             <!-- ./col -->

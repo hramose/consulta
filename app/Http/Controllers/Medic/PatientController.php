@@ -23,10 +23,14 @@ class PatientController extends Controller
      */
     public function index()
     {
+        $search['q'] = request('q');
 
-    	$patients = $this->patientRepo->findAll();
+       
+        $patients = $this->patientRepo->findAll($search);
+        
 
-    	return view('patients.index',compact('patients'));
+
+    	return view('patients.index',compact('patients','search'));
 
     }
 
@@ -212,6 +216,30 @@ class PatientController extends Controller
         $patients = $this->patientRepo->list(request('q'));
        
         return $patients;
+
+    }
+
+    /**
+     * Guardar paciente
+     */
+    public function addToYourPatients($id)
+    {
+      
+        $id_patient_confirm = request('id_patient_confirm');
+       
+        if(md5($id) != $id_patient_confirm)
+        {
+         
+         flash('Id de confirmacion incorrecto','danger');
+
+         return back();
+        }
+
+        $patient = auth()->user()->patients()->attach($id);
+
+        flash('Paciente Agregado a tu lista','success');
+
+        return Redirect()->back();
 
     }
 

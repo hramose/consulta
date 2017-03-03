@@ -642,7 +642,7 @@
           }
 
           ],
-          tipos:['Consultorio Independiente', 'Clínica','Hospital Privado'],
+          tipos:['Consultorio Independiente', 'Clínica Privada','Hospital Privado'],
           cantones: [],
           distritos: [],
           loader:false,

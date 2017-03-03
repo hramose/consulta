@@ -63,6 +63,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::put('/patients/{id}/history', 'Medic\PatientController@history');
 	Route::post('/patients/{id}/medicines', 'Medic\PatientController@medicines');
 	Route::delete('/patients/medicines/{id}', 'Medic\PatientController@deleteMedicines');
+	Route::post('/patients/{id}/add', 'Medic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Medic\PatientController@list');
 	Route::resource('patients', 'Medic\PatientController');
 

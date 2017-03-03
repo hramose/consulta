@@ -34,7 +34,7 @@
                           <div class="callout callout-info">
                             <h4>Informacion importante!</h4>
 
-                            <p>Programa tu agenda buscando los consultorios o clinicas donde trabajas (o crea un evento personalizado) y asignale una fecha y horas determinadas. </p>
+                            <p>Programa tu agenda buscando los consultorios o clinicas donde trabajas y asignale una fecha y horas determinadas. </p>
                           </div>
                           <div class="content form-horizontal">
                               <div class="row">
@@ -57,7 +57,7 @@
                                  
                             </div>
                              <div class="row">
-                               <div class="col-xs-12">
+                               <div class="col-xs-12 col-sm-8">
                                   <div class="form-group">
                                           <select name="search-offices" id="search-offices" class="search-offices form-control select2 " style="width: 100%;">
                                             <!-- <option value=""></option> -->
@@ -65,6 +65,13 @@
                                           <ul class="search-list todo-list">
                                           
                                          </ul>
+                                  </div>
+                                      
+                                    
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                  <div class="form-group">
+                                           <a href="/medic/account/edit?tab=clinics" class="btn btn-default ">Crear Consultorio Nuevo</a>
                                   </div>
                                       
                                     

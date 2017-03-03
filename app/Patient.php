@@ -10,11 +10,15 @@ class Patient extends Model
      protected $fillable = [
 		'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'phone2', 'email', 'address', 'province', 'conditions', 'city','created_by'
 	];
-    protected $appends = array('fullname');
+    protected $appends = array('fullname','IDhash');
 
     public function getFullnameAttribute()
     {
         return $this->first_name. ' ' .$this->last_name;  
+    }
+     public function getIDhashAttribute()
+    {
+        return md5($this->id);  
     }
 
     public function scopeSearch($query, $search)
@@ -64,6 +68,10 @@ class Patient extends Model
         $vitalSigns = ($vitalSigns) ? $vitalSigns : new VitalSign();
 
         return $this->vitalSigns()->save($vitalSigns);
+    }
+    public function isPatientOf($user)
+    {
+        return $this->user->contains('id', $user->id);
     }
 
 }

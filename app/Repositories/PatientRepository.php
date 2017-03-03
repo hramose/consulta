@@ -133,7 +133,7 @@ class PatientRepository extends DbRepository{
     }
 
     
-
+    
     /**
      * Find all the patients for the admin panel
      * @internal param $username
@@ -144,8 +144,14 @@ class PatientRepository extends DbRepository{
     {
         $order = 'created_at';
         $dir = 'desc';
-
-        $patients = auth()->user()->patients();
+        
+        if(trim($search['q']))
+        {
+           $patients = $this->model;
+        
+        }else{
+           $patients = auth()->user()->patients();
+        }
 
         if (! count($search) > 0) return $patients->with('appointments')->paginate($this->limit);
 
@@ -165,7 +171,7 @@ class PatientRepository extends DbRepository{
         }
 
 
-        return $patients->with('appointments')->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        return $patients->with('appointments')->orderBy('patients.'.$order , $dir)->paginate($this->limit);
 
     }
 

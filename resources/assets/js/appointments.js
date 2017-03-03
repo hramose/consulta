@@ -77,6 +77,7 @@ $(function () {
 
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
+      $('.box-offices').hide();
     }else{
       //$('.box-create-appointment').show();
     }
@@ -322,7 +323,7 @@ $(function () {
           header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'agendaWeek,agendaDay'
+            right: 'month,agendaWeek,agendaDay'
           },
           //Random default events
           events: appointments,
@@ -349,7 +350,15 @@ $(function () {
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
-          select: function(start, end, jsEvent) {
+          select: function(start, end, jsEvent, view) {
+            
+            if (view.name === "month") {
+
+                $('#calendar').fullCalendar('gotoDate', date);
+                $('#calendar').fullCalendar('changeView', 'agendaWeek');
+
+                return false;
+            }
             
             var currentDate = new Date();
           
@@ -520,6 +529,16 @@ $(function () {
         },
       
         dayClick: function(date, jsEvent, view) {
+
+            
+              if (view.name === "month") {
+                  
+                  $('#calendar').fullCalendar('gotoDate', date);
+                  $('#calendar').fullCalendar('changeView', 'agendaWeek');
+
+                  return false;
+              }
+
               var currentDate = new Date();
               
           
@@ -922,23 +941,23 @@ $(function () {
     //search offices
 
     $(".search-offices").select2({
-            placeholder: "Buscar Consultorios o crea un evento nuevo...",
-            tags: true,
-             minimumInputLength: 1,
-             createTag: function (params) {
+            placeholder: "Buscar Consultorios o selecciona no disponible",
+            //tags: true,
+            /* minimumInputLength: 1,*/
+             /*createTag: function (params) {
               return {
                 id: params.term,
                 text: params.term,
                 newOption: true
               }
-            },
+            },*/
             templateResult: function (data) {
               var $result = $("<span></span>");
 
               $result.text(data.text);
 
               if (data.newOption) {
-                $result.append(" <em>(Nuevo)</em>");
+                $result.css("color",'red');
               }
 
               return $result;
@@ -965,10 +984,19 @@ $(function () {
                       id: value.name,
                       text: value.name,
                       office_info: JSON.stringify(value)
+                     
                     }
                     items.push(item);
                 })
-              
+
+                var nodisponible = {
+                      id: 'No disponible',
+                      text: 'No disponible',
+                      office_info: '',
+                      newOption: true
+                    };
+
+                items.push(nodisponible);
                     
                 return {
                   results: items,

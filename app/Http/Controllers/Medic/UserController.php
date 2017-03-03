@@ -24,11 +24,11 @@ class UserController extends Controller
      */
     public function edit()
     {
-    	
+    	$tab = request('tab');
         $user = auth()->user();
         $specialities = Speciality::all();
 
-    	return view('users.edit',compact('user','specialities'));
+    	return view('users.edit',compact('user','specialities','tab'));
 
     }
 

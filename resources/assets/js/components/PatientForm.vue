@@ -1,6 +1,13 @@
 <template>
 	<div class="form-horizontal">
       <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">ID</label>
+
+        <div class="col-sm-10">
+           <label for="name" class="control-label">{{ paciente.IDhash }}</label>  
+        </div>
+      </div>
+      <div class="form-group">
         <label for="paciente_name" class="col-sm-2 control-label">Nombre</label>
 
         <div class="col-sm-10">
