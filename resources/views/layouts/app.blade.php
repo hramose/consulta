@@ -40,6 +40,13 @@
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+<div class="preloader">
+    <div class="img">
+      <img src="/img/loader.gif" alt="Preloader image">
+      <span>Cargando...</span>
+    </div>
+    
+</div>
 <div id="app" class="wrapper">
 
   <!-- Main Header -->
@@ -65,6 +72,14 @@
     @if(!auth()->user()->offices->count())
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif
+     <div class="menu-fixed">
+            <div class="menu-fixed-container">
+              <a href="/medic/appointments/create" class="btn btn-sm btn-info">Agenda</a>
+              <a href="/medic/appointments/create?wizard=1" class="btn btn-sm btn-success">Programe</a>
+              <a href="/medic/account/edit?tab=clinics" class="btn btn-sm btn-warning">Consultorios</a>
+               <a href="/medic/patients" class="btn btn-sm btn-danger">Expedientes</a>
+            </div>
+         </div>
      @foreach(auth()->user()->offices as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 

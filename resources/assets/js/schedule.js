@@ -123,6 +123,8 @@ $(function () {
 
     var $calendar = $('#calendar');
      var slotDuration = $calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
+     var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
+     var maxTime = $calendar.attr('data-maxTime') ? $calendar.attr('data-maxTime') : '18:00:00';
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
 
@@ -150,12 +152,12 @@ $(function () {
               // days of week. an array of zero-based day of week integers (0=Sunday)
               dow: [ 1, 2, 3, 4, 5,6], // Monday - Thursday
 
-              start: '07:00', // a start time (10am in this example)
-              end: '18:00', // an end time (6pm in this example)
+              start: minTime, // a start time (10am in this example)
+              end: maxTime, // an end time (6pm in this example)
           },
-          minTime: "07:00:00",
-          maxTime: "18:00:00",
-          scrollTime: '07:00:00',
+          minTime: minTime,
+          maxTime: maxTime,
+          scrollTime: minTime,
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
@@ -218,7 +220,7 @@ $(function () {
           eventRender: function(event, element) {
             element.append( "<span class='appointment-details' ></span>" );
 
-            if(event.created_by == $('.external-event').data('createdby'))
+            /*if(event.created_by == $('.external-event').data('createdby'))
             {
                 element.append( "<span class='closeon fa fa-trash'></span>" );
                 
@@ -236,14 +238,11 @@ $(function () {
                       deleteAppointment(event._id, event);
                       swal("Cita cancelada!", "Tu cita ha sido eliminada.", "success");
                     });
-                  /*var r = confirm("Deseas cancelar la cita? requerda que se eliminara del sistema !");
-                  if (r == true) {
-                       deleteAppointment(event._id, event);
-                    } */
+                  
                    
                 });
                 
-            }
+            }**/
             
             if (event.rendering == 'background') {
                 element.append('<h3>'+ event.title + '</h3>');
@@ -259,9 +258,22 @@ $(function () {
                     swal({
                       title: 'Cita con el Dr. '+ event.user.name,
                       text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
-                      html: true
-                       
-                      });
+                      html: true,
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Eliminar",
+                      cancelButtonText: "Ok",
+                      closeOnConfirm: false,
+                      closeOnCancel: true
+                    },
+                    function(isConfirm) {
+                      if (isConfirm) {
+                        deleteAppointment(event._id, event);
+                        swal("Cita cancelada!", "Tu cita ha sido eliminada del calendario.", "success");
+                      } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                      }
+                    });
                    
                      
                   });
@@ -278,21 +290,27 @@ $(function () {
             }else{
 
                 var officeInfoDisplay = '';
+                var titleAlert = event.title;
+                var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
+
 
                 if(event.office_info)
                 {
                      var officeInfo = JSON.parse(event.office_info);
 
-                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>'+
-                      'Teléfono: '+ officeInfo.phone;
+                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>';
+
+                      titleAlert = 'Este horario está reservado para atención en la Clínica ' + event.title
+                      
+                      textAlert = 'Favor llamar a este número: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a> <br>Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
                 element.find(".appointment-details").click(function() {
                    swal({
-                      title: event.title,
-                      text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
-                      html: true
-                       
-                      });
+                      title: titleAlert,
+                      text: textAlert,
+                       html: true
+                     
+                    });
                  
                   
                    
@@ -322,6 +340,17 @@ $(function () {
 
                    return false;
               }
+
+              if($calendar.attr('data-appointmentsday') >= 2)
+                 {
+                  $('#infoBox').addClass('alert-danger').html('No se puede crear más de dos citas al dia!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+                   return false;
+                  }
               /*var event = $('div.external-event');
               
               var eventObject = {
@@ -383,31 +412,43 @@ $(function () {
     
     /* SAVE UPDATE DELETE EVENTS */
     function crud(method, url, data, revertFunc) {
-      
+      $('body').addClass('loading');
+     
       $.ajax({
             type: method || 'POST',
             url: url,
             data: data,
             success: function (resp) {
+              $('body').removeClass('loading');
               
               if(method == "POST")
               {
                 $('#calendar').fullCalendar( 'removeEvents', data.idRemove)
-                 //debugger
+                
+                if(resp == 'max-per-day')
+                 {
+                  $('#infoBox').addClass('alert-danger').html('No se puede crear más de dos citas al dia!!').show();
+                        setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').hide();
+                        },3000);
+
+                   return
+                  }
                   /*if(isOverlapping(resp))
                     resp.allDay = 1; // si se montan poner el evento en todo el dia*/
                 
-                resp.allDay = parseInt(resp.allDay);
+                resp.appointment.allDay = parseInt(resp.appointment.allDay);
 
-                if(resp.allDay)
+                if(resp.appointment.allDay)
                 {
                   
-                  deleteAppointment(resp.id);
+                  deleteAppointment(resp.appointment.id);
                 
                 }else{
                     
-                    $('#calendar').fullCalendar('renderEvent', resp, true);
-                    
+                    $('#calendar').fullCalendar('renderEvent', resp.appointment, true);
+                    $('#calendar').attr('data-appointmentsday', resp.appointmentsToday);
                     //$('#myModal').modal({backdrop:'static', show:true });
                     //$('#myModal').find('.btn-finalizar-cita').attr('data-appointment', resp.id).attr('data-date', moment(resp.date).format("dddd, MMMM Do YYYY")).attr('data-hour', moment(resp.start).locale('en').format("hh:mm a" )).show();
                     
@@ -420,7 +461,7 @@ $(function () {
                if(method == "DELETE")
                {
                 
-                 if(resp)
+                 if(resp.resp == 'error')
                  {
                   $('#infoBox').addClass('alert-danger').html('No se puede eliminar consulta ya que se encuentra iniciada!!').show();
                         setTimeout(function()
@@ -432,6 +473,7 @@ $(function () {
                   }
 
                   $('#calendar').fullCalendar('removeEvents',data.idRemove);
+                  $('#calendar').attr('data-appointmentsday', resp.appointmentsToday);
                   $('#myModal').find('.btn-finalizar-cita').attr('data-appointment', '');
                   $('#myModal').find('.btn-cancelar-cita').attr('data-appointment', '');
                }
@@ -464,6 +506,7 @@ $(function () {
                 
             },
             error: function () {
+               $('body').removeClass('loading');
               console.log('error saving appointment');
 
             }

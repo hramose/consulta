@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -166,6 +167,13 @@ class User extends Authenticatable
         return $this->settings()->save($setting);
     }
 
+    public function appointmentsToday()
+    {
+        
+         //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
+        
+        return Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count();
+    } 
     
  
   

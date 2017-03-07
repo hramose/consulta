@@ -9,8 +9,11 @@
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
-  @include('layouts/partials/header-pages',['page'=>'Arma tu agenda'])
-
+     @if($wizard)
+        @include('layouts/partials/header-pages',['page'=>'Arma tu agenda'])
+     @else
+        @include('layouts/partials/header-pages',['page'=>'Agenda'])
+     @endif
     <?php /* $datetime = new DateTime('now', 'America/Costa Rica');
            $datetime_string = $datetime->format('c'); 
           echo json_encode($datetime_string);*/
@@ -144,7 +147,7 @@
               
 
             <!-- <wizard-schedule></wizard-schedule> -->
-          @endif
+          
           <div class="form-horizontal">
             <div class="form-group">
             
@@ -162,6 +165,8 @@
              
             </div>
           </div>
+
+          @endif
           
           <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
@@ -221,7 +226,7 @@
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 
-              <div id="calendar" data-slotDuration="00:20:00" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}"></div>
+              <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}"></div>
             </div>
             <!-- /.box-body -->
           </div>

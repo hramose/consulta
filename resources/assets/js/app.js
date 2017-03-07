@@ -68,6 +68,27 @@ const app = new Vue({
     }
 });
 
+$(window).on('load', function() {
+
+    $('.preloader').addClass('animated fadeOut').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+      $('.preloader').hide();
+      
+    });
+
+
+});
+
+$(window).scroll(function () {
+          if ($(this).scrollTop() > 50) {
+              $('.menu-fixed').addClass("scroll");
+              
+          } else {
+              $('.menu-fixed').removeClass("scroll");
+              
+          }
+          
+      });
+
 $('.form-update-location').on('submit', function (e) {
    e.preventDefault();
    var form = $(this);

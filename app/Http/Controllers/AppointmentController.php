@@ -52,7 +52,11 @@ class AppointmentController extends Controller
      */
     public function store()
     {
-        
+         $appointmentsToday = auth()->user()->appointmentsToday();
+         
+        if($appointmentsToday >= 2)
+            return 'max-per-day';
+
         $appointment = $this->appointmentRepo->store(request()->all(), request('user_id'));
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
@@ -70,7 +74,14 @@ class AppointmentController extends Controller
         
         \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
 
-        return $appointment;
+        $appointmentsToday = auth()->user()->appointmentsToday();
+
+        $resp = [
+            'appointment' => $appointment,
+            'appointmentsToday' => $appointmentsToday
+        ];
+
+        return $resp;
 
         
         
@@ -114,10 +125,24 @@ class AppointmentController extends Controller
     {
 
         $appointment = $this->appointmentRepo->delete($id);
-       
-        if($appointment !== true)  return $appointment; //no se elimino correctamente
+        $appointmentsToday = auth()->user()->appointmentsToday();
+        
+        if($appointment !== true)
+        {
+             $data = [
+                    'resp' => 'error',
+                    'appointmentsToday' => $appointmentsToday
+                ];
 
-        return '';
+            return $data;//$appointment; //no se elimino correctamente
+        }  
+
+        $data = [
+            'resp' => 'ok',
+            'appointmentsToday' => $appointmentsToday
+        ];
+
+        return $data;
 
     }
 

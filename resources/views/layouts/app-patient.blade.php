@@ -40,6 +40,13 @@
     </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
+<div class="preloader">
+    <div class="img">
+      <img src="/img/loader.gif" alt="Preloader image">
+      <span>Cargando...</span>
+    </div>
+    
+</div>
 <div id="app" class="wrapper">
 
   <!-- Main Header -->
@@ -59,6 +66,13 @@
          @if(!auth()->user()->patients->count())
            <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/account/edit#timeline" title="Ir a pacientes">pacientes</a> para poder realizar citas en linea!</div> 
          @endif
+         <div class="menu-fixed">
+            <div class="menu-fixed-container">
+              <a href="/appointments" class="btn btn-sm btn-default">Historial Citas</a>
+              <a href="/" class="btn btn-sm btn-info">Medico o clínica</a>
+              <a href="/account/edit?tab=patients" class="btn btn-sm btn-danger">Crear Pacientes</a>
+            </div>
+         </div>
         @yield('content')
     </div>
   </div>

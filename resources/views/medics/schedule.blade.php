@@ -12,6 +12,7 @@
 
     <section class="content">
        @if(auth()->user()->patients->count())
+         
         <div class="row">
         <div class="col-md-3">
           
@@ -46,7 +47,7 @@
           <div class="box box-primary box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
-              <div id="calendar" data-slotDuration="{{ ($medic->settings) ? $medic->settings->slotDuration : '' }}"></div>
+              <div id="calendar" data-slotDuration="{{ ($medic->settings) ? $medic->settings->slotDuration : '00:30:00' }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-appointmentsday="{{ auth()->user()->appointmentsToday() }}"></div>
 
           
               <!-- Modal -->
@@ -60,6 +61,7 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+        
      @else
           <div class="callout callout-danger"><h4>Recuerda !</h4> <p>Necesitas tener al menos un paciente registrado para poder realizar citas en linea. <a href="/account/edit?tab=patients" class="btn btn-sm btn-success">Registre su paciente</a></p></div>
      @endif

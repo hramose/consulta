@@ -1,6 +1,6 @@
 <template>
 	<div class="form-horizontal">
-      <div class="form-group">
+      <div class="form-group" v-if="paciente.IDhash">
         <label for="name" class="col-sm-2 control-label">ID</label>
 
         <div class="col-sm-10">

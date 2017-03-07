@@ -229,7 +229,7 @@ $(function () {
      var $calendar = $('#calendar');
      var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
      var maxTime = $calendar.attr('data-maxTime') ? $calendar.attr('data-maxTime') : '18:00:00';
-     var slotDuration = $('#selectSlotDuration').val();//$calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
+     var slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : $calendar.attr('data-slotDuration');
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
 
@@ -443,10 +443,10 @@ $(function () {
                   return false;
             }
 
-            element.append( "<span class='closeon fa fa-trash'></span>" );
+            //element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
 
-            element.find(".closeon").click(function() {
+            /*element.find(".closeon").click(function() {
                swal({
                       title: "Deseas cancelar la cita?",
                       text: " Requerda que se eliminara del sistema!",
@@ -461,7 +461,7 @@ $(function () {
                       swal("Cita cancelada!", "Tu cita ha sido eliminada.", "success");
                     });
                
-            });
+            });*/
             if (event.rendering == 'background') {
                 element.append('<h3>'+ event.title + '</h3>');
                 
@@ -477,8 +477,21 @@ $(function () {
                   swal({
                     title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
                     text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
-                    html: true
-                     
+                      html: true,
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Eliminar",
+                      cancelButtonText: "Ok",
+                      closeOnConfirm: false,
+                      closeOnCancel: true
+                    },
+                    function(isConfirm) {
+                      if (isConfirm) {
+                         deleteAppointment(event._id, event);
+                        swal("Cita cancelada!", "Tu cita ha sido eliminada del calendario.", "success");
+                      } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                      }
                     });
                    
                     
@@ -496,22 +509,43 @@ $(function () {
             }else{
         
                 var officeInfoDisplay = '';
+                var titleAlert = event.title;
+                var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
 
                 if(event.office_info)
                 {
                      var officeInfo = JSON.parse(event.office_info);
 
-                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +'<br>'+
-                      'Teléfono: '+ officeInfo.phone;
+                      officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>'
+                      
+                      titleAlert = 'Este horario está reservado para atención en la Clínica ' + event.title
+                      
+                      textAlert = 'Favor llamar a este número: '+ officeInfo.phone + ' <br> Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
-
-                 element.find(".appointment-details").click(function() {
-                  swal({
-                    title: event.title,
-                    text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
-                    html: true
-                     
+               
+               
+                element.find(".appointment-details").click(function() {
+                   swal({
+                      title: titleAlert,
+                      text: textAlert,
+                       html: true,
+                      showCancelButton: true,
+                      confirmButtonClass: "btn-danger",
+                      confirmButtonText: "Eliminar",
+                      cancelButtonText: "Ok",
+                      closeOnConfirm: false,
+                      closeOnCancel: true
+                    },
+                    function(isConfirm) {
+                      if (isConfirm) {
+                        deleteAppointment(event._id, event);
+                        swal("Evento eliminado!", "Tu evento ha sido eliminado del calendario.", "success");
+                      } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                      }
                     });
+                 
+                  
                    
                 });
 
@@ -586,13 +620,13 @@ $(function () {
     
     /* SAVE UPDATE DELETE EVENTS */
     function crud(method, url, data, revertFunc) {
-      
+       $('body').addClass('loading');
       $.ajax({
             type: method || 'POST',
             url: url,
             data: data,
             success: function (resp) {
-              
+               $('body').removeClass('loading');
               if(method == "POST")
               {
                 
@@ -669,6 +703,7 @@ $(function () {
                 
             },
             error: function () {
+               $('body').removeClass('loading');
               console.log('error saving appointment');
 
             }
