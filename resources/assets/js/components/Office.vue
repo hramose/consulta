@@ -804,7 +804,8 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar!'
+            confirmButtonText: 'Eliminar!',
+            cancelButtonText: 'Cancelar'
           }).then(function () {
 
             $vm.$http.delete('/medic/account/offices/'+item.id).then((response) => {
