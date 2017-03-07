@@ -34,6 +34,7 @@ Vue.component('appointment-create', require('./components/AppointmentCreate.vue'
 
 Vue.use(VeeValidate);**/
 
+
 window.bus = new Vue();
 
 

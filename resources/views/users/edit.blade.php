@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
-   <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css"> 
 @endsection
 @section('content')
     

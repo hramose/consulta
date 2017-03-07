@@ -796,22 +796,43 @@
 	     
 
       remove(item){
-           
+          let $vm = this;
+          swal({
+            title: 'Deseas eliminar el consultorio?',
+            text: "Requerda que se eliminara del sistema!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar!'
+          }).then(function () {
 
-            this.$http.delete('/medic/account/offices/'+item.id).then((response) => {
+            $vm.$http.delete('/medic/account/offices/'+item.id).then((response) => {
 
                   if(response.status == 200)
                   {
-                     var index = this.consultorios.indexOf(item)
-                    this.consultorios.splice(index, 1);
+                     var index =$vm.consultorios.indexOf(item)
+                    $vm.consultorios.splice(index, 1);
+
                     bus.$emit('alert', 'Consultorio Eliminado','success');
                   }
 
               }, (response) => {
                   
                    bus.$emit('alert', 'Error al eliminar el consultorio', 'danger');
-                  this.loader = false;
+                   $vm.loader = false;
               });
+
+            swal(
+              'Eliminado!',
+              'Consultorio Eliminado.',
+              'success'
+            )
+
+          }, function(dismiss) {
+            
+          });
+            
 
 
           }

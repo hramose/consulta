@@ -255,37 +255,32 @@ $(function () {
               if(event.created_by == $('.external-event').data('createdby'))
               {
                 element.find(".appointment-details").click(function() {
-                    swal({
-                      title: 'Cita con el Dr. '+ event.user.name,
-                      text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
-                      html: true,
+                    
+                     swal({
+                      title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
+                      text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
                       showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Eliminar",
-                      cancelButtonText: "Ok",
-                      closeOnConfirm: false,
-                      closeOnCancel: true
-                    },
-                    function(isConfirm) {
-                      if (isConfirm) {
-                        deleteAppointment(event._id, event);
-                        swal("Cita cancelada!", "Tu cita ha sido eliminada del calendario.", "success");
-                      } else {
-                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
-                      }
-                    });
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      cancelButtonText: 'Ok',
+                      confirmButtonText: 'Eliminar!'
+                    }).then(function () {
+                      
+                      deleteAppointment(event._id, event);
+
+                      swal(
+                        'Cita cancelada!',
+                        'Tu cita ha sido eliminada del calendario.',
+                        'success'
+                      )
+
+                    },function (dismiss) {});
+
                    
                      
                   });
               }
-              /*element.find(".appointment-details").popover({
-                  title: 'Cita con el Dr. '+ event.user.name,
-                  placement: 'top',
-                  html:true,
-                  container:'#calendar',
-                  trigger: 'click focus', 
-                  content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
-              });*/
+              
 
             }else{
 
@@ -305,25 +300,18 @@ $(function () {
                       textAlert = 'Favor llamar a este número: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a> <br>Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
                 element.find(".appointment-details").click(function() {
-                   swal({
-                      title: titleAlert,
-                      text: textAlert,
-                       html: true
-                     
-                    });
-                 
+                   
+                    swal({
+                        title: titleAlert,
+                        html: textAlert
+                        
+                      });
+                  
                   
                    
                 });
                 
-                /*element.find(".appointment-details").popover({
-                    title:  event.title,
-                    placement: 'top',
-                    html:true,
-                    container:'#calendar',
-                    trigger: 'click focus', 
-                    content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
-                });*/
+              
             }
 
         },

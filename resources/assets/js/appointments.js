@@ -474,29 +474,28 @@ $(function () {
             {
 
               element.find(".appointment-details").click(function() {
+
                   swal({
                     title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
                     text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
-                      html: true,
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Eliminar",
-                      cancelButtonText: "Ok",
-                      closeOnConfirm: false,
-                      closeOnCancel: true
-                    },
-                    function(isConfirm) {
-                      if (isConfirm) {
-                         deleteAppointment(event._id, event);
-                        swal("Cita cancelada!", "Tu cita ha sido eliminada del calendario.", "success");
-                      } else {
-                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
-                      }
-                    });
-                   
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'Ok',
+                    confirmButtonText: 'Eliminar!'
+                  }).then(function () {
                     
-                     
-                  });
+                    deleteAppointment(event._id, event);
+
+                    swal(
+                      'Cita cancelada!',
+                      'Tu cita ha sido eliminada del calendario.',
+                      'success'
+                    )
+
+                  },function (dismiss) {});
+
+              });
              /* element.find(".appointment-details").popover({
                   title: 'Cita con el Dr. '+ event.user.name,
                   placement: 'top',
@@ -527,24 +526,25 @@ $(function () {
                 element.find(".appointment-details").click(function() {
                    swal({
                       title: titleAlert,
-                      text: textAlert,
-                       html: true,
+                      html: textAlert,
                       showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Eliminar",
-                      cancelButtonText: "Ok",
-                      closeOnConfirm: false,
-                      closeOnCancel: true
-                    },
-                    function(isConfirm) {
-                      if (isConfirm) {
-                        deleteAppointment(event._id, event);
-                        swal("Evento eliminado!", "Tu evento ha sido eliminado del calendario.", "success");
-                      } else {
-                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
-                      }
-                    });
-                 
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      cancelButtonText: 'Ok',
+                      confirmButtonText: 'Eliminar!'
+                    }).then(function () {
+                      
+                      deleteAppointment(event._id, event);
+
+                      swal(
+                        'Evento eliminado!',
+                        'Tu evento ha sido eliminado del calendario.',
+                        'success'
+                      )
+
+                    },function (dismiss) {});
+
+                   
                   
                    
                 });

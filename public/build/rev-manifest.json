@@ -1,9 +1,9 @@
 {
   "css/app.css": "css/app-10195b17ee.css",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
-  "js/app.js": "js/app-d6438d3086.js",
-  "js/appointments.min.js": "js/appointments-c493d29e52.min.js",
+  "js/app.js": "js/app-cba8a148c8.js",
+  "js/appointments.min.js": "js/appointments-ca997fbb60.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
-  "js/schedule.min.js": "js/schedule-0ea391208b.min.js",
+  "js/schedule.min.js": "js/schedule-42271de569.min.js",
   "js/search.min.js": "js/search-1e27324dde.min.js"
 }
