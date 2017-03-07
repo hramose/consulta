@@ -252,7 +252,7 @@
           <a href="#clinics"><i class="fa fa-building"></i><span><span class="text" @click="edit(item)">{{ item.name }}</span></span></a>
           <!-- General tools such as edit or delete-->
           <div class="tools">
-            <i class="fa fa-edit" @click="edit(item)"></i>
+            <!-- <i class="fa fa-edit" @click="edit(item)"></i> -->
             <i class="fa fa-trash-o delete" @click="remove(item)"></i>
           </div>
         </li>
