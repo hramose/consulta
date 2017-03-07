@@ -300,7 +300,7 @@ $(function () {
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>';
 
-                      titleAlert = 'Este horario está reservado para atención en la Clínica ' + event.title
+                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ event.title
                       
                       textAlert = 'Favor llamar a este número: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a> <br>Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }

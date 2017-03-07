@@ -66,12 +66,28 @@ body.loading:before{
 	right: 0;
 	z-index: 999;
 }
+.todo-list>li .tools
+	{
+		display:block !important;
+	}
+.todo-list>li:hover .tools{
+	display:inline-block !important;
+}
+@media screen and (min-width:1024px){
+	
+	.todo-list>li .tools
+	{
+		display:none !important;
+	}
+
+}
 @media screen and (min-width:768px){
 	.menu-fixed{
 		display:none;
 	}
 
 }
+
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 td.fc-day.fc-past{
