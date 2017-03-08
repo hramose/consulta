@@ -25,10 +25,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-       /* $schedule->command(\App\Console\Commands\ReminderAppointment::class)
-                 ->everyFiveMinutes();*/
-                 
-        $schedule->call(function () {
+       
+        $schedule->command(\App\Console\Commands\NotificationOfficeLocation::class)
+                 ->everyThirtyMinutes();
+
+        $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 
         
                 //url contra la que atacamos
@@ -45,7 +46,10 @@ class Kernel extends ConsoleKernel
                 // Se cierra el recurso CURL y se liberan los recursos del sistema
                 curl_close($ch);
 
-        })->everyFiveMinutes();
+        })->everyThirtyMinutes();
+        
+        /* $schedule->command(\App\Console\Commands\ReminderAppointment::class)
+                 ->everyFiveMinutes();*/
        
     }
 
