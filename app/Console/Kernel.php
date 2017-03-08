@@ -25,8 +25,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(\App\Console\Commands\ReminderAppointment::class)
-                 ->everyFiveMinutes();
+       /* $schedule->command(\App\Console\Commands\ReminderAppointment::class)
+                 ->everyFiveMinutes();*/
+        $schedule->call(function () {
+
+                $exitCode = \Artisan::call('consulta:reminderAppointment');
+
+                return $exitCode;
+                
+        })->everyFiveMinutes();
+       
     }
 
     /**
