@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Appointment;
 use App\Mail\NewAppointment;
+use App\Reminder;
 use App\Repositories\AppointmentRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -158,6 +159,20 @@ class AppointmentController extends Controller
         return $appointments;
         
     }
+
+    public function reminder($id)
+    {
+    
+        $data = request()->all();
+
+        $data['appointment_id'] = $id;
+        
+        $reminder = Reminder::create($data);
+
+        return $reminder;
+
+    }
+
 
    
 }

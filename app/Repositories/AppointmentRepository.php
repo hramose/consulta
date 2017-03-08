@@ -124,11 +124,19 @@ class AppointmentRepository extends DbRepository{
         if(auth()->user()->hasRole('paciente')){
 
             if( !$appointment->isStarted() && $appointment->isOwner() )
+            {
+                $appointment->reminders()->delete();
+
                 return $appointment = $appointment->delete();
+            }
         }else{
 
             if( !$appointment->isStarted() )
+            {
+                $appointment->reminders()->delete();
+                
                 return $appointment = $appointment->delete();
+            }
         }
 
 

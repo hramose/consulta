@@ -54,6 +54,10 @@ class Appointment extends Model
     {
         return $this->hasMany(Diagnostic::class);
     }
+     public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
 
      public function createDiseaseNotes($diseaseNotes = null)
     {

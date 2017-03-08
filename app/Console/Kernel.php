@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\NotificationOfficeLocation::class
+        \App\Console\Commands\NotificationOfficeLocation::class,
+        \App\Console\Commands\ReminderAppointment::class
     ];
 
     /**

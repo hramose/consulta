@@ -52,6 +52,8 @@
           
               <!-- Modal -->
               <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></modal-schedule>
+
+               <modal-reminder></modal-reminder>
               
             </div>
             <!-- /.box-body -->

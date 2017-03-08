@@ -339,37 +339,7 @@ $(function () {
 
                    return false;
                   }
-              /*var event = $('div.external-event');
-              
-              var eventObject = {
-                title: $.trim(event.text()), // use the element's text as the event title
-                user_id: event.data('doctor'),
-                patient_id: event.data('patient')
-                //created_by: event.data('createdby')
-                
-              };
-              
-              var originalEventObject = eventObject;
           
-              // we need to copy it, so that multiple events don't have a reference to the same object
-              var copiedEventObject = $.extend({}, originalEventObject);
-              
-              // assign it the date that was reported
-              copiedEventObject.start = date;
-             
-              copiedEventObject.allDay = false;//allDay;
-              copiedEventObject.backgroundColor = event.css("background-color");
-              copiedEventObject.borderColor = event.css("border-color");
-              copiedEventObject.overlap = false;
-              
-              // render the event on the calendar
-              // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-
-              var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
-              
-             
-              saveAppointment(copiedEventObject, _id);
-              */
 
               $('#myModal').modal({backdrop:'static', show:true });
               $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
@@ -437,11 +407,11 @@ $(function () {
                     
                     $('#calendar').fullCalendar('renderEvent', resp.appointment, true);
                     $('#calendar').attr('data-appointmentsday', resp.appointmentsToday);
-                    //$('#myModal').modal({backdrop:'static', show:true });
-                    //$('#myModal').find('.btn-finalizar-cita').attr('data-appointment', resp.id).attr('data-date', moment(resp.date).format("dddd, MMMM Do YYYY")).attr('data-hour', moment(resp.start).locale('en').format("hh:mm a" )).show();
                     
-                    //$('#myModal').find('.btn-cancelar-cita').attr('data-appointment', resp.id).show();
-
+                    $('#modalReminder').modal({backdrop:'static', show:true });
+                    $('#modalReminder').find('.modal-body').attr('data-appointment', resp.appointment.id).show();
+                    
+         
                    
                    
                   }
@@ -632,88 +602,40 @@ $(function () {
      $('.btn-finalizar-cita').on('click', function (e) {
        e.preventDefault();
         createEventFromModal();
-       /*var patient_id = $('#myModal').find('.widget-user-2').attr('data-patient');
-       var user_id = $('.external-event').data('doctor');//$('input[name="medic_id"]').val();
-       var appointment_id = $(this).attr('data-appointment'); //data('appointment');
-       var title = $('#myModal').find('.widget-user-2').attr('data-title');
-      
-         
-              $.ajax({
-                  type: 'PUT',
-                  url: '/appointments/'+ appointment_id,
-                  data: { patient_id : patient_id, title: 'Cita - '+ title, medic_id: user_id},
-                  success: function (resp) {
-                      console.log(resp);
-                     $('#myModal').modal('hide');
-                      if(resp == '')
-                      {
-                        $('#infoBox').addClass('alert-danger').html('No se puede finalizar la consulta!!').show();
-                            setTimeout(function()
-                            { 
-                              $('#infoBox').removeClass('alert-danger').hide();
-                            },3000);
-
-
-                        
-                        
-                       return
-                      }
-
-                       
-                        
-                        $('#calendar').fullCalendar( 'removeEvents', resp.id)
-                     
-                        resp.allDay = parseInt(resp.allDay);
-                       
-
-                        $('#calendar').fullCalendar('renderEvent', resp, true);
-                  },
-                  error: function () {
-                    console.log('error saving appointment');
-
-                  }
-             
-             
-           
-            });*/
-    });
-
-    $('#myModal').on('click','.btn-cancelar-cita', function (e) {
        
-       /*var appointment_id = $(this).attr('data-appointment');
-
-              $.ajax({
-                  type: 'DELETE',
-                  url: '/appointments/'+ appointment_id + '/delete',
-                  data: { id : appointment_id  },
-                  success: function (resp) {
-                      console.log(resp);
-                    
-                    if(resp){
-
-                        $('#infoBox').addClass('alert-danger').html('No se puede eliminar la consulta!!').show();
-                          setTimeout(function()
-                          { 
-                            $('#infoBox').removeClass('alert-danger').hide();
-                          },3000);
-
-                         return
-                      }
-                      
-                    
-                      $('#calendar').fullCalendar('removeEvents',appointment_id);
-                      $('#myModal').modal('hide');
-                  },
-                  error: function () {
-                    console.log('error delete appointment');
-
-                  }
-             
-             
-           
-            });*/
     });
 
+      $('.btn-finalizar-reminder').on('click', function (e) {
+         e.preventDefault();
+          
+          var id = $('#modalReminder').find('.modal-body').attr('data-appointment');
+          var reminder_time = $('#modalReminder').find('#reminder_time').val();
+          $('body').addClass('loading');
+
+           $.ajax({
+              type: 'POST',
+              url: '/appointments/'+ id + '/reminder',
+              data: { reminder_time : reminder_time },
+              success: function (resp) {
+
+                $('body').removeClass('loading');
+
+                $('#modalReminder').modal('hide');
+              },
+              error: function () {
+                
+                $('body').removeClass('loading');
+
+                console.log('error saving reminder');
+                
+                $('#modalReminder').modal('hide');
+
+              }
+          });
+       
+    });
+
+  
 
 
 
