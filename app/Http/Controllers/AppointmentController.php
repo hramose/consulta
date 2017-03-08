@@ -19,7 +19,7 @@ class AppointmentController extends Controller
      */
     public function __construct(AppointmentRepository $appointmentRepo)
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('sendReminder');
         $this->appointmentRepo = $appointmentRepo;
   
 
@@ -170,6 +170,15 @@ class AppointmentController extends Controller
         $reminder = Reminder::create($data);
 
         return $reminder;
+
+    }
+
+    public function sendReminder()
+    {
+    
+        $exitCode = \Artisan::call('consulta:reminderAppointment');
+
+        return $exitCode;
 
     }
 
