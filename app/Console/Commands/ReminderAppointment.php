@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\ReminderAppointment;
+use App\Mail\ReminderAppointments;
 use App\Reminder;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -68,7 +68,7 @@ class ReminderAppointment extends Command
                     try {
                         
                         
-                         \Mail::to([$remider->appointment->patient->email])->send(new ReminderAppointment($remider->appointment));
+                         \Mail::to([$remider->appointment->patient->email])->send(new ReminderAppointments($remider->appointment));
 
                         $remider->active = 0;
                         $remider->save();
