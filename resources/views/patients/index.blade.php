@@ -79,6 +79,9 @@
                       </td>
                     </tr>
                   @endforeach
+                    @if ($patients)
+                        <td  colspan="6" class="pagination-container">{!!$patients->appends(['q' => $search['q']])->render()!!}</td>
+                    @endif
                 </table>
               </div>
               <!-- /.box-body -->

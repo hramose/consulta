@@ -63,15 +63,6 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- @include('layouts/partials/flash-message') -->
-    @if (session()->has('flash_message'))
-
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-    @endif
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    @if(!auth()->user()->offices->count())
-       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
-     @endif
      <div class="menu-fixed">
             <div class="menu-fixed-container">
               <a href="/medic/appointments/create" class="btn btn-sm btn-info">Agenda</a>
@@ -80,6 +71,23 @@
                <a href="/medic/patients" class="btn btn-sm btn-danger">Expedientes</a>
             </div>
          </div>
+         
+    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+    
+    @if(!auth()->user()->active)
+       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa!</div> 
+     @endif
+
+    @if (session()->has('flash_message'))
+
+      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+
+    @endif
+    
+    @if(!auth()->user()->offices->count())
+       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
+     @endif
+    
      @foreach(auth()->user()->offices as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 

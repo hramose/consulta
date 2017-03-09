@@ -39,7 +39,7 @@
         ]); ?>
     </script>
 </head>
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 <div class="preloader">
     <div class="img">
       <img src="/img/loader.gif" alt="Preloader image">
@@ -51,37 +51,26 @@
 
   <!-- Main Header -->
   <header class="main-header">
-      @include('layouts/partials/header-patient')
+      @include('layouts/partials/header-admin')
   </header>
-  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+      
+      @include('layouts/partials/sidebar-admin')
+    
+  </aside>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <div class="container">
+    <!-- @include('layouts/partials/flash-message') -->
+    @if (session()->has('flash_message'))
 
-        <div class="menu-fixed">
-            <div class="menu-fixed-container">
-              <a href="/appointments" class="btn btn-sm btn-default">Historial Citas</a>
-              <a href="/" class="btn btn-sm btn-info">Medico o clínica</a>
-              <a href="/account/edit?tab=patients" class="btn btn-sm btn-danger">Crear Pacientes</a>
-            </div>
-         </div>
-        <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
-         @if(!auth()->user()->active)
-           <div  class="notification-app alert-danger" >Esta cuenta esta inactiva. Ponte en contacto con el administrador del sitio!</div> 
-         @endif
-
-        @if (session()->has('flash_message'))
-
-          <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-        @endif
-         @if(!auth()->user()->patients->count())
-           <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/account/edit#timeline" title="Ir a pacientes">pacientes</a> para poder realizar citas en linea!</div> 
-         @endif
-         
-        @yield('content')
-    </div>
+    @endif
+    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+    
+    @yield('content')
   </div>
   <!-- /.content-wrapper -->
 
@@ -109,12 +98,13 @@
 <script src="{{ elixir('js/app.js') }}"></script>
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 2.2.3 -->
-<script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script> -->
+<script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
+<script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
+<script src="{{ elixir('js/admin.min.js') }}"></script>
 
 
  @yield('scripts')

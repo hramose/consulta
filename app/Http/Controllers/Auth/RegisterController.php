@@ -83,6 +83,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);*/
+        $data['active'] = 0; // los medicos estan inactivos por defecto para revision
 
         $user = $this->userRepo->store($data);
 

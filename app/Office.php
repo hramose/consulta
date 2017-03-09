@@ -33,6 +33,17 @@ class Office extends Model
             $query->where('name', 'like', '%' . $search . '%');
         });
     }
+     public function scopeActive($query, $search)
+    {
+        return $query->where(function ($query) use ($search)
+        {
+            $query->whereHas('user', function($q) use ($search){
+                        $q->where('active', $search);
+                    });
+        });
+    }
+
+     
 
 
     /**

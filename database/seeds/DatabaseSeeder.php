@@ -2,6 +2,7 @@
 
 use App\Role;
 use App\Speciality;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -36,6 +37,13 @@ class DatabaseSeeder extends Seeder
                 'name' => $s,
             ]);
         }
+
+        factory(User::class, 1)->create([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('123456'),
+            'remember_token' => str_random(10),
+        ]);
 
     }
 

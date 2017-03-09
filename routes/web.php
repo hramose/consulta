@@ -79,6 +79,20 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::resource('signs', 'Medic\VitalSignController');
 
 });
+
+Route::prefix('admin')->middleware('authByRole:administrador')->group(function ()
+{
+	foreach (['active', 'inactive'] as $key)
+    {
+        Route::post('users/{user}/' . $key, array(
+            'as'   => 'users.' . $key,
+            'uses' => 'Admin\UserController@' . $key,
+        ));
+    }
+	Route::resource('users', 'Admin\UserController');
+
+});
+
 Route::get('/register', 'Auth\RegisterPatientController@showRegistrationForm');
 Route::post('/register', 'Auth\RegisterPatientController@register');
 

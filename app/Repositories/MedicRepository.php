@@ -73,6 +73,7 @@ class MedicRepository extends DbRepository{
                                         if (trim($search['q']))
                                         {
                                             $q->where('name', 'like', '%' . $search['q'] . '%');
+                                              
                                             return $q;
                                         } 
                                        

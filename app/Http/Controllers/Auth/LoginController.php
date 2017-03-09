@@ -53,7 +53,7 @@ class LoginController extends Controller
         }
 
         $credentials = $this->credentials($request);
-        $credentials = array_add($credentials, 'active', 1);
+        //$credentials = array_add($credentials, 'active', 1);
        
 
         if ($this->guard()->attempt($credentials, $request->has('remember'))) {

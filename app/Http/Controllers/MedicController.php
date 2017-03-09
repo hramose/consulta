@@ -32,6 +32,8 @@ class MedicController extends Controller
      */
     public function index()
     {
+        if(!auth()->user()->active) return Redirect('/');
+
        $medics = [];
        $specialist = request('specialist');
        $general = request('general');
@@ -44,6 +46,9 @@ class MedicController extends Controller
      */
     public function search()
     {
+     
+       //if(!auth()->user()->active) return Redirect('/');
+
        $medics = [];
        
        if(request()->all())
@@ -57,6 +62,7 @@ class MedicController extends Controller
                 $search['lat'] = request('lat');
                 $search['lon'] = request('lon');
                 $search['general'] = request('general');
+                $search['active'] = 1;
                 $selectedSpeciality = $search['speciality'];
                 
                 
@@ -93,10 +99,13 @@ class MedicController extends Controller
      */
     public function schedule($id)
     {
+        if(!auth()->user()->active) return redirect('/');
+
         $medic = $this->medicRepo->findbyId($id);
         
+        if(!$medic->hasrole('medico')) return redirect('/');
+        
         return view('medics.schedule',compact('medic'));
-
     }
 
     /**

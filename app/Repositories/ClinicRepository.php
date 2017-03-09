@@ -38,10 +38,10 @@ class ClinicRepository extends DbRepository{
 
         if (trim($search['q']))
         {
-            $offices = $this->model->Search($search['q']);
+            $offices = $this->model->Active(1)->Search($search['q']);
         } else
         {
-            $offices = $this->model;
+            $offices = $this->model->Active(1);
         }
 
 

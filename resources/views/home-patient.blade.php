@@ -9,7 +9,8 @@
         <small>{{ auth()->user()->name }}</small>
       </h1>
       <h3>¿Que deseas hacer?</h3>
-     <section class="content">
+      @if(auth()->user()->active)
+      <section class="content">
         <div class="row">
 
           <div class="row">
@@ -79,6 +80,7 @@
         </div>
 
     </section>
+    @endif
 
 
 @endsection

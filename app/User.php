@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token','speciality_id'
+        'name', 'email', 'password', 'api_token','speciality_id','active'
     ];
     protected $appends = array('distance');
 
@@ -40,6 +40,13 @@ class User extends Authenticatable
         return $query->where(function ($query) use ($search)
         {
             $query->where('name', 'like', '%' . $search . '%');
+        });
+    }
+    public function scopeActive($query, $search)
+    {
+        return $query->where(function ($query) use ($search)
+        {
+            $query->where('active',  $search);
         });
     }
 

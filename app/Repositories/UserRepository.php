@@ -107,6 +107,13 @@ class UserRepository extends DbRepository{
         {
             $users = $users->where('active', '=', $search['active']);
         }
+        if (isset($search['role']) && $search['role'] != "")
+        {
+            $users = $users->whereHas('roles', function ($query) use ($search) {
+                        $query->where('name',  $search['role']);
+                    });
+            
+        }
 
         if (isset($search['order']) && $search['order'] != "")
         {
@@ -136,6 +143,20 @@ class UserRepository extends DbRepository{
             $users = $this->model->search($search)->paginate(8);
 
         return $users;
+    }
+
+     /**
+     * Delete user
+     * @param $id
+     * @param $data
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function delete($id)
+    {
+        
+        $user = $this->model->findOrFail($id)->delete();
+     
+        return $user;
     }
 
 
