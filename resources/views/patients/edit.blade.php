@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('css')
+<link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+@endsection
 @section('content')
 	<div id="infoBox" class="alert"></div> 
 	@include('layouts/partials/header-pages',['page'=>'Pacientes'])
