@@ -24,13 +24,19 @@ class PatientController extends Controller
     public function index()
     {
         $search['q'] = request('q');
+        $inita = null;
+        
+        if(request('p'))
+            $p = Patient::find(request('p'));
 
+        if(request('inita'))
+            $inita = 1;
        
         $patients = $this->patientRepo->findAll($search);
         
 
 
-    	return view('patients.index',compact('patients','search'));
+    	return view('patients.index',compact('patients','search','inita'));
 
     }
 

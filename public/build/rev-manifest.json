@@ -5,6 +5,7 @@
   "js/app.js": "js/app-9c8ebbe5da.js",
   "js/appointments.min.js": "js/appointments-d8b04d5fd9.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
+  "js/patients.min.js": "js/patients-57feeb3a70.min.js",
   "js/schedule.min.js": "js/schedule-00333ddb66.min.js",
   "js/search.min.js": "js/search-ddd52174a2.min.js"
 }

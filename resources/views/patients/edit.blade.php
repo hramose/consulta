@@ -6,7 +6,8 @@
 	<div class="row">
 		<div class="col-md-8">
 			<!-- <a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a> -->
-			 <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar Consulta con este paciente</a>
+			 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente
+                          </button>
 		</div>
 	</div>
 	<section class="content">
@@ -62,11 +63,19 @@
 
 	  </div>
 	</section>
+
+	@include('patients/partials/initAppointment')
+
 @endsection
 @section('scripts')
+<script src="/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/locale/es.js"></script>
+<script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="/js/plugins/input-mask/jquery.inputmask.js"></script>
 <script src="/js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
+<script src="{{ elixir('/js/patients.min.js') }}"></script>
 <script>
   $(function () {
   

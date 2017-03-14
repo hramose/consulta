@@ -1,9 +1,15 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+@endsection
 @section('content')
-     
-     @include('layouts/partials/header-pages',['page'=>'Pacientes'])
-
+     <div id="infoBox" class="alert"></div>
+     @if(isset($inita))
+        @include('layouts/partials/header-pages',['page'=>'Buscar o crea un paciente para iniciar la cita'])
+     @else
+        @include('layouts/partials/header-pages',['page'=>'Pacientes'])
+     @endif
 
     <section class="content">
         <div class="row">
@@ -76,7 +82,9 @@
                           
 
                         @endif
-                        <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}"><i class="fa fa-list"></i> Iniciar Consulta</a>
+                        <!-- <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}"><i class="fa fa-list"></i> Iniciar Consulta</a> -->
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente"><i class="fa fa-list"></i> Iniciar Consulta
+                          </button>
                       </td>
                     </tr>
                   @endforeach
@@ -93,6 +101,8 @@
 
     </section>
 
+@include('patients/partials/initAppointment')
+
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
 </form>
@@ -101,5 +111,9 @@
 </form> -->
 @endsection
 @section('scripts')
-
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/locale/es.js"></script>
+  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
+  <script src="{{ elixir('/js/patients.min.js') }}"></script>
 @endsection
