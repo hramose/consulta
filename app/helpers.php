@@ -1,5 +1,7 @@
 <?php 
 
+
+
 function money($amount, $symbol = '$')
 {
     return (!$symbol) ? number_format($amount, 2, ".", ",") : $symbol . number_format($amount, 2, ".", ",");
@@ -32,4 +34,13 @@ function paginate($items, $perPage)
         Illuminate\Pagination\Paginator::resolveCurrentPage(),
         ['path' => Illuminate\Pagination\Paginator::resolveCurrentPath()]
     );
+}
+/*function set_active($path, $active = 'active') {
+        return call_user_func_array('Request::is', (array)$path) ? $active : '';
+    }*/
+
+function set_active($path, $active = 'active')
+{   
+  
+    return Request::is($path) ? $active : '';
 }

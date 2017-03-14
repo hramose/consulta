@@ -27,7 +27,7 @@
 		              <li><a href="#history" data-toggle="tab">Historial</a></li>
 		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
-		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico</a></li>
+		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		            </ul>
 		            <div class="tab-content">
 		              <div class="tab-pane" id="history">

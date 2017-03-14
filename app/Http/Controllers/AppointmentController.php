@@ -146,6 +146,19 @@ class AppointmentController extends Controller
         return $data;
 
     }
+    /**
+     * Eliminar consulta(cita)
+     */
+    public function destroy($id)
+    {
+
+        $appointment = $this->appointmentRepo->delete($id);
+
+        ($appointment === true) ? flash('Consulta eliminada correctamente!','success') : flash('No se puede eliminar consulta ya que se encuentra iniciada','error');
+
+        return back();
+
+    }
 
 
     /**

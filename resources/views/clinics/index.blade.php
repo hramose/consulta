@@ -44,7 +44,7 @@
                                 <!-- /.box-tools -->
                               </div>
                               <!-- /.box-header -->
-                              <div class="box-body" style="display: none;">
+                              <div class="box-body">
                                     <div class="row">
                                       
                                     
@@ -204,7 +204,9 @@
                                 </button>
                                
                                 <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                                <a href="tel:26665859" class="btn btn-default"><i class="fa fa-share"></i> Llamar</a>
+                                 @if($clinic->phone)
+                                <a href="tel:{{ $clinic->phone }}" class="btn btn-default" title="{{ $clinic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $clinic->phone }})</a>
+                                @endif
                               </div>
                             </td>
                           </tr>

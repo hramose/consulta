@@ -88,6 +88,12 @@ body.loading:before{
 
 }
 
+.boxes-home{
+	.small-box h3{
+		font-size:28px;
+	}
+}
+
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 td.fc-day.fc-past{
@@ -105,6 +111,24 @@ td.fc-day.fc-past{
 }
 #calendar .fc-center h2{
 	font-size:22px;
+}
+#calendar .fc-toolbar{
+	background-color: #605ca8;
+	color:white;
+}
+.box-body #calendar{
+	margin-top: 0 !important;
+}
+.btn.active{
+	border-bottom: 4px solid #000;
+}
+.cita-item{
+	position:relative;
+	button{
+		position: absolute;
+		right:0;
+		bottom:0;
+	}
 }
 .form-control{
 	border-radius: 0;

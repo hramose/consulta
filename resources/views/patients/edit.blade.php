@@ -5,7 +5,8 @@
 	@include('layouts/partials/header-pages',['page'=>'Pacientes'])
 	<div class="row">
 		<div class="col-md-8">
-			<a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a>
+			<!-- <a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a> -->
+			 <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar Consulta con este paciente</a>
 		</div>
 	</div>
 	<section class="content">

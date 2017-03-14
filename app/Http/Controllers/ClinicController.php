@@ -29,7 +29,7 @@ class ClinicController extends Controller
     public function index()
     {
        $clinics = [];
-
+       
        if(request()->all())
        {
             if(trim(request('q')) != '' || request('province') != '' || request('canton') != '' || request('district') != '' || request('lat') != '' || request('lon') != ''){

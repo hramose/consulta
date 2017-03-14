@@ -24,8 +24,10 @@ $(function () {
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
        $('.breadcrumb').hide();
+       
     }else{
       //$('.box-create-appointment').show();
+      $('.box-search-filters').removeClass('collapsed-box');
     }
 
    $(".dropdown-toggle").dropdown();
@@ -158,6 +160,38 @@ $(function () {
             shareIn: "popup",
            
         });
+          
+        
+     
+       
+      });
+
+     $('#locationModal').on('shown.bs.modal', function (event) {
+          //debugger
+          var button = $(event.relatedTarget)
+          var lat = button.attr('data-lat');
+          var lon = button.attr('data-lon');
+          var phone = button.attr('data-phone');
+        
+          
+          if(phone)
+          {
+
+            $(this).find('.modal-body').html('Llamar: <a href="tel:'+ phone +'" title="Llamar a este número">'+ phone +'</a>');
+            $(this).find('.modal-title').html('Número de teléfono de contacto');
+
+          }else{
+
+              if(!lat || !lon)
+              {
+
+                $(this).find('.modal-body').html('<p>No se puede abrir ninguna direccion por que el consultorio no tiene registrado su latitud o longitud</p>');
+
+              }else{
+
+                $(this).find('.modal-body').append('<a href="waze://?ll='+ lat +','+ lon +'&amp;navigate=yes"  target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Waze</strong></a><a href="http://maps.google.com/?saddr=Current+Location&daddr='+ lat +','+ lon + '" target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Google Maps</strong></a>');
+              }
+        }
           
         
      

@@ -6,24 +6,24 @@
 
 
      <section class="content">
-        <div class="row">
-            <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="row boxes-home" >
+            <div class="col-lg-2 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>Agenda</h3>
+                  <h3>Citas</h3>
 
-                  <p>Ver agenda</p>
+                  <p>Ver citas</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
                 </div>
-                <a href="/medic/appointments/create" class="small-box-footer">Ir a agenda <i class="fa fa-arrow-circle-right"></i></a>
-                <a href="/medic/appointments/create" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                <a href="/medic/appointments" class="small-box-footer">Ir a citas <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/medic/appointments" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="col-lg-2 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
@@ -39,13 +39,13 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="col-lg-2 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
                   <h3>Consultorios</h3>
 
-                  <p>Modifique la información de su consultorio</p>
+                  <p>Modifique su consultorio</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
@@ -55,22 +55,37 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="col-lg-2 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3>Expedientes</h3>
+                  <h3>Pacientes</h3>
 
-                  <p>Ir a Expediente Clínico de pacientes</p>
+                  <p>Expediente Clínico</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="/medic/patients" class="small-box-footer">Ir a expedientes <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/medic/patients" class="small-box-footer">Ir a pacientes <i class="fa fa-arrow-circle-right"></i></a>
                 <a href="/medic/patients" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
             <!-- ./col -->
+            <div class="col-lg-2 col-sm-6 col-xs-12">
+              <!-- small box -->
+              <div class="small-box bg-purple">
+                <div class="inner">
+                  <h3>Iniciar Cita</h3>
+
+                  <p>Consultas</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="/medic/patients?inita=1" class="small-box-footer">Iniciar cita <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/medic/patients?inita=1" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+              </div>
+            </div>
           </div>
 
         <div class="row">

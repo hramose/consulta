@@ -78,10 +78,10 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Consulta
+      {{ config('app.name', 'Laravel') }}
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Consulta</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="#">{{ config('app.name', 'Laravel') }}</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

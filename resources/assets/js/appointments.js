@@ -482,7 +482,7 @@ $(function () {
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                     cancelButtonText: 'Ok',
-                    confirmButtonText: 'Eliminar!'
+                    confirmButtonText: 'Eliminar cita'
                   }).then(function () {
                     
                     deleteAppointment(event._id, event);

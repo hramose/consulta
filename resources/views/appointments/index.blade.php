@@ -2,7 +2,7 @@
 
 @section('content')
      
-     @include('layouts/partials/header-pages',['page'=>'Consultas'])
+     @include('layouts/partials/header-pages',['page'=>'Citas'])
 
 
     <section class="content">
@@ -10,7 +10,7 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
-                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Agenda</a>
+                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Ver Calendario</a>
 
                 <div class="box-tools">
                   <form action="/medic/appointments" method="GET">
@@ -29,29 +29,32 @@
                 </div>
               </div>
               <!-- /.box-header -->
-              <div class="box-body table-responsive no-padding">
+              <div class="box-body table-responsive no-padding" id="no-more-tables">
                 <table class="table table-hover">
-                  <tr>
-                    <th>ID</th>
-                    <th>Paciente</th>
-                    <th>Motivo</th>
-                    <th>Fecha</th>
-                    <th>De</th>
-                    <th>A</th>
-                    <th></th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Paciente</th>
+                      <th>Motivo</th>
+                      <th>Fecha</th>
+                      <th>De</th>
+                      <th>A</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  
                   @foreach($appointments as $appointment)
                      
                       <tr>
-                        <td>{{ $appointment->id }}</td>
-                        <td><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a></td>
-                        <td>{{ $appointment->title }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
-                        <td>
+                        <td data-title="ID">{{ $appointment->id }}</td>
+                        <td data-title="Paciente"><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a></td>
+                        <td data-title="Motivo">{{ $appointment->title }}</td>
+                        <td data-title="Fecha">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
+                        <td data-title="De">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
+                        <td data-title="a">{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
+                        <td data-title="" style="padding-left: 5px;">
                           <div class="btn-group">
-                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i></a>
+                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> Iniciar Cita</a>
                            
                             @if(!$appointment->status)
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>

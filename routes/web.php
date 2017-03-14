@@ -34,6 +34,7 @@ Route::put('/appointments/{appointment}', 'AppointmentController@update');
 Route::delete('/appointments/{appointment}/delete', 'AppointmentController@delete');
 Route::post('/appointments/{appointment}/reminder', 'AppointmentController@reminder');
 Route::get('/appointments/reminder', 'AppointmentController@sendReminder');
+Route::resource('appointments', 'AppointmentController');
 
 Route::post('/patients', 'PatientController@store');
 Route::put('/patients/{patient}', 'PatientController@update');

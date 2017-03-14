@@ -82,6 +82,18 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label for="phone" class="col-sm-2 control-label">Teléfono</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono de contacto" value="{{ old('phone') ?: $user->phone }}" required>
+                       @if ($errors->has('phone'))
+                          <span class="help-block">
+                              <strong>{{ $errors->first('phone') }}</strong>
+                          </span>
+                      @endif
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label for="speciality_id" class="col-sm-2 control-label">Especialidad</label>
 
                     <div class="col-sm-10">

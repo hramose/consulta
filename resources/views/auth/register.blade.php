@@ -49,6 +49,15 @@
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
+        <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Numero de teléfono para contacto">
+         @if ($errors->has('name'))
+            <span class="help-block">
+                <strong>{{ $errors->first('phone') }}</strong>
+            </span>
+        @endif
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
         <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple required>
             <option value="">Especialidad</option>
             @foreach ($specialities as $speciality)

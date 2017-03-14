@@ -3,7 +3,7 @@
 		<h2>Consultas programadas</h2>
 		@forelse($scheduledAppointments as $appointment)
 			
-				<a class="info-box" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
+				<a class="info-box cita-item" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
 		            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
@@ -12,6 +12,9 @@
 		              <span class="info-box-text"><small>{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }} - {{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</small></span>
 		            
 		            </div>
+					@if(isset($fromPatient))
+                     <button type="submit" class="btn btn-danger btn-sm" form="form-delete" formaction="{!! url('/appointments/'.$appointment->id) !!}">Cancelar cita</button>
+                     @endif  
 		            <!-- /.info-box-content -->
 		          </a>
 		@empty
@@ -22,7 +25,7 @@
 		<h2>Historial de consultas</h2>
 		@forelse($initAppointments as $appointment)
 			
-				<a class="info-box" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
+				<a class="info-box cita-item" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
@@ -36,6 +39,8 @@
     		<p>Aun no hay citas iniciadas.</p>
 		@endforelse
 	</div>
+
 </div>
+
 
 

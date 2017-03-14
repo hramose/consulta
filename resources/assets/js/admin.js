@@ -36,7 +36,7 @@ $(function () {
     });
     
      function submitForm(){
-        $('.box-tools').find('form').submit();
+        $('.filters').find('form').submit();
     }
 
 

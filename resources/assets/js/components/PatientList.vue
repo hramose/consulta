@@ -4,7 +4,7 @@
        
 	        <li v-for="item in pacientes">
 	          <!-- todo text -->
-	          <a href="#"><i class="fa fa-user"></i><span><span class="text" @click="edit(item)"> {{ item.first_name }} {{ item.last_name }} - {{ item.province }}, {{ item.city }} - {{ item.phone }}</span></span></a>
+	          <a href="#"><i class="fa fa-user"></i> ID: {{ item.id }} <span><span class="text" @click="edit(item)"> {{ item.first_name }} {{ item.last_name }}</span></span></a>
 	          <!-- General tools such as edit or delete-->
 	          <div class="tools" v-show="!fromModal">
 	            <i class="fa fa-edit" @click="edit(item)"></i>

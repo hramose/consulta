@@ -227,7 +227,7 @@ class PatientController extends Controller
       
         $id_patient_confirm = request('id_patient_confirm');
        
-        if(md5($id) != $id_patient_confirm)
+        if($id != $id_patient_confirm)
         {
          
          flash('Id de confirmacion incorrecto','danger');

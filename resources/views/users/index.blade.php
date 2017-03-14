@@ -12,13 +12,13 @@
               <div class="box-header">
                 <!-- <a href="{{ url('/admin/users/create') }}" class="btn btn-success">Nuevo Usuario</a> -->
                       
-                <div class="box-toolsdd">
+                <div class="box-toolsdd filters">
                   <form action="/admin/users" method="GET">
                       
                       <div class="row">
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
-                          <select class="form-control select2" style="width: 100%;" name="role" placeholder="-- Selecciona Tipo --">
+                          <select class="form-control select2" style="width: 100%;" id="role" name="role" placeholder="-- Selecciona Tipo --">
                              <option value=""></option>
                             @foreach($roles as $role)
                                 <option value="{{$role->name}}" @if(isset($search['role']) && $search['role'] == $role->name) {{ 'selected' }} @endif > {{ $role->name }}</option>

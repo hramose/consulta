@@ -57,14 +57,17 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <div class="container">
-
+      @if(! Request::is('/'))
         <div class="menu-fixed">
             <div class="menu-fixed-container">
-              <a href="/appointments" class="btn btn-sm btn-default">Historial Citas</a>
-              <a href="/" class="btn btn-sm btn-info">Medico o clínica</a>
-              <a href="/account/edit?tab=patients" class="btn btn-sm btn-danger">Crear Pacientes</a>
+              <a href="/" class="btn btn-sm btn-info {{ set_active('/') }}" >Buscar Médico</a>
+              <a href="/clinics/search" class="btn btn-sm btn-success {{ set_active('clinics/search') }}">Buscar Clínica</a>
+              <a href="/account/edit?tab=patients" class="btn btn-sm btn-danger {{ set_active('account/edit') }}">Crear Pacientes</a>
+              <a href="/appointments" class="btn btn-sm btn-default {{ set_active('appointments') }} ">Historial Citas</a>
+              
             </div>
          </div>
+        @endif  
         <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
 
          @if(!auth()->user()->active)
@@ -89,10 +92,10 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Consulta
+      {{ config('app.name', 'Laravel') }}
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Consulta</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="#">{{ config('app.name', 'Laravel') }}</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

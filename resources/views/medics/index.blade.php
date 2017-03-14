@@ -73,7 +73,7 @@
                                 <!-- /.box-tools -->
                               </div>
                               <!-- /.box-header -->
-                              <div class="box-body" style="display: none;">
+                              <div class="box-body">
                                 <div class="row">
                             
                                     
@@ -227,9 +227,14 @@
                               <td data-title="Nombre">Dr. {{ $medic->user->name }}</td>
                               <td data-title="Lugar">
                                 
-                                  <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
+                                  <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->user->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
-                                  </button><br/>
+                                  </button><button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
+                                  </button><!-- <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->user->phone }}"><i class="fa fa-address"></i> Ver numero contacto
+                                  </button> -->
+                                   @if($medic->user->phone)
+                                  <a href="tel:{{ $medic->user->phone }}" class="btn btn-warning"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
+                                  @endif
                                  
                               </td>
                               <td data-title="Distancia">
@@ -249,12 +254,20 @@
                               <td data-title="Nombre">Dr. {{ $medic->name }}</td>
                               <td data-title="Lugar">
                                  @forelse($medic->offices as $office)
-                                    <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span> <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
+                                    <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span> <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }} - Tel: {{ $medic->phone }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
-                                  </button> <br/>
+                                  </button>  <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
+                                  </button>
+
+                                  
                                  @empty
                                     <span class="label bg-default">Desconocido</span>
                                  @endforelse
+                               <!--   <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->phone }}"><i class="fa fa-address"></i> Ver numero contacto
+                                  </button> -->
+                                  @if($medic->phone)
+                                  <a href="tel:{{ $medic->phone }}" class="btn btn-warning btn-xs" title="{{ $medic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $medic->phone }})</a>
+                                  @endif
                               </td>
                               <td data-title="Reservar">
                                 <!-- <div class="btn-group"> -->
@@ -309,6 +322,25 @@
                   </div>
                 </div>
               </div>
+
+              <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="locationModalLabel">Abrir Ubicación</h4>
+                    </div>
+                    <div class="modal-body">
+                     
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
 
 
 @endsection

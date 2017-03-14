@@ -55,10 +55,10 @@
                       <td data-title="" style="padding-left: 5px;">
                         @if($patient->isPatientOf(auth()->user()))
                         <div class="btn-group">
-                          <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                          <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                            @if(!$patient->appointments->count())
-                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/patients/'.$patient->id) !!}"><i class="fa fa-remove"></i></button>
+                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/patients/'.$patient->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>
                           @endif
                         </div>
                         @else
@@ -66,7 +66,7 @@
                             {{ csrf_field() }}
                             <div class="input-group">
                               <div class="input-group-btn">
-                                <button type="submit" class="btn btn-danger">Agregar a tu lista</button>
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-plus"></i> Agregar a tu lista</button>
                               </div>
                               <!-- /btn-group -->
                               <input type="text" name="id_patient_confirm" placeholder="ID de confirmación" class="form-control" required="required" />
@@ -76,6 +76,7 @@
                           
 
                         @endif
+                        <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}"><i class="fa fa-list"></i> Iniciar Consulta</a>
                       </td>
                     </tr>
                   @endforeach
