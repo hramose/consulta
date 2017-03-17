@@ -130,7 +130,7 @@ $(function () {
                     item.allDay = parseInt(item.allDay); // = false;
                     
                     if(item.patient_id == 0){
-                      //item.rendering = 'background';
+                      item.rendering = 'background';
                       
 
                     }
@@ -442,6 +442,7 @@ $(function () {
 
                   return false;
             }
+            
 
             //element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
@@ -463,7 +464,7 @@ $(function () {
                
             });*/
             if (event.rendering == 'background') {
-                element.append('<h3>'+ event.title + '</h3>');
+                element.append('<span class="title-bg-event">'+ event.title + '</span>');
                 
             }
 
@@ -587,6 +588,13 @@ $(function () {
 
                   return false;
               }
+             
+               if($(jsEvent.target).parent('div').hasClass("fc-bgevent")) { //para prevenir que en eventos de fondo se agregue citas
+                  
+
+                  return false;
+              }
+
 
               
 

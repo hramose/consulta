@@ -87,8 +87,8 @@ $(function () {
                    
                     item.allDay = parseInt(item.allDay); // = false;
                     
-                    if(item.patient_id != 0 && item.created_by != $('.external-event').data('createdby')){
-                       //item.rendering = 'background';
+                    if((item.patient_id != 0 && item.created_by != $('.external-event').data('createdby')) || item.patient_id == 0){
+                       item.rendering = 'background';
                     }
                     
                     //debugger
@@ -245,7 +245,8 @@ $(function () {
             }**/
             
             if (event.rendering == 'background') {
-                element.append('<h3>'+ event.title + '</h3>');
+                element.append('<span class="title-bg-event">'+ event.title + '</span>');
+                
             }
             element.append('<div data-createdby="'+ event.created_by +'"></div>');
             element.append('<div data-id="' + event.id +'"></span>' );
@@ -327,6 +328,12 @@ $(function () {
                         },3000);
 
                    return false;
+              }
+
+               if($(jsEvent.target).parent('div').hasClass("fc-bgevent")) { //para prevenir que en eventos de fondo se agregue citas
+                  
+
+                  return false;
               }
 
               if($calendar.attr('data-appointmentsday') >= 2)

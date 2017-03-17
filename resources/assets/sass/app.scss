@@ -109,6 +109,25 @@ td.fc-day.fc-past{
     opacity: .65;
     cursor: not-allowed;
 }
+
+.fc-event{
+	  .fc-title{
+		display:none !important;
+	  }
+	}
+.title-bg-event{
+	display:none;
+}
+@media screen and (min-width:640px){
+	.fc-event{
+	  .fc-title{
+		display:inline-block !important;
+	  }
+	}
+	.title-bg-event{
+		display:inline-block;
+	}
+}
 #calendar .fc-center h2{
 	font-size:22px;
 }
@@ -228,6 +247,7 @@ td.fc-day.fc-past{
 .closeon:hover{
     color:black;
  }
+
 .appointment-details{
 	position: absolute;
 	right: 0;
@@ -236,6 +256,12 @@ td.fc-day.fc-past{
 	top:0;
 	z-index: 90;
 	cursor:pointer;
+}
+.fc-bgevent{
+	color: #fff;
+	.appointment-details{
+		bottom: 0;
+	}
 }
 .activesHistory{
 	margin-right:2px;
