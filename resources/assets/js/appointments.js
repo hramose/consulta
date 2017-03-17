@@ -232,7 +232,23 @@ $(function () {
      var slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : $calendar.attr('data-slotDuration');
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
-
+     var freeDays = $calendar.attr('data-freeDays') ? JSON.parse($calendar.attr('data-freeDays')) : [0];
+     var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
+    
+      for(d in businessHours){
+         for(f in freeDays){
+                if(freeDays[f] == businessHours[d])
+                {
+                  var index = businessHours.indexOf(businessHours[d]);
+                   if (index > -1) {
+                      businessHours.splice(index, 1);
+                   }
+                 
+                }
+            }
+      }
+     
+     console.log(businessHours); 
      $('#selectSlotDuration').on('change',function (e) {
         e.preventDefault();
 
@@ -335,7 +351,7 @@ $(function () {
           eventOverlap: false,
           businessHours: {
               // days of week. an array of zero-based day of week integers (0=Sunday)
-              dow: [ 1, 2, 3, 4, 5, 6], // Monday - Thursday
+              dow: businessHours,//[ 1, 2, 3, 4, 5, 6], // Monday - Thursday
 
               start: minTime, // a start time (10am in this example)
               end: maxTime, // an end time (6pm in this example)

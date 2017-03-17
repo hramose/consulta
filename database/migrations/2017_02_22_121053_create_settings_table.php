@@ -20,6 +20,7 @@ class CreateSettingsTable extends Migration
             $table->string('slotDuration')->default('00:30:00')->nullable();
             $table->string('minTime')->default('06:00:00')->nullable();
             $table->string('maxTime')->default('18:00:00')->nullable();
+            $table->string('freeDays')->default('["0"]')->nullable();
             
         });
          

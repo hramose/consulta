@@ -131,6 +131,58 @@
                     </div>
                     
                   </div> 
+                  <div class="form-group">
+                     <label for="free_days" class="col-sm-2 control-label">Dias Libres</label>
+                    <div class="col-sm-4">
+                   
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="1" @foreach($user->settings->freeDays() as $d) @if("1" == $d) checked="checked" @endif @endforeach >
+                              Lunes
+                            </label>
+                          </div>
+
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="2" @foreach($user->settings->freeDays() as $d) @if("2" == $d) checked="checked" @endif @endforeach >
+                              Martes
+                            </label>
+                          </div>
+
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="3" @foreach($user->settings->freeDays() as $d) @if("3" == $d) checked="checked" @endif @endforeach >
+                              Miércoles
+                            </label>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="4" @foreach($user->settings->freeDays() as $d) @if("4" == $d) checked="checked" @endif @endforeach >
+                              Jueves
+                            </label>
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="5" @foreach($user->settings->freeDays() as $d) @if("5" == $d) checked="checked" @endif @endforeach >
+                              Viernes
+                            </label>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" value="6" @foreach($user->settings->freeDays() as $d) @if("6" == $d) checked="checked" @endif @endforeach >
+                              Sabado
+                            </label>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="freeDays[]" checked value="0" @foreach($user->settings->freeDays() as $d) @if("0" == $d) checked="checked" @endif @endforeach >
+                              Domingo
+                            </label>
+                          </div>
+                    </div>
+                </div>
                  
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

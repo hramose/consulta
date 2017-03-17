@@ -226,7 +226,7 @@
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 
-              <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}"></div>
+              <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}"></div>
             </div>
             <!-- /.box-body -->
           </div>

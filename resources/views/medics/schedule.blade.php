@@ -47,7 +47,7 @@
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
-              <div id="calendar" data-slotDuration="{{ ($medic->settings) ? $medic->settings->slotDuration : '00:30:00' }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-appointmentsday="{{ auth()->user()->appointmentsToday() }}"></div>
+              <div id="calendar" data-slotDuration="{{ ($medic->settings) ? $medic->settings->slotDuration : '00:30:00' }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-appointmentsday="{{ auth()->user()->appointmentsToday() }}" data-freeDays="{{ $medic->settings->freeDays }}"></div>
 
           
               <!-- Modal -->
