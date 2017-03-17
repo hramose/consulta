@@ -358,9 +358,9 @@ $(function () {
           },
           minTime: minTime,
           maxTime: maxTime,
-          selectable: true,
-          selectOverlap: false,
-          selectHelper: true,
+          //selectable: true,
+          //selectOverlap: false,
+          //selectHelper: true,
           //weekends: false,
           scrollTime: minTime,
           nowIndicator: true,
@@ -377,7 +377,7 @@ $(function () {
             }
             
             var currentDate = new Date();
-          
+             
               
               if(start < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                     
@@ -581,7 +581,7 @@ $(function () {
       
         dayClick: function(date, jsEvent, view) {
 
-            
+              
               if (view.name === "month") {
                   
                   $('#calendar').fullCalendar('gotoDate', date);

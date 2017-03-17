@@ -332,7 +332,7 @@ $(function () {
         },
         dayClick: function(date, jsEvent, view) {
               var currentDate = new Date();
-
+              
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
 
                    $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
