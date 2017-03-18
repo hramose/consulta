@@ -28,9 +28,9 @@
 	      },
 	      
         methods: {
-	        getOptions(search, loading) {
-         
-	          loading(true)
+	        getOptions: _.debounce(function(search,loading) {
+	           
+		      loading(true)
 	         
 	         let queryParam = {
 	              ['q']: search
@@ -41,8 +41,9 @@
 	             this.options = resp.data.data
 	             loading(false)
 	          })
-	          
-	        },
+
+		    }, 500),
+		    
 	        select(patient) {
   
 	          if(patient){
