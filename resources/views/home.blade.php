@@ -7,23 +7,23 @@
 
      <section class="content">
         <div class="row boxes-home" >
-            <div class="col-lg-2 col-sm-6 col-xs-12">
+            <div class="col-lg-3 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>Citas</h3>
+                  <h3>Iniciar Consultas</h3>
 
-                  <p>Ver citas</p>
+                  <p>Consultas</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
                 </div>
-                <a href="/medic/appointments" class="small-box-footer">Ir a citas <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/medic/appointments" class="small-box-footer">Ir a consultas <i class="fa fa-arrow-circle-right"></i></a>
                 <a href="/medic/appointments" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-2 col-sm-6 col-xs-12">
+            <div class="col-lg-3 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
@@ -39,7 +39,7 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-2 col-sm-6 col-xs-12">
+            <div class="col-lg-3 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
@@ -55,7 +55,7 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-2 col-sm-6 col-xs-12">
+            <div class="col-lg-3 col-sm-6 col-xs-12">
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
@@ -70,22 +70,7 @@
                 <a href="/medic/patients" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
-            <!-- ./col -->
-            <div class="col-lg-2 col-sm-6 col-xs-12">
-              <!-- small box -->
-              <div class="small-box bg-purple">
-                <div class="inner">
-                  <h3>Iniciar Cita</h3>
-
-                  <p>Consultas</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="/medic/patients?inita=1" class="small-box-footer">Iniciar cita <i class="fa fa-arrow-circle-right"></i></a>
-                <a href="/medic/patients?inita=1" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
-              </div>
-            </div>
+            
           </div>
 
         <div class="row">

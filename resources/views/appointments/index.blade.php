@@ -2,7 +2,7 @@
 
 @section('content')
      
-     @include('layouts/partials/header-pages',['page'=>'Citas'])
+     @include('layouts/partials/header-pages',['page'=>'Consultas (Pacientes de día)'])
 
 
     <section class="content">
@@ -10,8 +10,8 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
-                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Ver Calendario</a>
-
+                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Calendario Semanal</a>
+                <a href="{{ url('/medic/patients/create') }}" class="btn btn-danger">Nuevo Paciente</a>
                 <div class="box-tools">
                   <form action="/medic/appointments" method="GET">
                     <div class="input-group input-group-sm" style="width: 150px;">

@@ -333,6 +333,18 @@ td.fc-day.fc-past{
 	}
 
 }
+.box-header>.box-tools
+{
+	position: relative !important;
+	right:auto !important;
+}
+@media screen and (min-width:768px){
+	.box-header>.box-tools
+	{
+		position: absolute !important;
+		right:10px !important;
+	}
+}
 .box-search-filters{
 	position: relative;
 	.box-header{

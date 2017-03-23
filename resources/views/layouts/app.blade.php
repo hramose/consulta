@@ -66,11 +66,11 @@
      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
-            <a href="/medic/appointments" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Ver citas</a>
+            <a href="/medic/appointments" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Consultas</a>
             <a href="/medic/appointments/create?wizard=1" class="btn btn-sm btn-success {{ set_active('medic/appointments/create') }}">Programe</a>
             <a href="/medic/account/edit?tab=clinics" class="btn btn-sm btn-warning {{ set_active('medic/account/edit') }}">Consultorios</a>
             <a href="/medic/patients" class="btn btn-sm btn-danger {{ set_active('medic/patients') }}">Pacientes</a>
-            <a href="/medic/patients?inita=1" class="btn btn-sm btn-default bg-purple {{ set_active('medic/patients?inita=1') }}">Iniciar Consulta</a>
+            <!-- <a href="/medic/patients?inita=1" class="btn btn-sm btn-default bg-purple {{ set_active('medic/patients?inita=1') }}">Iniciar Consulta</a> -->
           </div>
        </div>
     @endif  
