@@ -56,13 +56,13 @@ class UserRepository extends DbRepository{
     {
         $user = $this->model->findOrFail($id);
         $data = $this->prepareData($data);
-
+        //dd($data);
         $user->fill($data);
 
         if(isset($data['speciality']))
             $user->assignSpeciality($data['speciality']);
 
-        if(isset($data['minTime']) || isset($data['maxTime']))
+        if(isset($data['minTime']) || isset($data['maxTime']) || isset($data['freeDays']))
         {
            $settings = Setting::where('user_id',$user->id)->first();
            

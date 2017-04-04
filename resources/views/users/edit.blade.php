@@ -177,7 +177,7 @@
                           </div>
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox" name="freeDays[]" checked value="0" @foreach($user->settings->freeDays() as $d) @if("0" == $d) checked="checked" @endif @endforeach >
+                              <input type="checkbox" name="freeDays[]" value="0" @foreach($user->settings->freeDays() as $d) @if("0" == $d) checked="checked" @endif @endforeach >
                               Domingo
                             </label>
                           </div>
