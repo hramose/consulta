@@ -163,10 +163,16 @@ class UserRepository extends DbRepository{
 
     private function prepareData($data)
     {
+        if(! isset($data['freeDays']) )
+        {
+            $data['freeDays'] = [];
+        }
+       
         if(empty($data['password']))
            return $data = array_except($data, array('password'));
 
         $data['password'] = bcrypt($data['password']);
+
 
         return $data;
     }
