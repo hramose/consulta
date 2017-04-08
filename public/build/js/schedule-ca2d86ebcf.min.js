@@ -29,17 +29,6 @@ $(function () {
 
     $(".dropdown-toggle").dropdown();
     
-    //para quitar el popup tocando fuera del item
-    $('body').on('click', function (e) {
-        $('[data-toggle="popover"],[data-original-title]').each(function () {
-            //the 'is' for buttons that trigger popups
-            //the 'has' for icons within a button that triggers a popup
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
-                (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
-            }
-
-        });
-    });
 
     /* initialize the external events
      -----------------------------------------------------------------*/
@@ -74,42 +63,6 @@ $(function () {
     ini_events($('#external-events div.external-event'));
 
     /** load events from db **/
-   /* function fetch_events_from_medic() {
-
-        $.ajax({
-            type: 'GET',
-            url: '/medics/'+ $('.external-event').data('doctor') +'/appointments/list',
-            data: {},
-            success: function (resp) {
-                console.log(resp);
-
-                var appointments = [];
-
-                $.each(resp, function( index, item ) {
-                   
-                    item.allDay = parseInt(item.allDay); // = false;
-                    
-                    if((item.patient_id != 0 && item.created_by != $('.external-event').data('createdby')) || item.patient_id == 0){
-                       item.rendering = 'background';
-                    }
-                    
-                    //
-
-                    appointments.push(item);
-                });
-               
-                initCalendar(appointments);
-                
-            },
-            error: function () {
-                console.log('Error - '+ resp);
-
-            }
-        });
-
-
-    }*/
-    
 
     function fetch_schedules_and_appointments() {
         var schedules = [];
@@ -119,19 +72,11 @@ $(function () {
             url: '/medics/'+ $('.external-event').data('doctor') +'/schedules/list?office='+ $('.external-event').data('office'),//'/medic/schedules/list?office='+ $('.external-event').data('office') ,
             data: {},
             success: function (resp) {
-                console.log(resp);
-
-               
+              
 
                 $.each(resp, function( index, item ) {
                    
                     item.allDay = parseInt(item.allDay); // = false;
-                    
-                    /*if(item.patient_id == 0){
-                      item.rendering = 'background';
-                      
-
-                    }*/
                     
                    
                      var working_hours = {
@@ -151,7 +96,7 @@ $(function () {
                   url: '/medics/'+ $('.external-event').data('doctor') +'/appointments/list?office='+ $('.external-event').data('office'),
                   data: {},
                   success: function (resp) {
-                      console.log(resp);
+                     
 
                       var appointments = [];
 
@@ -163,7 +108,6 @@ $(function () {
                              item.rendering = 'background';
                           }
                           
-                          //
 
                           appointments.push(item);
                       });
@@ -171,7 +115,7 @@ $(function () {
                       initCalendar(appointments,schedules);
                       
                   },
-                  error: function () {
+                  error: function (resp) {
                       console.log('Error - '+ resp);
 
                   }
@@ -200,16 +144,13 @@ $(function () {
 
     //fetch_events_from_medic();
 
-
-
-
     /* initialize the calendar
      -----------------------------------------------------------------*/
     //Date for the calendar events (dummy data)
-    var date = new Date();
+    /*var date = new Date();
     var d = date.getDate(),
         m = date.getMonth(),
-        y = date.getFullYear();
+        y = date.getFullYear();*/
 
     var $calendar = $('#calendar');
      var slotDuration = $calendar.attr('data-slotDuration') ? $calendar.attr('data-slotDuration') : '00:30:00';
@@ -232,6 +173,7 @@ $(function () {
                 }
             }
       }
+
     function initCalendar(appointments,schedules)
     {
 
@@ -337,30 +279,6 @@ $(function () {
           eventRender: function(event, element) {
             element.append( "<span class='appointment-details' ></span>" );
 
-            /*if(event.created_by == $('.external-event').data('createdby'))
-            {
-                element.append( "<span class='closeon fa fa-trash'></span>" );
-                
-                element.find(".closeon").click(function() {
-                  swal({
-                      title: "Deseas cancelar la cita?",
-                      text: " Requerda que se eliminara del sistema!",
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Si, Cancelar!",
-                      closeOnConfirm: false
-                    },
-                    function(){
-                      deleteAppointment(event._id, event);
-                      swal("Cita cancelada!", "Tu cita ha sido eliminada.", "success");
-                    });
-                  
-                   
-                });
-                
-            }**/
-            
             if (event.rendering == 'background') {
                 element.append('<span class="title-bg-event">'+ event.title + '</span>');
                 
@@ -617,7 +535,6 @@ $(function () {
         user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
         office_id: (event.office_id) ? event.office_id : 0,
-        /*created_by: event.created_by,*/
         idRemove: idRemove,
         office_info: (event.office_info) ? event.office_info : '',
         allDay: 0
@@ -640,12 +557,8 @@ $(function () {
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
-        //backgroundColor: event.backgroundColor, //Success (green)
-       // borderColor: event.borderColor,
-        //user_id: event.user_id,
         patient_id: event.patient_id,
         office_id: event.office_id,
-        //created_by: event.created_by,
         id: event.id,
         office_info: event.office_info,
         allDay: event.allDay
@@ -689,7 +602,6 @@ $(function () {
                 user_id: event.data('doctor'),
                 patient_id: patient_id,
                 office_id: event.data('office')
-                //created_by: event.data('createdby')
                 
               };
               
@@ -710,9 +622,6 @@ $(function () {
                     copiedEventObject.borderColor = event.css("border-color");
                     copiedEventObject.overlap = false;
                     
-                    // render the event on the calendar
-                    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-
                     var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
                     
                    
@@ -727,13 +636,6 @@ $(function () {
               
     }
 
-    /* $("#modal-add-new-event").click(function (e) {
-        e.preventDefault();
-
-        createEventFromModal();
-        
-      });
-   */
    
      $('.btn-finalizar-cita').on('click', function (e) {
        e.preventDefault();

@@ -30,6 +30,7 @@ class CreateOfficesTable extends Migration
             $table->tinyInteger('notification')->default(0);
             $table->dateTime('notification_date');
             $table->string('address_map')->nullable();
+            $table->tinyInteger('active')->default(0);
             $table->timestamps();
         });
 

@@ -21,6 +21,18 @@ $(function () {
       }
   };
 
+  if( isMobile.any() ) {
+      $('.box-create-appointment').hide();
+      $('.box-offices').hide();
+    }else{
+      //$('.box-create-appointment').show();
+    }
+
+
+    $(".dropdown-toggle").dropdown();
+
+
+
     var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
    
     
@@ -50,40 +62,11 @@ $(function () {
                   useCurrent: false//Important! See issue #1075
               });
               
-              /*$("#datetimepicker2").on("dp.change", function (e) {
-                  $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
-              });
-              $("#datetimepicker3").on("dp.change", function (e) {
-                  $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
-              });*/
-        /* $('#datetimepicker2').datetimepicker({
-                          format: 'LT',
-                          stepping: stepping
-                      });
-        $('#datetimepicker3').datetimepicker({
-                          format: 'LT',
-                          stepping: stepping
-                      });*/
-        /*$('#datepicker').datepicker({
-            autoclose: true
-          });*/
-         /*$(".timepicker").timepicker({
-            showInputs: false
-          });*/
-
         $('#setupSchedule').modal({backdrop:'static', show:true });
   }
 
 
-  if( isMobile.any() ) {
-      $('.box-create-appointment').hide();
-      $('.box-offices').hide();
-    }else{
-      //$('.box-create-appointment').show();
-    }
-
-
-    $(".dropdown-toggle").dropdown();
+  
     /* initialize the external events
      -----------------------------------------------------------------*/
     function ini_events(ele) {
@@ -125,7 +108,7 @@ $(function () {
             url: '/medic/schedules/list',
             data: {},
             success: function (resp) {
-                console.log(resp);
+               
 
                 var schedules = [];
 
@@ -133,21 +116,15 @@ $(function () {
                    
                     item.allDay = parseInt(item.allDay); // = false;
                     
-                    /*if(item.patient_id == 0){
-                      item.rendering = 'background';
-                      
-
-                    }*/
-                    
-                    //debugger
-
+                    /*if(item.patient_id == 0) item.rendering = 'background';*/
+                
                     schedules.push(item);
                 });
                
                 initCalendar(schedules);
                 
             },
-            error: function () {
+            error: function (resp) {
                 console.log('Error - '+ resp);
 
             }
@@ -155,6 +132,7 @@ $(function () {
 
 
     }
+
     function fetch_events() {
 
         $.ajax({
@@ -162,7 +140,6 @@ $(function () {
             url: '/medic/appointments/list',
             data: {},
             success: function (resp) {
-                console.log(resp);
 
                 var appointments = [];
 
@@ -170,13 +147,7 @@ $(function () {
                    
                     item.allDay = parseInt(item.allDay); // = false;
                     
-                    if(item.patient_id == 0){
-                      item.rendering = 'background';
-                      
-
-                    }
-                    
-                    //debugger
+                    if(item.patient_id == 0) item.rendering = 'background';
 
                     appointments.push(item);
                 });
@@ -184,7 +155,7 @@ $(function () {
                 initCalendar(appointments);
                 
             },
-            error: function () {
+            error: function (resp) {
                 console.log('Error - '+ resp);
 
             }
@@ -192,6 +163,7 @@ $(function () {
 
 
     }
+
     function fetch_offices() {
 
         $.ajax({
@@ -199,39 +171,36 @@ $(function () {
             url: '/medic/account/offices/list',
             data: {},
             success: function (resp) {
-                console.log(resp);
-
+               
                 var offices = [];
                 var colors = ['#2A630F','#558D00','#77B000','#8CCC00','#A9D300']
-                var currColor = colors[Math.floor((Math.random()*colors.length))];//"#00a65a";
+                //var currColor = colors[Math.floor((Math.random()*colors.length))];//"#00a65a";
+
                 $.each(resp, function( index, item ) {
+                    
                     var currColor = colors[index];
                     
-                    if(!currColor)
-                    {
-                      currColor = '#00a65a';
-                    }
-
+                    if(!currColor) currColor = '#00a65a';
+                    
                     offices.push(item);
                     
                     var event = $("<div />");
                     event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
                     event.attr('data-patient', 0);
-                    //event.attr('data-doctor', $('input[name=user_id]').val());
+                    
                     event.html('');
                     event.html(item.name);
 
                     $('#external-offices').prepend(event);
-
-                    //Add draggable funtionality
+                  
                     var eventObject = {
+
                       title: $.trim(item.name), // use the element's text as the event title
-                      //user_id: $(this).data('doctor'),
                       office_id: item.id, //patient_id :0
                       office_info: JSON.stringify(item),
                       backgroundColor: event.css("background-color"),
                       borderColor: event.css("border-color")
-                      //created_by: $(this).data('createdby')
+                     
                       
                     };
 
@@ -248,12 +217,9 @@ $(function () {
 
 
                 });
-               
-                
-                
-                
+                  
             },
-            error: function () {
+            error: function (resp) {
                 console.log('Error - '+ resp);
 
             }
@@ -261,6 +227,7 @@ $(function () {
 
 
     }
+
     var $calendar = $('#calendar');
     var prog_schedule = $calendar.attr('data-schedule') ? $calendar.attr('data-schedule') : '';
     
@@ -275,10 +242,10 @@ $(function () {
     /* initialize the calendar
      -----------------------------------------------------------------*/
     //Date for the calendar events (dummy data)
-    var date = new Date();
+    /*var date = new Date();
     var d = date.getDate(),
         m = date.getMonth(),
-        y = date.getFullYear();
+        y = date.getFullYear();*/
 
      
      var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
@@ -302,7 +269,6 @@ $(function () {
             }
       }
       
-     console.log(businessHours); 
      $('#selectSlotDuration').on('change',function (e) {
         e.preventDefault();
 
@@ -339,23 +305,9 @@ $(function () {
             format: 'LT',
             stepping: stepping,
              useCurrent: false
-             //useCurrent: false//Important! See issue #1075
+            
         });
-        
-       /* $("#datetimepicker2").on("dp.change", function (e) {
-            $('#datetimepicker3').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker3").on("dp.change", function (e) {
-            $('#datetimepicker2').data("DateTimePicker").maxDate(e.date);
-        });*/
-       /*$('#datetimepicker2').datetimepicker({
-                    format: 'LT',
-                    stepping: stepping
-                });
-        $('#datetimepicker3').datetimepicker({
-                    format: 'LT',
-                    stepping: stepping
-                });*/
+      
       
      }
 
@@ -385,7 +337,6 @@ $(function () {
     function initCalendar(appointments)
     {
       
-     
       $calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaWeek',
@@ -552,22 +503,7 @@ $(function () {
             //element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
 
-            /*element.find(".closeon").click(function() {
-               swal({
-                      title: "Deseas cancelar la cita?",
-                      text: " Requerda que se eliminara del sistema!",
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonClass: "btn-danger",
-                      confirmButtonText: "Si, Cancelar!",
-                      closeOnConfirm: false
-                    },
-                    function(){
-                      deleteAppointment(event._id, event);
-                      swal("Cita cancelada!", "Tu cita ha sido eliminada.", "success");
-                    });
-               
-            });*/
+          
             if (event.rendering == 'background') {
                 element.append('<span class="title-bg-event">'+ event.title + '</span>');
                 
@@ -617,15 +553,7 @@ $(function () {
                   },function (dismiss) {});
 
               });
-             /* element.find(".appointment-details").popover({
-                  title: 'Cita con el Dr. '+ event.user.name,
-                  placement: 'top',
-                  html:true,
-                  container:'#calendar',
-                  trigger: 'click focus', 
-                  content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + '<br>Paciente: ' + event.patient.first_name + ' '+ event.patient.last_name,
-              });*/
-
+            
             }else{
         
                 var officeInfoDisplay = '';
@@ -673,14 +601,7 @@ $(function () {
                    
                 });
 
-                /*element.find(".appointment-details").popover({
-                    title:  event.title,
-                    placement: 'top',
-                    html:true,
-                    container:'#calendar',
-                    trigger: 'click focus', 
-                    content: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' <br>De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay,
-                });*/
+              
             }
             
 
@@ -857,9 +778,7 @@ $(function () {
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
-        //user_id: event.user_id,
         office_id: (event.office_id) ? event.office_id : 0,
-        //created_by: event.created_by,
         idRemove: idRemove,
         office_info: (event.office_info) ? event.office_info : '',
         allDay: 0
@@ -882,11 +801,7 @@ $(function () {
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
-        //backgroundColor: event.backgroundColor, //Success (green)
-        //borderColor: event.borderColor,
-        //user_id: event.user_id,
         office_id: event.office_id,
-        //created_by: event.created_by,
         id: event.id,
         office_info: event.office_info,
         allDay: event.allDay
@@ -915,7 +830,6 @@ $(function () {
         borderColor: event.borderColor,
         office_id: event.office_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
-        //created_by: event.created_by,
         idRemove: idRemove,
         office_info: (event.office_info) ? event.office_info : '',
         allDay: 0
@@ -936,15 +850,11 @@ $(function () {
     {
       
       var appointment = {
-        //title : event.title,
+  
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
-        //backgroundColor: event.backgroundColor, //Success (green)
-        //borderColor: event.borderColor,
-        //user_id: event.user_id,
         patient_id: event.patient_id,
-        //created_by: event.created_by,
         id: event.id,
         office_info: event.office_info,
         allDay: event.allDay
@@ -963,46 +873,36 @@ $(function () {
 
     /* ADDING EVENTS */
     var currColor = "#3c8dbc"; //Red by default
-    //Color chooser button
-    var colorChooser = $("#color-chooser-btn");
-    $("#color-chooser > li > a").click(function (e) {
-      e.preventDefault();
-      //Save color
-      currColor = $(this).css("color");
-      //Add color effect to button
-      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
-      $('#modal-add-new-event').css({"background-color": currColor, "border-color": currColor});
-    });
-
+   
     function createEvent()
     {
-      var val = $("#new-event").val();
-      var valSelect = $(".box-create-appointment").find('.widget-user-2').attr('data-patient');
-      var office_id = $(".box-create-appointment").find('.widget-user-2').attr('data-office');
-      var valName = $(".box-create-appointment").find('.widget-user-2').attr('data-title');
-      if (valSelect.length == 0 || !office_id) {
-        return;
-      }
-     
+        var val = $("#new-event").val();
+        var valSelect = $(".box-create-appointment").find('.widget-user-2').attr('data-patient');
+        var office_id = $(".box-create-appointment").find('.widget-user-2').attr('data-office');
+        var valName = $(".box-create-appointment").find('.widget-user-2').attr('data-title');
+        
+        if (valSelect.length == 0 || !office_id) {
+          return;
+        }
+       
 
-      //Create events
-      var event = $("<div />");
-      event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-      event.attr('data-patient', valSelect);
-      event.attr('data-office', office_id);
-      /*event.attr('data-doctor', $('input[name=user_id]').val());
-      event.attr('data-createdby', $('input[name=user_id]').val());*/
-      event.html('');
-      event.html(val + ' - '+ valName);
-      $('#external-events').prepend(event);
+        //Create events
+        var event = $("<div />");
+        event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+        event.attr('data-patient', valSelect);
+        event.attr('data-office', office_id);
+       
+        event.html('');
+        event.html(val + ' - '+ valName);
+        $('#external-events').prepend(event);
 
-      //Add draggable funtionality
-      ini_events(event);
+        //Add draggable funtionality
+        ini_events(event);
 
-      //Remove event from text input
-      $("#new-event").val("");
-      $(".search-patients").val("").trigger('change');
-      $(".search-patients").text("").trigger('change');
+        //Remove event from text input
+        $("#new-event").val("");
+        $(".search-patients").val("").trigger('change');
+        $(".search-patients").text("").trigger('change');
     }
 
     $("#new-event").keypress(function( e ) {
@@ -1074,11 +974,9 @@ $(function () {
 
       var eventObject = {
           title: $.trim(val + ' - '+ valName), // use the element's text as the event title
-          //user_id: $('input[name=user_id]').val(),
           patient_id: valSelect,
           office_id: office_id
-          //created_by: $('input[name=user_id]').val()
-         
+               
         };
 
        var originalEventObject = eventObject;//event.data('eventObject');
@@ -1101,8 +999,7 @@ $(function () {
         copiedEventObject.backgroundColor = currColor; //event.css("background-color");
         copiedEventObject.borderColor = currColor;//event.css("border-color");
         copiedEventObject.overlap = false;
-        // render the event on the calendar
-        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+      
 
         var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
        
@@ -1111,8 +1008,6 @@ $(function () {
       }
       //Remove event from text input
       $("#modal-new-event").val("");
-      //$(".modal-search-patients").val("").trigger('change');
-      //$(".modal-search-patients").text("").trigger('change');
       $('#myModal').find('#modal-new-event').attr('data-modaldate', '');
       $('#myModal').modal('hide');
     }
@@ -1123,6 +1018,7 @@ $(function () {
       createEventFromModal();
       
     });
+
    $(".modal-search-patients").select2({
             placeholder: "Buscar paciente",
             ajax: {
@@ -1308,17 +1204,17 @@ $(function () {
         var currColor = colors[Math.floor((Math.random()*colors.length))];
        
         var schedule = {
-        title : title,
-        date :  date,
-        start : start,
-        end : end,
-        backgroundColor: currColor, //Success ('#00a65a')
-        borderColor: currColor,
-        office_id:  office_id,
-        office_info: office_info,
-        allDay: 0
-        
-      };
+          title : title,
+          date :  date,
+          start : start,
+          end : end,
+          backgroundColor: currColor, //Success ('#00a65a')
+          borderColor: currColor,
+          office_id:  office_id,
+          office_info: office_info,
+          allDay: 0
+          
+        };
      
       if(isOverlapping(schedule)){
          $('#infoBox').addClass('alert-danger').html('No se puede agregar el evento por que hay colision de horarios. Por favor revisar!!!').show();
@@ -1350,9 +1246,7 @@ $(function () {
                   $('#datetimepicker1').data("DateTimePicker").clear();
                   $('#datetimepicker2').data("DateTimePicker").clear();
                   $('#datetimepicker3').data("DateTimePicker").clear();
-                  //$("#setupSchedule").find('input[name="start"]').val('');
-                 // $("#setupSchedule").find('input[name="end"]').val('');
-
+                
               
                 
             },
@@ -1372,67 +1266,3 @@ $(function () {
 
 
   });
-/*$('#searchPatients').on('keypress', function(event) {
-
-        if (event.keyCode == 13) {
-            event.preventDefault();
-        }
-
-    });
-    $('#searchPatients').on('keyup', function(event) {
-        search();
-    });
-    function search() {
-
-        var input = $('#searchPatients'),
-            key =input.val(),
-            self = this;
-
-        if(key.length >=3 ){
-
-            $('.loading-search').removeClass('hidden');
-            clearTimeout( this.timer );
-            this.timer = setTimeout(function () {
-                console.log('search ' + key);
-                 
-                 $.ajax({
-                  type: 'GET',
-                  url: '/medic/patients/list',
-                  data: {search: key},
-                  success: function (resp) {
-                      console.log(resp.data);
-                      $('.search-list').html('');
-                      $.each(resp.data, function(index, value){
-
-                          var li = $('<li />').html(value.first_name);
-                          li.attr('data-id',value.id);
-                          console.log(value.id);
-                          $('.search-list').append(li);
-                      });
-
-                      //$('search-list').
-                     
-                  },
-                  error: function () {
-                     
-                    
-                  }
-              });
-
-            },200);
-
-
-        }else if(key.length == 0){
-            $('.dropdown').removeClass('open');
-            
-        }
-
-
-
-
-    }
-    $('.search-list').on('click','li', function (e) {
-        //console.log($(this).data('id'));
-
-
-    });*/

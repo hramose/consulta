@@ -199,7 +199,7 @@
                             <td data-title="Compartir">
                               <div class="btn-group">
                                 <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
                                   <i class="fa fa-address"></i> Compartir
                                 </button>
                                
@@ -207,6 +207,7 @@
                                  @if($clinic->phone)
                                 <a href="tel:{{ $clinic->phone }}" class="btn btn-default" title="{{ $clinic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $clinic->phone }})</a>
                                 @endif
+                                 <a href="{{ url('/clinics/'.$clinic->id.'/schedule') }}" class="btn btn-info "><i class="fa fa-calendar"></i> Reservar cita</a>
                               </div>
                             </td>
                           </tr>
@@ -263,52 +264,6 @@
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/provinces.min.js"></script>
   <script src="{{ elixir('/js/search.min.js') }}"></script>
-  <script>
-    /*$(function () {
-       
-       $('#myModal').on('shown.bs.modal', function (event) {
-          
-          var button = $(event.relatedTarget)
-          var lat = button.attr('data-lat');
-          var lon = button.attr('data-lon');
-          var address = button.attr('data-address');
-              
-      
-        $(".share").jsSocials({
-            shares: ["email", "twitter", "facebook", "googleplus", "whatsapp"],
-            url: "http://maps.google.com/?saddr=Current+Location&daddr="+lat +"," + lon,
-            text: address,
-            showLabel: false,
-            showCount: false,
-            shareIn: "popup",
-           
-        });
-          
-        
-     
-       
-      });
-
-       
-      function obtainGeolocation(){
-       //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
-       window.navigator.geolocation.getCurrentPosition(localitation);
-       }
-       function localitation(geo){
-       
-      // En consola nos devuelve el Geoposition object con los datos nuestros
-          
-          $('input[name="lat"]').val(geo.coords.latitude);
-          $('input[name="lon"]').val(geo.coords.longitude);
-          
-       }
-       //llamando la funcion inicial para ver trabajar la API
-       
-
-       $('.btn-geo').on('click', function (e) {
-           obtainGeolocation();
-       })
-    });*/
-</script>
+ 
   
 @endsection

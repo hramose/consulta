@@ -12,7 +12,7 @@ class Office extends Model
     const DISTANCE_UNIT_MILES      = 69.0;
 
     protected $fillable = [
-        'type','name','address','province','canton','district','city','phone','lat','lon','address_map','notification','notification_date'
+        'type','name','address','province','canton','district','city','phone','lat','lon','address_map','notification','notification_date','active'
     ];
 
     protected $appends = ['notification_datetime','notification_hour'];
@@ -35,11 +35,11 @@ class Office extends Model
     }
      public function scopeActive($query, $search)
     {
+        
         return $query->where(function ($query) use ($search)
         {
-            $query->whereHas('user', function($q) use ($search){
-                        $q->where('active', $search);
-                    });
+           $query->where('active', $search );
+           
         });
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ClinicRepository;
 use App\Repositories\MedicRepository;
+use App\Repositories\OfficeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -14,10 +15,12 @@ class ClinicController extends Controller
      *
      * @return void
      */
-    public function __construct(ClinicRepository $clinicRepo)
+    public function __construct(ClinicRepository $clinicRepo, OfficeRepository $officeRepo, MedicRepository $medicRepo)
     {
         $this->middleware('auth');
         $this->clinicRepo = $clinicRepo;
+        $this->officeRepo = $officeRepo;
+         $this->medicRepo = $medicRepo;
 
        
     }
@@ -43,9 +46,7 @@ class ClinicController extends Controller
 
                 
                 $clinics = $this->clinicRepo->findAll($search);
-                //$count = $clinics->count();
-
-                //flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Clinica(s) u hospital(es)','success');
+              
 
                 return view('clinics.index',compact('clinics','search'));
             }
@@ -53,6 +54,27 @@ class ClinicController extends Controller
 
         return view('clinics.index',compact('clinics'));
 
+    }
+
+    /**
+     * Mostrar vista de todas las consulta(citas) de un doctor
+     */
+    public function schedule($office_id)
+    {
+        if(!auth()->user()->active) return redirect('/');
+
+        
+         $office = $this->officeRepo->findbyId($office_id);
+         $medics = $this->medicRepo->findAllByOffice($office->id);
+
+        if(request('medic'))
+            $medic = $this->medicRepo->findById(request('medic'));
+        else
+            $medic = null;
+        
+       // if(!$medic->hasrole('medico')) return redirect('/');
+        
+        return view('clinics.schedule',compact('medics','medic','office'));
     }
 
     

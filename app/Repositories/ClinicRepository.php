@@ -43,8 +43,7 @@ class ClinicRepository extends DbRepository{
         {
             $offices = $this->model->Active(1);
         }
-
-
+       
         if (isset($search['lat']) && $search['lat'] != "" && isset($search['lon']) && $search['lon'] != "")
         {
             

@@ -44,6 +44,7 @@ Route::get('/patients/create', 'PatientController@create');
 Route::post('/patients/register', 'PatientController@register');
 
 Route::get('/clinics/search', 'ClinicController@index');
+Route::get('/clinics/{office}/schedule', 'ClinicController@schedule');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
