@@ -50,14 +50,16 @@ $(function () {
         var eventObject = {
           title: $.trim($(this).text()), // use the element's text as the event title
           user_id: $(this).data('doctor'),
-          patient_id: $(this).data('patient')
-          //created_by: $(this).data('createdby')
+          patient_id: $(this).data('patient'),
+          office_id: $(this).data('office'),
+          start: moment(),
+          end: moment()
          
           
         };
 
         // store the Event Object in the DOM element so we can get to it later
-        $(this).data('eventObject', eventObject);
+        $(this).data('event', eventObject);
       
         // make the event draggable using jQuery UI
         $(this).draggable({
@@ -72,7 +74,7 @@ $(function () {
     ini_events($('#external-events div.external-event'));
 
     /** load events from db **/
-    function fetch_events_from_medic() {
+   /* function fetch_events_from_medic() {
 
         $.ajax({
             type: 'GET',
@@ -91,7 +93,7 @@ $(function () {
                        item.rendering = 'background';
                     }
                     
-                    //debugger
+                    //
 
                     appointments.push(item);
                 });
@@ -106,11 +108,99 @@ $(function () {
         });
 
 
-    }
+    }*/
     
 
-    fetch_events_from_medic();
-   
+    function fetch_schedules_and_appointments() {
+        var schedules = [];
+
+        $.ajax({
+            type: 'GET',
+            url: '/medics/'+ $('.external-event').data('doctor') +'/schedules/list?office='+ $('.external-event').data('office'),//'/medic/schedules/list?office='+ $('.external-event').data('office') ,
+            data: {},
+            success: function (resp) {
+                console.log(resp);
+
+               
+
+                $.each(resp, function( index, item ) {
+                   
+                    item.allDay = parseInt(item.allDay); // = false;
+                    
+                    /*if(item.patient_id == 0){
+                      item.rendering = 'background';
+                      
+
+                    }*/
+                    
+                   
+                     var working_hours = {
+                      // days of week. an array of zero-based day of week integers (0=Sunday)
+                      dow: [dayNumber(item.date)], // Monday - Thursday
+
+                      start: item.start.split('T')[1], // a start time (10am in this example)
+                      end: item.end.split('T')[1], // an end time (6pm in this example)
+                     }
+
+                    schedules.push(working_hours);
+
+                });
+
+                $.ajax({
+                  type: 'GET',
+                  url: '/medics/'+ $('.external-event').data('doctor') +'/appointments/list?office='+ $('.external-event').data('office'),
+                  data: {},
+                  success: function (resp) {
+                      console.log(resp);
+
+                      var appointments = [];
+
+                      $.each(resp, function( index, item ) {
+                         
+                          item.allDay = parseInt(item.allDay); // = false;
+                          
+                          if((item.patient_id != 0 && item.created_by != $('.external-event').data('createdby')) || item.patient_id == 0){
+                             item.rendering = 'background';
+                          }
+                          
+                          //
+
+                          appointments.push(item);
+                      });
+                     
+                      initCalendar(appointments,schedules);
+                      
+                  },
+                  error: function () {
+                      console.log('Error - '+ resp);
+
+                  }
+              });
+               
+                //initCalendar(schedules);
+                
+            },
+            error: function (resp) {
+                console.log('Error - '+ resp);
+
+            }
+        });
+
+
+
+
+    }
+    
+    function dayNumber(date){
+        //
+        return $.fullCalendar.moment(date).day();
+    }
+
+    fetch_schedules_and_appointments();
+
+    //fetch_events_from_medic();
+
+
 
 
     /* initialize the calendar
@@ -128,7 +218,7 @@ $(function () {
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
     var freeDays = $calendar.attr('data-freeDays') ? JSON.parse($calendar.attr('data-freeDays')) : [0];
-     var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
+    var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
     
       for(d in businessHours){
          for(f in freeDays){
@@ -142,7 +232,7 @@ $(function () {
                 }
             }
       }
-    function initCalendar(appointments)
+    function initCalendar(appointments,schedules)
     {
 
       $calendar.fullCalendar({
@@ -162,21 +252,22 @@ $(function () {
           editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
-          businessHours: {
+          businessHours: schedules, /*{
               // days of week. an array of zero-based day of week integers (0=Sunday)
               dow: businessHours, // Monday - Thursday
 
               start: minTime, // a start time (10am in this example)
               end: maxTime, // an end time (6pm in this example)
-          },
+          },*/
+          eventConstraint:"businessHours",
           minTime: minTime,
           maxTime: maxTime,
           scrollTime: minTime,
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
-          drop: function (date, allDay) { // this function is called when something is dropped
-
+          drop: function (date, jsEvent, ui,resourceId) { // this function is called when something is dropped
+           
             var currentDate = new Date();
             
             if(date < currentDate) {
@@ -190,7 +281,7 @@ $(function () {
                    return false;
               }
             // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
+            var originalEventObject = $(this).data('event');
           
             // we need to copy it, so that multiple events don't have a reference to the same object
             var copiedEventObject = $.extend({}, originalEventObject);
@@ -207,16 +298,28 @@ $(function () {
             // render the event on the calendar
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 
-            var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
+           // var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
             
-           
-            saveAppointment(copiedEventObject, _id);
+           //var _id = resourceId;
+           // saveAppointment(copiedEventObject, _id);
 
            
             /*if($(this).data('patient'))
               $(this).remove(); // remover de citas sin agendar
          */
            
+          },
+          eventReceive: function(event) {
+            
+             var currentDate = new Date();
+             if(event.start < currentDate) {
+                   
+                   $('#calendar').fullCalendar( 'removeEvents', event._id)
+                   
+                   return false;
+              }
+
+            saveAppointment(event, event._id);
           },
           eventResize: function(event, delta, revertFunc) {
 
@@ -267,13 +370,22 @@ $(function () {
            
             if(event.patient_id && event.patient)
             {
+              var officeInfoDisplay = '';
+               if(event.office)
+                {
+                     var officeInfo = event.office;//JSON.parse(event.office_info);
+
+                      officeInfoDisplay = 'en la '+ officeInfo.type +' '+ officeInfo.name + ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
+                      
+                   
+                }
               if(event.created_by == $('.external-event').data('createdby'))
               {
                 element.find(".appointment-details").click(function() {
                     
                      swal({
                       title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
-                      text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
+                      html: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") +' <br>'+ officeInfoDisplay,
                       showCancelButton: true,
                       confirmButtonColor: '#d33',
                       cancelButtonColor: '#3085d6',
@@ -304,13 +416,13 @@ $(function () {
                 var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
 
 
-                if(event.office_info)
+                if(event.office)
                 {
-                     var officeInfo = JSON.parse(event.office_info);
+                     var officeInfo = JSON.parse(event.office);
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>';
 
-                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ event.title
+                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ officeInfo.name
                       
                       textAlert = 'Favor llamar a este número: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a> <br>Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
@@ -504,6 +616,7 @@ $(function () {
         borderColor: event.borderColor,
         user_id: event.user_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
+        office_id: (event.office_id) ? event.office_id : 0,
         /*created_by: event.created_by,*/
         idRemove: idRemove,
         office_info: (event.office_info) ? event.office_info : '',
@@ -531,6 +644,7 @@ $(function () {
        // borderColor: event.borderColor,
         //user_id: event.user_id,
         patient_id: event.patient_id,
+        office_id: event.office_id,
         //created_by: event.created_by,
         id: event.id,
         office_info: event.office_info,
@@ -552,7 +666,7 @@ $(function () {
    
 
     $('#myModal').on('shown.bs.modal', function (event) {
-      //debugger
+      //
      // var button = $(event.relatedTarget) // Button that triggered the modal
       var date = $(this).find('.modal-body').attr('data-date') // Extract info from data-* attributes
       var hour = $(this).find('.modal-body').attr('data-hour')
@@ -573,7 +687,8 @@ $(function () {
               var eventObject = {
                 title: $.trim(event.text()), // use the element's text as the event title
                 user_id: event.data('doctor'),
-                patient_id: patient_id
+                patient_id: patient_id,
+                office_id: event.data('office')
                 //created_by: event.data('createdby')
                 
               };

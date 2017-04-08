@@ -25,8 +25,12 @@ class OfficeRepository extends DbRepository{
     {
         
        
-        $office = auth()->user()->offices()->create($data);
-
+        //$office = auth()->user()->offices()->create($data);
+        
+        $office = $this->model->create($data);
+        
+        
+        $office = auth()->user()->offices()->save($office);
 
         return $office;
     }
@@ -70,16 +74,51 @@ class OfficeRepository extends DbRepository{
      * @param null $search
      * @return mixed
      */
-    public function findAllByDoctorWithoutPagination($id, $search = null)
+    public function findAllByDoctorWithoutPagination($medic, $search = null)
     {
         $order = 'created_at';
         $dir = 'desc';
 
-        $offices = $this->model->where('user_id', $id);
+        $offices = $medic->offices();
 
         if (! count($search) > 0) return $offices->get();
 
         if (trim($search['q']))
+        {
+            $offices = $offices->Search($search['q']);
+        } 
+
+
+        if (isset($search['order']) && $search['order'] != "")
+        {
+            $order = $search['order'];
+        }
+        if (isset($search['dir']) && $search['dir'] != "")
+        {
+            $dir = $search['dir'];
+        }
+
+
+        return $offices->orderBy('offices.'.$order , $dir)->get();
+
+    }
+
+     /**
+     * Find all the appointments by Doctor
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllWithoutPagination($id, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $offices = $this->model;
+
+        if (! count($search) > 0) return $offices->get();
+
+        if (isset($search['q']) && trim($search['q']))
         {
             $offices = $offices->Search($search['q']);
         } 

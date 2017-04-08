@@ -1,249 +1,280 @@
 <template>	
 	<div class="form-horizontal">
-     <div class="form-group">
-        <label for="office_type" class="col-sm-2 control-label">Tipo</label>
-
-        <div class="col-sm-10">
-          <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona distrito --"  v-model="office.type">
-            <option disabled="disabled"></option>
-            <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
-            
-          </select>
-          <form-error v-if="errors.type" :errors="errors" style="float:right;">
-              {{ errors.type[0] }}
-          </form-error>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="office_name" class="col-sm-2 control-label">Nombre</label>
-
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
-          <form-error v-if="errors.name" :errors="errors" style="float:right;">
-              {{ errors.name[0] }}
-          </form-error>
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="office_address" class="col-sm-2 control-label">Dirección</label>
-
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="address" placeholder="Dirección"  v-model="office.address">
-          <form-error v-if="errors.address" :errors="errors" style="float:right;">
-              {{ errors.address[0] }}
-          </form-error>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="office_province" class="col-sm-2 control-label">Provincia</label>
-
-        <div class="col-sm-10">
-          <select class="form-control " style="width: 100%;" name="province" placeholder="-- Selecciona provincia --"  v-model="office.province" v-on:change="onChangeProvince">
-            <option disabled="disabled"></option>
-            <option v-for="item in provincias" v-bind:value="item.title">{{ item.title }}</option>
-            
-          </select>
-          <form-error v-if="errors.province" :errors="errors" style="float:right;">
-              {{ errors.province[0] }}
-          </form-error>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="office_canton" class="col-sm-2 control-label">Canton</label>
-
-        <div class="col-sm-10">
-          <select class="form-control " style="width: 100%;" name="canton" placeholder="-- Selecciona canton --"  v-model="office.canton" v-on:change="onChangeCanton">
-            <option disabled="disabled"></option>
-            <option v-for="item in cantones" v-bind:value="item.title">{{ item.title }}</option>
-            
-          </select>
-          <form-error v-if="errors.canton" :errors="errors" style="float:right;">
-              {{ errors.canton[0] }}
-          </form-error>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="office_district" class="col-sm-2 control-label">Distrito</label>
-
-        <div class="col-sm-10">
-          <select class="form-control " style="width: 100%;" name="district" placeholder="-- Selecciona distrito --"  v-model="office.district">
-            <option disabled="disabled"></option>
-            <option v-for="item in distritos" v-bind:value="item">{{ item }}</option>
-            
-          </select>
-          <form-error v-if="errors.district" :errors="errors" style="float:right;">
-              {{ errors.district[0] }}
-          </form-error>
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label for="office_phone" class="col-sm-2 control-label">Teléfono</label>
-
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="phone" placeholder="Teléfono" v-model="office.phone">
-          <form-error v-if="errors.phone" :errors="errors" style="float:right;">
-              {{ errors.phone[0] }}
-          </form-error>
-        </div>
-      </div>
-       <div class="form-group">
-        <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
-            
-                                                  
-        
-             <div class="col-sm-3">
-              <div class="form-group">
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon">lat:</span>
-                    <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat">
-                  </div>
-                </div>
-              </div>
-              
-               
-            </div>
-            <div class="col-sm-3">
-               <div class="form-group">
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon">lon:</span>
-                    <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon">
-                  </div>
-                </div>
-              </div>
-               
-            </div>
-           
-            <div class="col-sm-3">
-          
-              <div class="form-group">
-
-                 
-                <div class="col-sm-6">
-                
-                  
-                   <button type="button" class="btn btn-default btn-geo" @click="getGeolocation"><i class="fa fa-"></i>Tu ubicación Actual</button>
-                 
-                </div>
-         
-                
-              </div>
-
-              
-
-              <!-- Modal -->
-              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="myModalLabel">Ejemplo de Coordenadas</h4>
-                    </div>
-                    <div class="modal-body">
-                      <img src="/img/img-mapa-coordenadas.png" alt="Coordenadas Google Maps" style="width: 100%;" />
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Modal -->
-              <div class="modal fade" id="modalOfficeNotification" tabindex="-1" role="dialog" aria-labelledby="modalOfficeNotificationLabel">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="modalOfficeNotificationLabel">Recordatorio</h4>
-                    </div>
-                    <div class="modal-body">
-                        
-                          <div class="callout callout-info">
-                            <h4>Recordatorio de actualizacion de ubicación de consultorio o clinica</h4>
-
-                            <p>Selecciona el dia y la hora del recordatorio</p>
-                          </div>
-                            <div class="row">
-                              <div class="col-sm-6">
-                                <div class="input-group">
-                                  <input type="text" class="form-control"  name="notification_date" id="datetimepicker1" v-model="office.notification_datetime" @blur="onBlurDatetime">
-
-                                  <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-6">
-                                <div class="input-group">
-                                  <input type="text" class="form-control"  name="notification_date" id="datetimepicker2" v-model="office.notification_hour" @blur="onBlurHour">
-
-                                  <div class="input-group-addon">
-                                    <i class="fa fa-clock-o"></i>
-                                  </div>
-                                </div>
-                                
-                              </div>
-                              
-                            </div> 
-
-
-                               
-                          
-                          
-                       
-                    </div>
-                    <div class="modal-footer">
-                      <!-- <button type="button" class="btn btn-primary btn-save-notification" v-bind:data-office="office.id">Guardar</button> -->
-                      <button type="button" class="btn btn-danger" v-show="office.notification_date" @click="office.notification_date = ''">Quitar Notificación</button>
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-            <!-- <div class="col-sm-3">
-              <div class="form-group">
-                  <div class="col-sm-5">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                        Ver ejemplo
-                      </button>
-                    </div>
-                </div>
-            </div>-->
-            <div class="col-sm-3">
-              <div class="form-group">
-                  <div class="col-sm-5">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification">
-                        Actualizar coordenadas despues
-                      </button>
-                    </div>
-                </div>
-            </div>
-            
-          
-        
-       
-      </div>
-      <div class="form-group">
-          <div v-show="office.lat">
-             <label for="lat" class="col-sm-2 control-label">Prueba</label>
-              <a v-bind:href="'waze://?ll='+ office.lat +','+ office.lon +'&amp;navigate=yes'"  target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Waze</strong></a>
-
-              <a v-bind:href="'http://maps.google.com/?saddr=Current+Location&daddr='+ office.lat +',' + office.lon" target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abir en Google Maps</strong></a>
-          </div>            
-                          
-      </div>
      
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-danger" @click="save()">Guardar</button>
-        </div>
+        <label for="office_name" class="col-sm-2 control-label">Buscar</label>
+          <div class="col-xs-12 col-sm-4">
+              <div class="form-group">
+                  <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Selecciona el consultorio para la cita..." label="name" :on-change="selectOffice" :value.sync="selectedOffice" ></v-select>
+              </div>
+                  
+                
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <div class="form-group">
+                  <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
+                  <a href="#" class="btn btn-default " @click="newOffice = !newOffice">Crear Consultorio Nuevo</a>
+              </div>
+                  
+                
+            </div>
+        <!--<div class="col-sm-10">
+
+           <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
+          <form-error v-if="errors.name" :errors="errors" style="float:right;">
+              {{ errors.name[0] }}
+          </form-error> 
+          </div>-->
       </div>
+      <div class="newform" v-show="newOffice">
+
+            <div class="form-group">
+              <label for="office_name" class="col-sm-2 control-label">Nombre</label>
+              <div class="col-sm-10">
+
+                 <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
+                <form-error v-if="errors.name" :errors="errors" style="float:right;">
+                    {{ errors.name[0] }}
+                </form-error> 
+              </div>
+            </div>
+           <div class="form-group">
+            <label for="office_type" class="col-sm-2 control-label">Tipo</label>
+
+            <div class="col-sm-10">
+              <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona tipo --"  v-model="office.type">
+                <option disabled="disabled"></option>
+                <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
+                
+              </select>
+              <form-error v-if="errors.type" :errors="errors" style="float:right;">
+                  {{ errors.type[0] }}
+              </form-error>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="office_address" class="col-sm-2 control-label">Dirección</label>
+
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="address" placeholder="Dirección"  v-model="office.address">
+              <form-error v-if="errors.address" :errors="errors" style="float:right;">
+                  {{ errors.address[0] }}
+              </form-error>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="office_province" class="col-sm-2 control-label">Provincia</label>
+
+            <div class="col-sm-10">
+              <select class="form-control " style="width: 100%;" name="province" placeholder="-- Selecciona provincia --"  v-model="office.province" v-on:change="onChangeProvince">
+                <option disabled="disabled"></option>
+                <option v-for="item in provincias" v-bind:value="item.title">{{ item.title }}</option>
+                
+              </select>
+              <form-error v-if="errors.province" :errors="errors" style="float:right;">
+                  {{ errors.province[0] }}
+              </form-error>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="office_canton" class="col-sm-2 control-label">Canton</label>
+
+            <div class="col-sm-10">
+              <select class="form-control " style="width: 100%;" name="canton" placeholder="-- Selecciona canton --"  v-model="office.canton" v-on:change="onChangeCanton">
+                <option disabled="disabled"></option>
+                <option v-for="item in cantones" v-bind:value="item.title">{{ item.title }}</option>
+                
+              </select>
+              <form-error v-if="errors.canton" :errors="errors" style="float:right;">
+                  {{ errors.canton[0] }}
+              </form-error>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="office_district" class="col-sm-2 control-label">Distrito</label>
+
+            <div class="col-sm-10">
+              <select class="form-control " style="width: 100%;" name="district" placeholder="-- Selecciona distrito --"  v-model="office.district">
+                <option disabled="disabled"></option>
+                <option v-for="item in distritos" v-bind:value="item">{{ item }}</option>
+                
+              </select>
+              <form-error v-if="errors.district" :errors="errors" style="float:right;">
+                  {{ errors.district[0] }}
+              </form-error>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="office_phone" class="col-sm-2 control-label">Teléfono</label>
+
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="phone" placeholder="Teléfono" v-model="office.phone">
+              <form-error v-if="errors.phone" :errors="errors" style="float:right;">
+                  {{ errors.phone[0] }}
+              </form-error>
+            </div>
+          </div>
+           <div class="form-group">
+            <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
+                
+                                                      
+            
+                 <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="col-sm-10">
+                      <div class="input-group">
+                        <span class="input-group-addon">lat:</span>
+                        <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat">
+                      </div>
+                    </div>
+                  </div>
+                  
+                   
+                </div>
+                <div class="col-sm-3">
+                   <div class="form-group">
+                    <div class="col-sm-10">
+                      <div class="input-group">
+                        <span class="input-group-addon">lon:</span>
+                        <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon">
+                      </div>
+                    </div>
+                  </div>
+                   
+                </div>
+               
+                <div class="col-sm-3">
+              
+                  <div class="form-group">
+
+                     
+                    <div class="col-sm-6">
+                    
+                      
+                       <button type="button" class="btn btn-default btn-geo" @click="getGeolocation"><i class="fa fa-"></i>Tu ubicación Actual</button>
+                     
+                    </div>
+             
+                    
+                  </div>
+
+                  
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Ejemplo de Coordenadas</h4>
+                        </div>
+                        <div class="modal-body">
+                          <img src="/img/img-mapa-coordenadas.png" alt="Coordenadas Google Maps" style="width: 100%;" />
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="modalOfficeNotification" tabindex="-1" role="dialog" aria-labelledby="modalOfficeNotificationLabel">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="modalOfficeNotificationLabel">Recordatorio</h4>
+                        </div>
+                        <div class="modal-body">
+                            
+                              <div class="callout callout-info">
+                                <h4>Recordatorio de actualizacion de ubicación de consultorio o clinica</h4>
+
+                                <p>Selecciona el dia y la hora del recordatorio</p>
+                              </div>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <input type="text" class="form-control"  name="notification_date" id="datetimepicker1" v-model="office.notification_datetime" @blur="onBlurDatetime">
+
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <input type="text" class="form-control"  name="notification_date" id="datetimepicker2" v-model="office.notification_hour" @blur="onBlurHour">
+
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                      </div>
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                </div> 
+
+
+                                   
+                              
+                              
+                           
+                        </div>
+                        <div class="modal-footer">
+                          <!-- <button type="button" class="btn btn-primary btn-save-notification" v-bind:data-office="office.id">Guardar</button> -->
+                          <button type="button" class="btn btn-danger" v-show="office.notification_date" @click="office.notification_date = ''">Quitar Notificación</button>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+                <!-- <div class="col-sm-3">
+                  <div class="form-group">
+                      <div class="col-sm-5">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                            Ver ejemplo
+                          </button>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                      <div class="col-sm-5">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification">
+                            Actualizar coordenadas despues
+                          </button>
+                        </div>
+                    </div>
+                </div>
+                
+              
+            
+           
+          </div>
+          <div class="form-group">
+              <div v-show="office.lat">
+                 <label for="lat" class="col-sm-2 control-label">Prueba</label>
+                  <a v-bind:href="'waze://?ll='+ office.lat +','+ office.lon +'&amp;navigate=yes'"  target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Waze</strong></a>
+
+                  <a v-bind:href="'http://maps.google.com/?saddr=Current+Location&daddr='+ office.lat +',' + office.lon" target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abir en Google Maps</strong></a>
+              </div>            
+                              
+          </div>
+         
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-danger" @click="save()">Guardar</button>
+            </div>
+          </div>
+        
+      </div>
+     
       <h3>Tus Consultorios o clínicas</h3>
       <ul id="offices-list" class="todo-list ui-sortable" v-show="consultorios.length">
        
@@ -262,10 +293,12 @@
 </template>
 
 <script>
+    import vSelect from 'vue-select'
     import FormError from './FormError.vue';
 
     export default {
       props: ['offices'],
+     
       data () {
         return {
           consultorios: [],
@@ -646,12 +679,16 @@
           cantones: [],
           distritos: [],
           loader:false,
+          newOffice:false,
+        
           office: {
             lat : '',
             lon: '',
             notification_datetime: '',
             notification_hour: ''
           },
+          selectedOffice:null,
+          allOffices: [],
           errors: []
          
         
@@ -659,7 +696,8 @@
         }
       },
       components:{
-        FormError
+        FormError,
+        vSelect
       },
       methods: {
         onBlurDatetime(e){
@@ -748,8 +786,38 @@
 
 
           this.office = office;
+          this.newOffice = true;
         
         
+        },
+        assignToMedic() {
+
+            
+                this.$http.post('/medic/account/offices/'+ this.office.id+'/assign', this.office).then((response) => {
+                      console.log(response.status);
+                      console.log(response.data);
+                      if(response.status == 200 && response.data)
+                      {
+                      
+                        if(response.data.id)
+                          this.consultorios.push(response.data);
+
+                        bus.$emit('alert', 'Consultorio Agregado','success');
+                        this.office = {};
+                        this.newOffice = false;
+                        this.errors = [];
+                        this.selectedOffice = null;
+                      }
+                     this.loader = false;
+                }, (response) => {
+                    console.log('error al guardar consultorio')
+                    this.loader = false;
+                     this.errors = response.data;
+                });
+          
+              
+              $(window).scrollTop(580);
+
         },
         save() {
 
@@ -764,6 +832,8 @@
                      this.loader = false;
                      this.errors = [];
                      this.office = {};
+                     this.newOffice = false;
+                     this.selectedOffice = null;
                 }, (response) => {
                     console.log(response.data)
                     this.loader = false;
@@ -780,7 +850,9 @@
                       this.consultorios.push(response.data);
                       bus.$emit('alert', 'Consultorio Agregado','success');
                       this.office = {};
+                      this.newOffice = false;
                       this.errors = [];
+                      this.selectedOffice = null;
                     }
                    this.loader = false;
               }, (response) => {
@@ -798,8 +870,8 @@
       remove(item){
           let $vm = this;
           swal({
-            title: 'Deseas eliminar el consultorio?',
-            text: "Requerda que se eliminara del sistema!",
+            title: 'Deseas eliminar el consultorio o clinica?',
+            text: "Requerda que te desvincularás de la clinica!",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -836,7 +908,54 @@
             
 
 
-          }
+          },
+          getOffices(search, loading) {
+         
+            loading(true)
+           
+           let queryParam = {
+                ['q']: search
+              }
+            this.$http.get('/medic/offices/list', {params: Object.assign(queryParam, this.data)})
+            .then(resp => {
+               
+               this.allOffices = resp.data
+               loading(false)
+            })
+            
+          },
+          selectOffice(clinica) {
+            
+            if(clinica){
+              var cant = [];
+              var dist = [];
+
+            
+              this.provincias.forEach(function(prov, index) {
+                  if(clinica.province === prov.title) {
+                       cant = prov.cantones;
+                  }
+              });
+              
+              this.cantones = cant;
+
+              this.cantones.forEach(function(cant, index) {
+                  if(clinica.canton === cant.title) {
+                       dist = cant.distritos;
+                  }
+              });
+              
+              this.distritos = dist;
+              this.office = clinica;
+              /*this.appointment.title = clinica.name;
+              this.appointment.office_info = JSON.stringify(clinica);*/
+                
+              
+            }
+
+          
+          
+           }
     
 
       },

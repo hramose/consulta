@@ -20,6 +20,7 @@ class CreateAppointmentsTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('created_by')->unsigned()->default(0);
+            $table->integer('office_id')->unsigned()->default(0);
             $table->dateTime('date');
             $table->string('start');
             $table->string('end');

@@ -198,11 +198,16 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('user_id', $id);
 
-        if (! count($search) > 0) return $appointments->with('patient','user')->get();
+        if (! count($search) > 0) return $appointments->with('patient','user','office')->get();
 
-        if (trim($search['q']))
+        if (isset($search['q']) && trim($search['q']))
         {
             $appointments = $appointments->Search($search['q']);
+        }
+
+         if (isset($search['office']) && $search['office'] != "")
+        {
+            $appointments = $appointments->where('office_id', $search['office']);
         } 
 
 
@@ -216,7 +221,7 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->with('patient', 'user')->orderBy('appointments.'.$order , $dir)->get();
+        return $appointments->with('patient', 'user','office')->orderBy('appointments.'.$order , $dir)->get();
 
     }
     /**

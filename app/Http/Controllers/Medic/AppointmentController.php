@@ -69,6 +69,7 @@ class AppointmentController extends Controller
 
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
+        $appointment->load('office');
 
         return $appointment;
 

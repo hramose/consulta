@@ -7,7 +7,7 @@
 
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Consulta</b></a>
+    <a href="/"><b>Consulta</b></a>
   </div>
 
   <div class="register-box-body">

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Repositories\AppointmentRepository;
 use App\Repositories\MedicRepository;
+use App\Repositories\OfficeRepository;
+use App\Repositories\ScheduleRepository;
 use App\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -16,11 +18,13 @@ class MedicController extends Controller
      *
      * @return void
      */
-    public function __construct(MedicRepository $medicRepo, AppointmentRepository $appointmentRepo)
+    public function __construct(MedicRepository $medicRepo, AppointmentRepository $appointmentRepo, ScheduleRepository $scheduleRepo, OfficeRepository $officeRepo)
     {
         $this->middleware('auth');
         $this->medicRepo = $medicRepo;
         $this->appointmentRepo = $appointmentRepo;
+         $this->scheduleRepo = $scheduleRepo;
+          $this->officeRepo = $officeRepo;
        
 
         View::share('specialities', Speciality::all());
@@ -97,15 +101,16 @@ class MedicController extends Controller
     /**
      * Mostrar vista de todas las consulta(citas) de un doctor
      */
-    public function schedule($id)
+    public function schedule($medic_id, $office_id)
     {
         if(!auth()->user()->active) return redirect('/');
 
-        $medic = $this->medicRepo->findbyId($id);
+        $medic = $this->medicRepo->findbyId($medic_id);
+         $office = $this->officeRepo->findbyId($office_id);
         
         if(!$medic->hasrole('medico')) return redirect('/');
         
-        return view('medics.schedule',compact('medic'));
+        return view('medics.schedule',compact('medic','office'));
     }
 
     /**
@@ -114,9 +119,21 @@ class MedicController extends Controller
     public function getAppointments($id)
     {
 
-        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id);
+        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, request()->all());
         
         return $appointments;
+        
+    }
+
+     /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function getSchedules($id)
+    {
+
+        $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, request()->all());
+
+        return $schedules;
         
     }
 

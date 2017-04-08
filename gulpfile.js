@@ -49,7 +49,14 @@ elixir(mix => {
             'admin.js'
         ],'public/js/admin.min.js','resources/assets/js');
 
- 
+     mix.scripts([
+            'clinic.appointments.js'
+        ],'public/js/clinic.appointments.min.js','resources/assets/js');
+
+     mix.scripts([
+            'clinic.patients.js'
+        ],'public/js/clinic.patients.min.js','resources/assets/js');
+     
     mix.version([
         'public/js/app.js',
         'public/js/appointments.min.js',

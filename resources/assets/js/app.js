@@ -25,6 +25,7 @@ Vue.component('summary-appointment', require('./components/Summary.vue'));
 Vue.component('office', require('./components/Office.vue'));
 Vue.component('modal-schedule', require('./components/ModalSchedule.vue'));
 Vue.component('modal-appointments', require('./components/ModalAppointments.vue'));
+Vue.component('modal-clinic-appointments', require('./components/ModalClinicAppointments.vue'));
 Vue.component('patient-form', require('./components/PatientForm.vue'));
 Vue.component('patient-list', require('./components/PatientList.vue'));
 Vue.component('patient-search', require('./components/PatientSearch.vue'));

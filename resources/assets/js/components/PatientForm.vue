@@ -132,7 +132,11 @@
 		    fromModal: {
 		      type: Boolean,
 		      default: false
-		    }
+		    },
+        url:{
+          type:String,
+          default: '/account/patients'
+        }
 		},
         data () {
 	        return {
@@ -180,7 +184,7 @@
 		          //var resource = this.$resource('/medic/account/offices');
 		           if(this.paciente.id)
 		           {
-		             var resource = this.$resource('/account/patients/'+ this.paciente.id);
+		             var resource = this.$resource(this.url +'/'+ this.paciente.id);
 
 		                resource.update(this.paciente).then((response) => {
 		                    
@@ -197,7 +201,7 @@
 		                });
 
 		           }else{
-		              this.$http.post('/account/patients', this.paciente).then((response) => {
+		              this.$http.post(this.url, this.paciente).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if(response.status == 200 && response.data)

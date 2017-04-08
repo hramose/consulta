@@ -7,7 +7,7 @@
 
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Consulta</b></a>
+    <a href="/"><b>Consulta</b></a>
   </div>
 
   <div class="register-box-body">
@@ -50,7 +50,7 @@
       </div>
       <div class="form-group has-feedback">
         <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Numero de teléfono para contacto">
-         @if ($errors->has('name'))
+         @if ($errors->has('phone'))
             <span class="help-block">
                 <strong>{{ $errors->first('phone') }}</strong>
             </span>

@@ -113,8 +113,16 @@ class Office extends Model
         }
     }
 
-     public function user()
+     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
+    }
+      public function verifiedUsers()
+    {
+        return $this->belongsToMany(User::class,'verified_offices');
+    }
+     public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
     }
 }

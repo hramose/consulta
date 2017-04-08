@@ -217,7 +217,7 @@
                             @if(isset($search['lat']) && $search['lat'] != '')
                             <th>Distancia</th>
                             @endif
-                            <th></th>
+                           
                           </tr>
                         </thead>
                         @foreach($medics as $medic)
@@ -227,13 +227,19 @@
                               <td data-title="Nombre">Dr. {{ $medic->user->name }}</td>
                               <td data-title="Lugar">
                                   <p>
-                                  <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->user->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
+                                  <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> 
+                                  </p>
+                                  <p>
+                                   <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->user->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
                                   </button><button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button><!-- <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->user->phone }}"><i class="fa fa-address"></i> Ver numero contacto
                                   </button> -->
+                                  <!--if($medic->user()->verifyOffice($medic->id))-->
+                                      <a href="{{ url('/medics/'.$medic->user->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                   <!--endif -->
                                    @if($medic->user->phone)
-                                  <a href="tel:{{ $medic->user->phone }}" class="btn btn-warning"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
+                                      <a href="tel:{{ $medic->user->phone }}" class="btn btn-warning btn-xs"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
                                   @endif
                                   </p>
                                  
@@ -241,13 +247,13 @@
                               <td data-title="Distancia">
                                  Aprox. {{ number_format($medic->distance, 2, '.', ',')  }} Km
                               </td>
-                              <td data-title="">
+                              <!-- <td data-title="">
                                 <div class="btn-group">
                                   <a href="{{ url('/medics/'.$medic->user->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
-                                  <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
+                                  <button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>
                                    
                                 </div>
-                              </td>
+                              </td> -->
                             </tr>
                           @else
                             <tr>
@@ -256,11 +262,18 @@
                               <td data-title="Lugar">
                                  @forelse($medic->offices as $office)
                                     <p>
-                                    <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span> <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }} - Tel: {{ $medic->phone }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
+                                      <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span>
+                                     </p>
+                                     <p>
+                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }} - Tel: {{ $medic->phone }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
                                   </button>  <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button>
-
+                                    <!-- if($medic->verifyOffice($office->id)) -->
+                                      <a href="{{ url('/medics/'.$medic->id.'/offices/'.$office->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                    <!-- endif -->
+                                  </p>
+                                 
 
                                   
                                  @empty
@@ -271,15 +284,15 @@
                                   @if($medic->phone)
                                   <a href="tel:{{ $medic->phone }}" class="btn btn-warning btn-xs" title="{{ $medic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $medic->phone }})</a>
                                   @endif
-                                  </p>
+
                               </td>
-                              <td data-title="Reservar">
-                                <!-- <div class="btn-group"> -->
+                              <!-- <td data-title="Reservar">
+                                 <div class="btn-group"> ¿
                                   <a href="{{ url('/medics/'.$medic->id.'/schedule') }}" class="btn btn-info"><i class="fa fa-calendar"></i> Reservar cita</a>
-                                  <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
+                                <button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                                   
-                                <!-- </div> -->
-                              </td>
+                                <!-- </div> 
+                              </td> -->
                             </tr>
                           @endif
                         @endforeach

@@ -114,7 +114,8 @@ class PatientRepository extends DbRepository{
        // $patient = $this->model->findOrFail($id)->delete();
 
         $patient = $this->model->findOrFail($id);
-
+        
+        //dd($patient->created_by == auth()->id());
         
         if(!$patient->appointments->count())
         {

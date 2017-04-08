@@ -91,14 +91,18 @@ $(function () {
 
         var eventObject = {
           title: $.trim($(this).text()), // use the element's text as the event title
-          //user_id: $(this).data('doctor'),
+          office_id: $(this).data('office'),
           patient_id: $(this).data('patient'),
+          start: moment(),
+          end: moment(),
+          backgroundColor: $(this).css("background-color"),
+          borderColor: $(this).css("border-color")
           //created_by: $(this).data('createdby')
           
         };
 
         // store the Event Object in the DOM element so we can get to it later
-        $(this).data('eventObject', eventObject);
+        $(this).data('event', eventObject);
        
         // make the event draggable using jQuery UI
         $(this).draggable({
@@ -114,6 +118,43 @@ $(function () {
     ini_events($('#external-events div.external-event'));
 
     /** load events from db **/
+     function fetch_schedules() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/medic/schedules/list',
+            data: {},
+            success: function (resp) {
+                console.log(resp);
+
+                var schedules = [];
+
+                $.each(resp, function( index, item ) {
+                   
+                    item.allDay = parseInt(item.allDay); // = false;
+                    
+                    /*if(item.patient_id == 0){
+                      item.rendering = 'background';
+                      
+
+                    }*/
+                    
+                    //debugger
+
+                    schedules.push(item);
+                });
+               
+                initCalendar(schedules);
+                
+            },
+            error: function () {
+                console.log('Error - '+ resp);
+
+            }
+        });
+
+
+    }
     function fetch_events() {
 
         $.ajax({
@@ -161,10 +202,15 @@ $(function () {
                 console.log(resp);
 
                 var offices = [];
-                var currColor = "#00a65a";
+                var colors = ['#2A630F','#558D00','#77B000','#8CCC00','#A9D300']
+                var currColor = colors[Math.floor((Math.random()*colors.length))];//"#00a65a";
                 $.each(resp, function( index, item ) {
-                   
+                    var currColor = colors[index];
                     
+                    if(!currColor)
+                    {
+                      currColor = '#00a65a';
+                    }
 
                     offices.push(item);
                     
@@ -175,20 +221,22 @@ $(function () {
                     event.html('');
                     event.html(item.name);
 
-                    $('#external-events').prepend(event);
+                    $('#external-offices').prepend(event);
 
                     //Add draggable funtionality
                     var eventObject = {
                       title: $.trim(item.name), // use the element's text as the event title
                       //user_id: $(this).data('doctor'),
-                      patient_id: 0,
-                      office_info: JSON.stringify(item)
+                      office_id: item.id, //patient_id :0
+                      office_info: JSON.stringify(item),
+                      backgroundColor: event.css("background-color"),
+                      borderColor: event.css("border-color")
                       //created_by: $(this).data('createdby')
                       
                     };
 
                     // store the Event Object in the DOM element so we can get to it later
-                    event.data('eventObject', eventObject);
+                    event.data('event', eventObject);
                    
                     // make the event draggable using jQuery UI
                     event.draggable({
@@ -213,8 +261,14 @@ $(function () {
 
 
     }
-
-    fetch_events();
+    var $calendar = $('#calendar');
+    var prog_schedule = $calendar.attr('data-schedule') ? $calendar.attr('data-schedule') : '';
+    
+    if(prog_schedule)
+      fetch_schedules();
+    else
+      fetch_events();
+    
     fetch_offices();
 
 
@@ -226,7 +280,7 @@ $(function () {
         m = date.getMonth(),
         y = date.getFullYear();
 
-     var $calendar = $('#calendar');
+     
      var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
      var maxTime = $calendar.attr('data-maxTime') ? $calendar.attr('data-maxTime') : '18:00:00';
      var slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : $calendar.attr('data-slotDuration');
@@ -356,6 +410,7 @@ $(function () {
               start: minTime, // a start time (10am in this example)
               end: maxTime, // an end time (6pm in this example)
           },
+          eventConstraint:"businessHours",
           minTime: minTime,
           maxTime: maxTime,
           //selectable: true,
@@ -405,9 +460,20 @@ $(function () {
           },
           drop: function (date, allDay) { // this function is called when something is dropped
             
+             var currentDate = new Date();
+            
+            if(date < currentDate) {
 
+                  $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                      setTimeout(function()
+                        { 
+                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                        },3000);
+
+                   return false;
+              }
             // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
+            var originalEventObject = $(this).data('event');
           
             // we need to copy it, so that multiple events don't have a reference to the same object
             var copiedEventObject = $.extend({}, originalEventObject);
@@ -423,26 +489,49 @@ $(function () {
             // render the event on the calendar
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 
-            var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
+           // var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
             
-           
-            saveAppointment(copiedEventObject, _id);
-
+           /*if(prog_schedule)
+              saveSchedule(copiedEventObject, _id);
+            else
+              saveAppointment(copiedEventObject, _id);*/
            
            /* if($(this).data('patient'))
               $(this).remove(); // remover de citas sin agendar*/
          
            
           },
+           eventReceive: function(event) {
+           
+             var currentDate = new Date();
+             if(event.start < currentDate) {
+                   
+                   $('#calendar').fullCalendar( 'removeEvents', event._id)
+                   
+                   return false;
+              }
+
+            if(prog_schedule)
+              saveSchedule(event, event._id);
+            else
+              saveAppointment(event, event._id);
+            
+          },
           eventResize: function(event, delta, revertFunc, jsEvent) {
              
-              updateAppointment(event, revertFunc);
+              if(prog_schedule)
+                updateSchedule(event, revertFunc);
+              else
+                updateAppointment(event, revertFunc);
           
            
           },
           eventDrop: function(event, delta, revertFunc) {
-            
-              updateAppointment(event, revertFunc);
+             
+             if(prog_schedule)
+                updateSchedule(event, revertFunc);
+              else
+                updateAppointment(event, revertFunc);
               
 
           },
@@ -489,12 +578,21 @@ $(function () {
 
             if(event.patient_id && event.patient)
             {
+              var officeInfoDisplay = '';
 
+              if(event.office)
+                {
+                     var officeInfo = event.office;//JSON.parse(event.office_info);
+
+                      officeInfoDisplay = 'en la '+ officeInfo.type +' '+ officeInfo.name+ ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
+                      
+                   
+                }
               element.find(".appointment-details").click(function() {
 
                   swal({
                     title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
-                    text: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm"),
+                    html: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") +' <br>'+ officeInfoDisplay,
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
@@ -502,13 +600,19 @@ $(function () {
                     confirmButtonText: 'Eliminar cita'
                   }).then(function () {
                     
-                    deleteAppointment(event._id, event);
+                    // if(prog_schedule)
+                    //   deleteSchedule(event._id, event);
+                    // else
+                      var resp = deleteAppointment(event._id, event);
+                      
+                      if(resp){
 
-                    swal(
-                      'Cita cancelada!',
-                      'Tu cita ha sido eliminada del calendario.',
-                      'success'
-                    )
+                        swal(
+                          'Cita cancelada!',
+                          'Tu cita ha sido eliminada del calendario.',
+                          'success'
+                        )
+                      }
 
                   },function (dismiss) {});
 
@@ -528,13 +632,13 @@ $(function () {
                 var titleAlert = event.title;
                 var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
 
-                if(event.office_info)
+                if(event.office)
                 {
-                     var officeInfo = JSON.parse(event.office_info);
+                     var officeInfo = event.office;//JSON.parse(event.office_info);
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>'
                       
-                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ event.title
+                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ officeInfo.name
                       
                       textAlert = 'Favor llamar a este número: '+ officeInfo.phone + ' <br> Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
@@ -550,8 +654,11 @@ $(function () {
                       cancelButtonText: 'Ok',
                       confirmButtonText: 'Eliminar!'
                     }).then(function () {
-                      
-                      deleteAppointment(event._id, event);
+
+                      //if(prog_schedule)
+                        deleteSchedule(event._id, event);
+                      // else
+                      //   deleteAppointment(event._id, event);
 
                       swal(
                         'Evento eliminado!',
@@ -604,6 +711,7 @@ $(function () {
 
                   return false;
               }
+
              
                if($(jsEvent.target).parent('div').hasClass("fc-bgevent")) { //para prevenir que en eventos de fondo se agregue citas
                   
@@ -612,13 +720,17 @@ $(function () {
               }
 
 
-              
+              if(prog_schedule){
+
+                $('#setupSchedule').modal({backdrop:'static', show:true });
+
+              }else{
 
                 $('#myModal').modal({backdrop:'static', show:true });
                 $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
                 $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
                 $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
-                
+                }
               
            
           }
@@ -663,8 +775,10 @@ $(function () {
 
                       if(resp.allDay)
                       {
-                        
-                        deleteAppointment(resp.id);
+                        if(prog_schedule)
+                          deleteSchedule(resp.id);
+                        else
+                          deleteAppointment(resp.id);
                       
                       }else{
                           
@@ -692,7 +806,7 @@ $(function () {
                           $('#infoBox').removeClass('alert-danger').hide();
                         },3000);
 
-                   return
+                   return resp;
                   }
 
                   $('#calendar').fullCalendar('removeEvents',data.idRemove);
@@ -733,7 +847,62 @@ $(function () {
             }
         });
     }
-    
+    function saveSchedule(event, idRemove)
+    {
+      
+      var schedule = {
+        title : event.title,
+        date : event.start.format("YYYY-MM-DD"),
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
+        backgroundColor: event.backgroundColor, //Success (green)
+        borderColor: event.borderColor,
+        //user_id: event.user_id,
+        office_id: (event.office_id) ? event.office_id : 0,
+        //created_by: event.created_by,
+        idRemove: idRemove,
+        office_info: (event.office_info) ? event.office_info : '',
+        allDay: 0
+        
+      };
+     
+      if(isOverlapping(schedule)){
+        schedule.allDay = 1;
+      }
+
+      crud('POST', '/medic/schedules', schedule)
+
+    }
+
+    function updateSchedule(event, revertFunc)
+    {
+      
+      var schedule = {
+        //title : event.title,
+        date : event.start.format("YYYY-MM-DD"),
+        start : event.start.stripZone().format(),
+        end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
+        //backgroundColor: event.backgroundColor, //Success (green)
+        //borderColor: event.borderColor,
+        //user_id: event.user_id,
+        office_id: event.office_id,
+        //created_by: event.created_by,
+        id: event.id,
+        office_info: event.office_info,
+        allDay: event.allDay
+      };
+      
+      crud('PUT', '/medic/schedules/'+schedule.id, schedule, revertFunc)
+
+    }
+
+     function deleteSchedule(id)
+    {
+
+      crud('DELETE', '/medic/schedules/'+ id + '/delete', {idRemove:id})
+     
+    }
+
     function saveAppointment(event, idRemove)
     {
       
@@ -744,7 +913,7 @@ $(function () {
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
         backgroundColor: event.backgroundColor, //Success (green)
         borderColor: event.borderColor,
-        //user_id: event.user_id,
+        office_id: event.office_id,
         patient_id: (event.patient_id) ? event.patient_id : 0,
         //created_by: event.created_by,
         idRemove: idRemove,
@@ -760,6 +929,8 @@ $(function () {
       crud('POST', '/medic/appointments', appointment)
 
     }
+
+    
 
      function updateAppointment(event, revertFunc)
     {
@@ -807,8 +978,9 @@ $(function () {
     {
       var val = $("#new-event").val();
       var valSelect = $(".box-create-appointment").find('.widget-user-2').attr('data-patient');
+      var office_id = $(".box-create-appointment").find('.widget-user-2').attr('data-office');
       var valName = $(".box-create-appointment").find('.widget-user-2').attr('data-title');
-      if (valSelect.length == 0) {
+      if (valSelect.length == 0 || !office_id) {
         return;
       }
      
@@ -817,6 +989,7 @@ $(function () {
       var event = $("<div />");
       event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
       event.attr('data-patient', valSelect);
+      event.attr('data-office', office_id);
       /*event.attr('data-doctor', $('input[name=user_id]').val());
       event.attr('data-createdby', $('input[name=user_id]').val());*/
       event.html('');
@@ -888,9 +1061,11 @@ $(function () {
       var val = $("#modal-new-event").val();
       var valSelect = $(".modal-body").find('.widget-user-2').attr('data-patient');//val();
       var valName = $(".modal-body").find('.widget-user-2').attr('data-title');
+      var office_id = $(".modal-body").find('.widget-user-2').attr('data-office');
       var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
-      var end = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate-end'));
-      if (valSelect.length == 0) {
+      var end = ($('#modal-new-event').attr('data-modaldate-end')) ? $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate-end')) : '';
+     
+      if (valSelect.length == 0 || !office_id) {
         return;
       }
      
@@ -900,7 +1075,8 @@ $(function () {
       var eventObject = {
           title: $.trim(val + ' - '+ valName), // use the element's text as the event title
           //user_id: $('input[name=user_id]').val(),
-          patient_id: valSelect
+          patient_id: valSelect,
+          office_id: office_id
           //created_by: $('input[name=user_id]').val()
          
         };
@@ -1040,7 +1216,7 @@ $(function () {
                 $.each(data, function (index, value) {
 
                     item = {
-                      id: value.name,
+                      id: value.id,
                       text: value.name,
                       office_info: JSON.stringify(value)
                      
@@ -1049,7 +1225,7 @@ $(function () {
                 })
 
                 var nodisponible = {
-                      id: 'No disponible',
+                      id: '0',
                       text: 'No disponible',
                       office_info: '',
                       newOption: true
@@ -1074,7 +1250,8 @@ $(function () {
     $("#setupSchedule").find('.add-cita').on('click', function (e) {
       e.preventDefault();
        
-        var title = $("#setupSchedule").find('#search-offices').val();
+        var title = $("#setupSchedule").find('#search-offices').text();
+        var office_id = $("#setupSchedule").find('#search-offices').val();
         var date = $("#setupSchedule").find('input[name="date"]').val();
         var ini = $("#setupSchedule").find('input[name="start"]').val();
         var fin = $("#setupSchedule").find('input[name="end"]').val();
@@ -1082,9 +1259,9 @@ $(function () {
         var dataSelect = (title) ? $("#setupSchedule").find('#search-offices').select2("data") : '';
         
         var office_info = (dataSelect) ? ((dataSelect[0].office_info) ? dataSelect[0].office_info : '') : '';
-        var start = date + 'T'+ ini;
-        var end = date + 'T'+ fin;
-      
+        var start = date + 'T'+ ini + ':00';
+        var end = date + 'T'+ ((fin) ? fin : ini) + ':00';
+        
        if(!title)
        {
        
@@ -1100,7 +1277,7 @@ $(function () {
           return false;
        }
 
-        if(!date || !ini || !fin)
+        if(!date || !ini )
         {
           $('#infoBox').addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
                         setTimeout(function()
@@ -1122,20 +1299,28 @@ $(function () {
              return false;
         }
 
-       var appointment = {
+        if(moment(start).isSame(end))
+        {
+          end = moment(start).add(eventDurationNumber, eventDurationMinHours).stripZone().format();
+        }
+
+        var colors = ['#2A630F','#558D00','#77B000','#8CCC00','#A9D300']
+        var currColor = colors[Math.floor((Math.random()*colors.length))];
+       
+        var schedule = {
         title : title,
         date :  date,
         start : start,
         end : end,
-        backgroundColor: (office_info) ? '#00a65a': '#dd4b39', //Success (green)
-        borderColor: (office_info) ? '#00a65a': '#dd4b39',
-        patient_id: 0,
+        backgroundColor: currColor, //Success ('#00a65a')
+        borderColor: currColor,
+        office_id:  office_id,
         office_info: office_info,
         allDay: 0
         
       };
      
-      if(isOverlapping(appointment)){
+      if(isOverlapping(schedule)){
          $('#infoBox').addClass('alert-danger').html('No se puede agregar el evento por que hay colision de horarios. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
@@ -1146,15 +1331,15 @@ $(function () {
 
       $.ajax({
             type: 'POST',
-            url: '/medic/appointments',
-            data: appointment,
+            url: '/medic/schedules',
+            data: schedule,
             success: function (resp) {
 
                   resp.allDay = parseInt(resp.allDay);
                   
                   $('#calendar').fullCalendar('renderEvent', resp, true);
               
-                  $('#infoBox').addClass('alert-success').html('Evento Agregado Correctamente!!').show();
+                  $('#infoBox').addClass('alert-success').html('Horario Agregado Correctamente!!').show();
                         setTimeout(function()
                         { 
                           $('#infoBox').removeClass('alert-success').hide();
@@ -1172,7 +1357,7 @@ $(function () {
                 
             },
             error: function () {
-              console.log('error saving appointment');
+              console.log('error saving schedule');
 
             }
         });

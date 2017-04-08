@@ -33,7 +33,8 @@ $(function () {
    $(".dropdown-toggle").dropdown();
 
     var slotDuration = $('#initAppointment').find('.modal-body').attr('data-slotDuration');
-
+    var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+    var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
     var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
           
           if(stepping == '01')
@@ -124,35 +125,108 @@ $(function () {
           return false;
     }
 
+    $(".search-offices").select2({
+            placeholder: "Selecciona el Consultorio donde quiere iniciar la consulta",
+            //tags: true,
+            /* minimumInputLength: 1,*/
+             /*createTag: function (params) {
+              return {
+                id: params.term,
+                text: params.term,
+                newOption: true
+              }
+            },*/
+            templateResult: function (data) {
+              var $result = $("<span></span>");
+
+              $result.text(data.text);
+
+              if (data.newOption) {
+                $result.css("color",'red');
+              }
+
+              return $result;
+            },
+            ajax: {
+              url: "/medic/account/offices/list",
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                return {
+                  q: params.term // search term
+                  
+                };
+              },
+              processResults: function (data) {
+               
+                
+               $(".search-offices").empty();
+                var items = []
+                
+                $.each(data, function (index, value) {
+
+                    item = {
+                      id: value.id,
+                      text: value.name,
+                      office_info: JSON.stringify(value)
+                     
+                    }
+                    items.push(item);
+                })
+
+                var nodisponible = {
+                      id: 'No disponible',
+                      text: 'No disponible',
+                      office_info: '',
+                      newOption: true
+                    };
+
+                items.push(nodisponible);
+                    
+                return {
+                  results: items,
+                  
+                };
+              }
+             
+            },
+            templateSelection: function(container) {
+                  $(container.element).attr("data-office", container.office_info);
+                  
+                  return container.text;
+              }
+     });
+
 
      $("#initAppointment").find('.add-cita').on('click', function (e) {
         e.preventDefault();
         
         var modal = $("#initAppointment");
         var patient_id = modal.find('.modal-body').attr('data-modalpatient');
+        var office_id = modal.find('#search-offices').val();
         var date = modal.find('input[name="date"]').val();
         var ini = modal.find('input[name="start"]').val();
         var fin = modal.find('input[name="end"]').val();
        
-        var start = date + 'T'+ ini;
-        var end = date + 'T'+ fin;
+        var start = date + 'T'+ ini + ':00';
+        var end = date + 'T'+ ((fin) ? fin : ini) + ':00';
       
-       /*if(!patient_id)
+       if(!office_id)
        {
        
-         $("#setupSchedule").find('#search-offices').select2('focus');
-         $("#setupSchedule").find('#search-offices').select2('open');
+         $("#initAppointment").find('#search-offices').select2('focus');
+         $("#initAppointment").find('#search-offices').select2('open');
 
-         $('#infoBox').addClass('alert-danger').html('Escribe un consultorio o evento. Por favor revisar!!!').show();
+         $('#infoBox').addClass('alert-danger').html('Escribe un consultorio. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
                           $('#infoBox').removeClass('alert-danger').hide();
                         },3000);
 
           return false;
-       }*/
+       }
 
-        if(!date || !ini || !fin)
+        if(!date || !ini )
         {
           $('#infoBox').addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
                         setTimeout(function()
@@ -174,6 +248,13 @@ $(function () {
              return false;
         }
 
+      
+
+         if(moment(start).isSame(end))
+        {
+          end = moment(start).add(eventDurationNumber, eventDurationMinHours).stripZone().format();
+        }
+
        var appointment = {
         title : 'Cita',
         date :  date,
@@ -182,6 +263,7 @@ $(function () {
         backgroundColor:  '#3c8dbc', //Success (green)
         borderColor: '#3c8dbc',
         patient_id: patient_id,
+        office_id: office_id,
         office_info: '',
         allDay: 0
         

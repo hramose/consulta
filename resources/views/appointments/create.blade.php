@@ -12,7 +12,7 @@
      @if($wizard)
         @include('layouts/partials/header-pages',['page'=>'Arma tu agenda'])
      @else
-        @include('layouts/partials/header-pages',['page'=>'Agenda'])
+        @include('layouts/partials/header-pages',['page'=>'Calendario de citas'])
      @endif
     <?php /* $datetime = new DateTime('now', 'America/Costa Rica');
            $datetime_string = $datetime->format('c'); 
@@ -167,7 +167,7 @@
           </div>
 
           @endif
-          
+          @if(!$wizard)
           <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
               <h3 class="box-title">Crear Cita</h3>
@@ -179,31 +179,25 @@
                 <appointment-create></appointment-create>
             @endif
             
-              <!-- /btn-group -->
-              <!-- <div class="form-group">
-                <select class="search-patients select2 form-control" style="width:100%;">
-                   @if(isset($p))
-                    <option value="{{ $p->id }}" selected="selected">{{ $p->first_name }}</option>
-                  @else
-                    <option value="" selected="selected"></option>
-                  @endif
-                </select>
-                <ul class="search-list todo-list">
-                  
-                 </ul>
-              </div>
-               <div class="form-group">
-                <input id="new-event" type="text" class="form-control" placeholder="Motivo de la cita">
-                <!-- <input name="user_id" type="hidden" value="{{ auth()->id() }}"> -->
-              <!--</div>
-              
-              <div class="form-group">
-                  <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
-                </div> -->
-              <!-- /input-group -->
+        
             </div>
           </div>
-
+       
+          <div class="box box-solid box-citas">
+            <div class="box-header with-border">
+              <h4 class="box-title">Citas </h4>
+              <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div>
+            </div>
+            <div class="box-body">
+              <!-- the events -->
+              <div id="external-events">
+                
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        @endif
+        @if($wizard)
           <div class="box box-solid box-offices">
             <div class="box-header with-border">
               <h4 class="box-title">Agenda </h4>
@@ -211,12 +205,13 @@
             </div>
             <div class="box-body">
               <!-- the events -->
-              <div id="external-events">
+              <div id="external-offices">
                 <div class="external-event bg-red">No disponible</div>
               </div>
             </div>
             <!-- /.box-body -->
           </div>
+      @endif
           
           
         </div>
@@ -226,7 +221,7 @@
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 
-              <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}"></div>
+              <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}" data-schedule="{{ $wizard }}"></div>
             </div>
             <!-- /.box-body -->
           </div>

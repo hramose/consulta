@@ -61,6 +61,7 @@ class AppointmentController extends Controller
         $appointment = $this->appointmentRepo->store(request()->all(), request('user_id'));
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
+        $appointment->load('office');
 
         if($appointment->user) //agregar paciente del usuario al medico tambien
             {

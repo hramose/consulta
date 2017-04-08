@@ -18,6 +18,14 @@
                     <div class="form-group">
                     <label>Paciente: <span id="patient-name"></span></label>
                     </div>
+                    <div class="form-group">
+                          <select name="search-offices" id="search-offices" class="search-offices form-control select2 " style="width: 100%;">
+                            <!-- <option value=""></option> -->
+                          </select>
+                          <ul class="search-list todo-list">
+                          
+                         </ul>
+                  </div>
                 </div>
                 </div>
                 <div class="row">

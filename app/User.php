@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','api_token'
     ];
 
     public function scopeSearch($query, $search)
@@ -139,7 +139,11 @@ class User extends Authenticatable
 
     public function offices()
     {
-        return $this->hasMany(Office::class);
+        return $this->belongsToMany(Office::class);
+    }
+     public function verifiedOffices()
+    {
+        return $this->belongsToMany(Office::class,'verified_offices');
     }
 
 
@@ -158,6 +162,10 @@ class User extends Authenticatable
      public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+     public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
     }
     public function settings()
     {
@@ -182,6 +190,50 @@ class User extends Authenticatable
         
         return Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count();
     } 
+
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function hasPatient($patient)
+    {
+        if (is_string($patient) || is_numeric($patient)) {
+            return $this->patients->contains('id', $patient);
+        }
+        
+        return !! $patient->intersect($this->patients)->count();
+    }
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function hasOffice($office)
+    {
+        if (is_string($office) || is_numeric($office)) {
+            return $this->offices->contains('id', $office);
+        }
+        
+        return !! $office->intersect($this->offices)->count();
+    }
+
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function verifyOffice($office)
+    {
+        if (is_string($office) || is_numeric($office)) {
+            return $this->verifiedOffices->contains('id', $office);
+        }
+        
+        return !! $office->intersect($this->verifiedOffices)->count();
+    }
     
  
   

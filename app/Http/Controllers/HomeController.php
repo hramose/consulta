@@ -34,6 +34,9 @@ class HomeController extends Controller
         if(auth()->user()->hasRole('paciente'))
             return view('home-patient');
 
+         if(auth()->user()->hasRole('clinica'))
+            return view('home-clinic');
+
 
         $search['date'] = Carbon::today()->toDateTimeString();
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);

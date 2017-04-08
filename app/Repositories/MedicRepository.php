@@ -127,9 +127,11 @@ class MedicRepository extends DbRepository{
 
             if (isset($search['province']) && $search['province'] != "")
             {
+                
                 $users = $users->whereHas('offices', function($q) use($search){
                                         $q->where('province', $search['province']);
                                     });
+                //dd($users->get());
             }
              if (isset($search['canton']) && $search['canton'] != "")
             {
@@ -176,6 +178,32 @@ class MedicRepository extends DbRepository{
 
             return $users->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
         }
+
+
+
+    }
+
+     /**
+     * Find all the users for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllByOffice($office_id, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $office = Office::findOrfail($office_id);
+        
+      
+        $medics = $office->users()->where('users.id','<>',auth()->id());
+
+        
+       
+
+        return $medics->orderBy('users.'.$order , $dir)->paginate($this->limit);
+       
 
 
 

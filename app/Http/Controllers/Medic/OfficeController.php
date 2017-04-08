@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
+use App\Office;
 use App\Repositories\OfficeRepository;
 use Illuminate\Http\Request;
 
@@ -60,6 +61,23 @@ class OfficeController extends Controller
         return $office;
 
     }
+    public function assignOffice($id)
+    {
+        $office = Office::findOrFail($id);
+
+        if(auth()->user()->hasOffice($office->get()))
+        {
+            return '';
+        }
+
+
+        $office = auth()->user()->offices()->save($office);
+
+        return $office;
+
+       
+
+    }
     /**
      * Actualizar datos de consultorio
      */
@@ -115,9 +133,12 @@ class OfficeController extends Controller
     {
        
 
-        $office = $this->officeRepo->delete($id);
+        //$office = $this->officeRepo->delete($id);
 
-        //flash('Consultorio Eliminado','success');
+        $office = Office::findOrFail($id);
+
+        $office = auth()->user()->offices()->detach($office->id);
+
 
         return '';
 
@@ -129,7 +150,15 @@ class OfficeController extends Controller
     public function getOffices()
     {
         
-        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->id(),request()->all());
+        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->user(),request()->all());
+
+        return $offices;
+        
+    }
+    public function getAllOffices()
+    {
+        
+        $offices = $this->officeRepo->findAllWithoutPagination(auth()->id(),request()->all());
 
         return $offices;
         

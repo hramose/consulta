@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
+ <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
 <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
 @endsection
 @section('content')
@@ -54,7 +55,14 @@
                       @else
                         <td data-title="ID"></td>
                       @endif
-                      <td data-title="Nombre"><a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }} {{ $patient->last_name }}</a></td>
+                      <td data-title="Nombre">
+                      @if($patient->isPatientOf(auth()->user()))
+                        <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }} {{ $patient->last_name }}</a>
+                      @else
+                          {{ $patient->first_name }} {{ $patient->last_name }}
+                      @endif
+                      
+                      </td>
                       <td data-title="Teléfono">{{ $patient->phone }}</td>
                       <td data-title="Email">{{ $patient->email }}</td>
                       <td data-title="Dirección">{{ $patient->address }}</td>
@@ -82,9 +90,10 @@
                           
 
                         @endif
-                        <!-- <a href="#" class="btn btn-success" title="Iniciar consulta con este paciente" data-patient="{{ $patient->id }}"><i class="fa fa-list"></i> Iniciar Consulta</a> -->
+                       @if($patient->isPatientOf(auth()->user()))
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente"><i class="fa fa-list"></i> Iniciar Consulta
                           </button>
+                        @endif
                       </td>
                     </tr>
                   @endforeach
@@ -111,9 +120,11 @@
 </form> -->
 @endsection
 @section('scripts')
+  <script src="/js/plugins/select2/select2.full.min.js"></script>  
   <script src="/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/locale/es.js"></script>
-  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
+  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+  <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script> 
   <script src="{{ elixir('/js/patients.min.js') }}"></script>
 @endsection

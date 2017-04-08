@@ -11,7 +11,14 @@
 	import vSelect from 'vue-select'
 
  export default {
-        props: ['patient'],
+         //props: ['patient','url'],
+         props: {
+         	patient: Object,
+		    url: {
+		      type: String,
+		      default: '/medic/patients/list'
+		    }
+		},
         components: {vSelect},
          
         data () {
@@ -21,7 +28,8 @@
           	  loader:false,
               /*newPatient:false,
               selectedPatient: 0,*/
-              options: []
+              options: [],
+
 	         
 	          
 	        }
@@ -35,7 +43,7 @@
 	         let queryParam = {
 	              ['q']: search
 	            }
-	          this.$http.get('/medic/patients/list', {params: Object.assign(queryParam, this.data)})
+	          this.$http.get(this.url, {params: Object.assign(queryParam, this.data)})
 	          .then(resp => {
 	             
 	             this.options = resp.data.data
@@ -69,7 +77,9 @@
           
           if(this.patient)
          	 this.paciente = this.patient;
-	     
+
+	      
+
 	      bus.$on('selectedPatientToSelect', this.selectedPatient);
 	      
 	    }

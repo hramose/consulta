@@ -135,6 +135,9 @@ td.fc-day.fc-past{
 	background-color: #605ca8;
 	color:white;
 }
+#calendar .fc-today {
+  background: white !important;
+}
 .box-body #calendar{
 	margin-top: 0 !important;
 }
@@ -369,6 +372,18 @@ td.fc-day.fc-past{
 .callout-search{
 		display:none;
 	}
+
+.medic-item{
+	padding: 5px 10px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    background-color:rgb(60, 141, 188);
+    color:white;
+    display:block;
+}
 @media screen and (min-width:768px){
 	.callout-search{
 		display:block;
