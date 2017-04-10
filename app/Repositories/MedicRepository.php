@@ -108,7 +108,7 @@ class MedicRepository extends DbRepository{
 
 
 
-            if (trim($search['q']))
+            if (isset($search['q']) && trim($search['q']))
             {
                 $users = $this->model->whereHas('roles', function($q){
                                                         $q->where('name', 'medico');
@@ -196,13 +196,28 @@ class MedicRepository extends DbRepository{
 
         $office = Office::findOrfail($office_id);
         
-      
-        $medics = $office->users()->where('users.id','<>',auth()->id());
+        /*if($except)
+            $medics = $office->users()->where('users.id','<>',$except)->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });*/
+        //else
+           if (isset($search['q']) && trim($search['q']))
+            {
+               $medics = $office->users()->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->Search($search['q']);
+            } else
+            {
+               $medics = $office->users()->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });
+            }
+           
 
         
        
 
-        return $medics->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        return $medics->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
        
 
 

@@ -80,7 +80,26 @@ class UserRepository extends DbRepository{
         return $user;
     }
 
-    
+    public function update_active($id, $state)
+    {
+
+        $user = $this->model->findOrFail($id);
+        $user->active = $state;
+        $user->save();
+       
+        if($user->hasRole('clinica'))
+        {
+            foreach ($user->offices as $office) {
+                
+                 $office->active = $state;
+                 $office->save();
+            }
+        }
+
+        return $user;
+    }
+
+   
 
     /**
      * Find all the users for the admin panel
@@ -95,7 +114,7 @@ class UserRepository extends DbRepository{
 
         if (! count($search) > 0) return $this->model->paginate($this->limit);
 
-        if (trim($search['q']))
+        if (isset($search['q']) && trim($search['q']))
         {
             $users = $this->model->Search($search['q']);
         } else

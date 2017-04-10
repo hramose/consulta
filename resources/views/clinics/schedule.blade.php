@@ -7,14 +7,17 @@
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
-  @include('layouts/partials/header-pages',['page'=>'Reserva tu cita'])
-
+    @if($medic)
+      @include('layouts/partials/header-pages',['page'=>'Reserva tu cita con '. $medic->name ])
+    @else
+      @include('layouts/partials/header-pages',['page'=>'Reserva tu cita'])
+    @endif
 
     <section class="content">
        @if(auth()->user()->patients->count())
          
         <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
           
           <!-- /. box -->
            <div class="box box-solid box-medics">
@@ -25,9 +28,29 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-medics">
+               <ul class="medic-list medic-list-in-box">
                 @foreach($medics as $doctor)
-                  <a href="/clinics/{{ $office->id }}/schedule?medic={{$doctor->id }}" class="medic-item">{{ $doctor->name }}</a>
+                   <li class="item">
+                      <div class="medic-img">
+                      <!--/img/default-50x50.gif-->
+                        <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                      </div>
+                      <div class="medic-info">
+                        <a href="/clinics/{{ $office->id }}/schedule?medic={{$doctor->id }}{{ (request('page')) ? '&page='.request('page') : '' }}" class="medic-title">{{ $doctor->name }}
+                          </a>
+                          
+                           
+                            <a href="/clinics/{{ $office->id }}/schedule?medic={{$doctor->id }}{{ (request('page')) ? '&page='.request('page') : '' }}" class="label  label-info pull-right">Ver Calendario</a>
+                           
+                        
+                            <span class="medic-description">
+                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                            </span>
+                      </div>
+                    </li>
+
                 @endforeach
+                </ul>
               </div>
             </div>
             <!-- /.box-body -->
@@ -58,7 +81,7 @@
           @endif
         </div>
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
           @if($medic)
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
@@ -77,10 +100,14 @@
           <!-- /. box -->
           @else
              <div class="box box-default box-calendar">
-              <div class="box-body no-padding">
+              <div class="box-body ">
                 <!-- THE CALENDAR -->
+                <div class="callout callout-info">
+                    <h4>Informacion importante!</h4>
 
-                Selecciona un Medico para ver su agenda
+                    <p>Selecciona un Medico para ver su agenda</p>
+                </div>
+                
               </div>
               <!-- /.box-body -->
             </div>

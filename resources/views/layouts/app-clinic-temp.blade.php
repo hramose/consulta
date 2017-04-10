@@ -51,34 +51,21 @@
 
   <!-- Main Header -->
   <header class="main-header">
-      @include('layouts/partials/header-clinic')
+    
   </header>
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
       
-      @include('layouts/partials/sidebar-clinic')
+     
     
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- @include('layouts/partials/flash-message') -->
-     @if(! Request::is('/'))
-     <div class="menu-fixed">
-          <div class="menu-fixed-container">
-            <a href="/clinic/appointments" class="btn btn-sm btn-info {{ set_active('clinic/appointments') }}">Agenda</a>
-            <a href="/clinic/medics" class="btn btn-sm btn-success {{ set_active('clinic/medics') }}">Medicos</a>
-            <a href="/clinic/patients" class="btn btn-sm btn-warning {{ set_active('clinic/patients') }}">Pacientes</a>
-            <a href="/clinic/reports" class="btn btn-sm btn-danger {{ set_active('clinic/reports') }}">Reportes</a>
-            <!-- <a href="/medic/patients?inita=1" class="btn btn-sm btn-default bg-purple {{ set_active('medic/patients?inita=1') }}">Iniciar Consulta</a> -->
-          </div>
-       </div>
-    @endif  
+     
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    
-    @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos!</div> 
-     @endif
+   
 
     @if (session()->has('flash_message'))
 
@@ -87,21 +74,7 @@
     @endif
     
    
-     @foreach(auth()->user()->offices as $office)
-       @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
-         <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
-          <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
-                {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                <input type="hidden" name="notification" value="0">
-                <input type="hidden" name="id" value="{{ $office->id }}">
-            <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
-          </form>
-         </div>
-        @endif 
-     @endforeach
-    @if(auth()->user()->active)
-      @yield('content')
-    @endif
+    @yield('content')
   </div>
   <!-- /.content-wrapper -->
 

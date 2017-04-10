@@ -372,7 +372,37 @@ td.fc-day.fc-past{
 .callout-search{
 		display:none;
 	}
-
+.medic-list{
+	list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.medic-list>.item {
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    background: #fff;
+}
+.medic-list-in-box>.item {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+    border-bottom: 1px solid #f4f4f4;
+}
+.medic-list .medic-img{
+	float:left;
+}
+.medic-list .medic-info {
+    margin-left: 60px;
+}
+.medic-list .medic-description {
+    display: block;
+    color: #999;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .medic-item{
 	padding: 5px 10px;
     font-weight: bold;
@@ -380,9 +410,17 @@ td.fc-day.fc-past{
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    background-color:rgb(60, 141, 188);
     color:white;
     display:block;
+}
+.medic-item:hover{
+	color:white;
+}
+.medic-item.active{
+	background-color:rgb(60, 141, 188);
+}
+.medic-item.inactive{
+	background-color:#f56954; 
 }
 @media screen and (min-width:768px){
 	.callout-search{

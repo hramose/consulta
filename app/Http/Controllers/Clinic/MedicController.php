@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clinic;
 
 
 use App\Http\Controllers\Controller;
+use App\Office;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\MedicRepository;
 use App\Repositories\OfficeRepository;
@@ -138,6 +139,26 @@ class MedicController extends Controller
 
         return $schedules;
         
+    }
+
+    public function assignOffice($medic_id, $office_id)
+    {
+        
+         $medic = $this->medicRepo->findbyId($medic_id);
+         $office = $this->officeRepo->findbyId($office_id);
+         
+        if(!$medic->verifyOffice($office->id))
+        {
+             $office = $medic->verifiedOffices()->save($office);
+        }
+
+
+       
+
+        return back();
+
+       
+
     }
 
    

@@ -31,6 +31,9 @@ class DatabaseSeeder extends Seeder
         factory(Role::class, 1)->create([
             'name' => 'administrador',
         ]);
+        factory(Role::class, 1)->create([
+            'name' => 'clinica',
+        ]);
 
         foreach ($this->specialities as $s) {
             factory(Speciality::class, 1)->create([

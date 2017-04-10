@@ -77,19 +77,21 @@ $(function () {
                 $.each(resp, function( index, item ) {
                    
                     item.allDay = parseInt(item.allDay); // = false;
-                    
-                   
+                    //item.rendering = 'background';
+                     
                      var working_hours = {
                       // days of week. an array of zero-based day of week integers (0=Sunday)
                       dow: [dayNumber(item.date)], // Monday - Thursday
 
-                      start: item.start.split('T')[1], // a start time (10am in this example)
-                      end: item.end.split('T')[1], // an end time (6pm in this example)
+                      start: item.start,//.split('T')[1], // a start time (10am in this example)
+                      end: item.end//.split('T')[1], // an end time (6pm in this example)
                      }
 
                     schedules.push(working_hours);
 
                 });
+                
+                //initCalendar(schedules,schedules);
 
                 $.ajax({
                   type: 'GET',
@@ -134,12 +136,15 @@ $(function () {
 
 
     }
-    
+  
+
     function dayNumber(date){
         //
         return $.fullCalendar.moment(date).day();
     }
-
+    
+    //fetch_schedules();
+    //fetch_appointments();
     fetch_schedules_and_appointments();
 
     //fetch_events_from_medic();
@@ -174,6 +179,8 @@ $(function () {
             }
       }
 
+
+
     function initCalendar(appointments,schedules)
     {
 
@@ -194,13 +201,13 @@ $(function () {
           editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
           eventOverlap: false,
-          businessHours: schedules, /*{
+          businessHours: schedules/*{ 
               // days of week. an array of zero-based day of week integers (0=Sunday)
               dow: businessHours, // Monday - Thursday
 
               start: minTime, // a start time (10am in this example)
               end: maxTime, // an end time (6pm in this example)
-          },*/
+          }*/,
           eventConstraint:"businessHours",
           minTime: minTime,
           maxTime: maxTime,
@@ -277,6 +284,7 @@ $(function () {
 
           },
           eventRender: function(event, element) {
+           
             element.append( "<span class='appointment-details' ></span>" );
 
             if (event.rendering == 'background') {
@@ -336,7 +344,7 @@ $(function () {
 
                 if(event.office)
                 {
-                     var officeInfo = JSON.parse(event.office);
+                     var officeInfo = event.office;//JSON.parse(event.office);
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>';
 
@@ -397,11 +405,67 @@ $(function () {
               $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
                     
            
+          },
+          viewRender: function(view){
+            
+            $.ajax({
+              type: 'GET',
+              url: '/medics/'+ $('.external-event').data('doctor') +'/schedules/list?office='+ $('.external-event').data('office'),//'/medic/schedules/list?office='+ $('.external-event').data('office') ,
+              data: {},
+              success: function (resp) {
+                
+                  var schedules = [];
+                  $.each(resp, function( index, item ) {
+                     
+                      item.allDay = parseInt(item.allDay); // = false;
+                     
+                       
+                       var working_hours = {
+                        // days of week. an array of zero-based day of week integers (0=Sunday)
+                        dow: [dayNumber(item.date)], // Monday - Thursday
+
+                        start: item.start,//.split('T')[1], // a start time (10am in this example)
+                        end: item.end//.split('T')[1], // an end time (6pm in this example)
+                       }
+
+                      schedules.push(working_hours);
+
+                  });
+
+                  var bh = schedules;//$('#calendar').fullCalendar('option', 'businessHours');
+
+                 
+                    for (var i = bh.length - 1; i >= 0; i--) {
+
+                      if(moment(bh[i].start).isBetween(view.start, view.end))
+                      {
+                        bh[i].start = bh[i].start.split('T')[1];
+                        bh[i].end = bh[i].end.split('T')[1];
+                      }
+
+                    }
+                   
+                   
+                    $('#calendar').fullCalendar('option', 'businessHours', bh);
+
+
+              },
+            error: function (resp) {
+                console.log('Error - '+ resp);
+
+            }
+
+          });
+
+           
+            
           }
+        
         
       });
 
       $('#calendar').fullCalendar('today');
+      
     }
 
     function isOverlapping(event) {
@@ -676,5 +740,11 @@ $(function () {
   
 
 
+    $('.fc-button-prev span').click(function(){
+         alert('prev is clicked, do something');
+      });
 
+      $('.fc-button-next span').click(function(){
+         alert('nextis clicked, do something');
+      });
   });

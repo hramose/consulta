@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Office;
 use App\Repositories\UserRepository;
 use App\Role;
 use App\Speciality;
@@ -30,7 +31,7 @@ class RegisterClinicController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/clinic/appointments';
 
     /**
      * Create a new controller instance.
@@ -81,10 +82,25 @@ class RegisterClinicController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);*/
-        
+        $data['active'] = 0; // las clinicas estan inactivos por defecto para revision
         $data['role'] = Role::whereName('clinica')->first();
 
-        return $this->userRepo->store($data);
+        $user = $this->userRepo->store($data);
+
+        if(isset($data['office']))
+        {
+            $office = Office::findOrFail($data['office']);
+            
+            $user->offices()->save($office);
+
+            //$office->active = 1;
+
+            //$office->save();
+
+
+        }
+
+        return $user;
 
 
     }

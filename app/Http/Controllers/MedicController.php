@@ -109,6 +109,7 @@ class MedicController extends Controller
          $office = $this->officeRepo->findbyId($office_id);
         
         if(!$medic->hasrole('medico')) return redirect('/');
+        if(!$medic->verifyOffice($office_id)) return redirect('/');
         
         return view('medics.schedule',compact('medic','office'));
     }

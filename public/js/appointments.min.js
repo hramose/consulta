@@ -1234,7 +1234,7 @@ $(function () {
                   resp.allDay = parseInt(resp.allDay);
                   
                   $('#calendar').fullCalendar('renderEvent', resp, true);
-              
+             
                   $('#infoBox').addClass('alert-success').html('Horario Agregado Correctamente!!').show();
                         setTimeout(function()
                         { 

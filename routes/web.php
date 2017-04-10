@@ -45,6 +45,7 @@ Route::post('/patients/register', 'PatientController@register');
 
 Route::get('/clinics/search', 'ClinicController@index');
 Route::get('/clinics/{office}/schedule', 'ClinicController@schedule');
+Route::get('/clinics/{office}/profile', 'Clinic\UserController@profile');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
@@ -115,7 +116,8 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 	Route::get('/appointments/{id}/print', 'Clinic\AppointmentController@printSummary');
 	Route::delete('/appointments/{id}/delete', 'Clinic\AppointmentController@delete');
 	Route::resource('appointments', 'Clinic\AppointmentController');
-
+	
+	Route::post('/medics/{medic}/offices/{office}/assign', 'Clinic\MedicController@assignOffice');
 	Route::resource('medics', 'Clinic\MedicController');
 
 });

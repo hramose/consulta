@@ -235,9 +235,9 @@
                                   </button><button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button><!-- <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->user->phone }}"><i class="fa fa-address"></i> Ver numero contacto
                                   </button> -->
-                                  <!--if($medic->user()->verifyOffice($medic->id))-->
+                                  @if($medic->user()->verifyOffice($medic->id))
                                       <a href="{{ url('/medics/'.$medic->user->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
-                                   <!--endif -->
+                                   @endif 
                                    @if($medic->user->phone)
                                       <a href="tel:{{ $medic->user->phone }}" class="btn btn-warning btn-xs"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
                                   @endif
@@ -269,9 +269,9 @@
                                     <i class="fa fa-address"></i> Compartir ubicación
                                   </button>  <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button>
-                                    <!-- if($medic->verifyOffice($office->id)) -->
+                                    @if($medic->verifyOffice($office->id)) 
                                       <a href="{{ url('/medics/'.$medic->id.'/offices/'.$office->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
-                                    <!-- endif -->
+                                    @endif
                                   </p>
                                  
 

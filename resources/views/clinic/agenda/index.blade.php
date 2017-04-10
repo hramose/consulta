@@ -13,9 +13,9 @@
         @include('layouts/partials/header-pages',['page'=>'Agenda'])
     
     <section class="content">
-      
+       
         <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
           
           
          
@@ -28,9 +28,36 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-medics">
-                @foreach($medics as $doctor)
-                  <a href="/clinic/appointments?medic={{$doctor->id }}" class="medic-item">{{ $doctor->name }}</a>
-                @endforeach
+                <ul class="medic-list medic-list-in-box">
+                  @foreach($medics as $doctor)
+                    <li class="item">
+                      <div class="medic-img">
+                      <!--/img/default-50x50.gif-->
+                        <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                      </div>
+                      <div class="medic-info">
+                        <a href="/clinic/appointments?medic={{$doctor->id }}{{ (request('page')) ? '&page='.request('page') : '' }}" class="medic-title">{{ $doctor->name }}
+                          </a>
+                          @if(!$doctor->verifyOffice($office->id))
+                            <button type="submit"  class="btn btn-danger btn-xs pull-right" form="form-active-inactive" formaction="/clinic/medics/{{$doctor->id }}/offices/{{ $office->id }}/assign">Pendiente</button>
+                          @else
+                           
+                            <a href="/clinic/appointments?medic={{ $doctor->id }}{{ (request('page')) ? '&page='.request('page') : '' }}" class="label  label-info pull-right">Ver Calendario</a>
+                           
+                          @endif
+                            <span class="medic-description">
+                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                            </span>
+                      </div>
+                    </li>
+                   
+                  @endforeach
+                  
+                </ul>
+                @if ($medics)
+                        <div  class="pagination-container">{!!$medics->render()!!}</div>
+                    @endif
+               
               </div>
             </div>
             <!-- /.box-body -->
@@ -40,7 +67,7 @@
           
         </div>
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
          
           @if($medic)
           <div class="box box-default box-calendar">
@@ -54,10 +81,15 @@
           <!-- /. box -->
           @else
             <div class="box box-default box-calendar">
-            <div class="box-body no-padding">
+            <div class="box-body ">
               <!-- THE CALENDAR -->
+               <div class="callout callout-info">
+                    <h4>Información importante!</h4>
 
-              Selecciona un Medico para ver su agenda de citas
+                    <p>Selecciona un Médico para ver su agenda</p>
+                </div>
+
+        
             </div>
             <!-- /.box-body -->
           </div>
@@ -66,13 +98,18 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-     
+
     </section>
     @if(isset($p))
         <modal-clinic-appointments :patient="{{ $p }}"></modal-clinic-appointments>
       @else
          <modal-clinic-appointments :office="{{ $office->id }}"></modal-clinic-appointments>
       @endif
+
+
+<form method="post" id="form-active-inactive">
+ {{ csrf_field() }}
+</form>
 
 @endsection
 @section('scripts')

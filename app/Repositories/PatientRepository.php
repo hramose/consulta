@@ -146,7 +146,7 @@ class PatientRepository extends DbRepository{
         $order = 'created_at';
         $dir = 'desc';
         
-        if(trim($search['q']))
+        if(isset($search['q']) && trim($search['q']))
         {
            $patients = $this->model;
         
@@ -156,7 +156,7 @@ class PatientRepository extends DbRepository{
 
         if (! count($search) > 0) return $patients->with('appointments')->paginate($this->limit);
 
-        if (trim($search['q']))
+        if (isset($search['q']) && trim($search['q']))
         {
             $patients = $patients->Search($search['q']);
         } 

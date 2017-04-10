@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewOffice;
 use App\Office;
 use App\Repositories\OfficeRepository;
 use Illuminate\Http\Request;
@@ -55,6 +56,9 @@ class OfficeController extends Controller
         
 
         $office = $this->officeRepo->store($data);
+        $medic = auth()->user();
+
+        \Mail::to('alonso@avotz.com')->send(new NewOffice($office,$medic));
 
        // flash('Consultorio Guardado','success');
 
@@ -65,13 +69,16 @@ class OfficeController extends Controller
     {
         $office = Office::findOrFail($id);
 
-        if(auth()->user()->hasOffice($office->get()))
+        if(auth()->user()->hasOffice($office->id))
         {
             return '';
         }
 
 
         $office = auth()->user()->offices()->save($office);
+        $medic = auth()->user();
+        
+        \Mail::to('alonso@avotz.com')->send(new NewOffice($office,$medic));
 
         return $office;
 

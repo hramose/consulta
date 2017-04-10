@@ -83,7 +83,7 @@ class OfficeRepository extends DbRepository{
 
         if (! count($search) > 0) return $offices->get();
 
-        if (trim($search['q']))
+        if (isset($search['q']) && trim($search['q']))
         {
             $offices = $offices->Search($search['q']);
         } 
