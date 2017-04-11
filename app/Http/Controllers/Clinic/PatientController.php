@@ -31,8 +31,10 @@ class PatientController extends Controller
 
         if(request('inita'))
             $inita = 1;
+
+        $office = auth()->user()->offices->first();
        
-        $patients = $this->patientRepo->findAll($search);
+        $patients = $this->patientRepo->findAllOfClinic($office,$search);
         
 
 

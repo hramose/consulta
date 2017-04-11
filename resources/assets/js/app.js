@@ -31,6 +31,7 @@ Vue.component('patient-list', require('./components/PatientList.vue'));
 Vue.component('patient-search', require('./components/PatientSearch.vue'));
 Vue.component('appointment-create', require('./components/AppointmentCreate.vue'));
 Vue.component('modal-reminder', require('./components/ModalReminder.vue'));
+Vue.component('clinic', require('./components/Clinic.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

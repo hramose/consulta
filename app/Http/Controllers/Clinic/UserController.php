@@ -32,7 +32,7 @@ class UserController extends Controller
     	$tab = request('tab');
         $user = auth()->user();
 
-    	return view('users.edit-patient',compact('user','tab'));
+    	return view('clinic.profile.edit',compact('user','tab'));
 
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
 
         flash('Cuenta Actualizada','success');
 
-    	return Redirect('/account/edit');
+    	return Redirect('/clinic/account/edit');
 
     }
 
@@ -86,7 +86,7 @@ class UserController extends Controller
                
          $office = $this->officeRepo->findbyId($office_id);
         
-         if($office->active) return redirect('/'); //si esta activo no mostrar nada y mandarlo al home
+         if($office->active) return redirect('/clinic/appointments'); //si esta activo no mostrar nada y mandarlo a la agenda
 
           $medics = $this->medicRepo->findAllByOffice($office->id);
          // dd($medics);
@@ -97,6 +97,44 @@ class UserController extends Controller
 
         
         return view('clinic.profile.temp',compact('office','medics','medic'));
+    }
+
+    /**
+     * Actualizar datos de consultorio
+     */
+    public function updateClinic($id)
+    {
+       
+         $this->validate(request(),[
+                'type' => 'required',
+                'name' => 'required',
+                'address' => 'required',  
+                'province' => 'required',  
+                'canton' => 'required', 
+                'district' => 'required',  
+                'phone' => 'required',      
+        ]);
+         
+         $data = request()->all();
+
+        $office = $this->officeRepo->update($id, $data);
+
+        //flash('Consultorio Actualizado','success');
+
+        return $office;
+
+    }
+    public function updateOfficeNotification($id)
+    {
+      
+        $data = request()->all();
+      
+
+        $office = $this->officeRepo->update($id,  $data);
+
+        return $office;
+        
+
     }
 
 

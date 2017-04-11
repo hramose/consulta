@@ -173,14 +173,14 @@ $(function () {
             success: function (resp) {
                
                 var offices = [];
-                var colors = ['#2A630F','#558D00','#77B000','#8CCC00','#A9D300']
+                var colors = ['#00c0ef','#00a65a','#f39c12','#dd4b39','#A9D300']
                 //var currColor = colors[Math.floor((Math.random()*colors.length))];//"#00a65a";
 
                 $.each(resp, function( index, item ) {
                     
                     var currColor = colors[index];
                     
-                    if(!currColor) currColor = '#00a65a';
+                    if(!currColor) currColor = '#00c0ef';
                     
                     offices.push(item);
                     

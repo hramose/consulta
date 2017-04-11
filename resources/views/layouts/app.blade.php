@@ -73,7 +73,13 @@
             <!-- <a href="/medic/patients?inita=1" class="btn btn-sm btn-default bg-purple {{ set_active('medic/patients?inita=1') }}">Iniciar Consulta</a> -->
           </div>
        </div>
-    @endif  
+
+    @endif
+      <section class="content menu">
+        @include('layouts/partials/home-boxes')  
+      </section>
+    
+     
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
     @if(!auth()->user()->active)

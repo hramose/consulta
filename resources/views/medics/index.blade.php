@@ -230,16 +230,16 @@
                                   <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> 
                                   </p>
                                   <p>
-                                   <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->user->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
+                                   <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->user->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->user->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
-                                  </button><button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
+                                  </button><button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button><!-- <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->user->phone }}"><i class="fa fa-address"></i> Ver numero contacto
                                   </button> -->
                                   @if($medic->user()->verifyOffice($medic->id))
-                                      <a href="{{ url('/medics/'.$medic->user->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                      <a href="{{ url('/medics/'.$medic->user->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
                                    @endif 
                                    @if($medic->user->phone)
-                                      <a href="tel:{{ $medic->user->phone }}" class="btn btn-warning btn-xs"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
+                                      <a href="tel:{{ $medic->user->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $medic->user->phone }}"></i> Llamar ({{ $medic->user->phone }})</a>
                                   @endif
                                   </p>
                                  
@@ -265,12 +265,12 @@
                                       <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span>
                                      </p>
                                      <p>
-                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }} - Tel: {{ $medic->phone }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
+                                     <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->name }} - Direccion: {{ $office->province }}, {{ $office->canton }}. {{ $office->address }} - Tel: {{ $medic->phone }}" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}">
                                     <i class="fa fa-address"></i> Compartir ubicación
-                                  </button>  <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
+                                  </button>  <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                   </button>
                                     @if($medic->verifyOffice($office->id)) 
-                                      <a href="{{ url('/medics/'.$medic->id.'/offices/'.$office->id .'/schedule') }}" class="btn btn-info btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                      <a href="{{ url('/medics/'.$medic->id.'/offices/'.$office->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
                                     @endif
                                   </p>
                                  
@@ -282,7 +282,7 @@
                                <!--   <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#locationModal" data-phone="{{ $medic->phone }}"><i class="fa fa-address"></i> Ver numero contacto
                                   </button> -->
                                   @if($medic->phone)
-                                  <a href="tel:{{ $medic->phone }}" class="btn btn-warning btn-xs" title="{{ $medic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $medic->phone }})</a>
+                                  <a href="tel:{{ $medic->phone }}" class="btn btn-success btn-xs" title="{{ $medic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $medic->phone }})</a>
                                   @endif
 
                               </td>

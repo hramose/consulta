@@ -95,12 +95,13 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 
 	Route::get('/account/edit', 'Clinic\UserController@edit');
 	Route::put('/account/edit', 'Clinic\UserController@update');
-	Route::put('/account/settings', 'Clinic\UserController@updateSettings');
+	//Route::put('/account/settings', 'Clinic\UserController@updateSettings');
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');
-	Route::post('/account/patients', 'UserController@storePatient');
-	Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
-	Route::put('/account/patients/{id}', 'UserController@updatePatient');
+	Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
+	//Route::post('/account/patients', 'UserController@storePatient');
+	//Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
+	//Route::put('/account/patients/{id}', 'UserController@updatePatient');
 	
 	Route::post('/patients/photos', 'Clinic\PatientController@photos');
 	Route::post('/patients/files', 'Clinic\PatientController@files');
@@ -119,6 +120,8 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 	
 	Route::post('/medics/{medic}/offices/{office}/assign', 'Clinic\MedicController@assignOffice');
 	Route::resource('medics', 'Clinic\MedicController');
+
+	Route::get('/reports', 'Clinic\ReportsController@index');
 
 });
 

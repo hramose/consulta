@@ -50,8 +50,11 @@
                      
                       <td data-title="ID">{{ $medic->id }}</td>
                       <td data-title="Nombre">
-                     
-                        <a href="{{ url('/clinic/medics/'.$medic->id.'/edit') }}" title="{{ $medic->name }}">{{ $medic->name }}</a>
+                        
+                        {{ $medic->name }}
+                        @if(!$medic->verifyOffice($office->id))
+                            <button type="submit"  class="btn btn-danger btn-xs" form="form-active-inactive" formaction="/clinic/medics/{{$medic->id }}/offices/{{ $office->id }}/assign">Pendiente de confirmación</button>
+                          @endif
                      
                       </td>
                       <td data-title="Teléfono">{{ $medic->phone }}</td>
@@ -65,11 +68,9 @@
                       <td data-title="" style="padding-left: 5px;">
                        
                         <div class="btn-group">
-                          <!-- <a href="{{ url('/clinic/medics/'.$medic->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a> -->
                          
-                           @if(!$medic->appointments->count())
-                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/clinic/medics/'.$medic->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>
-                          @endif
+                         
+                           
                         </div>
                         
                        
@@ -90,7 +91,9 @@
     </section>
 
 
-
+<form method="post" id="form-active-inactive">
+ {{ csrf_field() }}
+</form>
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
 </form>

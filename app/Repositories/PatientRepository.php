@@ -3,6 +3,7 @@
 
 use App\Medicine;
 use App\Patient;
+use App\User;
 use Illuminate\Support\Facades\Storage;
 
 class PatientRepository extends DbRepository{
@@ -134,7 +135,53 @@ class PatientRepository extends DbRepository{
     }
 
     
-    
+     /**
+     * Find all the patients for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllOfClinic($clinic, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $userIds = $clinic->users()->pluck('users.id');
+        
+        $patients = $this->model;
+        
+        if(isset($search['q']) && trim($search['q']))
+        {
+           $patients = $patients->Search($search['q']);
+        
+        }
+           //$patients = auth()->user()->patients();
+                
+            $patients = $patients->whereHas('user', function ($query) use($userIds) {
+                $query->whereIn('users.id', $userIds);
+            });
+            
+            /*$items =  User::selectRaw('users.id as createdby, patients.*')
+            ->join('patient_user', 'patient_user.user_id', '=', 'users.id')
+            ->join('patients', 'patients.id', '=', 'patient_user.patient_id')
+            ///->with('estados.user')
+            //->with('banco')
+            ->whereIn('users.id',$userIds)
+            ->orderBy($order, $dir)
+            ->get();
+        
+            dd($items->all());
+            $paginator = paginate($items->all(), $this->limit);
+              
+            return $paginator;*/
+       
+
+        
+
+
+        return $patients->with('appointments')->orderBy('patients.'.$order , $dir)->paginate($this->limit);
+
+    }
     /**
      * Find all the patients for the admin panel
      * @internal param $username

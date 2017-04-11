@@ -8,6 +8,7 @@
 
 @endsection
 @section('content')
+    
     <div id="infoBox" class="alert"></div> 
      @if($wizard)
         @include('layouts/partials/header-pages',['page'=>'Arma tu agenda'])
@@ -206,7 +207,7 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-offices">
-                <div class="external-event bg-red">No disponible</div>
+                <!-- <div class="external-event bg-red">No disponible</div> -->
               </div>
             </div>
             <!-- /.box-body -->

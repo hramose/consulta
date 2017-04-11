@@ -1,45 +1,13 @@
 <template>	
 	<div class="form-horizontal">
      
-      <div class="form-group">
-        <label for="office_name" class="col-sm-2 control-label">Buscar</label>
-         
-              <div class="col-xs-12 col-sm-5">
-                <div class="form-group">
-                    <div class="col-sm-12">
-                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar consultorio..." label="name" :on-change="selectOffice" :value.sync="selectedOffice" ></v-select>
-                    </div>
-                </div>
-                    
-                  
-              </div>
-              <div class="col-xs-12 col-sm-5">
-                <div class="form-group">
-                    <div class="col-sm-10">
-                    <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
-                    <a href="#" class="btn btn-default " @click="newOffice = !newOffice">Crear Consultorio Nuevo</a>
-                    </div>
-                </div>
-                    
-                  
-              </div> 
-        
-          
-        <!--<div class="col-sm-10">
-
-           <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
-          <form-error v-if="errors.name" :errors="errors" style="float:right;">
-              {{ errors.name[0] }}
-          </form-error> 
-          </div>-->
-      </div>
-      <div class="newform" v-show="newOffice">
+      <div class="newform">
 
             <div class="form-group">
               <label for="office_name" class="col-sm-2 control-label">Nombre</label>
               <div class="col-sm-10">
 
-                 <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" :disabled="office.id && office.type != 'Consultorio Independiente'">
+                 <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
                 <form-error v-if="errors.name" :errors="errors" style="float:right;">
                     {{ errors.name[0] }}
                 </form-error> 
@@ -49,7 +17,7 @@
             <label for="office_type" class="col-sm-2 control-label">Tipo</label>
 
             <div class="col-sm-10">
-              <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona tipo --"  v-model="office.type" :disabled="office.id && office.type != 'Consultorio Independiente'">
+              <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona tipo --"  v-model="office.type" >
                 <option disabled="disabled"></option>
                 <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
                 
@@ -63,7 +31,7 @@
             <label for="office_address" class="col-sm-2 control-label">Dirección</label>
 
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="address" placeholder="Dirección"  v-model="office.address" :disabled="office.id && office.type != 'Consultorio Independiente'">
+              <input type="text" class="form-control" name="address" placeholder="Dirección"  v-model="office.address" >
               <form-error v-if="errors.address" :errors="errors" style="float:right;">
                   {{ errors.address[0] }}
               </form-error>
@@ -73,7 +41,7 @@
             <label for="office_province" class="col-sm-2 control-label">Provincia</label>
 
             <div class="col-sm-10">
-              <select class="form-control " style="width: 100%;" name="province" placeholder="-- Selecciona provincia --"  v-model="office.province" v-on:change="onChangeProvince" :disabled="office.id && office.type != 'Consultorio Independiente'">
+              <select class="form-control " style="width: 100%;" name="province" placeholder="-- Selecciona provincia --"  v-model="office.province" v-on:change="onChangeProvince" >
                 <option disabled="disabled"></option>
                 <option v-for="item in provincias" v-bind:value="item.title">{{ item.title }}</option>
                 
@@ -87,7 +55,7 @@
             <label for="office_canton" class="col-sm-2 control-label">Canton</label>
 
             <div class="col-sm-10">
-              <select class="form-control " style="width: 100%;" name="canton" placeholder="-- Selecciona canton --"  v-model="office.canton" v-on:change="onChangeCanton" :disabled="office.id && office.type != 'Consultorio Independiente'">
+              <select class="form-control " style="width: 100%;" name="canton" placeholder="-- Selecciona canton --"  v-model="office.canton" v-on:change="onChangeCanton" >
                 <option disabled="disabled"></option>
                 <option v-for="item in cantones" v-bind:value="item.title">{{ item.title }}</option>
                 
@@ -101,7 +69,7 @@
             <label for="office_district" class="col-sm-2 control-label">Distrito</label>
 
             <div class="col-sm-10">
-              <select class="form-control " style="width: 100%;" name="district" placeholder="-- Selecciona distrito --"  v-model="office.district" :disabled="office.id && office.type != 'Consultorio Independiente'">
+              <select class="form-control " style="width: 100%;" name="district" placeholder="-- Selecciona distrito --"  v-model="office.district" >
                 <option disabled="disabled"></option>
                 <option v-for="item in distritos" v-bind:value="item">{{ item }}</option>
                 
@@ -132,7 +100,7 @@
                     <div class="col-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon">lat:</span>
-                        <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat" :disabled="office.id && office.type != 'Consultorio Independiente'">
+                        <input type="text" class="form-control" name="lat" placeholder="10.637875" v-model="office.lat" >
                       </div>
                     </div>
                   </div>
@@ -144,7 +112,7 @@
                     <div class="col-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon">lon:</span>
-                        <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon" :disabled="office.id && office.type != 'Consultorio Independiente'">
+                        <input type="text" class="form-control" name="lon" placeholder="-85.434431" v-model="office.lon" >
                       </div>
                     </div>
                   </div>
@@ -159,7 +127,7 @@
                     <div class="col-sm-6">
                     
                       
-                       <button type="button" class="btn btn-default btn-geo" @click="getGeolocation" v-show="office.id && office.type == 'Consultorio Independiente'"><i class="fa fa-"></i>Tu ubicación Actual</button>
+                       <button type="button" class="btn btn-default btn-geo" @click="getGeolocation" ><i class="fa fa-"></i>Tu ubicación Actual</button>
                      
                     </div>
              
@@ -253,7 +221,7 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                       <div class="col-sm-5">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification" v-show="office.id && office.type == 'Consultorio Independiente'">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification" >
                             Actualizar coordenadas despues
                           </button>
                         </div>
@@ -282,20 +250,7 @@
         
       </div>
      
-      <h3>Tus Consultorios o clínicas</h3>
-      <ul id="offices-list" class="todo-list ui-sortable" v-show="consultorios.length">
-       
-        <li v-for="item in consultorios">
-          <!-- todo text -->
-          <a href="#clinics"><i class="fa fa-building"></i><span><span class="text" @click="edit(item)">{{ item.name }}</span></span></a>
-          <!-- General tools such as edit or delete-->
-          <div class="tools">
-            <!-- <i class="fa fa-edit" @click="edit(item)"></i> -->
-            <i class="fa fa-trash-o delete" @click="remove(item)"></i>
-          </div>
-        </li>
-       
-      </ul>
+      
   </div>
 </template>
 
@@ -304,11 +259,11 @@
     import FormError from './FormError.vue';
 
     export default {
-      props: ['offices'],
+      props: ['clinic'],
      
       data () {
         return {
-          consultorios: [],
+          
           provincias: [
           {
               title: 'San Jose',
@@ -797,50 +752,22 @@
         
         
         },
-        assignToMedic() {
-
-            
-                this.$http.post('/medic/account/offices/'+ this.office.id+'/assign', this.office).then((response) => {
-                      console.log(response.status);
-                      console.log(response.data);
-                      if(response.status == 200 && response.data)
-                      {
-                      
-                        if(response.data.id)
-                          this.consultorios.push(response.data);
-
-                        bus.$emit('alert', 'Consultorio Agregado','success');
-                        this.office = {};
-                        this.newOffice = false;
-                        this.errors = [];
-                        this.selectedOffice = null;
-                      }
-                     this.loader = false;
-                }, (response) => {
-                    console.log('error al guardar consultorio')
-                    this.loader = false;
-                     this.errors = response.data;
-                });
-          
-              
-              $(window).scrollTop(580);
-
-        },
+      
         save() {
 
           //var resource = this.$resource('/medic/account/offices');
            if(this.office.id)
            {
-             var resource = this.$resource('/medic/account/offices/'+ this.office.id);
+             var resource = this.$resource('/clinic/account/offices/'+ this.office.id);
 
                 resource.update(this.office).then((response) => {
                     
                      bus.$emit('alert', 'Consultorio Actualizado','success');
                      this.loader = false;
                      this.errors = [];
-                     this.office = {};
+                     //this.office = {};
                      this.newOffice = false;
-                     this.selectedOffice = null;
+                     
                 }, (response) => {
                     console.log(response.data)
                     this.loader = false;
@@ -848,89 +775,12 @@
                     this.errors = response.data;
                 });
 
-           }else{
-              this.$http.post('/medic/account/offices', this.office).then((response) => {
-                    console.log(response.status);
-                    console.log(response.data);
-                    if(response.status == 200 && response.data)
-                    {
-                      this.consultorios.push(response.data);
-                      bus.$emit('alert', 'Consultorio Agregado','success');
-                      this.office = {};
-                      this.newOffice = false;
-                      this.errors = [];
-                      this.selectedOffice = null;
-                    }
-                   this.loader = false;
-              }, (response) => {
-                  console.log('error al guardar consultorio')
-                  this.loader = false;
-                   this.errors = response.data;
-              });
-        
-            }
+           }
             $(window).scrollTop(580);
 
       },
-	     
-
-      remove(item){
-          let $vm = this;
-          swal({
-            title: 'Deseas eliminar el consultorio o clinica?',
-            text: "Requerda que te desvincularás de la clinica!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Eliminar!',
-            cancelButtonText: 'Cancelar'
-          }).then(function () {
-
-            $vm.$http.delete('/medic/account/offices/'+item.id).then((response) => {
-
-                  if(response.status == 200)
-                  {
-                     var index =$vm.consultorios.indexOf(item)
-                    $vm.consultorios.splice(index, 1);
-
-                    bus.$emit('alert', 'Consultorio Eliminado','success');
-                  }
-
-              }, (response) => {
-                  
-                   bus.$emit('alert', 'Error al eliminar el consultorio', 'danger');
-                   $vm.loader = false;
-              });
-
-            swal(
-              'Eliminado!',
-              'Consultorio Eliminado.',
-              'success'
-            )
-
-          }, function(dismiss) {
-            
-          });
-            
-
-
-          },
-          getOffices(search, loading) {
+	    
          
-            loading(true)
-           
-           let queryParam = {
-                ['q']: search
-              }
-            this.$http.get('/medic/offices/list', {params: Object.assign(queryParam, this.data)})
-            .then(resp => {
-               
-               this.allOffices = resp.data
-               loading(false)
-            })
-            
-          },
           selectOffice(clinica) {
             
             if(clinica){
@@ -969,7 +819,9 @@
       created () {
              console.log('Component ready. office')
 
-             this.consultorios = this.offices;
+             //this.office = this.clinic;
+             this.selectOffice(this.clinic)
+
              this.$on('input', this.changeValue);
         }
     }

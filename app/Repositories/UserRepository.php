@@ -173,7 +173,12 @@ class UserRepository extends DbRepository{
     public function delete($id)
     {
         
-        $user = $this->model->findOrFail($id)->delete();
+        $user = $this->model->findOrFail($id);
+
+        \DB::table('office_user')->where('user_id', $user->id)->delete();
+        \DB::table('verified_offices')->where('user_id', $user->id)->delete();
+
+        $user = $user->delete();
      
         return $user;
     }

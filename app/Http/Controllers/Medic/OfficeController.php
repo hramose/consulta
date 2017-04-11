@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\NewOffice;
 use App\Office;
 use App\Repositories\OfficeRepository;
+use App\User;
 use Illuminate\Http\Request;
 
 class OfficeController extends Controller
@@ -16,6 +17,10 @@ class OfficeController extends Controller
     	
         $this->middleware('auth');
     	$this->officeRepo = $officeRepo;
+
+        $this->administrators = User::whereHas('roles', function ($query){
+                        $query->where('name',  'administrador');
+                    })->get();
 
     }
 
@@ -54,13 +59,26 @@ class OfficeController extends Controller
              $data['notification'] = 1;
          }*/
         
+        if($data['type'] == 'Consultorio Independiente') $data['active'] = 1;
 
         $office = $this->officeRepo->store($data);
+
+        if($office->type == 'Consultorio Independiente') {
+         
+            if(!auth()->user()->verifyOffice($office->id))
+            {
+                 $office = auth()->user()->verifiedOffices()->save($office);
+            }
+
+            return $office;
+        }
+
         $medic = auth()->user();
 
-        \Mail::to('alonso@avotz.com')->send(new NewOffice($office,$medic));
 
-       // flash('Consultorio Guardado','success');
+        \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+
+       
 
         return $office;
 
@@ -78,7 +96,8 @@ class OfficeController extends Controller
         $office = auth()->user()->offices()->save($office);
         $medic = auth()->user();
         
-        \Mail::to('alonso@avotz.com')->send(new NewOffice($office,$medic));
+      
+        \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
 
         return $office;
 
@@ -144,8 +163,9 @@ class OfficeController extends Controller
 
         $office = Office::findOrFail($id);
 
-        $office = auth()->user()->offices()->detach($office->id);
-
+        $res = auth()->user()->offices()->detach($office->id);
+        
+        if($office->type == "Consultorio Independiente") $this->officeRepo->delete($id);
 
         return '';
 

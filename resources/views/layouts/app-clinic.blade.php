@@ -68,12 +68,15 @@
           <div class="menu-fixed-container">
             <a href="/clinic/appointments" class="btn btn-sm btn-info {{ set_active('clinic/appointments') }}">Agenda</a>
             <a href="/clinic/medics" class="btn btn-sm btn-success {{ set_active('clinic/medics') }}">Medicos</a>
-            <a href="/clinic/patients" class="btn btn-sm btn-warning {{ set_active('clinic/patients') }}">Pacientes</a>
-            <a href="/clinic/reports" class="btn btn-sm btn-danger {{ set_active('clinic/reports') }}">Reportes</a>
+            <a href="/clinic/patients" class="btn btn-sm btn-danger {{ set_active('clinic/patients') }}">Pacientes</a>
+            <a href="/clinic/reports" class="btn btn-sm btn-warning {{ set_active('clinic/reports') }}">Reportes</a>
             <!-- <a href="/medic/patients?inita=1" class="btn btn-sm btn-default bg-purple {{ set_active('medic/patients?inita=1') }}">Iniciar Consulta</a> -->
           </div>
        </div>
-    @endif  
+    @endif 
+    <section class="content menu">
+        @include('layouts/partials/home-boxes-clinic')  
+      </section> 
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
     @if(!auth()->user()->active)

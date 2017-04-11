@@ -59,6 +59,7 @@ class CreateOfficesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('verified_offices');
         Schema::dropIfExists('office_user');
         Schema::dropIfExists('offices');
     }

@@ -41,12 +41,12 @@ class MedicController extends Controller
         $search['q'] = request('q');
         
         //$medics = (auth()->user()->offices->count()) ? auth()->user()->offices->first()->users()->paginate(10) : [];
-       
-        $medics = $this->medicRepo->findAllByOffice(auth()->user()->offices->first()->id,$search);
+        $office = auth()->user()->offices->first();
+        $medics = $this->medicRepo->findAllByOffice($office->id,$search);
         
 
 
-        return view('clinic.medics.index',compact('medics','search'));
+        return view('clinic.medics.index',compact('medics','office','search'));
 
     }
     /**

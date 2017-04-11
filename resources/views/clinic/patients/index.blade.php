@@ -48,45 +48,27 @@
                   </thead>
                   @foreach($patients as $patient)
                     <tr>
-                      @if($patient->isPatientOf(auth()->user()))
+                      
                       <td data-title="ID">{{ $patient->id }}</td>
-                      @else
-                        <td data-title="ID"></td>
-                      @endif
+                     
                       <td data-title="Nombre">
-                      @if($patient->isPatientOf(auth()->user()))
+                      
                         <a href="{{ url('/clinic/patients/'.$patient->id.'/edit') }}" title="{{ $patient->first_name }}">{{ $patient->first_name }} {{ $patient->last_name }}</a>
-                      @else
-                          {{ $patient->first_name }} {{ $patient->last_name }}
-                      @endif
+                     
                       </td>
                       <td data-title="Teléfono">{{ $patient->phone }}</td>
                       <td data-title="Email">{{ $patient->email }}</td>
                       <td data-title="Dirección">{{ $patient->address }}</td>
                       <td data-title="" style="padding-left: 5px;">
-                        @if($patient->isPatientOf(auth()->user()))
+                        
                         <div class="btn-group">
                           <a href="{{ url('/clinic/patients/'.$patient->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
-                           @if(!$patient->appointments->count())
+                           @if(!$patient->appointments->count() && $patient->isPatientOf(auth()->user()))
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/clinic/patients/'.$patient->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>
                           @endif
                         </div>
-                        @else
-                          <form action="{!! url('/clinic/patients/'.$patient->id.'/add') !!}" method="post" id="form-addToYourPatients" data-confirm="Estas Seguro?" class="form-horizontal">
-                            {{ csrf_field() }}
-                            <div class="input-group">
-                              <div class="input-group-btn">
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-plus"></i> Agregar a tu lista</button>
-                              </div>
-                              <!-- /btn-group -->
-                              <input type="text" name="id_patient_confirm" placeholder="ID de confirmación" class="form-control" required="required" />
-                            </div>
-                             
-                          </form>
-                          
-
-                        @endif
+                       
                        
                       </td>
                     </tr>

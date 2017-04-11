@@ -64,6 +64,11 @@ class OfficeRepository extends DbRepository{
     {
         
         $office = $this->model->findOrFail($id)->delete();
+        
+        \DB::table('verified_offices')->where([
+            ['user_id', '=', auth()->id()],
+            ['office_id', '=', $id],
+        ])->delete();
      
         return $office;
     }
@@ -114,7 +119,7 @@ class OfficeRepository extends DbRepository{
         $order = 'created_at';
         $dir = 'desc';
 
-        $offices = $this->model;
+        $offices = $this->model->where('type','<>','Consultorio Independiente');
 
         if (! count($search) > 0) return $offices->get();
 
@@ -122,7 +127,10 @@ class OfficeRepository extends DbRepository{
         {
             $offices = $offices->Search($search['q']);
         } 
-
+        if (isset($search['type']) && trim($search['type']))
+        {
+            $offices = $offices->where('type', $search['type']);
+        } 
 
         if (isset($search['order']) && $search['order'] != "")
         {

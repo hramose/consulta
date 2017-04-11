@@ -66,6 +66,12 @@ body.loading:before{
 	right: 0;
 	z-index: 999;
 }
+.content.menu{
+	min-height:auto;
+}
+.boxes-home.none{
+	display:none;
+}
 .todo-list>li .tools
 	{
 		display:block !important;
@@ -81,9 +87,12 @@ body.loading:before{
 	}
 
 }
-@media screen and (min-width:768px){
+@media screen and (min-width:1200px){
 	.menu-fixed{
-		//display:none;
+		display:none;
+	}
+	.boxes-home.none{
+		display:block !important;
 	}
 
 }
@@ -105,7 +114,7 @@ td.fc-day.fc-past{
 .fc-content:hover{background:lightblue;cursor: pointer;}
 .fc-content td:hover{background: #adf4fa;}*/
 .fc-nonbusiness {
-    background-color: #dd4b39 !important;
+    background-color: #a9a9a9 !important;
     opacity: .65;
     cursor: not-allowed;
 }

@@ -67,7 +67,10 @@
               
             </div>
          </div>
-        @endif  
+        @endif 
+        <section class="content menu">
+          @include('layouts/partials/home-boxes-patient')  
+        </section> 
         <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
 
          @if(!auth()->user()->active)

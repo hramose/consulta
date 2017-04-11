@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewClinic;
 use App\Office;
 use App\Repositories\UserRepository;
 use App\Role;
@@ -42,6 +43,9 @@ class RegisterClinicController extends Controller
     {
         $this->middleware('guest');
         $this->userRepo = $userRepo;
+        $this->administrators = User::whereHas('roles', function ($query){
+                        $query->where('name',  'administrador');
+                    })->get();
     }
 
      /**
@@ -99,6 +103,9 @@ class RegisterClinicController extends Controller
 
 
         }
+       
+
+        \Mail::to($this->administrators)->send(new NewClinic($user,$office));
 
         return $user;
 

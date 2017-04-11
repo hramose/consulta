@@ -199,7 +199,7 @@
                             <td data-title="Compartir">
                               <div class="btn-group">
                                 <!-- <a href="#" class="btn btn-info"><i class="fa fa-address"></i> Consultar ubicación</a> -->
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" data-address="{{ $clinic->name }} - Direccion: {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }}" data-lat="{{ $clinic->lat }}" data-lon="{{ $clinic->lon }}">
                                   <i class="fa fa-address"></i> Compartir
                                 </button>
                                
@@ -207,7 +207,7 @@
                                  @if($clinic->phone)
                                 <a href="tel:{{ $clinic->phone }}" class="btn btn-default" title="{{ $clinic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $clinic->phone }})</a>
                                 @endif
-                                 <a href="{{ url('/clinics/'.$clinic->id.'/schedule') }}" class="btn btn-info "><i class="fa fa-calendar"></i> Reservar cita</a>
+                                 <a href="{{ url('/clinics/'.$clinic->id.'/schedule') }}" class="btn btn-danger "><i class="fa fa-calendar"></i> Reservar cita</a>
                               </div>
                             </td>
                           </tr>

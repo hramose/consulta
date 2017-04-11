@@ -41,6 +41,9 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
         $this->userRepo = $userRepo;
+        $this->administrators = User::whereHas('roles', function ($query){
+                        $query->where('name',  'administrador');
+                    })->get();
     }
 
      /**
@@ -87,7 +90,7 @@ class RegisterController extends Controller
 
         $user = $this->userRepo->store($data);
 
-        \Mail::to('alonso@avotz.com')->send(new NewMedic($user));
+        \Mail::to($this->administrators)->send(new NewMedic($user));
 
         return $user;
 

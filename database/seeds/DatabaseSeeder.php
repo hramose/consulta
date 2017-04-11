@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
 {
     
     private $tables = [
-        'users','offices','roles','role_user', 'specialities'
+        'users','offices','roles','role_user', 'specialities','verified_offices','office_user'
     ];
     
     /**
@@ -35,18 +35,33 @@ class DatabaseSeeder extends Seeder
             'name' => 'clinica',
         ]);
 
+
         foreach ($this->specialities as $s) {
             factory(Speciality::class, 1)->create([
                 'name' => $s,
             ]);
         }
 
-        factory(User::class, 1)->create([
+        $admin1 = factory(User::class, 1)->create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => bcrypt('123456'),
             'remember_token' => str_random(10),
         ]);
+        $admin2 = factory(User::class, 1)->create([
+            'name' => 'admin Julio',
+            'email' => 'farmaciamonserrat@gmail.com',
+            'password' => bcrypt('123456'),
+            'remember_token' => str_random(10),
+        ]);
+            \DB::table('role_user')->insert(
+    ['role_id' => 3, 'user_id' => 1]
+);
+            \DB::table('role_user')->insert(
+    ['role_id' => 3, 'user_id' => 2]
+);
+      
+        
 
     }
 
