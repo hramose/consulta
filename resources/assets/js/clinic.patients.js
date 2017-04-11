@@ -102,7 +102,7 @@ $(function () {
                
                 
             },
-            error: function () {
+            error: function (resp) {
                 console.log('Error - '+ resp);
 
             }

@@ -66,7 +66,7 @@ class MedicRepository extends DbRepository{
                      ->pluck('id')->all();*/
             //dd($officesNear);
 
-            $offices = Office::whereHas('user', function($q) use($search){
+            $offices = Office::whereHas('users', function($q) use($search){
 
                                         //$q->where('speciality_id', '=', $search['speciality']);
                                            //->where('name', 'like', '%' . $search['q'] . '%');
@@ -99,8 +99,8 @@ class MedicRepository extends DbRepository{
 
             
              $offices = $offices->NearLatLng($search['lat'], $search['lon'], 25, 'K');
-            
-             $paginator = paginate($offices->with('user')->orderBy('distance', 'ASC')->get()->all(), $this->limit);
+             //dd($offices->with('users')->orderBy('distance', 'ASC')->get()->all());
+             $paginator = paginate($offices->with('users')->orderBy('distance', 'ASC')->get()->all(), $this->limit);
           
              return $paginator; //$offices->with('user')->orderBy('distance', 'ASC')->get();//paginate($this->limit);
         

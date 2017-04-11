@@ -1,11 +1,11 @@
 {
-  "css/app.css": "css/app-8596438f79.css",
-  "js/admin.min.js": "js/admin-2e64154cde.min.js",
-  "js/app-theme.min.js": "js/app-theme-e234d7f96f.min.js",
-  "js/app.js": "js/app-dba7bbc331.js",
-  "js/appointments.min.js": "js/appointments-2daeaa86d3.min.js",
-  "js/patient_register.min.js": "js/patient_register-fd597d6ad1.min.js",
-  "js/patients.min.js": "js/patients-923a106df8.min.js",
-  "js/schedule.min.js": "js/schedule-50a1e51d16.min.js",
-  "js/search.min.js": "js/search-fdb1963058.min.js"
+  "css/app.css": "css/app-080b409daf.css",
+  "js/admin.min.js": "js/admin-823bb0a100.min.js",
+  "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
+  "js/app.js": "js/app-0bf4a05b92.js",
+  "js/appointments.min.js": "js/appointments-f91f5c9a13.min.js",
+  "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
+  "js/patients.min.js": "js/patients-0f5ab74569.min.js",
+  "js/schedule.min.js": "js/schedule-2ec0865587.min.js",
+  "js/search.min.js": "js/search-ddd52174a2.min.js"
 }

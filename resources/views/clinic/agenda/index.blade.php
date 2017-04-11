@@ -125,5 +125,9 @@
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 @if($medic)
 <script src="{{ elixir('/js/clinic.appointments.min.js') }}"></script>
+@else
+<script>
+   $(".dropdown-toggle").dropdown();
+</script>
 @endif
 @endsection

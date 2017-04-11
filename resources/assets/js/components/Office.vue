@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <div class="col-sm-10">
                     <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
-                    <a href="#" class="btn btn-default " @click="newOffice = !newOffice">Crear Consultorio Nuevo</a>
+                    <a href="#" class="btn btn-default " @click="nuevo()">Crear Consultorio Nuevo</a>
                     </div>
                 </div>
                     
@@ -276,7 +276,7 @@
          
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-danger" @click="save()">Guardar</button>
+              <button type="submit" class="btn btn-danger" @click="save()" :disabled="loader">Guardar</button>
             </div>
           </div>
         
@@ -707,6 +707,15 @@
         vSelect
       },
       methods: {
+        nuevo(){
+          if(this.newOffice && this.office.id) {
+            this.office = {};
+          }else{
+            this.newOffice = !this.newOffice;
+          
+          }
+          
+        },
         onBlurDatetime(e){
           const value = e.target.value;
           console.log('onInput fired', value)
@@ -829,6 +838,7 @@
         save() {
 
           //var resource = this.$resource('/medic/account/offices');
+           this.loader = true;
            if(this.office.id)
            {
              var resource = this.$resource('/medic/account/offices/'+ this.office.id);
