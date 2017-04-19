@@ -159,7 +159,7 @@
                     <div class="col-sm-6">
                     
                       
-                       <button type="button" class="btn btn-default btn-geo" @click="getGeolocation" v-show="office.id && office.type == 'Consultorio Independiente'"><i class="fa fa-"></i>Tu ubicación Actual</button>
+                       <button type="button" class="btn btn-default btn-geo" @click="getGeolocation" v-show="office.type == 'Consultorio Independiente'"><i class="fa fa-"></i>Tu ubicación Actual</button>
                      
                     </div>
              
@@ -253,7 +253,7 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                       <div class="col-sm-5">
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification" v-show="office.id && office.type == 'Consultorio Independiente'">
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOfficeNotification" v-show="office.type == 'Consultorio Independiente'">
                             Actualizar coordenadas despues
                           </button>
                         </div>
@@ -692,7 +692,8 @@
             lat : '',
             lon: '',
             notification_datetime: '',
-            notification_hour: ''
+            notification_hour: '',
+            type:''
           },
           selectedOffice:null,
           allOffices: [],
@@ -709,11 +710,21 @@
       methods: {
         nuevo(){
           if(this.newOffice && this.office.id) {
-            this.office = {};
+           
+
+
           }else{
             this.newOffice = !this.newOffice;
           
           }
+
+           this.office = {
+                lat : '',
+                lon: '',
+                notification_datetime: '',
+                notification_hour: '',
+                type:''
+              };
           
         },
         onBlurDatetime(e){
