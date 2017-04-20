@@ -54,10 +54,19 @@
                         <td data-title="a">{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
                         <td data-title="" style="padding-left: 5px;">
                           <div class="btn-group">
-                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> Iniciar Cita</a>
-                           
-                            @if(!$appointment->status)
-                            <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
+                            @if($appointment->status == 2)
+                              <span class="label label-warning">Paciente No Asistió a la cita</span>
+                            @else
+
+                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+
+                             @if($appointment->status != 2 && $appointment->status != 1)
+                                <button type="submit" class="btn btn-warning" form="form-noshows" formaction="{!! url('/medic/appointments/'.$appointment->id.'/noshows') !!}">No Asistió</button>
+                              @endif
+                              @if(!$appointment->status)
+                                <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/appointments/'.$appointment->id) !!}"><i class="fa fa-remove"></i></button>
+                              @endif
+
                             @endif
                           </div>
                         </td>
@@ -84,6 +93,9 @@
 
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
+</form>
+<form method="post" id="form-noshows" data-confirm="Estas Seguro?">
+  <input name="_method" type="hidden" value="PUT">{{ csrf_field() }}
 </form>
 @endsection
 @section('scripts')

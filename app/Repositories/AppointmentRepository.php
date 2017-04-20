@@ -259,6 +259,61 @@ class AppointmentRepository extends DbRepository{
 
     }
 
+     /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatistics($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+    
+        $appointments = $this->model;
+        
+        if (isset($search['medic']) && $search['medic'] != "")
+        {
+            $appointments = $appointments->where('user_id', $search['medic']);
+        }
+        if (isset($search['speciality']) && $search['speciality'] != "")
+        {
+                $usersIds = $users->whereHas('specialities', function($q) use($search){
+                                        $q->where('specialities.id', $search['speciality']);
+                                    })->pluck('users.id');
+
+
+               $appointments = $appointments->whereIn('user_id', $usersIds);           
+            
+        }
+
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+         
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]]);
+            
+        }
+
+        $statistics = $appointments->selectRaw('status, count(*) items')
+                         ->groupBy('status')
+                         ->orderBy('status','DESC')
+                         ->get()
+                         ->toArray();
+         
+      return $statistics;
+       
+    }
+
+
    /*   public function findById($id)
     {
         return $this->model->with('diseaseNotes')->findOrFail($id);

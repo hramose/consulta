@@ -133,6 +133,18 @@ class AppointmentController extends Controller
 
     }
 
+     public function noShows($id)
+    {
+
+        $reservation = \DB::table('appointments')
+            ->where('id', $id)
+            ->update(['status' => 2]); //no asistio a la cita  
+
+         return back();
+
+    }
+
+
     /**
      * Lista de todas las citas de un doctor sin paginar
      */

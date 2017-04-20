@@ -81,6 +81,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::get('/appointments/list', 'Medic\AppointmentController@getAppointments');
 	Route::get('/appointments/{id}/print', 'Medic\AppointmentController@printSummary');
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
+	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
 	Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
@@ -99,6 +100,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');
 	Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
+	Route::get('/specialities/list', 'Clinic\UserController@getSpecialities');
 	//Route::post('/account/patients', 'UserController@storePatient');
 	//Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
 	//Route::put('/account/patients/{id}', 'UserController@updatePatient');
@@ -119,9 +121,11 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 	Route::resource('appointments', 'Clinic\AppointmentController');
 	
 	Route::post('/medics/{medic}/offices/{office}/assign', 'Clinic\MedicController@assignOffice');
+	Route::get('/medics/list', 'Clinic\MedicController@getMedics');
 	Route::resource('medics', 'Clinic\MedicController');
 
 	Route::get('/reports', 'Clinic\ReportsController@index');
+	Route::get('/reports/generate', 'Clinic\ReportsController@generate');
 
 });
 

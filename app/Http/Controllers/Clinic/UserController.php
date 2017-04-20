@@ -137,6 +137,14 @@ class UserController extends Controller
 
     }
 
+     public function getSpecialities()
+    {
+        $search = request()->all();
+        $specialities = Speciality::where('name', 'like', '%' . $search['q'] . '%')->get();
+
+        return $specialities;
+    }
+
 
     
 

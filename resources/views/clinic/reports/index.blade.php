@@ -10,8 +10,7 @@
 
 
     <section class="content">
-       Sección en desarrollo
-
+		<reports-clinic></reports-clinic>
     </section>
 
 

@@ -224,6 +224,48 @@ class MedicRepository extends DbRepository{
 
     }
 
+    /**
+     * Find all the users for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllByOfficeWithoutPaginate($office_id, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $office = Office::findOrfail($office_id);
+        
+        /*if($except)
+            $medics = $office->users()->where('users.id','<>',$except)->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });*/
+        //else
+           if (isset($search['q']) && trim($search['q']))
+            {
+               $medics = $office->users()->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->Search($search['q']);
+            } else
+            {
+               $medics = $office->users()->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });
+            }
+           
+
+        
+       
+
+        return $medics->with('offices')->orderBy('users.'.$order , $dir)->get();
+       
+
+
+
+    }
+
+
 
     
 

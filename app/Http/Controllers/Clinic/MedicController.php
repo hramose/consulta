@@ -161,5 +161,21 @@ class MedicController extends Controller
 
     }
 
+    /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function getMedics()
+    {
+        $search['q'] = request('q');
+    
+        $office = auth()->user()->offices->first();
+        $medics = $this->medicRepo->findAllByOfficeWithoutPaginate($office->id,$search);
+
+       
+        
+        return $medics;
+        
+    }
+
    
 }
