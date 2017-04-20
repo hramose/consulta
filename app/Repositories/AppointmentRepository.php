@@ -272,6 +272,11 @@ class AppointmentRepository extends DbRepository{
 
     
         $appointments = $this->model;
+
+        if (isset($search['clinic']) && $search['clinic'] != "")
+        {
+            $appointments = $appointments->where('office_id', $search['clinic']);
+        }
         
         if (isset($search['medic']) && $search['medic'] != "")
         {
@@ -279,7 +284,7 @@ class AppointmentRepository extends DbRepository{
         }
         if (isset($search['speciality']) && $search['speciality'] != "")
         {
-                $usersIds = $users->whereHas('specialities', function($q) use($search){
+                $usersIds = User::whereHas('specialities', function($q) use($search){
                                         $q->where('specialities.id', $search['speciality']);
                                     })->pluck('users.id');
 

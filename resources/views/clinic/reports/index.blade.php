@@ -10,7 +10,7 @@
 
 
     <section class="content">
-		<reports-clinic></reports-clinic>
+		<reports-clinic :clinic="{{ auth()->user()->offices->first()->id }}"></reports-clinic>
     </section>
 
 
