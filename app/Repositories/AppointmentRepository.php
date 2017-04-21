@@ -4,6 +4,7 @@
 use App\Appointment;
 use App\Patient;
 use App\User;
+use Carbon\Carbon;
 
 class AppointmentRepository extends DbRepository{
 

@@ -7,6 +7,13 @@
 
 require('./bootstrap');
 
+// chartjs package
+require('chart.js');
+// vue-charts package
+require('hchs-vue-charts');
+Vue.use(VueCharts);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the body of the page. From here, you may begin adding components to

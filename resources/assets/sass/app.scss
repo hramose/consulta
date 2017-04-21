@@ -463,6 +463,16 @@ td.fc-day.fc-past{
 	}
 
 }
+.box-chart{
+	
+}
+@media screen and (min-width:768px){
+	.box-chart{
+		max-width: 480px;
+		margin:0 auto;
+	}
+
+}
 
  @media only screen and (max-width: 800px) {
   
