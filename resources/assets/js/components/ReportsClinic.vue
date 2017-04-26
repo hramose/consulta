@@ -177,7 +177,7 @@
               let total = 0;
 
               for (var i = 0; i < this.data.length; i++) {
-                total += this.data[i]['items'];
+                total += parseInt(this.data[i]['items']);
               }
               
               return total;
