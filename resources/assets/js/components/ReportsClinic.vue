@@ -288,7 +288,7 @@
         generateReport(){
 
            let queryParam = this.search;
-           //this.dataSets = [];
+           this.dataSets = [];
             
             if(this.search.type == "Médico" && !this.search.medic) return
 
