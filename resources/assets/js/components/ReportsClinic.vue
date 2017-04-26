@@ -112,7 +112,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false" :datalabel="sss" :labels="dataLabels"  :datasets="dataSets"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabels"  :datasets="dataSets"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
@@ -288,6 +288,7 @@
         generateReport(){
 
            let queryParam = this.search;
+           //this.dataSets = [];
             
             if(this.search.type == "Médico" && !this.search.medic) return
 
