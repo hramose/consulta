@@ -2,7 +2,7 @@
  
       <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Tratamiento</h3> <small class="pull-right">{{ loader_message }}</small>
+              <h3 class="box-title">Recomendaciones Médicas</h3> <small class="pull-right">{{ loader_message }}</small>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

@@ -12,12 +12,7 @@
         <div class="row">
         
           <div class="col-xs-12">
-            <div class="callout callout-info callout-search">
-              <button type="button" class="close" data-dismiss="callout" aria-hidden="true">×</button>
-              <h4>Filtros !</h4>
-
-              <p>Utiliza uno o varios parámetros de busqueda de abajo para realizar la busqueda más exacta!</p>
-            </div>
+            
             <div class="box">
               <div class="box-header">
                     <form method="GET" action="{{ url('/clinics/search') }}" class="form-horizontal">
@@ -186,7 +181,10 @@
                         @foreach($clinics as $clinic)
                           <tr>
                            
-                            <td data-title="Nombre">{{ $clinic->name }}</td>
+                            <td data-title="Nombre">
+                              {{ $clinic->name }} <br>
+                              
+                            </td>
                             <td data-title="Lugar">
                                {{ $clinic->province }}, {{ $clinic->canton }}. {{ $clinic->address }} 
 

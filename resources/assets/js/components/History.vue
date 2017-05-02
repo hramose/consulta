@@ -7,19 +7,31 @@
             <div class="box-header with-border">
               <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#alergias" aria-expanded="false" class="collapsed">
-                  ALERGIAS: <small><span v-for="item in activesAlergias" v-text="item.value" class="label label-primary activesHistory"></span></small>
+                  ALERGIAS: <small><span class="label label-primary activesHistory">{{ allergies.length }}</span></small>
                 </a>
               </h4>
             </div>
             <div id="alergias" class="panel-collapse collapse" aria-expanded="false">
               <div class="box-body">
                  
-                 <div v-for="item in dataHistories.alergias">
-                  <textarea name="alergias" cols="30" rows="3" class="form-control" v-model="item.value"></textarea>
-                  <div class="form-group pull-right">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-success"  @click="updateHistory()">Guardar</button>
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="allergies.length">
+       
+                  <li v-for="item in allergies">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ item.name }}</span></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>{{ item.created_at }}</span>
                     </div>
+                  </li>
+                 
+                </ul>
+                 <h4>Agregar nueva alergia:</h4>
+                <textarea name="alergias" cols="30" rows="3" class="form-control" v-model="allergy"></textarea>
+                <div class="form-group pull-right">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/allergies',allergy,'allergy')">Guardar</button>
                   </div>
                 </div>
                 
@@ -29,70 +41,144 @@
           <div class="panel box box-danger">
             <div class="box-header with-border">
               <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#patologicos" class="collapsed" aria-expanded="false">
-                  ANTECEDENTES PATOLÓGICOS: <small> <span v-for="item in activesPatologicos" v-text="item.name" class="label label-danger activesHistory"></span> </small>
+                <a data-toggle="collapse" data-parent="#accordion" href="#patologicos" aria-expanded="false" class="collapsed">
+                  ANTECEDENTES PATOLÓGICOS: <small><span class="label label-danger activesHistory">{{ pathologicals.length }}</span></small>
                 </a>
               </h4>
             </div>
-            <div id="patologicos" class="panel-collapse collapse" aria-expanded="false" >
+            <div id="patologicos" class="panel-collapse collapse" aria-expanded="false">
               <div class="box-body">
-                  
-                 <history-item v-for="item in dataHistories.patologicos" :item="item" @update="updateHistory()" colorBox="box-danger"></history-item>
-                  
+                 
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="pathologicals.length">
+       
+                  <li v-for="item in pathologicals">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ item.name }}</span></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>{{ item.created_at }}</span>
+                    </div>
+                  </li>
+                 
+                </ul>
+                 <h4>Agregar nuevo:</h4>
+                <textarea name="pathological" cols="30" rows="3" class="form-control" v-model="pathological" placeholder="Ej: Hospitalizacion previa, Cirugías, Diabetes, Enfermedades Tiroideas, Hipertensión Arterial, etc."></textarea>
+                <div class="form-group pull-right">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/pathologicals',pathological,'pathological')">Guardar</button>
+                  </div>
+                </div>
+                
               </div>
             </div>
           </div>
-        
           <div class="panel box box-success">
             <div class="box-header with-border">
               <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#no_patologicos" class="collapsed" aria-expanded="false" >
-                  ANTECEDENTES NO PATOLÓGICOS: <small> <span v-for="item in activesNoPatologicos" v-text="item.name" class="label label-success activesHistory"></span>  </small>
+                <a data-toggle="collapse" data-parent="#accordion" href="#no_patologicos" aria-expanded="false" class="collapsed">
+                  ANTECEDENTES NO PATOLÓGICOS: <small><span class="label label-success activesHistory">{{ no_pathologicals.length }}</span></small>
                 </a>
               </h4>
             </div>
             <div id="no_patologicos" class="panel-collapse collapse" aria-expanded="false">
               <div class="box-body">
+                 
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="no_pathologicals.length">
+       
+                  <li v-for="item in no_pathologicals">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ item.name }}</span></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>{{ item.created_at }}</span>
+                    </div>
+                  </li>
+                 
+                </ul>
+                 <h4>Agregar nuevo:</h4>
+                <textarea name="no_pathological" cols="30" rows="3" class="form-control" v-model="no_pathological" placeholder="Ej: Actividad Física, Tabaquismo, Alcoholismo, Uso de otras sustancias (Drogas), etc."></textarea>
+                <div class="form-group pull-right">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/nopathologicals',no_pathological,'no_pathological')">Guardar</button>
+                  </div>
+                </div>
                 
-                <history-item v-for="item in dataHistories.no_patologicos" :item="item" @update="updateHistory()" colorBox="box-success"></history-item>
-                  
               </div>
             </div>
           </div>
-
-           <div class="panel box box-warning">
+          <div class="panel box box-warning">
             <div class="box-header with-border">
               <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#heredofamiliares" class="collapsed" aria-expanded="false">
-                  ANTECEDENTES HEREDOFAMILIARES: <small> <span v-for="item in activesHeredo" v-text="item.name" class="label label-warning activesHistory"></span>  </small>
+                <a data-toggle="collapse" data-parent="#accordion" href="#heredofamiliares" aria-expanded="false" class="collapsed">
+                   ANTECEDENTES HEREDOFAMILIARES: <small><span class="label label-warning activesHistory">{{ heredos.length }}</span></small>
                 </a>
               </h4>
             </div>
             <div id="heredofamiliares" class="panel-collapse collapse" aria-expanded="false">
               <div class="box-body">
-                
-                <history-item v-for="item in dataHistories.heredofamiliares" :item="item" @update="updateHistory()" colorBox="box-warning"></history-item>
+                 
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="heredos.length">
+       
+                  <li v-for="item in heredos">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ item.name }}</span></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>{{ item.created_at }}</span>
+                    </div>
+                  </li>
+                 
+                </ul>
+                 <h4>Agregar nuevo:</h4>
+                <textarea name="heredo" cols="30" rows="3" class="form-control" v-model="heredo" placeholder="Ej: Diabetes, Cardiopatías, Hipertensión Arterial, etc."></textarea>
+                <div class="form-group pull-right">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/heredos',heredo,'heredo')">Guardar</button>
+                  </div>
+                </div>
                 
               </div>
             </div>
           </div>
-          
-           <div class="panel box box-default">
+          <div class="panel box box-default">
             <div class="box-header with-border">
               <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#gineco_obstetricios" class="collapsed" aria-expanded="false">
-                  ANTECEDENTES GINECO-OBSTETRICIOS: <small> <span v-for="item in activesGineco" v-text="item.name" class="label label-default activesHistory"></span>  </small>
+                <a data-toggle="collapse" data-parent="#accordion" href="#gineco_obstetricios" aria-expanded="false" class="collapsed">
+                   ANTECEDENTES GINECO-OBSTETRICIOS: <small><span class="label label-default activesHistory">{{ ginecos.length }}</span></small>
                 </a>
               </h4>
             </div>
             <div id="gineco_obstetricios" class="panel-collapse collapse" aria-expanded="false">
               <div class="box-body">
-
-                 <history-item v-for="item in dataHistories.gineco_obstetricios" :item="item" @update="updateHistory()" colorBox="box-default"></history-item>
+                 
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="ginecos.length">
+       
+                  <li v-for="item in ginecos">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ item.name }}</span></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>{{ item.created_at }}</span>
+                    </div>
+                  </li>
+                 
+                </ul>
+                 <h4>Agregar nuevo:</h4>
+                <textarea name="gineco" cols="30" rows="3" class="form-control" v-model="gineco" placeholder="Ej: Fecha de primera menstruación, Fecha de última menstruación, Características menstruación, Embarazos, etc."></textarea>
+                <div class="form-group pull-right">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/ginecos',gineco,'gineco')">Guardar</button>
+                  </div>
+                </div>
                 
               </div>
             </div>
           </div>
+          
 </div>
              
 </template>
@@ -106,141 +192,24 @@
       
       data () {
         return {
-
-          dataHistories: {
-            version: "1.0",
-            alergias: [{
-              name: 'Alergias',
-              value: ""
-            }],
-            patologicos:[{
-              name:"Hospitalizacion Previa",
-              value: ""
-            },
-            {
-              name:"Cirugías Previas",
-              value: ""
-            },
-            {
-              name:"Diabetes",
-              value: ""
-            },
-            {
-              name: "Enfermedades Tiroideas",
-              value: ""
-            },
-            {
-              name: "Hipertensión Arterial",
-              value: ""
-            },
-            {
-              name: "Cardiopatías",
-              value: ""
-            },
-            {
-              name: "Traumatismos",
-              value: ""
-            },
-            {
-              name: "Cáncer",
-              value: ""
-            },
-            {
-              name: "Tuberculosis",
-              value: ""
-            },
-            {
-              name: "Transfusiones",
-              value: ""
-            },
-            {
-              name: "Otros (patologicos)",
-              value: ""
-            }],
-            no_patologicos:[{
-              name:"Actividad Física",
-              value: ""
-            },
-            {
-              name:"Tabaquismo",
-              value: ""
-            },
-            {
-              name:"Alcoholismo",
-              value: ""
-            },
-            {
-              name:"Uso de otras sustancias (Drogas)",
-              value: ""
-            },
-            {
-              name:"Otros (No Patológicos)",
-              value: ""
-            }],
-            heredofamiliares:[{
-               name:"Diabetes (Heredofamiliares)",
-               value: ""
-            },
-            {
-               name:"Cardiopatías (Heredofamiliares)",
-               value: ""
-            },
-            {
-               name:"Hipertensión Arterial (Heredofamiliares)",
-               value: ""
-            },
-            {
-               name:"Enfermedades Tiroideas (Heredofamiliares)",
-               value: ""
-            },
-            {
-               name:"Otros (Heredofamiliares)",
-               value: ""
-            }],
-            gineco_obstetricios:[
-            {
-               name:"Fecha de primera menstruación",
-               value: ""
-            },
-            {
-               name:"Fecha de última menstruación",
-               value: ""
-            },
-            {
-               name:"Características menstruación",
-               value: ""
-            },
-            {
-               name:"Embarazos",
-               value: ""
-            },
-            {
-               name:"Cáncer Cérvico",
-               value: ""
-            },
-            {
-               name:"Cáncer Uterino",
-               value: ""
-            },
-            {
-               name:"Cáncer de Mama",
-               value: ""
-            },
-            {
-               name:"Otros (Gineco-Obstetricios)",
-               value: ""
-            }
-
-            ]
-        
-          },
+           allergy:"",
+           pathological:"",
+           no_pathological:"",
+           heredo:"",
+           gineco:"",
+           allergies:[],
+           pathologicals:[],
+           no_pathologicals:[],
+           heredos:[],
+           ginecos:[],
+          
           loader:false
 
         }
           
       },
       computed:{
-        activesAlergias(){
+        /*activesAlergias(){
 
             return this.dataHistories.alergias.filter(item => item.value);
         },
@@ -259,11 +228,63 @@
         activesGineco(){
 
             return this.dataHistories.gineco_obstetricios.filter(item => item.value);
-        }
+        }*/
 
 
       },
       methods: {
+
+         saveHistory(url,item,cat) {
+
+            
+            
+            this.$http.post(url, {history_id: this.history.id, name: item}).then((response) => {
+
+                  
+                  console.log(response);
+                  
+
+                  if(response.status == 200)
+                  {
+                    
+                    if(cat == 'allergy'){
+                      this.allergies.push(response.data);
+                      this.allergy = "";
+                      bus.$emit('actSummaryAllergies', this.allergies);
+                    }
+                     if(cat == 'pathological'){
+                      this.pathologicals.push(response.data);
+                      this.pathological = "";
+                      bus.$emit('actSummaryPathologicals', this.pathologicals);
+                    }
+                     if(cat == 'no_pathological'){
+                      this.no_pathologicals.push(response.data);
+                      this.no_pathological = "";
+                      bus.$emit('actSummaryNoPathologicals', this.no_pathologicals);
+                    }
+                    if(cat == 'heredo'){
+                      this.heredos.push(response.data);
+                      this.heredo = "";
+                      bus.$emit('actSummaryHeredos', this.heredos);
+                    }
+                    if(cat == 'gineco'){
+                      this.ginecos.push(response.data);
+                      this.gineco = "";
+                      bus.$emit('actSummaryGinecos', this.ginecos);
+                    }
+                    
+                    
+                  }
+
+              }, (response) => {
+                 
+                   bus.$emit('alert', 'Error al guardar el Hisotrial', 'danger');
+                  this.loader = false;
+              });
+
+            
+
+          },
           
           updateHistory () {
 
@@ -293,25 +314,37 @@
       created () {
            console.log('Component ready. history.')
           
-           if(this.history.histories)
+           if(this.history.allergies)
            {
             
-                this.dataHistories = JSON.parse(this.history.histories);
+                this.allergies = this.history.allergies;
                  
-                /*if(this.dataHistories.version === "1.0")
-                {
-                  
-                  this.dataHistories.alergias.push({
-                      name: 'Alergias-2',
-                      value: ""
-                    });
-
-                  this.dataHistories.version = "1.2";
-                  
-                  
-                }*/
-            
            }
+           if(this.history.pathologicals)
+           {
+            
+                this.pathologicals = this.history.pathologicals;
+                 
+           }
+           if(this.history.nopathologicals)
+           {
+            
+                this.no_pathologicals = this.history.nopathologicals;
+                 
+           }
+           if(this.history.heredos)
+           {
+            
+                this.heredos = this.history.heredos;
+                 
+           }
+           if(this.history.ginecos)
+           {
+            
+                this.ginecos = this.history.ginecos;
+                 
+           }
+
 
 
            

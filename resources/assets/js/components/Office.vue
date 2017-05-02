@@ -7,7 +7,7 @@
               <div class="col-xs-12 col-sm-5">
                 <div class="form-group">
                     <div class="col-sm-12">
-                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar consultorio..." label="name" :on-change="selectOffice" :value.sync="selectedOffice" ></v-select>
+                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar consultorio..." label="name" :on-change="selectOffice" :value.sync="selectedValue" ></v-select>
                     </div>
                 </div>
                     
@@ -695,7 +695,7 @@
             notification_hour: '',
             type:''
           },
-          selectedOffice:null,
+          selectedValue:null,
           allOffices: [],
           errors: []
          
@@ -725,6 +725,8 @@
                 notification_hour: '',
                 type:''
               };
+          this.selectedValue = null;
+          this.allOffices = [];
           
         },
         onBlurDatetime(e){
@@ -833,7 +835,7 @@
                         this.office = {};
                         this.newOffice = false;
                         this.errors = [];
-                        this.selectedOffice = null;
+                        this.selectedValue = null;
                       }
                      this.loader = false;
                 }, (response) => {
@@ -861,7 +863,8 @@
                      this.errors = [];
                      this.office = {};
                      this.newOffice = false;
-                     this.selectedOffice = null;
+                     this.selectedValue = null;
+                     this.allOffices = [];
                 }, (response) => {
                     console.log(response.data)
                     this.loader = false;
@@ -880,7 +883,8 @@
                       this.office = {};
                       this.newOffice = false;
                       this.errors = [];
-                      this.selectedOffice = null;
+                      this.selectedValue = null;
+                      this.allOffices = [];
                     }
                    this.loader = false;
               }, (response) => {

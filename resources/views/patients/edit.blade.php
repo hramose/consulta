@@ -28,14 +28,14 @@
 		<div class="col-md-8">
 			<div class="nav-tabs-custom">
 	            <ul class="nav nav-tabs">
-	              <li class="active"><a href="#basic" data-toggle="tab">Información Básica</a></li>
-	              <li><a href="#history" data-toggle="tab">Historial Médico</a></li>
-	              <li><a href="#appointments" data-toggle="tab">Consultas</a></li>
+	              <li class="{{ isset($tab) ? ($tab =='basic') ? 'active' : '' : 'active' }}"><a href="#basic" data-toggle="tab">Información Básica</a></li>
+	              <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>
+	              <li class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }}"><a href="#appointments" data-toggle="tab">Consultas</a></li>
 	             
 	              
 	            </ul>
 	            <div class="tab-content">
-	              	<div class="active tab-pane" id="basic">
+	              	<div class="{{ isset($tab) ? ($tab =='basic') ? 'active' : '' : 'active' }} tab-pane" id="basic">
 						<form method="POST" action="{{ url('/medic/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
 					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente'])
@@ -43,11 +43,11 @@
 
 				    </div>
 				    <!-- /.tab-pane -->
-				    <div class="tab-pane" id="history">
+				    <div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }} tab-pane" id="history">
 					    <history :history="{{ $patient->history }}"></history>	
 				    </div>
 				    <!-- /.tab-pane -->
-				    <div class="tab-pane" id="appointments">
+				    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
 						
 					      @include('patients/partials/appointments')
 					    

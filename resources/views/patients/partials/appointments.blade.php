@@ -3,7 +3,7 @@
 		<h2>Consultas programadas</h2>
 		@forelse($scheduledAppointments as $appointment)
 			
-				<a class="info-box cita-item" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
+				<a class="info-box cita-item" href="{{ (isset($fromPatient) || auth()->id() != $appointment->user->id) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
 		            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
@@ -25,7 +25,7 @@
 		<h2>Historial de consultas</h2>
 		@forelse($initAppointments as $appointment)
 			
-				<a class="info-box cita-item" href="{{ isset($fromPatient) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
+				<a class="info-box cita-item" href="{{ (isset($fromPatient) || auth()->id() != $appointment->user->id) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;">
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">

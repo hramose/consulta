@@ -69,7 +69,7 @@
                       <td data-title="" style="padding-left: 5px;">
                         @if($patient->isPatientOf(auth()->user()))
                         <div class="btn-group">
-                          <a href="{{ url('/medic/patients/'.$patient->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a>
+                          <a href="{{ url('/medic/patients/'.$patient->id.'/edit?tab=history') }}" class="btn btn-info" title="Ver Historial"><i class="fa fa-edit"></i> Historial</a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                            @if(!$patient->appointments->count())
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/medic/patients/'.$patient->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>

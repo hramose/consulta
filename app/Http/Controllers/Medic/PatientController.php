@@ -68,7 +68,8 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-        
+        $tab = request('tab');
+
         $patient = $this->patientRepo->findById($id);
 
         $appointments = $this->appointmentRepo->findAllByPatient($id);
@@ -84,7 +85,7 @@ class PatientController extends Controller
         
         $files = Storage::disk('public')->files("patients/". $id ."/files");
         
-        return view('patients.edit', compact('patient','files','initAppointments','scheduledAppointments'));
+        return view('patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab'));
 
     }
 

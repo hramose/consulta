@@ -10,7 +10,12 @@
 @section('content')
     <div id="infoBox" class="alert"></div> 
     
-        @include('layouts/partials/header-pages',['page'=>'Agenda'])
+     @if($medic)
+       @include('layouts/partials/header-pages',['page'=>'Agenda del médico '. $medic->name ])
+    @else
+       @include('layouts/partials/header-pages',['page'=>'Agenda'])
+    @endif
+     
     
     <section class="content">
        
@@ -30,7 +35,7 @@
               <div id="external-medics">
                 <ul class="medic-list medic-list-in-box">
                   @foreach($medics as $doctor)
-                    <li class="item">
+                    <li class="item {{ (isset($medic) && $doctor->id == $medic->id) ? 'medic-list-selected': '' }}">
                       <div class="medic-img">
                       <!--/img/default-50x50.gif-->
                         <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">

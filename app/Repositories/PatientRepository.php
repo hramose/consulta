@@ -225,7 +225,7 @@ class PatientRepository extends DbRepository{
 
     public function findById($id)
     {
-        return $this->model->with('vitalSigns','medicines','history')->findOrFail($id);
+        return $this->model->with('vitalSigns','medicines','history.allergies.user','history.pathologicals.user','history.nopathologicals.user','history.heredos.user','history.ginecos.user')->findOrFail($id);
     }
 
     /**

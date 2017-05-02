@@ -24,10 +24,12 @@ $(function () {
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
        $('.breadcrumb').hide();
+      
        
     }else{
-      //$('.box-create-appointment').show();
+      
       $('.box-search-filters').removeClass('collapsed-box');
+     
     }
 
    $(".dropdown-toggle").dropdown();
@@ -149,10 +151,14 @@ $(function () {
           var lat = button.attr('data-lat');
           var lon = button.attr('data-lon');
           var address = button.attr('data-address');
-              
+          var redes = ["email", "twitter", "facebook", "googleplus", "whatsapp"];
+
+          if( !isMobile.any() ) {
+              redes = ["email", "twitter", "facebook", "googleplus"];
+          }
       
         $(".share").jsSocials({
-            shares: ["email", "twitter", "facebook", "googleplus", "whatsapp"],
+            shares: redes,
             url: "http://maps.google.com/?saddr=Current+Location&daddr="+lat +"," + lon,
             text: address,
             showLabel: false,

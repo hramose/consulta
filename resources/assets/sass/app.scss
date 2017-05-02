@@ -3,9 +3,32 @@
 // Variables
 @import "variables";
 
-// .v-select input[type=search], .v-select input[type=search]:focus{
-// 	width:100% !important;
-// }
+@media print {
+  #app {
+  	//font-size:10px;
+  }
+  #app .menu-fixed, #app .boxes-home{
+  	display:none;
+  }
+   #app .filters{
+  	display:none;
+  }
+  #app .tooltip{
+  	display:none;
+  }
+}
+.summary-flex{
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:flex-start;
+}
+.summary-flex dl{
+	float: left;
+	width:100%
+}
+.print-summary-page dl{
+	width: 33.33% ;
+}
 .td-lugar{
 	display:flex;
 	flex-wrap: wrap;
@@ -129,6 +152,15 @@ body.loading:before{
 	}
 }
 
+.external-event{
+	padding: 0px 10px !important;
+}
+.fc-event:hover {
+  border-color: #1c7d87 !important;
+}
+.fc-event:hover .fc-content {
+  color: #1c7d87 !important;
+}
 // Bootstrap
 //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 td.fc-day.fc-past{
@@ -404,6 +436,11 @@ td.fc-day.fc-past{
 		}
 	}
 }
+.medic-list-selected{
+	background: #F4F4F4 !important;
+    border: 1px solid #e3e3e3;
+    padding: 10px 5px !important;
+}
 .callout-search{
 		display:none;
 	}
@@ -427,6 +464,7 @@ td.fc-day.fc-past{
 }
 .medic-list .medic-img{
 	float:left;
+	margin-top: -5px;
 }
 .medic-list .medic-info {
     margin-left: 60px;

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('css')
  <link rel="stylesheet" href="/js/plugins/iCheck/all.css">
+   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
 @endsection
 @section('content')
 	
@@ -8,7 +9,7 @@
 	 <section class="content">
 	     <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">{{ $appointment->patient->first_name }}</h3>
+              <h3 class="box-title">{{ $appointment->patient->first_name }}</h3> <a href="#" class="btn-finish-appointment btn btn-success" style="position: absolute; right: 18px; top: 3px; z-index: 99">Terminar Consulta</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -33,7 +34,7 @@
 		              <div class="tab-pane" id="history">
 		                 <div class="row">
 							<div class="col-md-6">
-		                 		<history :history="{{ $appointment->patient->history }}"></history>
+		                 		<history :history="{{ $history }}"></history>
 		                	</div>
 		                	<div class="col-md-6">
 		          				 @include('patients/partials/medicines', ['patient' => $appointment->patient]) 
@@ -79,18 +80,24 @@
 		               <div class="tab-pane" id="diagnostic">
 
 								<div class="row">
-								<div class="col-md-12">
-		              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}"></diagnostics>
-		              			</div>
-		              		</div>
-		              		<div class="row">
-								<div class="col-md-12">
-		              				
-		              			</div>
-		              			<div class="col-md-12">
-		              				<instructions :appointment="{{ $appointment }}" ></instructions>
-		              			</div>
-		              		</div>
+									<div class="col-md-12">
+			              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}"></diagnostics>
+			              			</div>
+			              		</div>
+			              		<div class="row">
+									<div class="col-md-12">
+									    <a href="/medic/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Print</a>
+			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}"></treatments>
+			              			</div>
+			              		</div>
+			              		<div class="row">
+									<div class="col-md-12">
+			              				
+			              			</div>
+			              			<div class="col-md-12">
+			              				<instructions :appointment="{{ $appointment }}" ></instructions>
+			              			</div>
+			              		</div>
 		              </div>
 		               <!-- /.tab-pane -->
 		            </div>
@@ -100,7 +107,7 @@
 		    </div>
 		    <div class="col-md-3" style="position: relative;">
 		    	<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Print</a>
-		    	<summary-appointment :history="{{ $appointment->patient->history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" instructions="{{ $appointment->medical_instructions }}" ></summary-appointment>
+		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" ></summary-appointment>
 		      
 		    </div>
 		</div>
@@ -110,6 +117,7 @@
 @endsection
 @section('scripts')
 <script src="/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
 <script>
   $(function () {
@@ -168,6 +176,33 @@
             btn_delete.parents('li').fadeOut("slow");
         });
     }
+
+
+    $('.btn-finish-appointment').on('click', function (e) {
+        
+        swal({
+            title: 'Terminando Consulta!',
+            text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
+            //type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Agendar seguimiento',
+            cancelButtonText: 'Volver a agenda',
+            //confirmButtonClass: 'btn btn-success',
+            //cancelButtonClass: 'btn btn-danger',
+            //buttonsStyling: false
+          }).then(function () {
+             window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
+          }, function (dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === 'cancel') {
+
+               window.location = '/medic/appointments';
+            }
+          })
+    });
   
   });
 </script>

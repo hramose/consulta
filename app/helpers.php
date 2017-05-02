@@ -44,3 +44,31 @@ function set_active($path, $active = 'active')
   
     return Request::is($path) ? $active : '';
 }
+
+function dayName($day)
+{
+    $dayName = "";
+
+    if(Carbon\Carbon::SUNDAY == $day)                          // int(0)
+        $dayName = "Domingo";
+
+    if(Carbon\Carbon::MONDAY == $day)                       // int(1)
+        $dayName = "Lunes";
+
+    if(Carbon\Carbon::TUESDAY == $day)                         // int(2)
+        $dayName = "Martes";
+
+    if(Carbon\Carbon::WEDNESDAY == $day)                       // int(3)
+        $dayName = "Miércoles";
+
+    if(Carbon\Carbon::THURSDAY == $day)                       // int(4)
+        $dayName = "Jueves";
+
+    if(Carbon\Carbon::FRIDAY == $day)                          // int(5)
+        $dayName = "Viernes";
+
+    if(Carbon\Carbon::SATURDAY == $day)                        // int(6)
+        $dayName = "Sábado";
+
+    return $dayName;
+}

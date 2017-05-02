@@ -30,7 +30,8 @@
               <div id="external-medics">
                <ul class="medic-list medic-list-in-box">
                 @foreach($medics as $doctor)
-                   <li class="item">
+                   @if($doctor->verifyOffice($office->id)) 
+                   <li class="item {{ (isset($medic) && $doctor->id == $medic->id) ? 'medic-list-selected': '' }}">
                       <div class="medic-img">
                       <!--/img/default-50x50.gif-->
                         <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
@@ -48,9 +49,34 @@
                             </span>
                       </div>
                     </li>
+                    @else
+                    <li class="item">
+                      <div class="medic-img">
+                      <!--/img/default-50x50.gif-->
+                        <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                      </div>
+                      <div class="medic-info">
+                           <div>{{ $doctor->name }}</div>
+                         
+                          
+                           
+                              <span class="label  label-default pull-right">No Disponible</span>
+                           
+                        
+                            <span class="medic-description">
+                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                            </span>
+                      </div>
+                    </li>
+
+                    @endif
 
                 @endforeach
+
                 </ul>
+                @if ($medics)
+                        <div  class="pagination-container">{!!$medics->render()!!}</div>
+                    @endif
               </div>
             </div>
             <!-- /.box-body -->

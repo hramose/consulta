@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +46,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+        if ($exception instanceof TokenMismatchException) {
+          
+              flash('Error - Token: No hemos podido realizar la operación, Intentalo nuevamente','error');
+
+             return back();
+                 
+
+        }
+        if ($exception instanceof NotFoundHttpException) {
+          
+              return response()->view('errors.'.'404');
+
+                 
+
+        }
+        
+
+
         return parent::render($request, $exception);
     }
 

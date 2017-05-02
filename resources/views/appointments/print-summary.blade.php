@@ -42,9 +42,11 @@
 		      </div>
 		      <!-- /.col -->
 		      <div class="col-sm-4 invoice-col">
+		        <b>{{ $appointment->office->name }}</b><br>
+		        {{ $appointment->office->address }}, {{ $appointment->office->province }}<br>
+		        <b>Tel:</b> {{ $appointment->office->phone }}<br>
 		        <b>Generado por:  Consulta</b><br>
 		        <b>Impreso por: </b> {{ auth()->user()->name }}<br>
-		        <b>Historia Clínica del Paciente</b>
 		        
 		      </div>
 		      <!-- /.col -->
@@ -54,9 +56,11 @@
 		    <!-- Table row -->
 		    <div class="row">
 		      <div class="col-xs-12">
-		      	<summary-appointment :history="{{ $appointment->patient->history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" instructions="{{ $appointment->medical_instructions }}">
-		      		Historia Clínica del Paciente
-		      	</summary-appointment>
+		        <div class="print-summary-page">
+			      	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}">
+			      		Historia Clínica del Paciente
+			      	</summary-appointment>
+		      	</div>
 		      </div>
 		    </div>
 		    <!-- /.row -->

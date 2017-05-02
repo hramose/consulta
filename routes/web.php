@@ -76,10 +76,12 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 
 	Route::get('/schedules/list', 'Medic\ScheduleController@getSchedules');
 	Route::delete('/schedules/{id}/delete', 'Medic\ScheduleController@delete');
+	Route::post('/schedules/copyto/{week}', 'Medic\ScheduleController@copySchedule');
 	Route::resource('schedules', 'Medic\ScheduleController');
 
 	Route::get('/appointments/list', 'Medic\AppointmentController@getAppointments');
 	Route::get('/appointments/{id}/print', 'Medic\AppointmentController@printSummary');
+	Route::get('/appointments/{id}/treatment/print', 'Medic\AppointmentController@printTreatment');
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::resource('appointments', 'Medic\AppointmentController');
@@ -87,6 +89,12 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
 	Route::resource('physicalexams', 'Medic\PhysicalExamController');
 	Route::resource('diagnostics', 'Medic\DiagnosticController');
+	Route::resource('treatments', 'Medic\TreatmentController');
+	Route::resource('allergies', 'Medic\AllergyController');
+	Route::resource('pathologicals', 'Medic\PathologicalController');
+	Route::resource('nopathologicals', 'Medic\NopathologicalController');
+	Route::resource('heredos', 'Medic\HeredoController');
+	Route::resource('ginecos', 'Medic\GinecoController');
 	Route::resource('signs', 'Medic\VitalSignController');
 
 });

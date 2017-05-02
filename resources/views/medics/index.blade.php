@@ -13,12 +13,7 @@
         <div class="row">
         
           <div class="col-xs-12">
-            <div class="callout callout-info callout-search">
-              <button type="button" class="close" data-dismiss="callout" aria-hidden="true">×</button>
-              <h4>Filtros !</h4>
-
-              <p>Utiliza uno o varios parametros de busqueda de abajo para realizar la busqueda más exacta!</p>
-            </div>
+            
             <div class="box">
               <div class="box-header">
                     @if(isset($specialist))
@@ -73,7 +68,7 @@
                                 <!-- /.box-tools -->
                               </div>
                               <!-- /.box-header -->
-                              <div class="box-body">
+                              <div class="box-body {{ ((isset($general) || isset($specialist)) ? '' : 'collapse' ) }}">
                                 <div class="row">
                             
                                     
@@ -232,7 +227,15 @@
                               </td>
                               <td data-title="Lugar">
                                   <div class="td-lugar">
-                                      <div class="td-lugar-name"> <span >{{ $medic->name }}</span></div>
+                                      <div class="td-lugar-name"> 
+                                        <span >{{ $medic->name }}</span>
+                                        <b>Horario:</b><br>
+                                          @foreach($medic->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
+                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
+                                                <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
+                                             @endif
+                                          @endforeach
+                                      </div>
                                       <div class="td-lugar-info">
                                         <p>
                                         <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> 
@@ -270,7 +273,18 @@
                               <td data-title="Lugar" >
                                  @forelse($medic->offices as $office)
                                      <div class="td-lugar">
-                                         <div class="td-lugar-name"> <span >{{ $office->name }}</span></div>
+                                         <div class="td-lugar-name">
+                                          <span >{{ $office->name }}</span> <br>
+                                          <b>Horario:</b><br>
+                                          @foreach($office->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
+                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
+                                                <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
+                                             @endif
+                                          @endforeach
+                                          
+                                          
+                                          </div>
+                                        
                                          <div class="td-lugar-info">
                                              <p>
                                               <span>{{ $office->province }}, {{ $office->canton }}. {{ $office->address }}</span>

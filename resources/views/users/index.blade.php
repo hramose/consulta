@@ -70,7 +70,12 @@
                       <td data-title="Nombre">{{ $user->name }} </td>
         
                       <td data-title="Email">{{ $user->email }}</td>
-                      <td data-title="Email">{{ $user->roles->first()->name }}</td>
+                      <td data-title="Email">
+                      {{ $user->roles->first()->name }} <br>
+                      @foreach($user->offices as $office)
+                        <span class="label label-warning">{{ $office->name }}</span>
+                      @endforeach
+                      </td>
                       <td data-title="Estatus">
                           
                          @if ($user->active)

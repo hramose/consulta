@@ -30,6 +30,7 @@ $(function () {
       $('.box-search-filters').removeClass('collapsed-box');
     }
 
+
    $(".dropdown-toggle").dropdown();
 
     var slotDuration = $('#initAppointment').find('.modal-body').attr('data-slotDuration');
@@ -136,7 +137,7 @@ $(function () {
                 newOption: true
               }
             },*/
-            templateResult: function (data) {
+            /*templateResult: function (data) {
               var $result = $("<span></span>");
 
               $result.text(data.text);
@@ -146,7 +147,7 @@ $(function () {
               }
 
               return $result;
-            },
+            },*/
             ajax: {
               url: "/medic/account/offices/list",
               dataType: 'json',
@@ -174,14 +175,14 @@ $(function () {
                     items.push(item);
                 })
 
-                var nodisponible = {
+                /*var nodisponible = {
                       id: 'No disponible',
                       text: 'No disponible',
                       office_info: '',
                       newOption: true
                     };
 
-                items.push(nodisponible);
+                items.push(nodisponible);*/
                     
                 return {
                   results: items,

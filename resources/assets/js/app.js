@@ -40,6 +40,7 @@ Vue.component('appointment-create', require('./components/AppointmentCreate.vue'
 Vue.component('modal-reminder', require('./components/ModalReminder.vue'));
 Vue.component('clinic', require('./components/Clinic.vue'));
 Vue.component('reports-clinic', require('./components/ReportsClinic.vue'));
+Vue.component('treatments', require('./components/Treatments.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

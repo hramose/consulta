@@ -35,12 +35,24 @@
                 font-size: 72px;
                 margin-bottom: 40px;
             }
+             a{
+                color:#3c8dbc;
+                font-weight: bold;
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            p{
+                font-size: 2rem;
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">Ya regresamos!</div>
+                <p>Estamos de <b>tareas de mantenimiento</b> para darte el mejor servicio.</p>
+                <p>Disculpa las molestias</p>
             </div>
         </div>
     </body>

@@ -23,7 +23,11 @@
       
         <div class="row">
         <div class="col-md-3">
-          
+          <form method="POST" action="{{ url('/medic/schedules/copyto/'. Carbon\carbon::now()->weekOfMonth) }}" class="form-horizontal">
+                   {{ csrf_field() }}
+                  <button class="btn bg-purple" style="margin-bottom: 1rem;float:right;">Copiar Horario de semana anterior</button>
+          </form>
+
           <!-- /. box -->
           @if($wizard)
              
@@ -42,17 +46,28 @@
                           </div>
                           <div class="content form-horizontal">
                               <div class="row">
+                                  <div class="col-xs-12">
+                                     <div class="form-group">
+                                        <form method="POST" action="{{ url('/medic/schedules/copyto/'. Carbon\carbon::now()->weekOfMonth) }}" class="form-horizontal">
+                                                 {{ csrf_field() }}
+                                                <button class="btn bg-purple">Copiar Horario de semana anterior</button>
+
+                                        </form>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
                                 <div class="col-xs-12">
                                   <div class="form-group">
-                                        <label for="selectSlotDuration" class="cffol-sm-7 control-label">Pacientes por hora: </label>
+                                        <label for="selectSlotDuration" class="cffol-sm-7 control-label">Pacientes cada: </label>
                                         <div class="ffcol-sm-5">
                                            <select name="selectSlotDurationModal" id="selectSlotDurationModal" class="form-control">
-                                             <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 paciente</option>
-                                             <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>2 pacientes</option>
-                                             <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>3 pacientes</option>
-                                             <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>4 pacientes</option>
-                                             <option value="00:12:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:12:00") ? 'selected' : '' : '' }}>5 pacientes</option>
-                                             <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:10:00") ? 'selected' : '' : '' }}>6 pacientes</option>
+                                             <option value="02:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "02:00:00") ? 'selected' : '' : '' }}>2 h</option>
+                                             <option value="01:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:30:00") ? 'selected' : '' : '' }}>1:30 h</option>
+                                             <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 h</option>
+                                             <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
+                                             <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
+                                             <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>15 min</option>
                                           </select>
                                         </div>
                                   </div>
@@ -152,15 +167,15 @@
           <div class="form-horizontal">
             <div class="form-group">
             
-              <label for="selectSlotDuration" class="col-sm-7 control-label">Pacientes por hora: </label>
+              <label for="selectSlotDuration" class="col-sm-7 control-label">Pacientes cada: </label>
               <div class="col-sm-5">
                  <select name="selectSlotDuration" id="selectSlotDuration" class="form-control">
-                   <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 paciente</option>
-                   <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>2 pacientes</option>
-                   <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>3 pacientes</option>
-                   <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>4 pacientes</option>
-                   <option value="00:12:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:12:00") ? 'selected' : '' : '' }}>5 pacientes</option>
-                   <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:10:00") ? 'selected' : '' : '' }}>6 pacientes</option>
+                   <option value="02:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "02:00:00") ? 'selected' : '' : '' }}>2 h</option>
+                   <option value="01:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:30:00") ? 'selected' : '' : '' }}>1:30 h</option>
+                   <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 h</option>
+                   <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
+                   <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
+                   <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>15 min</option>
                 </select>
               </div>
              

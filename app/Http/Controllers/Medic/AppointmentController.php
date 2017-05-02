@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Medic;
 use App\Http\Controllers\Controller;
 use App\Patient;
 use App\Repositories\AppointmentRepository;
+use App\Repositories\PatientRepository;
 use App\Repositories\findAllByDoctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,11 +13,12 @@ use Illuminate\Support\Facades\Storage;
 class AppointmentController extends Controller
 {
     
-    function __construct(AppointmentRepository $appointmentRepo)
+    function __construct(AppointmentRepository $appointmentRepo, PatientRepository $patientRepo)
     {
     	
         $this->middleware('auth');
     	$this->appointmentRepo = $appointmentRepo;
+        $this->patientRepo = $patientRepo;
 
     }
 
@@ -82,10 +84,13 @@ class AppointmentController extends Controller
     {
 
         $appointment =  $this->appointmentRepo->update_status($id, 1);
+
+        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+       
         
         $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
        
-        return view('appointments.edit',compact('appointment', 'files'));
+        return view('appointments.edit',compact('appointment', 'files', 'history'));
 
     }
 
@@ -164,9 +169,22 @@ class AppointmentController extends Controller
     {
 
         $appointment =  $this->appointmentRepo->findById($id);
+        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+        
+        return view('appointments.print-summary',compact('appointment','history'));
+        
+    }
+
+    /**
+     * imprime resumen de la consulta
+     */
+    public function printTreatment($id)
+    {
+
+        $appointment =  $this->appointmentRepo->findById($id);
 
         
-        return view('appointments.print-summary',compact('appointment'));
+        return view('appointments.print-treatment',compact('appointment'));
         
     }
 
