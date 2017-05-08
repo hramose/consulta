@@ -79,7 +79,7 @@
                   if(response.status == 200)
                   {
                     this.dataDiagnostics.push(response.data);
-                 
+                    bus.$emit('actHistoryDiagnostics', response.data);
                     bus.$emit('actSummaryDiagnostics', this.dataDiagnostics);
                   }
 

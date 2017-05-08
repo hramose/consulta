@@ -979,6 +979,7 @@
               
               this.distritos = dist;
               this.office = clinica;
+              this.selectedValue = clinica;
               /*this.appointment.title = clinica.name;
               this.appointment.office_info = JSON.stringify(clinica);*/
                 

@@ -165,7 +165,10 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout');
 
 //Auth::routes();
+Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
-
+Route::get('patient/auth/{provider}', 'Auth\AuthPatientController@redirectToProvider');
+Route::get('patient/auth/{provider}/callback', 'Auth\AuthPatientController@handleProviderCallback');
 
 

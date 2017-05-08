@@ -17,6 +17,16 @@
   	display:none;
   }
 }
+.calendar-medic-day
+{
+	max-width:200px;
+	.fc-scroller{
+		height: 600px !important;
+	}
+	.fc-toolbar{
+		display:none !important;
+	}
+}
 .summary-flex{
 	display:flex;
 	flex-wrap:wrap;

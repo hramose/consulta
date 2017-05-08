@@ -72,6 +72,7 @@
           @endif
         
       </div>
+
       <div class="row">
         
         <!-- /.col -->
@@ -80,6 +81,7 @@
         </div>
         <!-- /.col -->
       </div>
+     
     </form>
 
 

@@ -73,6 +73,7 @@ class PatientController extends Controller
         $patient = $this->patientRepo->findById($id);
 
         $appointments = $this->appointmentRepo->findAllByPatient($id);
+        
 
         $initAppointments = $appointments->filter(function ($item, $key) {
                 return $item->status > 0;
@@ -82,10 +83,11 @@ class PatientController extends Controller
                 return $item->status == 0;
             });
 
-        
+        $appointments = $patient->appointments->load('user','diagnostics');
+        //dd($appointments);
         $files = Storage::disk('public')->files("patients/". $id ."/files");
         
-        return view('patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab'));
+        return view('patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments'));
 
     }
 

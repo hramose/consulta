@@ -53,6 +53,10 @@ elixir(mix => {
             'clinic.appointments.js'
         ],'public/js/clinic.appointments.min.js','resources/assets/js');
 
+      mix.scripts([
+            'clinic.dailyagenda.js'
+        ],'public/js/clinic.dailyagenda.min.js','resources/assets/js');
+
      mix.scripts([
             'clinic.patients.js'
         ],'public/js/clinic.patients.min.js','resources/assets/js');
@@ -66,6 +70,9 @@ elixir(mix => {
         'public/js/patient_register.min.js',
         'public/js/app-theme.min.js',
         'public/js/admin.min.js',
+        'public/js/clinic.appointments.min.js',
+        'public/js/clinic.dailyagenda.min.js',
+        'public/js/clinic.patients.min.js',
         'public/css/app.css',
         
     

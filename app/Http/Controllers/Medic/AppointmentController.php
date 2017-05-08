@@ -86,11 +86,11 @@ class AppointmentController extends Controller
         $appointment =  $this->appointmentRepo->update_status($id, 1);
 
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
-       
+        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments->load('user','diagnostics');
         
         $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
        
-        return view('appointments.edit',compact('appointment', 'files', 'history'));
+        return view('appointments.edit',compact('appointment', 'files', 'history','appointments'));
 
     }
 

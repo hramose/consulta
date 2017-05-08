@@ -79,7 +79,7 @@
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 
-              <div id="calendar" data-slotDuration="{{ $medic->settings->slotDuration }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-freeDays="{{ $medic->settings->freeDays }}" data-medic="{{ $medic->id }}"></div>
+              <div id="calendar" data-slotDuration="{{ $medic->settings->slotDuration }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-freeDays="{{ $medic->settings->freeDays }}" data-medic="{{ $medic->id }}" data-office="{{ $office->id }}"></div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -91,8 +91,37 @@
                <div class="callout callout-info">
                     <h4>Información importante!</h4>
 
-                    <p>Selecciona un Médico para ver su agenda</p>
+                    <p>Selecciona un Médico para ver su agenda completa</p>
                 </div>
+                <div class="table-responsive">
+
+                  <table class="table table-bordered">
+                  <thead>
+                    
+                    <tr>
+                      @foreach($medics as $doc)
+                      <th class="text-center">
+                         <div >{{ $doc->name }}</div> 
+                         <small><span class="label label-warning">{{ $doc->specialities->first()->name }}</span></small>
+                      </th>
+                      @endforeach
+                     
+                    </tr>
+                   
+                    
+                  </thead>
+                  <tbody>
+                    <tr>
+                     @foreach($medics as $doc)
+                      <td class="calendar-medic-day"><div id="calendar-m{{$doc->id}}" data-slotDuration="{{ $doc->settings->slotDuration }}" data-minTime="{{ $doc->settings->minTime }}" data-maxTime="{{ $doc->settings->maxTime }}" data-freeDays="{{ $doc->settings->freeDays }}" data-medic="{{ $doc->id }}" data-office="{{ $office->id }}"></div></td>
+                      @endforeach
+                    </tr>
+                   
+                  </tbody>
+                </table>
+                  
+                </div>
+                
 
         
             </div>
@@ -129,10 +158,8 @@
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 @if($medic)
-<script src="{{ elixir('/js/clinic.appointments.min.js') }}"></script>
+  <script src="{{ elixir('/js/clinic.appointments.min.js') }}"></script>
 @else
-<script>
-   $(".dropdown-toggle").dropdown();
-</script>
+  <script src="{{ elixir('/js/clinic.dailyagenda.min.js') }}"></script>
 @endif
 @endsection

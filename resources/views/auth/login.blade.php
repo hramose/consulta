@@ -45,14 +45,14 @@
         <!-- /.col -->
       </div>
     </form>
-
-    <!--<div class="social-auth-links text-center">
+   
+    <div class="social-auth-links text-center">
       <p>- O -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Inicia usando
+      <a href="{{ url('/auth/facebook') }}" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Inicia usando
         Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Inicia usando
+      <a href="{{ url('/auth/google') }}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Inicia usando
         Google+</a>
-    </div>-->
+    </div>
     <!-- /.social-auth-links -->
 
     <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>

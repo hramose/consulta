@@ -34,7 +34,7 @@
 		              <div class="tab-pane" id="history">
 		                 <div class="row">
 							<div class="col-md-6">
-		                 		<history :history="{{ $history }}"></history>
+		                 		<history :history="{{ $history }}" :appointments="{{ $appointments }}"></history>
 		                	</div>
 		                	<div class="col-md-6">
 		          				 @include('patients/partials/medicines', ['patient' => $appointment->patient]) 

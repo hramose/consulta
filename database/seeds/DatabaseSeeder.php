@@ -34,6 +34,9 @@ class DatabaseSeeder extends Seeder
         factory(Role::class, 1)->create([
             'name' => 'clinica',
         ]);
+        factory(Role::class, 1)->create([
+            'name' => 'secretaria',
+        ]);
 
 
         foreach ($this->specialities as $s) {
@@ -46,12 +49,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => bcrypt('123456'),
+            'provider' => 'email',
+            'provider_id' => 'admin@admin.com',
             'remember_token' => str_random(10),
         ]);
         $admin2 = factory(User::class, 1)->create([
             'name' => 'admin Julio',
             'email' => 'farmaciamonserrat@gmail.com',
             'password' => bcrypt('123456'),
+            'provider' => 'email',
+            'provider_id' => 'farmaciamonserrat@gmail.com',
             'remember_token' => str_random(10),
         ]);
             \DB::table('role_user')->insert(

@@ -8,10 +8,16 @@ $(function () {
      var freeDays = [];
      var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
      var infoBox = $('#infoBox');
-     var calendar = $('#calendar');
      var modalForm = $('#myModal');
      var searchPatients = $(".modal-search-patients");
-      function isOverlapping(event) {
+
+
+    function dayNumber(date){
+
+        return $.fullCalendar.moment(date).day();
+    }
+
+    function isOverlapping(calendar, event) {
      
         var array = calendar.fullCalendar('clientEvents');
          
@@ -26,134 +32,106 @@ $(function () {
           return false;
     }
 
-      function dayNumber(date){
-          //
-          return $.fullCalendar.moment(date).day();
-      }
+    init_schedules_appointments($('td.calendar-medic-day'));
+    
+    function init_schedules_appointments(ele) {
 
-     ini_events($('#external-events div.external-event'));
+            ele.each(function () {
 
-     function ini_events(ele) {
-        ele.each(function () {
-
-          var eventObject = {
-            title: $.trim($(this).text()), // use the element's text as the event title
-            office_id: $(this).data('office'),
-            patient_id: $(this).data('patient'),
-            start: moment(),
-            end: moment(),
-            backgroundColor: $(this).css("background-color"),
-            borderColor: $(this).css("border-color")
-           
-            
-          };
-
-          // store the Event Object in the DOM element so we can get to it later
-          $(this).data('event', eventObject);
-         
-          // make the event draggable using jQuery UI
-          $(this).draggable({
-            zIndex: 1070,
-            revert: true, // will cause the event to go back to its
-            revertDuration: 0  //  original position after the drag
-          });
-         
-        });
-  } //init events
-  
-  fetch_schedules_and_appointments();
-
-  function fetch_schedules_and_appointments() {
-
-      var schedules = [];
-
-      $.ajax({
-          type: 'GET',
-          url: '/medics/'+ calendar.data('medic') +'/schedules/list?office='+ calendar.data('office'),
-          data: {},
-          success: function (resp) {
-            
-
-              $.each(resp, function( index, item ) {
-                 
-                  item.allDay = parseInt(item.allDay); // = false;
-                  //item.rendering = 'background';
-                   
-                   var working_hours = {
-                    // days of week. an array of zero-based day of week integers (0=Sunday)
-                    dow: [dayNumber(item.date)], // Monday - Thursday
-
-                    start: item.start,//.split('T')[1], // a start time (10am in this example)
-                    end: item.end//.split('T')[1], // an end time (6pm in this example)
-                   }
-
-                  schedules.push(working_hours);
-
-              });
+              var medic =  $(this).find('> div').data('medic');
+              var office =  $(this).find('> div').data('office');
               
-          
-
-              $.ajax({
-                type: 'GET',
-                url: '/medics/'+ calendar.data('medic') +'/appointments/list?office='+ calendar.data('office'),
-                data: {},
-                success: function (resp) {
-                   
-
-                    var appointments = [];
-
-                    $.each(resp, function( index, item ) {
-                       
-                        item.allDay = parseInt(item.allDay); // = false;
-                        
-                        if((item.patient_id != 0 && item.office_id != calendar.data('office')) || item.patient_id == 0){
-                           item.rendering = 'background';
-                        }
-                        
-
-                        appointments.push(item);
-                    });
-                   
-                    initCalendar(appointments,schedules);
-                    
-                },
-                error: function (resp) {
-                    console.log('Error - '+ resp);
-
-                }
-            });
+              fetch_schedules_and_appointments(medic,office);
              
-              
-              
-          },
-          error: function (resp) {
-              console.log('Error - '+ resp);
+            });
+    }
 
-          }
-      });
-  } // fetch schedules y appointments
-
-  function initCalendar(appointments, schedules)
-    {
-
-       minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
-       maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
-       slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : calendar.attr('data-slotDuration');
-       eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-       eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
-       freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
-     
+    function fetch_schedules_and_appointments(medic, office) {
+        var schedules = [];
          
+        $.ajax({
+            type: 'GET',
+            url: '/medics/'+ medic +'/schedules/list?office='+ office,
+            data: {},
+            success: function (resp) {
+              
+
+                $.each(resp, function( index, item ) {
+                   
+                    item.allDay = parseInt(item.allDay); // = false;
+                  
+                     
+                     var working_hours = {
+                      // days of week. an array of zero-based day of week integers (0=Sunday)
+                      dow: [dayNumber(item.date)], // Monday - Thursday
+
+                      start: item.start,//.split('T')[1], // a start time (10am in this example)
+                      end: item.end//.split('T')[1], // an end time (6pm in this example)
+                     }
+
+                    schedules.push(working_hours);
+
+                });
+                
+              
+
+                $.ajax({
+                  type: 'GET',
+                  url: '/medics/'+ medic +'/appointments/list?office='+ office,
+                  data: {},
+                  success: function (resp) {
+                     
+
+                      var appointments = [];
+
+                      $.each(resp, function( index, item ) {
+                         
+                          item.allDay = parseInt(item.allDay); // = false;
+                          
+                          if((item.patient_id != 0 && item.office_id != office) || item.patient_id == 0){
+                             item.rendering = 'background';
+                          }
+                          
+
+                          appointments.push(item);
+                      });
+
+                      init_calendar(medic, appointments, schedules);
+                     
+                      
+                  },
+                  error: function (resp) {
+                      console.log('Error - '+ resp);
+
+                  }
+              });
+               
+          
+            },
+            error: function (resp) {
+                console.log('Error - '+ resp);
+
+            }
+        });
+
+    }
+
+    function init_calendar(medic,appointments, schedules) {
+     
+     var calendar = $('#calendar-m'+medic);
+     
+      minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
+      maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
+      slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : calendar.attr('data-slotDuration');
+      eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+      eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+      freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
+      
+
       calendar.fullCalendar({
           locale: 'es',
-          defaultView: 'agendaWeek',
+          defaultView: 'agendaDay',
           timeFormat: 'h(:mm)a',
-          header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-          },
-          //Random default events
           events: appointments,
           forceEventDuration: true,
           slotDuration:  slotDuration,
@@ -169,38 +147,7 @@ $(function () {
           nowIndicator: true,
           timezone: 'local',
           allDaySlot: false,
-          drop: function (date, allDay) { // this function is called when something is dropped
-            
-             var currentDate = new Date();
-            
-            if(date < currentDate) {
-
-                  infoBox.addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
-                      setTimeout(function()
-                        { 
-                          infoBox.removeClass('alert-danger').html('').hide();
-                        },3000);
-
-                   return false;
-              }
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('event');
-          
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-            
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-           
-            
-            copiedEventObject.allDay = false;//allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color");
-            copiedEventObject.overlap = false;
-
-           
-          },
-           eventReceive: function(event) {
+          eventReceive: function(event) {
            
              var currentDate = new Date();
              if(event.start < currentDate) {
@@ -210,20 +157,20 @@ $(function () {
                    return false;
               }
 
-              saveAppointment(event, event._id);
+              saveAppointment(calendar, event, event._id);
             
           },
           eventResize: function(event, delta, revertFunc, jsEvent) {
              
       
-                updateAppointment(event, revertFunc);
+                updateAppointment(calendar, event, revertFunc);
           
            
           },
           eventDrop: function(event, delta, revertFunc) {
              
            
-                updateAppointment(event, revertFunc);
+                updateAppointment(calendar, event, revertFunc);
               
 
           },
@@ -240,8 +187,6 @@ $(function () {
                   return false;
             }
             
-
-            //element.append( "<span class='closeon fa fa-trash'></span>" );
             element.append( "<span class='appointment-details' ></span>" );
 
             if (event.rendering == 'background') {
@@ -277,7 +222,7 @@ $(function () {
                   }).then(function () {
                     
                     
-                      var resp = deleteAppointment(event._id, event);
+                      var resp = deleteAppointment(calendar, event._id, event);
                       
                       if(resp){
 
@@ -291,7 +236,7 @@ $(function () {
                   },function (dismiss) {});
 
               });
-            
+             
 
             }else{
         
@@ -322,7 +267,7 @@ $(function () {
                       confirmButtonText: 'Eliminar!'
                     }).then(function () {
 
-              
+                      
                         deleteSchedule(event._id, event);
                      
 
@@ -339,7 +284,7 @@ $(function () {
                    
                 });
 
-               
+              
             }
             
 
@@ -387,6 +332,7 @@ $(function () {
                 modalForm.find('#modal-new-event').attr('data-modaldate', date.format());
                 modalForm.find('.modal-body').attr('data-modaldate', date.format());
                 modalForm.find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
+                modalForm.find('.modal-body').attr('data-medic', calendar.data('medic'));
               
               
            
@@ -395,7 +341,7 @@ $(function () {
             
             $.ajax({
               type: 'GET',
-              url: '/medics/'+ calendar.data('medic') +'/schedules/list?office='+ calendar.data('office'),
+              url: '/medics/'+ medic +'/schedules/list?office='+ calendar.data('office'),
               data: {},
               success: function (resp) {
                 
@@ -444,13 +390,14 @@ $(function () {
 
            
             
-          } //view render
+          } // view render
         
       }); //fullcalendar
+    
+  } //init calendar
 
-    } //init calendar
 
-    function crud(method, url, data, revertFunc) {
+  function crud(calendar, method, url, data, revertFunc) {
        $('body').addClass('loading');
       $.ajax({
             type: method || 'POST',
@@ -473,7 +420,7 @@ $(function () {
                         if(prog_schedule)
                           deleteSchedule(resp.id);
                         else
-                          deleteAppointment(resp.id);
+                          deleteAppointment(calendar,resp.id);
                       
                       }else{
                           
@@ -529,7 +476,7 @@ $(function () {
                     resp.allDay = parseInt(resp.allDay);
                    
 
-                    calendar.fullCalendar('renderEvent', resp, true);
+                   calendar.fullCalendar('renderEvent', resp, true);
                   
                   
                }
@@ -541,9 +488,10 @@ $(function () {
 
             }
         });
-    } // CRUD
 
-     function saveAppointment(event, idRemove)
+    } //CRUD
+
+    function saveAppointment(calendar, event, idRemove)
     {
       
       var appointment = {
@@ -562,21 +510,19 @@ $(function () {
         
       };
      
-      if(isOverlapping(appointment)){
+      if(isOverlapping(calendar,appointment)){
         appointment.allDay = 1;
       }
 
-      crud('POST', '/clinic/appointments', appointment)
+      crud(calendar ,'POST', '/clinic/appointments', appointment)
 
-    } //save appointment
+    }//save appointment
 
-    
-
-     function updateAppointment(event, revertFunc)
+      function updateAppointment(calendar,event, revertFunc)
     {
       
       var appointment = {
-        //title : event.title,
+        
         date : event.start.format("YYYY-MM-DD"),
         start : event.start.stripZone().format(),
         end : (event.end) ? event.end.stripZone().format() : event.start.add(eventDurationNumber, eventDurationMinHours).stripZone().format(),
@@ -586,17 +532,17 @@ $(function () {
         allDay: event.allDay
       };
       
-      crud('PUT', '/clinic/appointments/'+appointment.id, appointment, revertFunc)
+      crud(calendar,'PUT', '/clinic/appointments/'+appointment.id, appointment, revertFunc)
 
-    } // update appointment
+    }// update appointment
 
-    function deleteAppointment(id)
+    function deleteAppointment(calendar, id)
     {
 
-      crud('DELETE', '/clinic/appointments/'+ id + '/delete', {idRemove:id})
+      crud(calendar,'DELETE', '/clinic/appointments/'+ id + '/delete', {idRemove:id})
      
     } //delete appointment
-    
+
     modalForm.on('shown.bs.modal', function (event) {
      
       var date = $(this).find('.modal-body').attr('data-date') 
@@ -608,7 +554,7 @@ $(function () {
    
     });
 
-    function createEventFromModal()
+     function createEventFromModal()
     {
      
       var currColor = "#3c8dbc"; //Red by default
@@ -616,9 +562,10 @@ $(function () {
       var valSelect = modalForm.find(".modal-body").find('.widget-user-2').attr('data-patient');//val();
       var valName = modalForm.find(".modal-body").find('.widget-user-2').attr('data-title');
       var office_id = modalForm.find(".modal-body").find('.widget-user-2').attr('data-office');
-      var medic_id = calendar.attr('data-medic');
+      var medic_id = modalForm.find(".modal-body").attr('data-medic');
       var date = $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate'));
       var end = (modalForm.find('#modal-new-event').attr('data-modaldate-end')) ? $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate-end')) : '';
+      var calendar = $('#calendar-m'+medic_id);
      
       if (valSelect.length == 0 || !office_id) {
         return;
@@ -632,7 +579,7 @@ $(function () {
           user_id: medic_id,
           patient_id: valSelect,
           office_id: office_id,
-          
+          //created_by: $('input[name=user_id]').val()
          
         };
 
@@ -657,11 +604,10 @@ $(function () {
         copiedEventObject.borderColor = currColor;//event.css("border-color");
         copiedEventObject.overlap = false;
         
-
         var _id = calendar.fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
        
        
-        saveAppointment(copiedEventObject, _id);
+        saveAppointment(calendar, copiedEventObject, _id);
       }
       //Remove event from text input
       modalForm.find("#modal-new-event").val("");
@@ -669,9 +615,9 @@ $(function () {
       //$(".modal-search-patients").text("").trigger('change');
       modalForm.find('#modal-new-event').attr('data-modaldate', '');
       modalForm.modal('hide');
-  } //create form modal
+    } //create from modal function
 
-  searchPatients.select2({
+     searchPatients.select2({
             placeholder: "Buscar paciente",
             ajax: {
               url: "/medic/patients/list",
@@ -706,7 +652,7 @@ $(function () {
             
              
             }
-     }); //search patient
+     });
 
      $(".btn-finalizar-cita").click(function (e) {
       e.preventDefault();
@@ -714,9 +660,7 @@ $(function () {
       createEventFromModal();
       
     });
+     
 
-
-
-     $(".dropdown-toggle").dropdown();
-
+    $(".dropdown-toggle").dropdown();
 });

@@ -178,6 +178,57 @@
               </div>
             </div>
           </div>
+          <div class="panel box box-info">
+            <div class="box-header with-border">
+              <h4 class="box-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#diagnosticos" aria-expanded="false" class="collapsed">
+                   DIAGNOSTICOS DE CONSULTAS ANTERIORES: 
+                </a>
+              </h4>
+            </div>
+            <div id="diagnosticos" class="panel-collapse collapse" aria-expanded="false">
+              <div class="box-body">
+                 
+                 <h3 v-show ="diagnosticsToday.length">Diagnósticos de la consulta actual</h3>
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnosticsToday.length">
+       
+                  <li v-for="item in diagnosticsToday" >
+                    <!-- todo text -->
+                    
+                    <span><span class="text"> {{ item.name }}</span></span>
+                     
+                    <!-- General tools such as edit or delete-->
+                    <!-- <div class="tools">
+                      <span>Dr. {{ appointment.user.name }} </span>
+                      
+                    </div> -->
+                  </li>
+                 
+                </ul>
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnostics.length">
+       
+                  <li v-for="appointment in diagnostics" v-show="appointment.diagnostics.length">
+                    <!-- todo text -->
+                    
+                    <span><span class="text"> {{ appointment.created_at }} - <span>Dr. {{ appointment.user.name }} </span></span></span>
+                      <ul>
+                        <li v-for="diagnostic in appointment.diagnostics">
+                          <span><span class="text"> {{ diagnostic.name }}</span></span>
+                        </li>
+                      </ul>
+                    <!-- General tools such as edit or delete-->
+                    <!-- <div class="tools">
+                      <span>Dr. {{ appointment.user.name }} </span>
+                      
+                    </div> -->
+                  </li>
+                 
+                </ul>
+               
+                
+              </div>
+            </div>
+          </div>
           
 </div>
              
@@ -188,7 +239,7 @@
     import HistoryItem from './HistoryItem.vue';
 
     export default {
-      props: ['history'],
+      props: ['history','appointments'],
       
       data () {
         return {
@@ -202,6 +253,8 @@
            no_pathologicals:[],
            heredos:[],
            ginecos:[],
+           diagnostics:[],
+           diagnosticsToday:[],
           
           loader:false
 
@@ -285,8 +338,12 @@
             
 
           },
+          updateDiagnostics(data){
+
+             this.diagnosticsToday.push(data);
+          }
           
-          updateHistory () {
+          /*updateHistory () {
 
             var resource = this.$resource('/medic/patients{/id}/history');
 
@@ -304,7 +361,7 @@
                     bus.$emit('alert', 'Error al actualizar el historial medico', 'danger');
                     this.loader = false;
                 });
-          }
+          }*/
          
      
       },
@@ -313,6 +370,8 @@
       },
       created () {
            console.log('Component ready. history.')
+
+           bus.$on('actHistoryDiagnostics', this.updateDiagnostics);
           
            if(this.history.allergies)
            {
@@ -342,6 +401,16 @@
            {
             
                 this.ginecos = this.history.ginecos;
+                 
+           }
+           if(this.appointments)
+           {
+               this.diagnostics = this.appointments;
+               /*for (var i = 0; i < this.appointments.length; i++) {
+
+                    this.diagnostics = this.appointments[i].diagnostics;
+               }*/
+               
                  
            }
 

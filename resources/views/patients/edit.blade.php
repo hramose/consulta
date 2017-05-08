@@ -44,7 +44,7 @@
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }} tab-pane" id="history">
-					    <history :history="{{ $patient->history }}"></history>	
+					    <history :history="{{ $patient->history }}" :appointments="{{ $appointments }}"></history>	
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">

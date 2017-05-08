@@ -1,25 +1,47 @@
 $(function () {
 
-    var isMobile = {
-      Android: function() {
-          return navigator.userAgent.match(/Android/i);
-      },
-      BlackBerry: function() {
-          return navigator.userAgent.match(/BlackBerry/i);
-      },
-      iOS: function() {
-          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-      },
-      Opera: function() {
-          return navigator.userAgent.match(/Opera Mini/i);
-      },
-      Windows: function() {
-          return navigator.userAgent.match(/IEMobile/i);
-      },
-      any: function() {
-          return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-      }
-  };
+     var minTime = '06:00:00';
+     var maxTime = '18:00:00';
+     var slotDuration = '00:30';
+     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+     var freeDays = [];
+     var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
+     var setupSchedule = $('#setupSchedule');
+     var slotDurationSchedule = setupSchedule.find('#selectSlotDurationModal').val();
+     var calendar = $('#calendar');
+     var prog_schedule = calendar.attr('data-schedule') ? calendar.attr('data-schedule') : '';
+     var infoBox = $("#infoBox");
+     var modalForm = $('#myModal');
+     var currColor = "#3c8dbc";
+     var boxCreateAppointment = $(".box-create-appointment");
+     var searchPatients = $(".search-patients");
+     var searchModalPatients = $(".modal-search-patients");
+     var searchOffices = $(".search-offices");
+     var datetimepicker1 = $('#datetimepicker1');
+     var datetimepicker2 = $('#datetimepicker2');
+     var datetimepicker3 = $('#datetimepicker3');
+
+      var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
 
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
@@ -31,45 +53,124 @@ $(function () {
 
     $(".dropdown-toggle").dropdown();
 
-
-
-    var slotDuration = $("#setupSchedule").find('#selectSlotDurationModal').val();
-   
-    
-    if(slotDuration)
+    if(slotDurationSchedule)
     {
-          var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+          var stepping = (slotDurationSchedule.split(':')[1] == "00" ? slotDurationSchedule.split(':')[0] : slotDurationSchedule.split(':')[1]);
           
           if(stepping == '01')
           {
             stepping = '60';
           }   
 
-         $('#datetimepicker1').datetimepicker({
+         datetimepicker1.datetimepicker({
             format:'YYYY-MM-DD',
             locale: 'es',
+            defaultDate: new Date()
             
          });
-              $('#datetimepicker2').datetimepicker({
-                          format: 'HH:mm',
-                          stepping: stepping,
-                          //useCurrent: false
-                          
-                      });
-             $('#datetimepicker3').datetimepicker({
-                  format: 'HH:mm',
-                  stepping: stepping,
-                  useCurrent: false//Important! See issue #1075
-              });
-              
-        $('#setupSchedule').modal({backdrop:'static', show:true });
-  }
 
+          datetimepicker2.datetimepicker({
+                format: 'HH:mm',
+                stepping: stepping,
+                //useCurrent: false
+                
+            });
+
+       datetimepicker3.datetimepicker({
+            format: 'HH:mm',
+            stepping: stepping,
+            useCurrent: false//Important! See issue #1075
+        });
+              
+        setupSchedule.modal({backdrop:'static', show:true });
+  } // if drop
+
+   $('#selectSlotDuration').on('change',function (e) {
+        e.preventDefault();
+
+       onChangeSlotDurarion($(this).val());
+
+     });
+     $('#selectSlotDurationModal').on('change',function (e) {
+        e.preventDefault();
+  
+        onChangeSlotDurarion($(this).val());
+        resetTimePicker($(this).val());
+     });
+
+  function resetTimePicker(slotDuration) {
+        datetimepicker2.data("DateTimePicker").clear();
+        datetimepicker3.data("DateTimePicker").clear();
+        datetimepicker2.data("DateTimePicker").destroy();
+        datetimepicker3.data("DateTimePicker").destroy();
 
   
-    /* initialize the external events
-     -----------------------------------------------------------------*/
-    function ini_events(ele) {
+        var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       
+       if(stepping == '01')
+       {
+          stepping = '60';
+       }
+
+       datetimepicker2.datetimepicker({
+                    format: 'LT',
+                    stepping: stepping,
+                    //useCurrent: false
+                });
+       datetimepicker3.datetimepicker({
+            format: 'LT',
+            stepping: stepping,
+             useCurrent: false
+            
+        });
+      
+      
+     } //reset datepicker
+
+     function onChangeSlotDurarion(slotDuration) {
+       
+
+        eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+        eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+
+        calendar.attr('data-slotduration', slotDuration);
+        calendar.fullCalendar('option','slotDuration', slotDuration);
+         
+         $.ajax({
+            type: 'PUT',
+            url: '/medic/account/settings',
+            data: { slotDuration: slotDuration },
+            success: function (resp) {
+              
+             console.log('slotDuration actualizado')
+            },
+            error: function () {
+              console.log('error updating slotDuration');
+
+            }
+        });
+     } // onchange slotduration
+
+     function isOverlapping(event) {
+     
+        var array = calendar.fullCalendar('clientEvents');
+         
+          for(i in array){
+              if(event.idRemove != array[i]._id)
+              {
+                if (event.end > array[i].start._i && event.start < array[i].end._i){
+                   return true;
+                }
+              }
+          }
+          return false;
+    }
+    
+
+
+  ini_events($('#external-events div.external-event'));
+
+  function ini_events(ele) {
       ele.each(function () {
 
         var eventObject = {
@@ -80,7 +181,7 @@ $(function () {
           end: moment(),
           backgroundColor: $(this).css("background-color"),
           borderColor: $(this).css("border-color")
-          //created_by: $(this).data('createdby')
+         
           
         };
 
@@ -95,13 +196,16 @@ $(function () {
         });
        
       });
-    }
-   
+  
+  }
 
-    ini_events($('#external-events div.external-event'));
 
-    /** load events from db **/
-     function fetch_schedules() {
+    if(prog_schedule)
+      fetch_schedules();
+    else
+      fetch_events();
+
+   function fetch_schedules() {
 
         $.ajax({
             type: 'GET',
@@ -131,7 +235,7 @@ $(function () {
         });
 
 
-    }
+    } // fetch schedules
 
     function fetch_events() {
 
@@ -162,7 +266,10 @@ $(function () {
         });
 
 
-    }
+    } // fetch appointments
+
+    
+    fetch_offices();
 
     function fetch_offices() {
 
@@ -226,36 +333,20 @@ $(function () {
         });
 
 
-    }
-
-    var $calendar = $('#calendar');
-    var prog_schedule = $calendar.attr('data-schedule') ? $calendar.attr('data-schedule') : '';
-    
-    if(prog_schedule)
-      fetch_schedules();
-    else
-      fetch_events();
-    
-    fetch_offices();
+    } // fetch offices
 
 
-    /* initialize the calendar
-     -----------------------------------------------------------------*/
-    //Date for the calendar events (dummy data)
-    /*var date = new Date();
-    var d = date.getDate(),
-        m = date.getMonth(),
-        y = date.getFullYear();*/
+    function initCalendar(appointments)
+    {
 
-     
-     var minTime = $calendar.attr('data-minTime') ? $calendar.attr('data-minTime') : '06:00:00';
-     var maxTime = $calendar.attr('data-maxTime') ? $calendar.attr('data-maxTime') : '18:00:00';
-     var slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : $calendar.attr('data-slotDuration');
-     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
-     var freeDays = $calendar.attr('data-freeDays') ? JSON.parse($calendar.attr('data-freeDays')) : [];
-     var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
-    
+       minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
+       maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
+       slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : calendar.attr('data-slotDuration');
+       eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+       freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
+       businessHours = [ 1, 2, 3, 4, 5, 6, 0];
+
       for(d in businessHours){
          for(f in freeDays){
                 if(freeDays[f] == businessHours[d])
@@ -269,75 +360,7 @@ $(function () {
             }
       }
       
-     $('#selectSlotDuration').on('change',function (e) {
-        e.preventDefault();
-
-       onChangeSlotDurarion($(this).val());
-
-     });
-     $('#selectSlotDurationModal').on('change',function (e) {
-        e.preventDefault();
-  
-        onChangeSlotDurarion($(this).val());
-        resetTimePicker($(this).val());
-     });
-
-     function resetTimePicker(slotDuration) {
-       $('#datetimepicker2').data("DateTimePicker").clear();
-       $('#datetimepicker3').data("DateTimePicker").clear();
-       $('#datetimepicker2').data("DateTimePicker").destroy();
-        $('#datetimepicker3').data("DateTimePicker").destroy();
-
-  
-        var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-       
-       if(stepping == '01')
-       {
-          stepping = '60';
-       }
-
-       $('#datetimepicker2').datetimepicker({
-                    format: 'LT',
-                    stepping: stepping,
-                    //useCurrent: false
-                });
-       $('#datetimepicker3').datetimepicker({
-            format: 'LT',
-            stepping: stepping,
-             useCurrent: false
-            
-        });
-      
-      
-     }
-
-     function onChangeSlotDurarion(slotDuration) {
-       
-
-        eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-        eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
-
-        $calendar.fullCalendar('option','slotDuration', slotDuration);
-
-         $.ajax({
-            type: 'PUT',
-            url: '/medic/account/settings',
-            data: { slotDuration: slotDuration },
-            success: function (resp) {
-              
-             console.log('slotDuration actualizado')
-            },
-            error: function () {
-              console.log('error updating slotDuration');
-
-            }
-        });
-     }
-
-    function initCalendar(appointments)
-    {
-      
-      $calendar.fullCalendar({
+      calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaWeek',
           timeFormat: 'h(:mm)a',
@@ -364,10 +387,6 @@ $(function () {
           eventConstraint:"businessHours",
           minTime: minTime,
           maxTime: maxTime,
-          //selectable: true,
-          //selectOverlap: false,
-          //selectHelper: true,
-          //weekends: false,
           scrollTime: minTime,
           nowIndicator: true,
           timezone: 'local',
@@ -376,8 +395,8 @@ $(function () {
             
             if (view.name === "month") {
 
-                $('#calendar').fullCalendar('gotoDate', date);
-                $('#calendar').fullCalendar('changeView', 'agendaWeek');
+                calendar.fullCalendar('gotoDate', date);
+                calendar.fullCalendar('changeView', 'agendaWeek');
 
                 return false;
             }
@@ -387,26 +406,26 @@ $(function () {
               
               if(start < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                     
-                    $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                    infoBox.addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                          infoBox.removeClass('alert-danger').html('').hide();
                         },3000);
 
-                  $calendar.fullCalendar('unselect');
+                  calendar.fullCalendar('unselect');
                   
                   return false;
               }
 
 
-                $('#myModal').modal({backdrop:'static', show:true });
-                $('#myModal').find('#modal-new-event').attr('data-modaldate', start.format());
-                $('#myModal').find('#modal-new-event').attr('data-modaldate-end', end.format());
-                $('#myModal').find('.modal-body').attr('data-modaldate', start.format());
-                $('#myModal').find('.modal-body').attr('data-modaldate-end', end.format());
-                $('#myModal').find('.modal-body').attr('data-date', start.format("dddd, MMMM Do YYYY")).attr('data-hour', start.format("hh:mm a" ));
+                modalForm.modal({backdrop:'static', show:true });
+                modalForm.find('#modal-new-event').attr('data-modaldate', start.format());
+                modalForm.find('#modal-new-event').attr('data-modaldate-end', end.format());
+                modalForm.find('.modal-body').attr('data-modaldate', start.format());
+                modalForm.find('.modal-body').attr('data-modaldate-end', end.format());
+                modalForm.find('.modal-body').attr('data-date', start.format("dddd, MMMM Do YYYY")).attr('data-hour', start.format("hh:mm a" ));
 
-               // $calendar.fullCalendar('unselect');
+               
                 
           },
           drop: function (date, allDay) { // this function is called when something is dropped
@@ -415,10 +434,10 @@ $(function () {
             
             if(date < currentDate) {
 
-                  $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                  infoBox.addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                          infoBox.removeClass('alert-danger').html('').hide();
                         },3000);
 
                    return false;
@@ -437,19 +456,7 @@ $(function () {
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color");
             copiedEventObject.overlap = false;
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-
-           // var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
             
-           /*if(prog_schedule)
-              saveSchedule(copiedEventObject, _id);
-            else
-              saveAppointment(copiedEventObject, _id);*/
-           
-           /* if($(this).data('patient'))
-              $(this).remove(); // remover de citas sin agendar*/
-         
            
           },
            eventReceive: function(event) {
@@ -457,7 +464,7 @@ $(function () {
              var currentDate = new Date();
              if(event.start < currentDate) {
                    
-                   $('#calendar').fullCalendar( 'removeEvents', event._id)
+                   calendar.fullCalendar( 'removeEvents', event._id)
                    
                    return false;
               }
@@ -490,10 +497,10 @@ $(function () {
             
             if(element.hasClass("fc-nonbusiness"))
             {
-                $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                infoBox.addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                          infoBox.removeClass('alert-danger').html('').hide();
                         },3000);
 
                   return false;
@@ -612,8 +619,8 @@ $(function () {
               
               if (view.name === "month") {
                   
-                  $('#calendar').fullCalendar('gotoDate', date);
-                  $('#calendar').fullCalendar('changeView', 'agendaWeek');
+                  calendar.fullCalendar('gotoDate', date);
+                 calendar.fullCalendar('changeView', 'agendaWeek');
 
                   return false;
               }
@@ -624,10 +631,10 @@ $(function () {
               if(date < currentDate || $(jsEvent.target).hasClass("fc-nonbusiness")) {
                   
                   
-                    $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+                    infoBox.addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
                       setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').html('').hide();
+                          infoBox.removeClass('alert-danger').html('').hide();
                         },3000);
 
                   return false;
@@ -642,40 +649,28 @@ $(function () {
 
 
               if(prog_schedule){
-
-                $('#setupSchedule').modal({backdrop:'static', show:true });
+              
+           
+                datetimepicker1.data("DateTimePicker").date(date);
+                datetimepicker2.data("DateTimePicker").date(date.format("HH:mm " ));
+                setupSchedule.modal({backdrop:'static', show:true });
 
               }else{
 
-                $('#myModal').modal({backdrop:'static', show:true });
-                $('#myModal').find('#modal-new-event').attr('data-modaldate', date.format());
-                $('#myModal').find('.modal-body').attr('data-modaldate', date.format());
-                $('#myModal').find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
+                modalForm.modal({backdrop:'static', show:true });
+                modalForm.find('#modal-new-event').attr('data-modaldate', date.format());
+                modalForm.find('.modal-body').attr('data-modaldate', date.format());
+                modalForm.find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
                 }
+
               
            
           }
         
       });
 
-    }
+    } // init calendar
 
-    function isOverlapping(event) {
-     
-        var array = $('#calendar').fullCalendar('clientEvents');
-         
-          for(i in array){
-              if(event.idRemove != array[i]._id)
-              {
-                if (event.end > array[i].start._i && event.start < array[i].end._i){
-                   return true;
-                }
-              }
-          }
-          return false;
-    }
-    
-    /* SAVE UPDATE DELETE EVENTS */
     function crud(method, url, data, revertFunc) {
        $('body').addClass('loading');
       $.ajax({
@@ -687,7 +682,7 @@ $(function () {
               if(method == "POST")
               {
                 
-                $('#calendar').fullCalendar( 'removeEvents', data.idRemove)
+                calendar.fullCalendar( 'removeEvents', data.idRemove)
                 
                 if(resp){
 
@@ -703,14 +698,14 @@ $(function () {
                       
                       }else{
                           
-                          $('#calendar').fullCalendar('renderEvent', resp, true);
+                          calendar.fullCalendar('renderEvent', resp, true);
 
                         }
                 }else{
-                  $('#infoBox').addClass('alert-danger').html('No se pudo crear la consulta!!').show();
+                  infoBox.addClass('alert-danger').html('No se pudo crear la consulta!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
                    return
@@ -721,16 +716,16 @@ $(function () {
                {
                  if(resp)
                  {
-                  $('#infoBox').addClass('alert-danger').html('No se puede eliminar consulta ya que se encuentra iniciada!!').show();
+                  infoBox.addClass('alert-danger').html('No se puede eliminar consulta ya que se encuentra iniciada!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
                    return resp;
                   }
 
-                  $('#calendar').fullCalendar('removeEvents',data.idRemove);
+                  calendar.fullCalendar('removeEvents',data.idRemove);
               
                }
                
@@ -738,10 +733,10 @@ $(function () {
                {
                  if(resp == '')
                  {
-                  $('#infoBox').addClass('alert-danger').html('No se puede cambiar de dia la consulta ya que se encuentra iniciada!!').show();
+                  infoBox.addClass('alert-danger').html('No se puede cambiar de dia la consulta ya que se encuentra iniciada!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
 
@@ -750,12 +745,12 @@ $(function () {
                    return
                   }
                    
-                   $('#calendar').fullCalendar( 'removeEvents', data.id)
+                   calendar.fullCalendar( 'removeEvents', data.id)
                    
                     resp.allDay = parseInt(resp.allDay);
                    
 
-                    $('#calendar').fullCalendar('renderEvent', resp, true);
+                   calendar.fullCalendar('renderEvent', resp, true);
                   
                   
                }
@@ -767,7 +762,8 @@ $(function () {
 
             }
         });
-    }
+    }// CRUD
+
     function saveSchedule(event, idRemove)
     {
       
@@ -818,7 +814,7 @@ $(function () {
      
     }
 
-    function saveAppointment(event, idRemove)
+     function saveAppointment(event, idRemove)
     {
       
       var appointment = {
@@ -871,15 +867,12 @@ $(function () {
      
     }
 
-    /* ADDING EVENTS */
-    var currColor = "#3c8dbc"; //Red by default
-   
     function createEvent()
     {
         var val = $("#new-event").val();
-        var valSelect = $(".box-create-appointment").find('.widget-user-2').attr('data-patient');
-        var office_id = $(".box-create-appointment").find('.widget-user-2').attr('data-office');
-        var valName = $(".box-create-appointment").find('.widget-user-2').attr('data-title');
+        var valSelect = boxCreateAppointment.find('.widget-user-2').attr('data-patient');
+        var office_id = boxCreateAppointment.find('.widget-user-2').attr('data-office');
+        var valName = boxCreateAppointment.find('.widget-user-2').attr('data-title');
         
         if (valSelect.length == 0 || !office_id) {
           return;
@@ -901,24 +894,11 @@ $(function () {
 
         //Remove event from text input
         $("#new-event").val("");
-        $(".search-patients").val("").trigger('change');
-        $(".search-patients").text("").trigger('change');
-    }
+        searchPatients.val("").trigger('change');
+        searchPatients.text("").trigger('change');
+    } // create event
 
-    $("#new-event").keypress(function( e ) {
-        if(e.which == 13) {
-            createEvent();
-        }
-    });
-
-    $("#add-new-event").click(function (e) {
-      e.preventDefault();
-      
-      createEvent();
-      
-    });
-
-    $(".search-patients").select2({
+    searchPatients.select2({
             placeholder: "Buscar paciente",
             ajax: {
               url: "/medic/patients/list",
@@ -933,7 +913,7 @@ $(function () {
               processResults: function (data) {
                
                // console.log(data.data);
-               $(".search-patients").empty();
+               searchPatients.empty();
                 var items = []
                 
                 $.each(data.data, function (index, value) {
@@ -955,15 +935,27 @@ $(function () {
              
             }
      });
+    //searcn patient
+
+    modalForm.on('shown.bs.modal', function (event) {
+     
+      var date = $(this).find('.modal-body').attr('data-date') 
+      var hour = $(this).find('.modal-body').attr('data-hour')
+     
+  
+      var modal = $(this)
+      modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
+   
+    });
 
     function createEventFromModal()
     {
-      var val = $("#modal-new-event").val();
-      var valSelect = $(".modal-body").find('.widget-user-2').attr('data-patient');//val();
-      var valName = $(".modal-body").find('.widget-user-2').attr('data-title');
-      var office_id = $(".modal-body").find('.widget-user-2').attr('data-office');
-      var date = $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate'));
-      var end = ($('#modal-new-event').attr('data-modaldate-end')) ? $.fullCalendar.moment($('#modal-new-event').attr('data-modaldate-end')) : '';
+      var val = modalForm.find("#modal-new-event").val();
+      var valSelect = modalForm.find(".modal-body").find('.widget-user-2').attr('data-patient');//val();
+      var valName = modalForm.find(".modal-body").find('.widget-user-2').attr('data-title');
+      var office_id = modalForm.find(".modal-body").find('.widget-user-2').attr('data-office');
+      var date = $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate'));
+      var end = (modalForm.find('#modal-new-event').attr('data-modaldate-end')) ? $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate-end')) : '';
      
       if (valSelect.length == 0 || !office_id) {
         return;
@@ -1001,25 +993,24 @@ $(function () {
         copiedEventObject.overlap = false;
       
 
-        var _id = $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
+        var _id = calendar.fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
        
        
         saveAppointment(copiedEventObject, _id);
       }
       //Remove event from text input
-      $("#modal-new-event").val("");
-      $('#myModal').find('#modal-new-event').attr('data-modaldate', '');
-      $('#myModal').modal('hide');
-    }
+      modalForm.find("#modal-new-event").val("");
+      modalForm.find('#modal-new-event').attr('data-modaldate', '');
+      modalForm.modal('hide');
+      /*modalForm.find('#search-offices').val([]);
+      modalForm.find('#search-offices').text('');
+      modalForm.find('.modal-search-patients').val([]);
+      modalForm.find('.modal-search-patients').text('');*/
+     
+    } //create form modal
 
-     $(".btn-finalizar-cita").click(function (e) {
-      e.preventDefault();
 
-      createEventFromModal();
-      
-    });
-
-   $(".modal-search-patients").select2({
+    searchModalPatients.select2({
             placeholder: "Buscar paciente",
             ajax: {
               url: "/medic/patients/list",
@@ -1032,7 +1023,7 @@ $(function () {
                 };
               },
               processResults: function (data) {
-               $(".modal-search-patients").empty();
+               searchModalPatients.empty();
                // console.log(data.data);
                 var items = []
                 
@@ -1054,45 +1045,12 @@ $(function () {
             
              
             }
-     });
+     }); //search modal patient
 
 
-    $('#myModal').on('shown.bs.modal', function (event) {
-     
-      var date = $(this).find('.modal-body').attr('data-date') 
-      var hour = $(this).find('.modal-body').attr('data-hour')
-     
-  
-      var modal = $(this)
-      modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
-   
-    });
-
-
-    //search offices
-
-    $(".search-offices").select2({
+    searchOffices.select2({
             placeholder: "Buscar Consultorios o selecciona no disponible",
-            //tags: true,
-            /* minimumInputLength: 1,*/
-             /*createTag: function (params) {
-              return {
-                id: params.term,
-                text: params.term,
-                newOption: true
-              }
-            },*/
-            /*templateResult: function (data) {
-              var $result = $("<span></span>");
-
-              $result.text(data.text);
-
-              if (data.newOption) {
-                $result.css("color",'red');
-              }
-
-              return $result;
-            },*/
+           
             ajax: {
               url: "/medic/account/offices/list",
               dataType: 'json',
@@ -1106,7 +1064,7 @@ $(function () {
               processResults: function (data) {
                
                 
-               $(".search-offices").empty();
+               searchOffices.empty();
                 var items = []
                 
                 $.each(data, function (index, value) {
@@ -1120,15 +1078,7 @@ $(function () {
                     items.push(item);
                 })
 
-                /*var nodisponible = {
-                      id: '0',
-                      text: 'No disponible',
-                      office_info: '',
-                      newOption: true
-                    };
-
-                items.push(nodisponible);*/
-                    
+              
                 return {
                   results: items,
                   
@@ -1143,16 +1093,16 @@ $(function () {
               }
      });
 
-    $("#setupSchedule").find('.add-cita').on('click', function (e) {
+     setupSchedule.find('.add-cita').on('click', function (e) {
       e.preventDefault();
        
-        var title = $("#setupSchedule").find('#search-offices').text();
-        var office_id = $("#setupSchedule").find('#search-offices').val();
-        var date = $("#setupSchedule").find('input[name="date"]').val();
-        var ini = $("#setupSchedule").find('input[name="start"]').val();
-        var fin = $("#setupSchedule").find('input[name="end"]').val();
+        var title = setupSchedule.find('#search-offices').text();
+        var office_id = setupSchedule.find('#search-offices').val();
+        var date = setupSchedule.find('input[name="date"]').val();
+        var ini = setupSchedule.find('input[name="start"]').val();
+        var fin = setupSchedule.find('input[name="end"]').val();
        
-        var dataSelect = (title) ? $("#setupSchedule").find('#search-offices').select2("data") : '';
+        var dataSelect = (title) ? setupSchedule.find('#search-offices').select2("data") : '';
         
         var office_info = (dataSelect) ? ((dataSelect[0].office_info) ? dataSelect[0].office_info : '') : '';
         var start = date + 'T'+ ini + ':00';
@@ -1161,13 +1111,13 @@ $(function () {
        if(!title)
        {
        
-         $("#setupSchedule").find('#search-offices').select2('focus');
-         $("#setupSchedule").find('#search-offices').select2('open');
+         setupSchedule.find('#search-offices').select2('focus');
+         setupSchedule.find('#search-offices').select2('open');
 
-         $('#infoBox').addClass('alert-danger').html('Escribe un consultorio o evento. Por favor revisar!!!').show();
+         infoBox.addClass('alert-danger').html('Escribe un consultorio o evento. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
           return false;
@@ -1175,10 +1125,10 @@ $(function () {
 
         if(!date || !ini )
         {
-          $('#infoBox').addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
+          infoBox.addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
              return false;
@@ -1186,10 +1136,10 @@ $(function () {
        
         if(moment(start).isAfter(end))
         {
-           $('#infoBox').addClass('alert-danger').html('Fecha invalida. La hora de inicio no puede ser mayor que la hora final!!!').show();
+           infoBox.addClass('alert-danger').html('Fecha invalida. La hora de inicio no puede ser mayor que la hora final!!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
 
              return false;
@@ -1217,10 +1167,10 @@ $(function () {
         };
      
       if(isOverlapping(schedule)){
-         $('#infoBox').addClass('alert-danger').html('No se puede agregar el evento por que hay colision de horarios. Por favor revisar!!!').show();
+         infoBox.addClass('alert-danger').html('No se puede agregar el evento por que hay colision de horarios. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-danger').hide();
+                          infoBox.removeClass('alert-danger').hide();
                         },3000);
         return false;
       }
@@ -1233,19 +1183,19 @@ $(function () {
 
                   resp.allDay = parseInt(resp.allDay);
                   
-                  $('#calendar').fullCalendar('renderEvent', resp, true);
+                  calendar.fullCalendar('renderEvent', resp, true);
              
-                  $('#infoBox').addClass('alert-success').html('Horario Agregado Correctamente!!').show();
+                  infoBox.addClass('alert-success').html('Horario Agregado Correctamente!!').show();
                         setTimeout(function()
                         { 
-                          $('#infoBox').removeClass('alert-success').hide();
+                          infoBox.removeClass('alert-success').hide();
                         },3000);
 
-                  $("#setupSchedule").find('#search-offices').val([]);
-                  $("#setupSchedule").find('#search-offices').text('');
-                  $('#datetimepicker1').data("DateTimePicker").clear();
-                  $('#datetimepicker2').data("DateTimePicker").clear();
-                  $('#datetimepicker3').data("DateTimePicker").clear();
+                  setupSchedule.find('#search-offices').val([]);
+                  setupSchedule.find('#search-offices').text('');
+                  datetimepicker1.data("DateTimePicker").clear();
+                  datetimepicker2.data("DateTimePicker").clear();
+                  datetimepicker3.data("DateTimePicker").clear();
                 
               
                 
@@ -1256,13 +1206,34 @@ $(function () {
             }
         });
 
-     
-
-      
-
 
     });
 
 
+   $("#new-event").keypress(function( e ) {
+        if(e.which == 13) {
+            createEvent();
+        }
+    });
 
-  });
+    $("#add-new-event").click(function (e) {
+      e.preventDefault();
+      
+      createEvent();
+      
+    });
+
+    $(".btn-finalizar-cita").click(function (e) {
+        e.preventDefault();
+
+        createEventFromModal();
+        
+    });
+
+
+   
+
+
+
+    
+});
