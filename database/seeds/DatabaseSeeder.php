@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
 {
     
     private $tables = [
-        'users','offices','roles','role_user', 'specialities','verified_offices','office_user'
+        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories'
     ];
     
     /**
