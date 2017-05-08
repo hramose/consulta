@@ -56,7 +56,7 @@
     <!-- /.social-auth-links -->
 
     <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>
-    <a href="{{ url('/register') }}"" class="btn btn-flat text-center btn-facebook" >Crear cuenta nueva </a>
+    <a href="{{ url('/register') }}"" class=" text-center " >Crear cuenta nueva </a>
     
 
   </div>
