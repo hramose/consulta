@@ -19,7 +19,10 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
               <!--<img class="profile-user-img img-responsive img-circle" src="/img/user4-128x128.jpg" alt="User profile picture">-->
-              <img class="profile-user-img img-responsive img-circle" src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" alt="User profile picture">
+             
+                  <img class="profile-user-img img-responsive img-circle" src="{{ getAvatar(auth()->user()) }}" alt="User profile picture">
+              
+  
               
               <h3 class="profile-username text-center">{{ $user->name }}</h3>
 

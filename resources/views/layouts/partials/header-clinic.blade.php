@@ -24,7 +24,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
               <!-- <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
-              <img src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" class="user-image" alt="User Image">
+              <img src="{{ getAvatar(auth()->user()) }}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{ auth()->user()->name }}</span>
             </a>
@@ -32,7 +32,7 @@
               <!-- The user image in the menu -->
               <li class="user-header">
                 <!-- <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
-                <img src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" class="img-circle" alt="User Image">
+               <img src="{{ getAvatar(auth()->user()) }}" class="img-circle" alt="User Image">
                 <p>
                    {{ auth()->user()->name }}
                   <small>Member since {{ auth()->user()->created_at->diffForHumans() }}</small>

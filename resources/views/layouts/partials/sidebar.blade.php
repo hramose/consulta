@@ -5,8 +5,9 @@
       <div class="user-panel">
         <div class="pull-left image">
           <!-- <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
-          <img src="{{ Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg') }}" class="img-circle" alt="User Image">
-          
+         
+         <img src="{{ getAvatar(auth()->user()) }}" class="img-circle" alt="User Image">
+   
         </div>
         <div class="pull-left info">
           <p>{{ auth()->user()->name }}</p>
