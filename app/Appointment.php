@@ -58,6 +58,10 @@ class Appointment extends Model
     {
         return $this->hasOne(PhysicalExam::class);
     }
+     public function poll()
+    {
+        return $this->hasOne(Poll::class);
+    }
      public function diagnostics()
     {
         return $this->hasMany(Diagnostic::class);
@@ -86,5 +90,14 @@ class Appointment extends Model
         
 
         return $this->physicalExams()->save($physicalExams);
+    }
+    public function createPoll($user = null)
+    {
+        
+        $user_id = ($user) ? $user : auth()->id();
+        $poll = new Poll();
+        $poll->user_id = $user_id;
+
+        return $this->poll()->save($poll);
     }
 }

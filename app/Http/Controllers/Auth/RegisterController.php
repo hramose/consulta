@@ -87,7 +87,9 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);*/
         $data['active'] = 0; // los medicos estan inactivos por defecto para revision
-
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
+        
         $user = $this->userRepo->store($data);
 
         \Mail::to($this->administrators)->send(new NewMedic($user));

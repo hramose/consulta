@@ -88,6 +88,8 @@ class RegisterClinicController extends Controller
         ]);*/
         $data['active'] = 0; // las clinicas estan inactivos por defecto para revision
         $data['role'] = Role::whereName('clinica')->first();
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
 
         $user = $this->userRepo->store($data);
 

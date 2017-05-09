@@ -81,7 +81,8 @@ class RegisterPatientController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);*/
-        
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
         $data['role'] = Role::whereName('paciente')->first();
 
         return $this->userRepo->store($data);

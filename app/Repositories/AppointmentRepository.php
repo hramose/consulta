@@ -36,8 +36,7 @@ class AppointmentRepository extends DbRepository{
         if($patient)
         {
             $appointment = $medic->appointments()->create($data); //$this->model->create($data);
-            $appointment->createDiseaseNotes();
-            $appointment->createPhysicalExams();
+           
 
             $appointment->patient()->associate($patient); // asociar la cita con el paciente
             $appointment->save();
@@ -52,11 +51,17 @@ class AppointmentRepository extends DbRepository{
             }
 
             $appointment = $medic->appointments()->create($data); //$this->model->create($data);
-            $appointment->createDiseaseNotes();
-            $appointment->createPhysicalExams();
+           
             
         }
-
+         
+          $appointment->createDiseaseNotes();
+          $appointment->createPhysicalExams();
+          
+          if(auth()->user()->hasRole('paciente'))
+            $appointment->createPoll(auth()->id());
+          else
+             $appointment->createPoll($data['patient_id']);
        
 
 

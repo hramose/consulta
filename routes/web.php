@@ -35,6 +35,7 @@ Route::put('/appointments/{appointment}', 'AppointmentController@update');
 Route::delete('/appointments/{appointment}/delete', 'AppointmentController@delete');
 Route::post('/appointments/{appointment}/reminder', 'AppointmentController@reminder');
 Route::get('/appointments/reminder', 'AppointmentController@sendReminder');
+Route::get('/appointments/{appointment}/poll', 'AppointmentController@poll');
 Route::resource('appointments', 'AppointmentController');
 
 Route::post('/patients', 'PatientController@store');
@@ -46,6 +47,9 @@ Route::post('/patients/register', 'PatientController@register');
 Route::get('/clinics/search', 'ClinicController@index');
 Route::get('/clinics/{office}/schedule', 'ClinicController@schedule');
 Route::get('/clinics/{office}/profile', 'Clinic\UserController@profile');
+
+//Route::get('/polls/{poll}/edit', 'AppointmentController@edit');
+Route::resource('polls', 'PollController');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
