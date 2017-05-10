@@ -3,6 +3,7 @@
 
 use App\Office;
 use App\Poll;
+use App\Question;
 use App\Role;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
@@ -127,15 +128,114 @@ class ClinicRepository extends DbRepository{
         }
 //          $mod = @mysql_query("SELECT SUM(valor) as valor FROM opciones WHERE id_encuesta = ".$id);
 // while($result = @mysql_fetch_object($mod)){
-         $totalAnswers = 0;
+          $totalAnswers = 0;
+          $rateTotals = 0;
          foreach ($polls as $poll) {
              foreach ($poll->questions as $q) {
-                 $totalAnswers += $q->answers()->sum('rate');
+
+                 $totalAnswers = \DB::table('answers')
+                               
+           
+                                   ->selectRaw('SUM(rate) as rate')
+                                   ->where('answers.question_id', $q->id)
+
+                                   ->first();
+
+                $rateQuestionTotal = \DB::table('questions')
+                                  ->join('answers', 'questions.id', '=', 'answers.question_id')
+           
+                                   ->select('questions.name as pregunta', 'answers.id as id','answers.name as respuesta', 'answers.rate as rate')
+                                   ->where('questions.id', $q->id)
+
+                                   ->get();
+                 foreach ($rateQuestionTotal as $ans) {
+                         
+                         $answer = [
+                            'name' => $ans->respuesta,
+                            'rate' => $ans->rate
+                         ];
+                       $totalAns[]= $answer;
+
+                        $labels[] = $ans->respuesta;
+                        $values[] = round(($ans->rate * 100) / $totalAnswers->rate);
+                     }
+                
+
+                $question = [
+                    'question' => $q->name,
+                    'answers' => $totalAns,
+                    'totalAnswers' => $totalAnswers->rate,
+                    'dataLabels' => $labels,
+                    'dataSets' => [
+                        [
+                            'data' => $values,
+                            'backgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39'],
+                            'hoverBackgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39']
+                        ]
+                    ]
+                 ];
+
+                 $data[] = $question;
+             
+
              }
              
          }
-         
+         /*$ques = Question::find(1);
 
+         $totalAnswers = \DB::table('answers')
+                               
+           
+                                   ->selectRaw('SUM(rate) as rate')
+                                   ->where('answers.question_id', 1)
+
+                                   ->first();
+        // dd($totalAnswers);
+         
+         $rateQuestionTotal = \DB::table('questions')
+                                  ->join('answers', 'questions.id', '=', 'answers.question_id')
+           
+                                   ->select('questions.name as pregunta', 'answers.id as id','answers.name as respuesta', 'answers.rate as rate')
+                                   ->where('questions.id', 1)
+
+                                   ->get();
+
+         //$ques->answers()->sum('rate');
+          //$data['question'] =  $ques->name;
+          //$data['answers'] = [];
+          
+
+         foreach ($rateQuestionTotal as $ans) {
+             $ans = [
+                'name' => $ans->respuesta,
+                'rate' => $ans->rate
+             ];
+           $totalAns[]= $ans;
+         }
+        foreach ($rateQuestionTotal as $ans) {
+             
+             $labels[] = $ans->respuesta;
+             $values[] = round(($ans->rate * 100) / $totalAnswers->rate);
+            
+         }
+         $data = [
+             [
+                'question' => $ques->name,
+                'answers' => $totalAns,
+                'totalAnswers' => $totalAnswers->rate,
+                'dataLabels' => $labels,
+                'dataSets' => [
+                    [
+                        'data' => $values,
+                        'backgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39'],
+                        'hoverBackgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39']
+                    ]
+                ]
+             ]
+          ];*/
+
+        //dd($data);
+         return [];
         /* $sql = "SELECT a.titulo as titulo, a.fecha as fecha, b.id as id, b.nombre as nombre, b.valor as valor FROM encuestas a INNER JOIN opciones b ON a.id = b.id_encuesta WHERE a.id = ".$id;
 $req = @mysql_query($sql);
 

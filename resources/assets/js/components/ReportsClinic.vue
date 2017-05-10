@@ -133,6 +133,69 @@
             <p>No se encontraron estadisticas con esos parametros!</p>
           </div>
         </div>
+
+      <!--   <div v-if="dataPoll.length">
+           <div class="box box-danger">
+              <div class="box-header">
+                 <h3 class="box-title">Encuesta</h3>
+                
+              </div>
+              <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                              <div class=" col-xs-12" v-for="statistic in dataPoll">
+                                   
+                                    <div class="box box-success">
+                                      <div class="box-header">
+                                        {{ statistic['question'] }}
+                                      </div>
+                                      <div class="box-body">
+                                        
+                                        
+                                       
+                                        <ul class='votacion'>
+                                          <li v-for="ans in statistic['answers']">
+                                             <div class="fl"><span class="label label-default">{{ ans.name }}</span></div><div class="fr">Votos: {{ ans.rate }}</div>
+                                         
+                                            <div class="barra" >{{ (ans.rate*100/statistic['totalAnswers']) }}%</div>
+                                          </li>
+
+                                          
+                                        </ul>
+                                      </div>
+                                     
+                         
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="box box-default box-chart" v-for="statistic in dataPoll">
+                                
+                                <div class="box-body">
+                                 
+                                 
+                                  <chartjs-pie :scalesdisplay="false"  :labels="statistic['dataLabels']"  :datasets="statistic['dataSets']"></chartjs-pie>
+                                </div>
+                              
+                          </div>
+                        </div>
+                      </div>
+                
+              </div>
+          </div>
+         
+          
+         
+        </div>
+        <div v-else>
+          <div class="callout callout-info callout-search">
+            
+            <h4>No hay datos !</h4>
+
+            <p>No se encontraron estadisticas con esos parametros!</p>
+          </div>
+        </div> -->
     
 
   </div>
@@ -161,6 +224,7 @@
           urlOptions:'/clinic/medics/list',
           selectedItem:null,
           data:[],
+          dataPoll:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
@@ -203,6 +267,23 @@
             
            
           },
+          /*getDataPollForChart(){
+            let values = [];
+            let colors = [];
+            for (var i = 0; i < this.dataPoll.length; i++) {
+               this.dataLabels[i] = this.dataPoll[i]['answers'];
+               //colors[i] = this.getStatusColor(this.data[i]['status']);
+               values[i] = this.dataPoll[i]['rate']*100 / this.dataPoll[i]['totalAnswers']; // (ans.rate*100/statistic['totalAnswers'])
+            }
+
+            this.dataSets.push({
+                  data: values
+                  //backgroundColor: colors,
+                  //hoverBackgroundColor: colors
+               });
+            
+           
+          },*/
         
           onBlurDate1(e){
             const value = e.target.value;
@@ -289,6 +370,8 @@
 
            let queryParam = this.search;
            this.dataSets = [];
+           this.dataPoll = [];
+           this.data = [];
             
             if(this.search.type == "Médico" && !this.search.medic) return
 
@@ -297,8 +380,10 @@
             this.$http.get('/clinic/reports/generate', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                //alert('reporte')
-               //this.data = resp.data
-               //this.getDataForChart();
+              // this.dataPoll = resp.data;
+
+               this.data = resp.data
+               this.getDataForChart();
             });
 
         }
