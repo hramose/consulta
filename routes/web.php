@@ -49,6 +49,8 @@ Route::get('/clinics/{office}/schedule', 'ClinicController@schedule');
 Route::get('/clinics/{office}/profile', 'Clinic\UserController@profile');
 
 //Route::get('/polls/{poll}/edit', 'AppointmentController@edit');
+Route::get('/medics/{medic}/polls', 'PollController@show');
+Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
 Route::resource('polls', 'PollController');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()

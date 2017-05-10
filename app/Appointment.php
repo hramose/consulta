@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Answer;
+use App\Poll;
+use App\Question;
 use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
@@ -91,13 +94,41 @@ class Appointment extends Model
 
         return $this->physicalExams()->save($physicalExams);
     }
-    public function createPoll($user = null)
+
+     public function createPoll($type = null)
     {
         
-        $user_id = ($user) ? $user : auth()->id();
         $poll = new Poll();
-        $poll->user_id = $user_id;
+        $poll->user_id = $this->user->id;
+        $poll->appointment_id = $this->id;
+        $poll->name = ($type) ? $type : 'medico';
+        $poll->save();
+        //$user = $this->polls()->save($poll);
 
-        return $this->poll()->save($poll);
+
+        $poll->questions()->saveMany([
+            new Question(['name' => 'Cómo considera el servicio de atención médica recibida?']),
+            new Question(['name' => 'La respuesta del paciente tras el tratamiento estuvo a la altura de sus expectativas?']),
+            new Question(['name' => 'Califique con estrellas su nivel de satisfacción tras la atención de la consulta']),
+            
+        ]);
+
+        foreach ($poll->questions as $q) {
+
+            $q->answers()->saveMany([
+               new Answer(['name' => 'Excelente']),
+               new Answer(['name' => 'Muy Bueno']),
+               new Answer(['name' => 'Regular']),
+               new Answer(['name' => 'Malo'])
+                
+            ]);
+        }
+
+            
+
+    
+
+        return $poll;
     }
+    
 }

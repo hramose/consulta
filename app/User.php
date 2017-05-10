@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Answer;
+use App\Question;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -146,6 +148,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Office::class,'verified_offices');
     }
 
+     public function polls()
+    {
+        return $this->hasMany(Poll::class);
+    }
+
 
     public function createOffice($office = null)
     {
@@ -153,6 +160,7 @@ class User extends Authenticatable
 
         return $this->offices()->save($office);
     }
+   
 
     public function getSpecialityName()
     {

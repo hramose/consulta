@@ -275,7 +275,7 @@
           
           if(item){
             
-            if(this.search.type == 'Médico')
+            if(this.search.type == 'Médico' || this.search.reviewType == 'Médico' )
               this.search.medic = item.id
              if(this.search.type == 'Departamento')
               this.search.speciality = item.id
@@ -297,8 +297,8 @@
             this.$http.get('/clinic/reports/generate', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                //alert('reporte')
-               this.data = resp.data
-               this.getDataForChart();
+               //this.data = resp.data
+               //this.getDataForChart();
             });
 
         }

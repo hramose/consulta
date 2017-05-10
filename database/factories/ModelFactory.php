@@ -49,3 +49,5 @@ $factory->define(App\Speciality::class, function ($faker) {
         'name' => 'Medico General',
     ];
 });
+
+

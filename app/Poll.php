@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Poll extends Model
 {
     protected $fillable = [
-        'appointment_id','medical_care','treatment','satisfaction','completed'
+        'user_id','name'
     ];
 
-    public function appointment()
+    public function user() //medic
     {
-        return $this->belongsTo(Appointment::class);
+        return $this->belongsTo(User::class);
     }
+    public function questions() 
+    {
+        return $this->hasMany(Question::class);
+    }
+    
  
 }
