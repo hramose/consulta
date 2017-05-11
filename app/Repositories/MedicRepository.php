@@ -1,9 +1,11 @@
 <?php namespace App\Repositories;
 
 
+use App\Appointment;
 use App\Office;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 
@@ -263,6 +265,166 @@ class MedicRepository extends DbRepository{
 
 
 
+    }
+
+    /**
+     * Find all the users for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllWithoutPaginate($search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+        
+            
+            if (isset($search['clinic']) && $search['clinic'] != "")
+            {
+                $medics = Office::find($search['clinic'])->users();
+            }else{
+                
+                $medics = $this->model;
+
+            }
+            
+           
+        
+           if (isset($search['q']) && trim($search['q']))
+            {
+               $medics = $medics->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->Search($search['q']);
+            } else
+            {
+               $medics = $medics->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });
+            }
+           
+
+        
+       
+
+        return $medics->orderBy('users.'.$order , $dir)->get();
+       
+
+
+
+    }
+
+    /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatistics($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+    
+       
+        $medics = $this->model->whereHas('roles', function ($query) use ($search) {
+                        $query->where('name',  'medico');
+                    });
+
+        $appointments = \DB::table('appointments');
+
+       
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+         
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]]);
+            
+        }
+
+        $appointments = $appointments->selectRaw('status, count(*) items')
+                         ->groupBy('status')
+                         ->orderBy('status','DESC')
+                         ->get()
+                         ->toArray();
+
+        $medics = $medics->selectRaw('active, count(*) items')
+                         ->groupBy('active')
+                         ->orderBy('active','DESC')
+                         ->get()
+                         ->toArray();
+        $statistics = [
+            'medics' => $medics,
+            'appointments' => $appointments
+        ];
+        //dd($statistics);
+
+         
+      return $statistics;
+       
+    }
+
+     /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatisticsByMedic($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+    
+        $medics = $this->model;
+        
+        //$appointments = \DB::table('appointments');
+        
+        if (isset($search['medic']) && $search['medic'] != "")
+        {
+            $medic = $medics->where('id', $search['medic'])->first();
+            $appointments = $medic->appointments();
+            
+        }
+        
+
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+         
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]]);
+            
+        }
+
+        $appointments = $appointments->selectRaw('status, count(*) items')
+                         ->groupBy('status')
+                         ->orderBy('status','DESC')
+                         ->get()
+                         ->toArray();
+
+       
+        $statistics = [
+            
+            'appointments' => $appointments
+        ];
+
+        
+         
+      return $statistics;
+       
     }
 
 

@@ -1,10 +1,12 @@
 <?php namespace App\Repositories;
 
 
+use App\Appointment;
 use App\Office;
 use App\Poll;
 use App\Question;
 use App\Role;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -262,6 +264,99 @@ while($result = @mysql_fetch_object($req)){
          
       //return $statistics;
        
+    }
+
+    /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatisticsAppointments($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+    
+        $clinics = $this->model->count();
+
+        if (isset($search['clinic']) && $search['clinic'] != "")
+        {
+            $appointments = Appointment::where('office_id', $search['clinic']);
+        }
+        
+        if (isset($search['medic']) && $search['medic'] != "")
+        {
+            $appointments = $appointments->where('user_id', $search['medic']);
+        }
+        
+
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+         
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]]);
+            
+        }
+
+        $appointments = $appointments->selectRaw('status, count(*) items')
+                         ->groupBy('status')
+                         ->orderBy('status','DESC')
+                         ->get()
+                         ->toArray();
+        $statistics = [
+            'clinics' => $clinics,
+            'appointments' => $appointments
+        ];
+         
+      return $statistics;
+       
+    }
+
+
+     /**
+     * Find all the appointments by Doctor
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
+    public function findAllWithoutPagination($id, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $offices = $this->model;
+
+        if (! count($search) > 0) return $offices->get();
+
+        if (isset($search['q']) && trim($search['q']))
+        {
+            $offices = $offices->Search($search['q']);
+        } 
+        if (isset($search['type']) && trim($search['type']))
+        {
+            $offices = $offices->where('type', $search['type']);
+        } 
+
+        if (isset($search['order']) && $search['order'] != "")
+        {
+            $order = $search['order'];
+        }
+        if (isset($search['dir']) && $search['dir'] != "")
+        {
+            $dir = $search['dir'];
+        }
+
+
+        return $offices->orderBy('offices.'.$order , $dir)->get();
+
     }
 
 

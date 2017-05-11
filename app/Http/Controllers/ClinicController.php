@@ -77,5 +77,14 @@ class ClinicController extends Controller
         return view('clinics.schedule',compact('medics','medic','office'));
     }
 
+    public function getAllOffices()
+    {
+        
+        $offices = $this->clinicRepo->findAllWithoutPagination(auth()->id(),request()->all());
+
+        return $offices;
+        
+    }
+
     
 }

@@ -28,6 +28,7 @@ Route::get('/medics/specialist/search', 'MedicController@search');
 Route::get('/medics/{medic}/offices/{office}/schedule', 'MedicController@schedule');
 Route::get('/medics/{medic}/appointments/list', 'MedicController@getAppointments');
 Route::get('/medics/{medic}/schedules/list', 'MedicController@getSchedules');
+Route::get('/medics/list', 'MedicController@getMedics');
 
 Route::get('/appointments', 'AppointmentController@index');
 Route::post('/appointments', 'AppointmentController@store');
@@ -47,6 +48,7 @@ Route::post('/patients/register', 'PatientController@register');
 Route::get('/clinics/search', 'ClinicController@index');
 Route::get('/clinics/{office}/schedule', 'ClinicController@schedule');
 Route::get('/clinics/{office}/profile', 'Clinic\UserController@profile');
+Route::get('/clinics/list', 'ClinicController@getAllOffices');
 
 //Route::get('/polls/{poll}/edit', 'AppointmentController@edit');
 Route::get('/medics/{medic}/polls', 'PollController@show');
@@ -152,6 +154,15 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
             'uses' => 'Admin\UserController@' . $key,
         ));
     }
+    Route::get('/reports/medics', 'Admin\ReportsController@medics');
+    Route::get('/reports/medics/generate', 'Admin\ReportsController@generateMedics');
+    Route::get('/reports/medics/{medic}/generate', 'Admin\ReportsController@generateMedics');
+
+    Route::get('/reports/clinics', 'Admin\ReportsController@clinics');
+    Route::get('/reports/clinics/generate', 'Admin\ReportsController@generateClinics');
+    Route::get('/offices/list', 'ClinicController@getAllOffices');
+
+    Route::resource('reports', 'Admin\ReportsController');
 	Route::resource('users', 'Admin\UserController');
 
 });

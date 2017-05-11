@@ -42,6 +42,8 @@ Vue.component('clinic', require('./components/Clinic.vue'));
 Vue.component('reports-clinic', require('./components/ReportsClinic.vue'));
 Vue.component('treatments', require('./components/Treatments.vue'));
 Vue.component('poll', require('./components/Poll.vue'));
+Vue.component('reports-medics', require('./components/ReportsMedics.vue'));
+Vue.component('reports-clinics', require('./components/ReportsClinics.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 
