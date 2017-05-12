@@ -229,7 +229,7 @@
                                   <div class="td-lugar">
                                       <div class="td-lugar-name"> 
                                         <span >{{ $medic->name }}</span>
-                                        <b>Horario:</b><br>
+                                        <b>Horario Semana Actual:</b><br>
                                           @foreach($medic->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
                                              @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
@@ -275,7 +275,7 @@
                                      <div class="td-lugar">
                                          <div class="td-lugar-name">
                                           <span >{{ $office->name }}</span> <br>
-                                          <b>Horario:</b><br>
+                                          <b>Horario Semana Actual:</b><br>
                                           @foreach($office->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
                                              @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>

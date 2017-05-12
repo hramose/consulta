@@ -1,7 +1,7 @@
 <template>
 	
 
-      <div class="box box-danger">
+      <div class="box box-info">
 
           <div class="box-header with-border">
             <h3 class="box-title">Tratamiento</h3>
@@ -16,12 +16,20 @@
           <div class="box-body">
            
              
-             <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Nombre...">
+             <div class="form-group">
+                <input type="text" name="search" class="form-control"  v-model="query" placeholder="Nombre...">
+             </div>
+             <div class="form-group">
+                <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomentación (Dosis)...">
+             </div>
+              <div class="form-group">
+                <button @click="hit" class="btn btn-success">Agregar</button> 
+              </div>
               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataTreatments.length">
                
                 <li v-for="item in dataTreatments">
                   <!-- todo text -->
-                  <span><span class="text"> {{ item.name }}</span></span>
+                  <span><span class="text"> <b>{{ item.name }}:</b></span> {{ item.comments }}</span>
                   <!-- General tools such as edit or delete-->
                   <div class="tools">
                     
@@ -47,6 +55,7 @@
       data () {
         return {
           query : "",
+          comments : "",
           dataTreatments:[],
           loader:false
 
@@ -63,14 +72,15 @@
             if(!this.query)
               return
 
-            this.add(this.query);
+            this.add(this.query, this.comments);
             this.query = "";
+            this.comments = "";
           },
-          add(treatment) {
+          add(treatment, comments) {
 
             
             
-            this.$http.post('/medic/treatments', {appointment_id: this.appointment_id, name: treatment}).then((response) => {
+            this.$http.post('/medic/treatments', {appointment_id: this.appointment_id, name: treatment, comments:comments}).then((response) => {
 
                   
                   console.log(response);

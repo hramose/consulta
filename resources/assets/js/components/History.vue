@@ -3,6 +3,57 @@
   <div class="box-group" id="accordion">
                 <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
           
+          <div class="panel box box-info">
+            <div class="box-header with-border">
+              <h4 class="box-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#diagnosticos" aria-expanded="false" class="collapsed">
+                   DIAGNOSTICOS DE CONSULTAS ANTERIORES: 
+                </a>
+              </h4>
+            </div>
+            <div id="diagnosticos" class="panel-collapse collapse" aria-expanded="false">
+              <div class="box-body">
+                 
+                 <h3 v-show ="diagnosticsToday.length">Diagnósticos de la consulta actual</h3>
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnosticsToday.length">
+       
+                  <li v-for="item in diagnosticsToday" >
+                    <!-- todo text -->
+                    
+                    <span><span class="text"> {{ item.name }}</span></span>
+                     
+                    <!-- General tools such as edit or delete-->
+                    <!-- <div class="tools">
+                      <span>Dr. {{ appointment.user.name }} </span>
+                      
+                    </div> -->
+                  </li>
+                 
+                </ul>
+                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnostics.length">
+       
+                  <li v-for="appointment in diagnostics" v-show="appointment.diagnostics.length">
+                    <!-- todo text -->
+                    
+                    <span><span class="text"> {{ appointment.created_at }} - <span>Dr. {{ appointment.user.name }} </span></span></span>
+                      <ul>
+                        <li v-for="diagnostic in appointment.diagnostics">
+                          <span><span class="text"> {{ diagnostic.name }}</span></span>
+                        </li>
+                      </ul>
+                    <!-- General tools such as edit or delete-->
+                    <!-- <div class="tools">
+                      <span>Dr. {{ appointment.user.name }} </span>
+                      
+                    </div> -->
+                  </li>
+                 
+                </ul>
+               
+                
+              </div>
+            </div>
+          </div>
           <div class="panel box box-primary">
             <div class="box-header with-border">
               <h4 class="box-title">
@@ -178,57 +229,7 @@
               </div>
             </div>
           </div>
-          <div class="panel box box-info">
-            <div class="box-header with-border">
-              <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#diagnosticos" aria-expanded="false" class="collapsed">
-                   DIAGNOSTICOS DE CONSULTAS ANTERIORES: 
-                </a>
-              </h4>
-            </div>
-            <div id="diagnosticos" class="panel-collapse collapse" aria-expanded="false">
-              <div class="box-body">
-                 
-                 <h3 v-show ="diagnosticsToday.length">Diagnósticos de la consulta actual</h3>
-                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnosticsToday.length">
-       
-                  <li v-for="item in diagnosticsToday" >
-                    <!-- todo text -->
-                    
-                    <span><span class="text"> {{ item.name }}</span></span>
-                     
-                    <!-- General tools such as edit or delete-->
-                    <!-- <div class="tools">
-                      <span>Dr. {{ appointment.user.name }} </span>
-                      
-                    </div> -->
-                  </li>
-                 
-                </ul>
-                 <ul id="medicines-list" class="todo-list ui-sortable" v-show="diagnostics.length">
-       
-                  <li v-for="appointment in diagnostics" v-show="appointment.diagnostics.length">
-                    <!-- todo text -->
-                    
-                    <span><span class="text"> {{ appointment.created_at }} - <span>Dr. {{ appointment.user.name }} </span></span></span>
-                      <ul>
-                        <li v-for="diagnostic in appointment.diagnostics">
-                          <span><span class="text"> {{ diagnostic.name }}</span></span>
-                        </li>
-                      </ul>
-                    <!-- General tools such as edit or delete-->
-                    <!-- <div class="tools">
-                      <span>Dr. {{ appointment.user.name }} </span>
-                      
-                    </div> -->
-                  </li>
-                 
-                </ul>
-               
-                
-              </div>
-            </div>
-          </div>
+          
           
 </div>
              

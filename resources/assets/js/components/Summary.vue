@@ -59,7 +59,10 @@
       </dd>
        <dt class="text-aqua"><h4>Tratamiento</h4></dt>
       <dd>
-         <div v-for="item in summary.treatments"><span>{{ item.name }}</span></div>
+         <div v-for="item in summary.treatments">
+            <div><strong>{{ item.name }}:</strong></div>
+            <div>{{ item.comments }}</div>
+         </div>
          <div><strong v-show="summary.medical_instructions">Recomendaciones  Médicas: </strong>{{ summary.medical_instructions }} </div>
       </dd>
     </dl>
