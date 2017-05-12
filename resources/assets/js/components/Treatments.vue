@@ -20,7 +20,7 @@
                 <input type="text" name="search" class="form-control"  v-model="query" placeholder="Nombre...">
              </div>
              <div class="form-group">
-                <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomentación (Dosis)...">
+                <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomendación (Dosis)...">
              </div>
               <div class="form-group">
                 <button @click="hit" class="btn btn-success">Agregar</button> 
