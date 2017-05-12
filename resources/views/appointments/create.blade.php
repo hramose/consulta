@@ -67,7 +67,7 @@
                                              <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 h</option>
                                              <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
                                              <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
-                                             <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>15 min</option>
+                                             <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:10:00") ? 'selected' : '' : '' }}>10 min</option>
                                           </select>
                                         </div>
                                   </div>
@@ -175,7 +175,7 @@
                    <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 h</option>
                    <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
                    <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
-                   <option value="00:15:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>15 min</option>
+                   <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>10 min</option>
                 </select>
               </div>
              
@@ -256,45 +256,7 @@
       @else
          <modal-appointments></modal-appointments>
       @endif
-              <!-- <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-sm" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      
-                      <h4 class="modal-title" id="myModalLabel">Crea cita</h4>
-                    </div>
-                    <div class="modal-body">
-                        
-                        <div class="form-group">
-                          <select class="modal-search-patients select2 form-control" style="width:100%;">
-                            
-                            @if(isset($p))
-                              <option value="{{ $p->id }}" selected="selected">{{ $p->first_name }}</option>
-                            @else
-                              <option value="" selected="selected"></option>
-                            @endif
-                          </select>
-                          <ul class="search-list todo-list">
-                            
-                           </ul>
-                        </div>
-                         <div class="form-group">
-                          <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita" data-modaldate>
-                          <!-- <input name="modal-user_id" type="hidden" value="{{ auth()->id() }}"> -->
-                          <!-- <input type="hidden" name="modal-date" value=""> -->
-                       <!--</div>
-                        
-                        <div class="form-group">
-                            <button id="modal-add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
-                          </div>
-                      
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+            
 
 @endsection
 @section('scripts')
