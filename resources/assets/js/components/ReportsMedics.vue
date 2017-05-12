@@ -87,7 +87,7 @@
                                         <p>{{ getStatusMedicsName(statistic['active']) }}</p>
                                       </div>
                                       <div class="icon">
-                                        <i class="fa fa-edit"></i>
+                                        <i class="fa fa-user-md"></i>
                                       </div>
                                       <div class="small-box-footer"></div>
                          

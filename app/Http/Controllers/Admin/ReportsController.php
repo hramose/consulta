@@ -44,6 +44,14 @@ class ReportsController extends Controller
     {
         return view('admin.reports.clinics');
     }
+
+    /**
+     * Mostrar lista de pacientes de un doctor
+     */
+    public function patients()
+    {
+        return view('admin.reports.patients');
+    }
     
     /**
      * Display a listing of the resource.
@@ -94,6 +102,32 @@ class ReportsController extends Controller
           
             
             $statistics = $this->clinicRepo->reportsStatisticsAppointments($search);
+           
+            
+       }
+        
+        return $statistics;
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePatients()
+    {
+        $search = request()->all();
+        $statistics = [];
+        
+        if($search){
+
+            
+            $search['date1'] = (isset($search['date1'])) ? $search['date1'] : '';
+            $search['date2'] = (isset($search['date2'])) ? $search['date2'] : '';
+
+          
+            
+            $statistics = $this->patientRepo->reportsStatistics($search);
            
             
        }

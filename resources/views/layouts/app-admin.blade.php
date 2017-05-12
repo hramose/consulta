@@ -68,6 +68,9 @@
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
     @endif
+    <section class="content menu">
+        @include('layouts/partials/home-boxes-admin')  
+      </section> 
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
     @yield('content')

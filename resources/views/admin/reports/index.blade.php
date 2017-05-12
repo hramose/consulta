@@ -16,7 +16,7 @@
 
                 <div class="info-box-content">
                   <span class="info-box-text">Medicos</span>
-                  <span class="info-box-number">90<small>%</small></span>
+                  <span class="info-box-number"><small>Activos, inactivos, consultas</small></span>
                 </div>
                 <!-- /.info-box-content -->
               </a>
@@ -28,7 +28,7 @@
 
                 <div class="info-box-content">
                   <span class="info-box-text">Clinicas</span>
-                  <span class="info-box-number">90<small>%</small></span>
+                  <span class="info-box-number"><small>Registradas, consultas</small></span>
                 </div>
                 <!-- /.info-box-content -->
               </a>
@@ -40,7 +40,7 @@
 
                 <div class="info-box-content">
                   <span class="info-box-text">Pacientes</span>
-                  <span class="info-box-number">90<small>%</small></span>
+                  <span class="info-box-number"><small>Por regiones</small></span>
                 </div>
                 <!-- /.info-box-content -->
               </a>

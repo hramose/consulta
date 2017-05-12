@@ -76,18 +76,7 @@
       @endif
     </div>
   </div>
-  <div class="form-group">
-    <label for="address" class="col-sm-2 control-label">Dirección</label>
-
-    <div class="col-sm-10">
-      <input type="text" class="form-control" name="address" placeholder="Dirección" value="{{ old('address') ?: isset($patient) ? $patient->address : '' }}" >
-       @if ($errors->has('address'))
-          <span class="help-block">
-              <strong>{{ $errors->first('address') }}</strong>
-          </span>
-      @endif
-    </div>
-  </div>
+  
   <div class="form-group">
     <label for="province" class="col-sm-2 control-label">Provincia</label>
 
@@ -118,6 +107,18 @@
        @if ($errors->has('city'))
           <span class="help-block">
               <strong>{{ $errors->first('city') }}</strong>
+          </span>
+      @endif
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="address" class="col-sm-2 control-label">Dirección</label>
+
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="address" placeholder="Dirección" value="{{ old('address') ?: isset($patient) ? $patient->address : '' }}" >
+       @if ($errors->has('address'))
+          <span class="help-block">
+              <strong>{{ $errors->first('address') }}</strong>
           </span>
       @endif
     </div>

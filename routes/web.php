@@ -154,6 +154,10 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
             'uses' => 'Admin\UserController@' . $key,
         ));
     }
+    Route::get('/reports/patients', 'Admin\ReportsController@patients');
+    Route::get('/reports/patients/generate', 'Admin\ReportsController@generatePatients');
+    Route::get('/reports/patients/{medic}/generate', 'Admin\ReportsController@generatePatients');
+
     Route::get('/reports/medics', 'Admin\ReportsController@medics');
     Route::get('/reports/medics/generate', 'Admin\ReportsController@generateMedics');
     Route::get('/reports/medics/{medic}/generate', 'Admin\ReportsController@generateMedics');

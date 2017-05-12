@@ -4,6 +4,7 @@
 use App\Medicine;
 use App\Patient;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class PatientRepository extends DbRepository{
@@ -248,6 +249,49 @@ class PatientRepository extends DbRepository{
         $data['created_by'] = auth()->id();
 
         return $data;
+    }
+
+    /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatistics($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+    
+        $patients = $this->model;
+
+
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+         
+            $patients = $patients->where([['patients.created_at', '>=', $date1],
+                    ['patients.created_at', '<=', $date2->endOfDay()]]);
+            
+        }
+
+        $patients = $patients->selectRaw('province, count(*) items')
+                         ->groupBy('province')
+                         ->orderBy('province','DESC')
+                         ->get()
+                         ->toArray();
+        $statistics = [
+            'patients' => $patients
+        ];
+         
+      return $statistics;
+       
     }
 
 
