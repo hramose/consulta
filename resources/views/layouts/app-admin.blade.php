@@ -71,8 +71,8 @@
      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
-            <a href="/admin/users" class="btn btn-sm btn-info {{ set_active('clinic/appointments') }}">Usuarios</a>
-            <a href="/clinic/reports" class="btn btn-sm btn-warning {{ set_active('clinic/reports') }}">Reportes</a>
+            <a href="/admin/users" class="btn btn-sm btn-info {{ set_active('admin/users') }}">Usuarios</a>
+            <a href="/admin/reports" class="btn btn-sm btn-warning {{ set_active('admin/reports') }}">Reportes</a>
            
           </div>
        </div>
