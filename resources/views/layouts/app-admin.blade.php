@@ -68,6 +68,15 @@
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
     @endif
+     @if(! Request::is('/'))
+     <div class="menu-fixed">
+          <div class="menu-fixed-container">
+            <a href="/admin/users" class="btn btn-sm btn-info {{ set_active('clinic/appointments') }}">Usuarios</a>
+            <a href="/clinic/reports" class="btn btn-sm btn-warning {{ set_active('clinic/reports') }}">Reportes</a>
+           
+          </div>
+       </div>
+    @endif 
     <section class="content menu">
         @include('layouts/partials/home-boxes-admin')  
       </section> 

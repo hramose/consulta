@@ -34,22 +34,30 @@
                           
                       </div>
                       <div class="col-xs-12 col-sm-2">
-                          <div class="input-group">
-                            <input type="text" class="form-control"  name="date1" id="datepicker1" v-model="search.date1" @blur="onBlurDate1">
+                          <div class="form-group">
+                            <div class="col-sm-12">
+                              <div class="input-group">
+                                <input type="text" class="form-control"  name="date1" id="datepicker1" v-model="search.date1" @blur="onBlurDate1">
 
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                              </div>
                             </div>
                           </div>
                       </div>
-                       <div class="col-xs-12 col-sm-2">
-                          <div class="input-group">
-                            <input type="text" class="form-control"  name="date2" id="datepicker2" v-model="search.date2" @blur="onBlurDate2">
+                      <div class="col-xs-12 col-sm-2">
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                            <div class="input-group">
+                              <input type="text" class="form-control"  name="date2" id="datepicker2" v-model="search.date2" @blur="onBlurDate2">
 
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
                             </div>
                           </div>
+                        </div>
                       </div>
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
