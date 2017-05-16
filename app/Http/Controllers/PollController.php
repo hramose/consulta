@@ -22,14 +22,14 @@ class PollController extends Controller
 
     public function show($id)
     {
-    	$poll = Poll::find($id)->with('questions.answers')->first();
+    	//$poll = Poll::find($id)->with('questions.answers')->first();
        
-        if(!$poll) return redirect('/');
+        //if(!$poll) return redirect('/');
         
         //if($poll->user_id != auth()->id()) return redirect('/');
 
        // if($poll->completed) return redirect('/');
-
+        $poll = ""; 
       
 
     	return view('polls.show')->with(compact('poll'));

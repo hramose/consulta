@@ -3,20 +3,16 @@
                 
               <div class="box-body">
                 
-
-                
-                <div v-for="q in encuesta.questions" class="col-lg-4 col-sm-6 col-xs-12"> 
-                  <p>{{ q.name }}</p>
-                  <div class="radio" v-for="op in q.answers">
-                    <input type="radio" name="rate" v-model="rate" :value="op.id" :id="op.id" :disabled="q.completed == 1">
-                    <label :for="op.id">{{  op.name }}</label>
+                  <p>Satisfaccion de la consulta</p>
+                  <div id="star" class="ratings"></div>
+                  <div class="form-group">
                     
-                    
+                    <textarea cols="30" rows="10" v-model="review1.comments"></textarea>
                   </div>
-             
-                  <input type="submit" :value="q.completed == 1 ? 'Enviada' : 'Guardar'" class="btn btn-info" @click="save(q)" :disabled="q.completed == 1">
-                </div>
-                
+                  
+                <div class="form-group">
+                  <input type="submit" :value="Guardar" class="btn btn-info" @click="save(review1)">
+               </div>
              
                 
                 </div>
@@ -31,10 +27,15 @@
       props: ['poll'],
       data () {
         return {
-           encuesta:{},
-           questions:[],
-           rate:'',
-           answers:[],
+           review1:{
+              comments:'',
+              score:''
+           },
+            review2:{
+              comments:'',
+              score:''
+           },
+           
         }
       },
      
@@ -69,7 +70,7 @@
       },
       created () {
              console.log('Component ready. Poll Clinic')
-
+              debugger
              if(this.poll)
                this.encuesta = this.poll;
             

@@ -58,7 +58,7 @@ class AppointmentRepository extends DbRepository{
           $appointment->createDiseaseNotes();
           $appointment->createPhysicalExams();
           
-          $appointment->createPoll();
+          //$appointment->createPoll();
           /*if(auth()->user()->hasRole('paciente'))
             $appointment->createPoll(auth()->id());
           else

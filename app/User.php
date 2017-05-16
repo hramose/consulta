@@ -148,11 +148,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Office::class,'verified_offices');
     }
 
-     public function polls()
-    {
-        return $this->hasMany(Poll::class);
-    }
-
 
     public function createOffice($office = null)
     {

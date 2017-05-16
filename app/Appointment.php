@@ -61,10 +61,7 @@ class Appointment extends Model
     {
         return $this->hasOne(PhysicalExam::class);
     }
-     public function poll()
-    {
-        return $this->hasOne(Poll::class);
-    }
+    
      public function diagnostics()
     {
         return $this->hasMany(Diagnostic::class);
