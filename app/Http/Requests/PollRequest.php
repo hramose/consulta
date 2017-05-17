@@ -24,7 +24,8 @@ class PollRequest extends FormRequest
     public function rules()
     {
         return [
-            //'rate' => 'required',
+            'rating' => 'required',
+            'rating2' => 'required',
             /*'treatment' => 'required',
             'satisfaction' => 'required'*/
             

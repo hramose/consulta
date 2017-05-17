@@ -24,6 +24,12 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('active')->default(1);
             $table->string('provider')->default('email');
             $table->string('provider_id')->unique();
+            $table->float('rating_service_cache',2,1)->unsigned()->default(3.0);
+            $table->float('rating_medic_cache',2,1)->unsigned()->default(3.0);
+            $table->integer('rating_service_count')->unsigned()->default(0);
+            $table->integer('rating_medic_count')->unsigned()->default(0);
+
+
             $table->rememberToken();
             $table->timestamps();
         });

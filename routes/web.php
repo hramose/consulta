@@ -52,7 +52,8 @@ Route::get('/clinics/list', 'ClinicController@getAllOffices');
 
 //Route::get('/polls/{poll}/edit', 'AppointmentController@edit');
 Route::get('/medics/{medic}/polls', 'PollController@show');
-Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
+Route::post('/medics/{medic}/polls', 'PollController@store');
+//Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
 Route::resource('polls', 'PollController');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
@@ -94,6 +95,10 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
+	Route::get('/invoices/services/list', 'Medic\InvoiceController@getServices');
+	Route::post('/invoices/services', 'Medic\InvoiceController@saveService');
+	Route::resource('invoices', 'Medic\InvoiceController');
+
 	Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
 	Route::resource('physicalexams', 'Medic\PhysicalExamController');
 	Route::resource('diagnostics', 'Medic\DiagnosticController');
@@ -104,6 +109,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::resource('heredos', 'Medic\HeredoController');
 	Route::resource('ginecos', 'Medic\GinecoController');
 	Route::resource('signs', 'Medic\VitalSignController');
+	
 
 });
 

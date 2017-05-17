@@ -82,7 +82,7 @@ return [
     'timezone'             => 'El campo :attribute debe contener una zona válida.',
     'unique'               => 'El elemento :attribute ya está en uso.',
     'url'                  => 'El formato de :attribute no corresponde con el de una URL válida.',
-
+    
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -95,8 +95,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'rating' => [
+            'required' => 'Debes dar una :attribute para enviar la encuesta.',
+        ],
+        'rating2' => [
+            'required' => 'Debes dar una :attribute para enviar la encuesta.',
         ],
     ],
 
@@ -133,6 +136,9 @@ return [
         'phone2' => 'Celular',
         'birth_date' => 'Fecha de Nacimiento',
         'email' => 'Email',
+        'rating' => 'Puntuación',
+        'rating2' => 'Puntuación',
+       
     
 
         ],

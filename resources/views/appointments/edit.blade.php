@@ -29,6 +29,7 @@
 		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
+		                <li><a href="#invoice" data-toggle="tab">Facturar</a></li>
 		            </ul>
 		            <div class="tab-content">
 		              <div class="tab-pane" id="history">
@@ -98,6 +99,16 @@
 			              				<instructions :appointment="{{ $appointment }}" ></instructions>
 			              			</div>
 			              		</div>
+		              </div>
+		               <!-- /.tab-pane -->
+		                <div class="tab-pane" id="invoice">
+
+								<div class="row">
+									<div class="col-md-12">
+			              				<invoice-form></invoice-form>
+			              			</div>
+			              		</div>
+			              		
 		              </div>
 		               <!-- /.tab-pane -->
 		            </div>

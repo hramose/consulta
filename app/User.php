@@ -174,6 +174,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Setting::class);
     }
+     public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
     /**
      * create a setting to user
      * @param null $profile
@@ -237,6 +241,50 @@ class User extends Authenticatable
         
         return !! $office->intersect($this->verifiedOffices)->count();
     }
+
+    /**
+     * Relationship with the Review model
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviewsService()
+    {
+        return $this->hasMany(ReviewService::class);
+    }
+
+     /**
+     * Relationship with the Review model
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviewsMedic()
+    {
+        return $this->hasMany(ReviewMedic::class);
+    }
+
+    // The way average rating is calculated (and stored) is by getting an average of all ratings,
+    // storing the calculated value in the rating_cache column (so that we don't have to do calculations later)
+    // and incrementing the rating_count column by 1
+
+    public function recalculateRatingService()
+    {
+        $reviews = $this->reviewsService()->notSpam()->approved();
+        $avgRating= $reviews->avg('rating');
+        $this->rating_service_cache = round($avgRating,1);
+        $this->rating_service_count = $reviews->count();
+
+        $this->save();
+    }
+
+     public function recalculateRatingMedic()
+    {
+     
+        $reviews = $this->reviewsMedic()->notSpam()->approved();
+        $avgRating = $reviews->avg('rating');
+        $this->rating_medic_cache = round($avgRating,1);
+        $this->rating_medic_count = $reviews->count();
+
+        $this->save();
+    }
+
     
  
   

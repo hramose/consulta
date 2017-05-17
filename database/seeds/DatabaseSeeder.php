@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'clinica',
         ]);
         factory(Role::class, 1)->create([
-            'name' => 'secretaria',
+            'name' => 'asistente',
         ]);
 
 

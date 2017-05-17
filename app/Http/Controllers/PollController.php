@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PollRequest;
 use App\Poll;
 use App\PollOptions;
+use App\ReviewMedic;
+use App\ReviewService;
+use App\User;
 use Illuminate\Http\Request;
 
 class PollController extends Controller
@@ -20,7 +23,7 @@ class PollController extends Controller
        
     }
 
-    public function show($id)
+    public function show($medic_id)
     {
     	//$poll = Poll::find($id)->with('questions.answers')->first();
        
@@ -29,10 +32,27 @@ class PollController extends Controller
         //if($poll->user_id != auth()->id()) return redirect('/');
 
        // if($poll->completed) return redirect('/');
-        $poll = ""; 
-      
+    
 
-    	return view('polls.show')->with(compact('poll'));
+    	return view('polls.show')->with(compact('medic_id'));
+    }
+
+    public function store($user_id, PollRequest $request)
+    {
+     
+
+        $user = User::find($user_id);
+
+        if($user){
+            $reviewService = New ReviewService;
+            $reviewService->storeReviewForUser($user->id, auth()->id(), request('comment1'), request('rating'));
+
+            $reviewMedic = New ReviewMedic;
+            $reviewMedic->storeReviewForUser($user->id, auth()->id(), request('comment2'), request('rating2'));
+        }
+
+        return Redirect('/');
+
     }
 
     /**
