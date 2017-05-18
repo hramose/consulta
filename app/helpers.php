@@ -2,7 +2,7 @@
 
 
 
-function money($amount, $symbol = '$')
+function money($amount, $symbol = '₡')
 {
     return (!$symbol) ? number_format($amount, 2, ".", ",") : $symbol . number_format($amount, 2, ".", ",");
 }

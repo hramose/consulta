@@ -46,9 +46,9 @@
                       <tr v-for="item in servicesToInvoice">
                         <td>1</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.amount }}</span></td>
+                        <td>₡{{ money(item.amount) }}</span></td>
                         <td>
-                          {{ parseFloat(item.amount) * 1 }}
+                          ₡{{  money(parseFloat(item.amount) * 1) }}
                         </td>
                         <td>
                           <i class="fa fa-trash-o delete" @click="removeToInvoice(item)"></i>
@@ -62,7 +62,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    Total de Factura: {{ getTotalInvoice() }}
+                    Total de Factura: ₡{{  money(getTotalInvoice()) }}
                 </div>
                 <!-- /.box-footer -->
               </div>
@@ -140,7 +140,9 @@
 	       
 	      },
         methods: {
-
+            money(n, currency) {
+                return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            },
         		cancel() {
 		          this.new_service = "";
 		          this.newService = false;

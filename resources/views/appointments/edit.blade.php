@@ -29,7 +29,7 @@
 		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
-		                <li><a href="#invoice" data-toggle="tab">Facturar</a></li>
+		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
 		            </ul>
 		            <div class="tab-content">
 		              <div class="tab-pane" id="history">
