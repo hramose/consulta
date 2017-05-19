@@ -57,7 +57,7 @@ Route::post('/medics/{medic}/polls', 'PollController@store');
 Route::resource('polls', 'PollController');
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
-Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
+Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(function ()
 {
 
 	Route::get('/account/edit', 'Medic\UserController@edit');
@@ -113,11 +113,12 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 
 });
 
-Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
+Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(function ()
 {
 
 	Route::get('/account/edit', 'Clinic\UserController@edit');
 	Route::put('/account/edit', 'Clinic\UserController@update');
+	Route::put('/account/assistant', 'Clinic\UserController@addAssistant');
 	//Route::put('/account/settings', 'Clinic\UserController@updateSettings');
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');
@@ -148,6 +149,50 @@ Route::prefix('clinic')->middleware('authByRole:clinica')->group(function ()
 
 	Route::get('/reports', 'Clinic\ReportsController@index');
 	Route::get('/reports/generate', 'Clinic\ReportsController@generate');
+
+});
+
+Route::prefix('assistant')->middleware('authByRole:asistente')->group(function ()
+{
+
+	Route::get('/account/edit', 'Assistant\UserController@edit');
+	Route::put('/account/edit', 'Assistant\UserController@update');
+	Route::put('/account/assistant', 'Assistant\UserController@addAssistant');
+	//Route::put('/account/settings', 'Assistant\UserController@updateSettings');
+	
+	Route::post('/account/avatars', 'Assistant\UserController@avatars');
+	Route::put('/account/offices/{id}', 'Assistant\UserController@updateClinic');
+	Route::get('/specialities/list', 'Assistant\UserController@getSpecialities');
+	//Route::post('/account/patients', 'UserController@storePatient');
+	//Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
+	//Route::put('/account/patients/{id}', 'UserController@updatePatient');
+	
+	Route::post('/patients/photos', 'Assistant\PatientController@photos');
+	Route::post('/patients/files', 'Assistant\PatientController@files');
+	Route::post('/patients/files/delete', 'Assistant\PatientController@deleteFiles');
+	Route::put('/patients/{id}/history', 'Assistant\PatientController@history');
+	Route::post('/patients/{id}/medicines', 'Assistant\PatientController@medicines');
+	Route::delete('/patients/medicines/{id}', 'Assistant\PatientController@deleteMedicines');
+	Route::post('/patients/{id}/add', 'Assistant\PatientController@addToYourPatients');
+	Route::get('/patients/list', 'Assistant\PatientController@list');
+	Route::resource('patients', 'Assistant\PatientController');
+
+	Route::get('/appointments/list', 'Assistant\AppointmentController@getAppointments');
+	Route::get('/appointments/{id}/print', 'Assistant\AppointmentController@printSummary');
+	Route::delete('/appointments/{id}/delete', 'Assistant\AppointmentController@delete');
+	Route::resource('appointments', 'Assistant\AppointmentController');
+	
+	Route::post('/medics/{medic}/offices/{office}/assign', 'Assistant\MedicController@assignOffice');
+	Route::get('/medics/list', 'Assistant\MedicController@getMedics');
+	Route::resource('medics', 'Assistant\MedicController');
+
+	//Route::get('/invoices/services/list', 'Assistant\InvoiceController@getServices');
+	//Route::post('/invoices/services', 'Assistant\InvoiceController@saveService');
+	Route::put('/invoices/{id}', 'Assistant\InvoiceController@update');
+	Route::get('/invoices/{id}/details', 'Assistant\InvoiceController@getDetails');
+	Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
+	Route::resource('invoices', 'Assistant\InvoiceController');
+
 
 });
 

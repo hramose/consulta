@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Speciality;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -90,7 +91,17 @@ class UserController extends Controller
 
         $data = request()->all();
         
+        if(auth()->user()->hasRole('asistente'))
+        {
+            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
+            $boss = User::find($boss_assistant->user_id);
+
+            $patient = $this->patientRepo->store($data, $boss);
+            
+            return $patient;
+        }
+        
 
         $patient = $this->patientRepo->store($data);
 

@@ -285,6 +285,21 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function assistants()
+    {
+        return $this->belongsToMany(User::class, 'assistants_users', 'user_id', 'assistant_id');
+    }
+
+    public function addAssistant(User $user)
+    {
+        $this->assistants()->attach($user->id);
+    }
+
+    public function removeAssistant(User $user)
+    {
+        $this->assistants()->detach($user->id);
+    }
+
     
  
   

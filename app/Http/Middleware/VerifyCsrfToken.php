@@ -27,5 +27,6 @@ class VerifyCsrfToken extends BaseVerifier
         '/appointments',
         '/appointments/*',
         '/account/avatars',
+        '/assistant/invoices/*',
     ];
 }

@@ -13,12 +13,27 @@ class AuthByRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $roles)
     {
-        if(auth()->check() && auth()->user()->hasRole($role))
+        $roles = array_except(func_get_args(), [0,1]);
+        
+         
+
+            foreach ($roles as $role) {
+
+                if(auth()->check() && auth()->user()->hasRole($role))
+                {
+                    return $next($request);
+                }
+
+            }
+        
+
+        /*if(auth()->check() && auth()->user()->hasRole($role))
         {
             return $next($request);
-        }
+        }*/
+
         return redirect('/');
 
     }

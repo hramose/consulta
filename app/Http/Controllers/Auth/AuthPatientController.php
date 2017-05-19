@@ -77,7 +77,7 @@ class AuthPatientController extends Controller
         $data['provider'] = $provider;
         $data['provider_id'] = $user->id;
         $data['role'] = Role::whereName('paciente')->first();
-        dd($data);
+        //dd($data);
         $user = $this->userRepo->store($data);
 
 

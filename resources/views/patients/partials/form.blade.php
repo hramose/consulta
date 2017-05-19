@@ -2,7 +2,7 @@
     <label for="office_name" class="col-sm-2 control-label">Nombre</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="first_name" placeholder="Nombre" value="{{ old('first_name') ?: isset($patient) ? $patient->first_name : '' }}" required {{ isset($patient) ? 'disabled' : ''}}>
+      <input type="text" class="form-control" name="first_name" placeholder="Nombre" value="{{ old('first_name') ?: isset($patient) ? $patient->first_name : '' }}" required {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('first_name'))
           <span class="help-block">
               <strong>{{ $errors->first('first_name') }}</strong>
@@ -14,7 +14,7 @@
     <label for="last_name" class="col-sm-2 control-label">Apellidos</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ old('last_name') ?: isset($patient) ? $patient->last_name : '' }}" {{ isset($patient) ? 'disabled' : ''}}>
+      <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ old('last_name') ?: isset($patient) ? $patient->last_name : '' }}" {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('last_name'))
           <span class="help-block">
               <strong>{{ $errors->first('last_name') }}</strong>
@@ -26,7 +26,7 @@
     <label for="birth_date" class="col-sm-2 control-label">Fecha de Nacimiento</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ old('birth_date') ?: isset($patient) ? $patient->birth_date : '' }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask {{ isset($patient) ? 'disabled' : ''}}>
+      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ old('birth_date') ?: isset($patient) ? $patient->birth_date : '' }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('birth_date'))
           <span class="help-block">
               <strong>{{ $errors->first('birth_date') }}</strong>
@@ -38,7 +38,7 @@
     <label for="gender" class="col-sm-2 control-label">Sexo</label>
 
     <div class="col-sm-10">
-      <select class="form-control select2" style="width: 100%;" name="gender" placeholder="-- Selecciona Genero --" required {{ isset($patient) ? 'disabled' : ''}}>
+      <select class="form-control select2" style="width: 100%;" name="gender" placeholder="-- Selecciona Genero --" required {{ isset($patient) ? 'readonly' : ''}}>
         <option value=""></option>
         <option value="m" {{ isset($patient) ? $patient->gender == 'm' ? 'selected' : '' : '' }}>Masculino</option>
         <option value="f" {{ isset($patient) ? $patient->gender == 'f' ? 'selected' : '' : '' }}>Femenino</option>

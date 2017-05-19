@@ -24,7 +24,7 @@ class PatientRepository extends DbRepository{
      * save a patient
      * @param $data
      */
-    public function store($data)
+    public function store($data, $user = null )
     {
         
         $data = $this->prepareData($data);
@@ -34,7 +34,7 @@ class PatientRepository extends DbRepository{
         $patient->createHistory();
         $patient->createVitalSigns();
         
-        $patient = auth()->user()->patients()->save($patient);
+        $patient = ($user) ? $user->patients()->save($patient) : auth()->user()->patients()->save($patient);
       
 
         return $patient;
@@ -232,13 +232,13 @@ class PatientRepository extends DbRepository{
     /**
      * List of patients for the appointments form
      */
-   public function list($search = null)
+   public function list($search = null, $user = null)
    {
         $patients = [];
         
         if(!$search) return $patients;
 
-        $patients = auth()->user()->patients()->search($search)->paginate(10);
+        $patients = ($user) ? $user->patients()->search($search)->paginate(10) : auth()->user()->patients()->search($search)->paginate(10);
 
         return $patients;
     }

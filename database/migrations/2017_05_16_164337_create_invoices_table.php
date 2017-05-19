@@ -21,6 +21,7 @@ class CreateInvoicesTable extends Migration
             $table->double('discount')->default(0);
             $table->double('subtotal')->default(0);
             $table->double('total')->default(0);
+            $table->tinyInteger('status')->default(0); //1 facturada
             $table->timestamps();
         });
     }

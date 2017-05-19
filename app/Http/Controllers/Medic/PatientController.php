@@ -96,7 +96,7 @@ class PatientController extends Controller
      */
     public function update($id, PatientRequest $request)
     {
-       
+      
         $patient = $this->patientRepo->update($id, $request->all());
         
         flash('Paciente Actualizado','success');

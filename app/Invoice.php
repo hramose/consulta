@@ -8,7 +8,7 @@ class Invoice extends Model
 {
     
     protected $fillable = [
-        'client_name','discount','subtotal','total'
+        'client_name','discount','subtotal','total','status'
     ];
 
     public function lines()
@@ -18,7 +18,7 @@ class Invoice extends Model
 
     public function medic()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function appointment()

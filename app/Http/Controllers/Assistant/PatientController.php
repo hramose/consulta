@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Clinic;
+namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
@@ -33,13 +33,16 @@ class PatientController extends Controller
         if(request('inita'))
             $inita = 1;
 
-        $office = auth()->user()->offices->first();
+        $boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+      
+        $office = User::find($boss->user_id)->offices->first();
+
        
         $patients = $this->patientRepo->findAllOfClinic($office,$search);
         
 
 
-    	return view('clinic.patients.index',compact('patients','search','inita'));
+    	return view('assistant.patients.index',compact('patients','search','inita'));
 
     }
 
@@ -49,7 +52,7 @@ class PatientController extends Controller
     public function create()
     {
         
-        return view('clinic.patients.create');
+        return view('assistant.patients.create');
 
     }
 
@@ -58,12 +61,15 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
+        $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+      
+        $boss = User::find($boss_assistant->user_id);
         
-        $patient =$this->patientRepo->store($request->all());
+        $patient =$this->patientRepo->store($request->all(), $boss);
 
         flash('Paciente Creado','success');
 
-        return Redirect('/clinic/patients/'.$patient->id.'/edit');
+        return Redirect('/assistant/patients/'.$patient->id.'/edit');
 
     }
     /**
@@ -87,7 +93,7 @@ class PatientController extends Controller
         
         $files = Storage::disk('public')->files("patients/". $id ."/files");
         
-        return view('clinic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments'));
+        return view('assistant.patients.edit', compact('patient','files','initAppointments','scheduledAppointments'));
 
     }
 
@@ -221,18 +227,11 @@ class PatientController extends Controller
      */
     public function list()
     {
-        if(auth()->user()->hasRole('asistente'))
-        {
-            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+        $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
-            $boss = User::find($boss_assistant->user_id);
+        $boss = User::find($boss_assistant->user_id);
 
-            $patients = $this->patientRepo->list(request('q'), $boss);
-            
-            return $patients;
-        }
-
-        $patients = $this->patientRepo->list(request('q'));
+        $patients = $this->patientRepo->list(request('q'), $boss);
        
         return $patients;
 
