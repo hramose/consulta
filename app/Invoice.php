@@ -20,6 +20,10 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+     public function clinic()
+    {
+        return $this->belongsTo(Office::class,'office_id');
+    }
 
     public function appointment()
     {

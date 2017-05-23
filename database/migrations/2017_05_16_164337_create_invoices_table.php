@@ -17,6 +17,7 @@ class CreateInvoicesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index(); // medico
             $table->integer('appointment_id')->unsigned()->index(); // consulta
+            $table->integer('office_id')->unsigned()->index(); // clinica
             $table->string('client_name')->nullable();
             $table->double('discount')->default(0);
             $table->double('subtotal')->default(0);

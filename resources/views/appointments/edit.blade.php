@@ -105,7 +105,7 @@
 
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :office_id="{{ $appointment->office->id }}" ></invoice-form>
 			              			</div>
 			              		</div>
 			              		<div class="row">

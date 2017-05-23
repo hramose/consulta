@@ -48,6 +48,7 @@
             <ul class="nav nav-tabs">
               <li class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }}"><a href="#profile" data-toggle="tab">Perfil</a></li>
               <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab">Consultorios</a></li>
+              <li class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }}"><a href="#assistant" data-toggle="tab">Asistente</a></li>
               <li class="{{ isset($tab) ? ($tab =='reviews') ? 'active' : '' : '' }}"><a href="#reviews" data-toggle="tab">Comentarios</a></li>
             </ul>
             <div class="tab-content">
@@ -194,6 +195,53 @@
                     </div>
                   </div>
                 </form>
+              </div>
+              <div class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }} tab-pane" id="assistant">
+                   <form method="POST" action="{{ url('/medic/account/assistant') }}" class="form-horizontal">
+                      {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                      @if (isset($assistant))
+                        <input name="assistant_id" type="hidden" value="{{ $assistant->id }}">
+                      @endif
+                    <div class="form-group">
+                      <label for="name" class="col-sm-2 control-label">Nombre</label>
+
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="assistant_name" name="name" placeholder="Name" value="{{ old('name') ?: (isset($assistant) ? $assistant->name : '') }}" required>
+                         @if ($errors->has('name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="email" class="col-sm-2 control-label">Email</label>
+
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="assistant_email"  name="email" placeholder="Email"  value="{{ old('email') ?: (isset($assistant) ? $assistant->email : '') }}" required>
+                        @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="password" class="col-sm-2 control-label">Contraseña</label>
+
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" id="assistant_password" name="password" placeholder="Escribe la nueva contraseña">
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-info">Guardar</button>
+                      </div>
+                    </div>
+                  </form>
               </div>
               <!-- /.tab-pane -->
               <div class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }} tab-pane" id="clinics">

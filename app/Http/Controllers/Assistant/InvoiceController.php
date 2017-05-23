@@ -33,24 +33,29 @@ class InvoiceController extends Controller
     {
         $search['q'] = request('q');
 
+
         $assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-      
-        $office = User::find($assistants_users->user_id)->offices->first();
+        
+        if(auth()->user()->isMedicAssistant($assistants_users->user_id))
+            $offices = User::find($assistants_users->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+        if(auth()->user()->isClinicAssistant($assistants_users->user_id))
+            $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');
 
+            
+        //dd($offices);
 
-        $medics = $this->medicRepo->findAllByOffice($office->id);
+        $medics = $this->medicRepo->findAllByOffices($offices);
 
         if(request('medic'))
             $medic = $this->medicRepo->findById(request('medic'));
         else
             $medic = null;
 
-        $invoices = Invoice::orderBy('created_at','DESC')->limit(10)->get();
+        $invoices = Invoice::whereIn('office_id', $offices)->orderBy('created_at','DESC')->limit(10)->get();
     
-      
-    	//$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
-
-    	return view('assistant.invoices.index',compact('medics','medic','office','search','invoices'));
+        
+    	
+    	return view('assistant.invoices.index',compact('medics','medic','search','invoices'));
 
     }
      /**
@@ -60,10 +65,19 @@ class InvoiceController extends Controller
     {
         $medic = $this->medicRepo->findById($medic_id);
 
+         $assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+        
+        if(auth()->user()->isMedicAssistant($assistants_users->user_id))
+            $offices = User::find($assistants_users->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+        if(auth()->user()->isClinicAssistant($assistants_users->user_id))
+            $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');
+
+        $invoices = $medic->invoices()->whereIn('office_id', $offices)->orderBy('created_at','DESC')->paginate(10);
+
       
         //$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
-        return view('assistant.invoices.show',compact('medic'));
+        return view('assistant.invoices.show',compact('medic','invoices'));
 
     }
 

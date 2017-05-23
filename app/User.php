@@ -300,6 +300,30 @@ class User extends Authenticatable
         $this->assistants()->detach($user->id);
     }
 
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function isMedicAssistant($user_id)
+    {
+ 
+        return User::find($user_id)->hasRole('medico');
+    }
+
+     /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function isClinicAssistant($user_id)
+    {
+ 
+        return User::find($user_id)->hasRole('clinica');
+    }
+
     
  
   

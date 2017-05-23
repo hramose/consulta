@@ -63,18 +63,24 @@ class UserController extends Controller
      */
     public function addAssistant()
     {  
-      //  dd(request()->all());
-      //$data['name'] = request('assistant_name');
-      //$data['email'] = request('assistant_email');
-      //$data['password'] = request('assistant_password');
-
-      //dd($data);
+      
        $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ]
+                'email' => ['required','email', Rule::unique('users')->ignore(request('assistant_id')) ]
             ]);
         
         $data = request()->all();
+
+        if(request('assistant_id'))
+       {
+
+            $assistant = $this->userRepo->update(request('assistant_id'), $data);
+          
+             flash('Asistente actualizado','success');
+
+            return Redirect('/clinic/account/edit?tab=assistant');
+
+       }
        
     
         $data['role'] = Role::whereName('asistente')->first();

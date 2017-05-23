@@ -86,6 +86,7 @@
                       <tr>
                         <th>#</th>
                         <th>Médico</th>
+                        <th>Clínica</th>
                         <th>Fecha</th>
                         <th>Total</th>
                         <th>Estado</th>
@@ -97,6 +98,7 @@
                           <tr>
                             <td>{{ $invoice->id }}</td>
                              <td>{{ $invoice->medic->name }}</td>
+                             <td>{{ $invoice->clinic->name }}</td>
                             <td>
                              {{ $invoice->created_at }}
                             </td>

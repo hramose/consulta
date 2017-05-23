@@ -28,7 +28,8 @@ class InvoiceRepository extends DbRepository{
        
         
         $invoice = $this->model;
-        $invoice->appointment_id = 1;
+        $invoice->appointment_id = $data['appointment_id'];
+        $invoice->office_id = $data['office_id'];
 
         $invoice = auth()->user()->invoices()->save($invoice);
         
@@ -36,7 +37,7 @@ class InvoiceRepository extends DbRepository{
 
 
         $totalInvoice = 0;
-        foreach ($data as $service) {
+        foreach ($data['services'] as $service) {
 
             $line = new InvoiceLine;
             $line->service = $service['name'];

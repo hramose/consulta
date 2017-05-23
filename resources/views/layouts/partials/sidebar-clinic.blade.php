@@ -32,9 +32,9 @@
         <!-- Optionally, you can add icons to the links -->
         <li><a href="{{ url('/')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li><a href="{{ url('/clinic/appointments')}}"><i class="fa fa-calendar"></i> <span>Agenda</span></a></li>
-         <li><a href="{{ url('/clinic/medics')}}"><i class="fa fa-users"></i> <span>Medicos</span></a></li>
+         <li><a href="{{ url('/clinic/medics')}}"><i class="fa fa-user-md"></i> <span>Medicos</span></a></li>
         <li><a href="{{ url('/clinic/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
-         <li><a href="{{ url('/clinic/reports')}}"><i class="fa fa-users"></i> <span>Reportes</span></a></li>
+         <li><a href="{{ url('/clinic/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
         
       </ul>
       <!-- /.sidebar-menu -->

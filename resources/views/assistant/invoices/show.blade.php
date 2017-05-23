@@ -33,17 +33,21 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
+                        <th>Clinica</th>
                         <th>Total</th>
                         <th>Estado</th>
                         <th></th>
                       </tr>
                       </thead>
                       <tbody>
-                        @foreach($invoices = $medic->invoices()->orderBy('created_at','DESC')->paginate(10) as $invoice)
+                        @foreach($invoices as $invoice)
                           <tr>
                             <td>{{ $invoice->id }}</td>
                             <td>
                              {{ $invoice->created_at }}
+                            </td>
+                             <td>
+                             {{ $invoice->clinic->name }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>

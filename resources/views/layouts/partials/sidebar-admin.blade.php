@@ -32,6 +32,7 @@
         <!-- Optionally, you can add icons to the links -->
         <li><a href="{{ url('/')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li><a href="{{ url('/admin/users')}}"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
+         <li><a href="{{ url('/admin/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
       
         
       </ul>

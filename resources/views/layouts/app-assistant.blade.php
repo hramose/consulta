@@ -67,8 +67,9 @@
      <div class="menu-fixed">
           <div class="menu-fixed-container">
             <a href="/assistant/appointments" class="btn btn-sm btn-info {{ set_active('assistant/appointments') }}">Agenda</a>
-            <a href="/assistant/medics" class="btn btn-sm btn-success {{ set_active('assistant/medics') }}">Medicos</a>
+            <a href="/assistant/medics" class="btn btn-sm btn-success {{ set_active('assistant/medics') }}">Médicos</a>
             <a href="/assistant/patients" class="btn btn-sm btn-danger {{ set_active('assistant/patients') }}">Pacientes</a>
+            <a href="/assistant/invoices" class="btn btn-sm btn-warning {{ set_active('assistant/invoices') }}">Facturación</a>
          
           </div>
        </div>

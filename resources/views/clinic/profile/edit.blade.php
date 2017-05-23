@@ -101,6 +101,9 @@
               <div class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }} tab-pane" id="assistant">
                    <form method="POST" action="{{ url('/clinic/account/assistant') }}" class="form-horizontal">
                       {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                       @if (isset($assistant))
+                        <input name="assistant_id" type="hidden" value="{{ $assistant->id }}">
+                      @endif
                     <div class="form-group">
                       <label for="name" class="col-sm-2 control-label">Nombre</label>
 

@@ -116,7 +116,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-      
+        props:['appointment_id', 'office_id'],
         data () {
 	        return {
 	 
@@ -225,13 +225,14 @@
 		      	},//save service
 	          invoice(){
 
-                this.$http.post('/medic/invoices', this.servicesToInvoice).then((response) => {
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, services: this.servicesToInvoice}).then((response) => {
                         console.log(response.status);
                         console.log(response.data);
                         if(response.status == 200 && response.data)
                         {
                       
                           bus.$emit('alert', 'Servicio facturado','success');
+                          bus.$emit('addToInvoiceList', response.data); 
                           this.service = null;
                           this.servicesToInvoice = [];
                           this.errors = [];

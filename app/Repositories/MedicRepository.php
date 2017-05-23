@@ -232,6 +232,58 @@ class MedicRepository extends DbRepository{
      * @param null $search
      * @return mixed
      */
+    public function findAllByOffices($office_ids, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        //$office = Office::findOrfail($office_id);
+
+        $medic_ids = \DB::table('office_user')->whereIn('office_id',$office_ids)->pluck('user_id');
+
+       
+        
+        /*if($except)
+            $medics = $office->users()->where('users.id','<>',$except)->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });*/
+        //else
+           if (isset($search['q']) && trim($search['q']))
+            {
+               //$medics = $office->users()->whereHas('roles', function($q){
+                                               //     $q->where('name', 'medico');
+                                               // })->Search($search['q']);
+
+                $medics = User::whereIn('users.id', $medic_ids)->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->Search($search['q']);
+            } else
+            {
+               // $medics = $office->users()->whereHas('roles', function($q){
+               //                                      $q->where('name', 'medico');
+               //                                  });
+                 $medics = User::whereIn('users.id', $medic_ids)->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                });
+            }
+           
+
+        
+       
+
+        return $medics->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
+       
+
+
+
+    }
+
+    /**
+     * Find all the users for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
     public function findAllByOfficeWithoutPaginate($office_id, $search = null)
     {
         $order = 'created_at';

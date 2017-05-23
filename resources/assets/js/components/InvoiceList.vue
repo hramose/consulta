@@ -76,7 +76,7 @@
           
           this.facturas = this.invoices;
 	     
-	      bus.$on('addToList', this.addToList);
+	      bus.$on('addToInvoiceList', this.addToList);
 	      
 	    }
     }

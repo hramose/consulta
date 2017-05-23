@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use App\Role;
 use App\Setting;
 use App\Speciality;
 use Illuminate\Http\Request;
@@ -26,9 +27,10 @@ class UserController extends Controller
     {
     	$tab = request('tab');
         $user = auth()->user();
+        $assistant = auth()->user()->assistants->first();
         $specialities = Speciality::all();
 
-    	return view('users.edit',compact('user','specialities','tab'));
+    	return view('users.edit',compact('user','specialities','assistant','tab'));
 
     }
 
@@ -68,6 +70,49 @@ class UserController extends Controller
         
 
     }
+
+    /**
+     * Actualizar informacion basica del medico
+     */
+    public function addAssistant()
+    {  
+      
+       $this->validate(request(),[
+                'name' => 'required',
+                'email' => ['required','email', Rule::unique('users')->ignore(request('assistant_id')) ]
+            ]);
+
+       $data = request()->all();
+       
+       if(request('assistant_id'))
+       {
+
+            $assistant = $this->userRepo->update(request('assistant_id'), $data);
+          
+             flash('Asistente actualizado','success');
+
+            return Redirect('/medic/account/edit?tab=assistant');
+
+       }
+        
+       
+    
+        $data['role'] = Role::whereName('asistente')->first();
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
+
+
+        $user = $this->userRepo->store($data);
+      
+       
+        auth()->user()->addAssistant($user);
+
+        flash('Asistente Registrado','success');
+
+        return Redirect('/medic/account/edit?tab=assistant');
+
+    }
+
 
     /**
      * Guardar avatar del medico

@@ -34,9 +34,19 @@ class AppointmentController extends Controller
         //dd(auth()->user()->assistants->first());
         $boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
-        $office = User::find($boss->user_id)->offices->first();
+       
+        if(auth()->user()->isMedicAssistant($boss->user_id)){
+            $offices = User::find($boss->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+            $office = User::find($boss->user_id)->offices->first();
+        }
 
-        $medics = $this->medicRepo->findAllByOffice($office->id);
+        if(auth()->user()->isClinicAssistant($boss->user_id)){
+            $offices = User::find($boss->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');
+            $office = User::find($boss->user_id)->offices->first();
+        }
+
+        //$medics = $this->medicRepo->findAllByOffice($office->id);
+        $medics = $this->medicRepo->findAllByOffices($offices);
 
         if(request('medic'))
             $medic = $this->medicRepo->findById(request('medic'));
