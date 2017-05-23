@@ -23,7 +23,7 @@
                             
                           
                       </div>
-                      <div class="col-xs-12 col-sm-2" v-show="search.type == 'Evaluación de usuario' ">
+                     <!--  <div class="col-xs-12 col-sm-2" v-show="search.type == 'Evaluación de usuario' ">
                         <div class="form-group">
                             <div class="col-sm-12">
                               <select class="form-control " style="width: 100%;" name="type" v-model="search.reviewType" @change="changeReviews()">
@@ -35,7 +35,7 @@
                         </div>
                             
                           
-                      </div>
+                      </div> -->
                       <div class="col-xs-12 col-sm-4" v-show="(search.type != 'General' && search.type != 'Evaluación de usuario') || search.reviewType != 'Clínica' ">
                         <div class="form-group">
                             <div class="col-sm-12">
@@ -45,18 +45,18 @@
                             
                           
                       </div>
-                      <div class="col-xs-12 col-sm-2">
+                      <div class="col-xs-12 col-sm-2" v-show="search.type != 'Evaluación de usuario'">
                           <div class="input-group">
-                            <input type="text" class="form-control"  name="date1" id="datepicker1" v-model="search.date1" @blur="onBlurDate1">
+                            <input type="text" class="form-control"  name="date1" id="datepicker1" v-model="search.date1" @blur="onBlurDate1" >
 
                             <div class="input-group-addon">
                               <i class="fa fa-calendar"></i>
                             </div>
                           </div>
                       </div>
-                       <div class="col-xs-12 col-sm-2">
+                       <div class="col-xs-12 col-sm-2" v-show="search.type != 'Evaluación de usuario'">
                           <div class="input-group">
-                            <input type="text" class="form-control"  name="date2" id="datepicker2" v-model="search.date2" @blur="onBlurDate2">
+                            <input type="text" class="form-control"  name="date2" id="datepicker2" v-model="search.date2" @blur="onBlurDate2" >
 
                             <div class="input-group-addon">
                               <i class="fa fa-calendar"></i>
@@ -134,51 +134,48 @@
           </div>
         </div>
 
-      <!--   <div v-if="dataPoll.length">
+         <div v-if="data.length">
            <div class="box box-danger">
               <div class="box-header">
-                 <h3 class="box-title">Encuesta</h3>
+                 <h3 class="box-title">Ventas</h3>
                 
               </div>
               <div class="box-body">
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
-                              <div class=" col-xs-12" v-for="statistic in dataPoll">
-                                   
-                                    <div class="box box-success">
-                                      <div class="box-header">
-                                        {{ statistic['question'] }}
-                                      </div>
-                                      <div class="box-body">
-                                        
-                                        
-                                       
-                                        <ul class='votacion'>
-                                          <li v-for="ans in statistic['answers']">
-                                             <div class="fl"><span class="label label-default">{{ ans.name }}</span></div><div class="fr">Votos: {{ ans.rate }}</div>
-                                         
-                                            <div class="barra" >{{ (ans.rate*100/statistic['totalAnswers']) }}%</div>
-                                          </li>
+                              <div class=" col-xs-12" >
+                                    <!-- small box -->
+                                    <div class="small-box bg-aqua" >
+                                      <div class="inner">
+                                        <h3>₡{{ dataSales.total }}</h3>
 
-                                          
-                                        </ul>
+                                        <p>Facturas: {{ dataSales.invoices}}</p>
                                       </div>
-                                     
+                                      <div class="icon">
+                                        <i class="fa fa-money"></i>
+                                      </div>
+                                      <div class="small-box-footer"></div>
                          
                                     </div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
-                            <div class="box box-default box-chart" v-for="statistic in dataPoll">
-                                
-                                <div class="box-body">
-                                 
-                                 
-                                  <chartjs-pie :scalesdisplay="false"  :labels="statistic['dataLabels']"  :datasets="statistic['dataSets']"></chartjs-pie>
-                                </div>
-                              
-                          </div>
+                            <div class=" col-xs-12" >
+                                    <!-- small box -->
+                                    <div class="small-box bg-green" >
+                                      <div class="inner">
+                                        <h3>{{ dataPatients }}</h3>
+
+                                        <p>Paciente(s) atendidos</p>
+                                      </div>
+                                      <div class="icon">
+                                        <i class="fa fa-user"></i>
+                                      </div>
+                                      <div class="small-box-footer"></div>
+                         
+                                    </div>
+                            </div> 
                         </div>
                       </div>
                 
@@ -188,14 +185,78 @@
           
          
         </div>
-        <div v-else>
-          <div class="callout callout-info callout-search">
-            
-            <h4>No hay datos !</h4>
+        
 
-            <p>No se encontraron estadisticas con esos parametros!</p>
+         
+      <div v-if="dataReviews.rating_service_cache && this.search.type == 'Evaluación de usuario'" >
+           <div class="box box-danger">
+              <div class="box-header">
+                 <h3 class="box-title">Nivel de satisfación del  servicio recibido</h3>
+                
+              </div>
+              <div class="box-body">
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                          <div class=" col-xs-12" >
+                              <div class="ratings">
+                            
+                                  <img src="/img/muy-malo.png" alt="1" title="Muy Malo" v-if="1 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 2">
+                               
+                                  <img src="/img/muy-malo-off.png" alt="1" title="Muy Malo" v-else>
+                              
+                              
+                                 <img src="/img/malo.png" alt="2" title="Malo" v-if="2 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 3">
+                               
+                                  <img src="/img/malo-off.png" alt="2" title="Malo" v-else>
+                               
+                                 <img src="/img/regular.png" alt="3" title="regular" v-if="3 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 4">
+                               
+                                  <img src="/img/regular-off.png" alt="3" title="regular" v-else>
+                               
+                               
+                                 <img src="/img/bueno.png" alt="4" title="Bueno" v-if="4 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 5">
+                                
+                                  <img src="/img/bueno-off.png" alt="4" title="Bueno" v-else>
+                               
+                      
+                                 <img src="/img/excelente.png" alt="5" title="Excelente" v-if="5 <= dataReviews.rating_service_cache" >
+                               
+                                  <img src="/img/excelente-off.png" alt="5" title="Excelente" v-else>
+                               
+                             
+                           
+
+                            </div>
+                            <div class="ratings-targets">{{ dataReviews.rating_service_cache }} Puntos</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class=" col-xs-12" >
+                                <!-- small box -->
+                                <div class="small-box bg-green" >
+                                  <div class="inner">
+                                    <h3>{{ dataReviews.rating_service_count }}</h3>
+
+                                    <p>Comentarios</p>
+                                  </div>
+                                  <div class="icon">
+                                    <i class="fa fa-comments"></i>
+                                  </div>
+                                  <div class="small-box-footer"></div>
+                     
+                                </div>
+                        </div> 
+                    </div>
+                  </div>
+            
+              </div>
           </div>
-        </div> -->
+         
+          
+         
+        </div>
+        
     
 
   </div>
@@ -209,13 +270,12 @@
       props: ['clinic'],
       data () {
         return {
-          reportTypes:['General','Médico','Departamento','Evaluación de usuario'],
+          reportTypes:['General','Médico','Evaluación de usuario'],
           reviewTypes:['Clínica','Médico'],
           search:{
             type:'General',
             reviewType: 'Clínica',
             medic:'',
-            speciality:'',
             clinic:'',
             date1:'',
             date2:''
@@ -224,7 +284,9 @@
           urlOptions:'/clinic/medics/list',
           selectedItem:null,
           data:[],
-          dataPoll:[],
+          dataPatients:[],
+          dataSales:[],
+          dataReviews:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
@@ -365,13 +427,21 @@
            
           }
         },
+        clearData(){
+          
+           this.dataSets = [];
+           this.dataPoll = [];
+           this.data = [];
+           this.dataPatients = [];
+           this.dataSales = [];
+           this.dataReviews = [];
+        },
 
         generateReport(){
 
            let queryParam = this.search;
-           this.dataSets = [];
-           this.dataPoll = [];
-           this.data = [];
+          
+            this.clearData();
             
             if(this.search.type == "Médico" && !this.search.medic) return
 
@@ -381,9 +451,18 @@
             .then(resp => {
                //alert('reporte')
               // this.dataPoll = resp.data;
+              if(this.search.type == "Evaluación de usuario")
+              {
+                this.dataReviews = resp.data
+                return;
+              }
 
-               this.data = resp.data
+               this.data = resp.data.appointments
+               this.dataPatients = resp.data.patients
+               this.dataSales = resp.data.sales
+              
                this.getDataForChart();
+
             });
 
         }

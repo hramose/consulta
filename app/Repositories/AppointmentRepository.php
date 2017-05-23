@@ -2,6 +2,7 @@
 
 
 use App\Appointment;
+use App\Balance;
 use App\Patient;
 use App\User;
 use Carbon\Carbon;
@@ -283,11 +284,15 @@ class AppointmentRepository extends DbRepository{
         if (isset($search['clinic']) && $search['clinic'] != "")
         {
             $appointments = $appointments->where('office_id', $search['clinic']);
+            $balances = Balance::where('office_id', $search['clinic']);
+
+          
         }
         
         if (isset($search['medic']) && $search['medic'] != "")
         {
             $appointments = $appointments->where('user_id', $search['medic']);
+            $balances = $balances->where('user_id', $search['medic']);
         }
         if (isset($search['speciality']) && $search['speciality'] != "")
         {
@@ -312,16 +317,36 @@ class AppointmentRepository extends DbRepository{
          
             $appointments = $appointments->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]]);
+
+            $balances = $balances->where([['balances.created_at', '>=', $date1],
+                    ['balances.created_at', '<=', $date2->endOfDay()]]);
             
         }
 
-        $statistics = $appointments->selectRaw('status, count(*) items')
+        $statisticsPatients = $appointments->where('status', 1)->count();
+
+        $statisticsAppointment = $appointments->selectRaw('status, count(*) items')
                          ->groupBy('status')
                          ->orderBy('status','DESC')
                          ->get()
                          ->toArray();
+   
+
+        $statisticsSales = [
+            'invoices' => $balances->sum('invoices'),
+            'total' => $balances->sum('total'),
+
+        ];
+
+
+        $data =  [
+            'appointments' => $statisticsAppointment,
+            'patients' => $statisticsPatients,
+            'sales' => $statisticsSales
+
+        ];
          
-      return $statistics;
+      return $data;
        
     }
 

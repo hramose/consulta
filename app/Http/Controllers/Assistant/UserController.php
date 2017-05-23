@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Clinic;
+namespace App\Http\Controllers\Assistant;
 
 
 

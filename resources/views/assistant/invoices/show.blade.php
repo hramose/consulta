@@ -23,7 +23,7 @@
         
         <div class="col-md-12">
          
-          
+          <a href="/assistant/medics/{{ $medic->id}}/balance" class="btn btn-danger">Ejecutar cierre de ventas</a>
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
@@ -93,6 +93,8 @@
             
             <h4 class="modal-title" id="modalInvoiceLabel">Facturación</h4>
             <span class="label label-info pull-right">Médico: <span id="modal-label-medic"></span></span>
+            <span class="label label-info pull-right">Paciente: <span id="modal-label-patient"></span></span>
+            <input type="hidden" name="client_name" />
             </div>
 
             <div class="modal-body">
@@ -116,8 +118,8 @@
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td colspan="2"><input type="text" name="client_name" placeholder="Cliente" class="form-control"  style="margin-top: 20px;"/></td>
-                          <td colspan="3"><h2 id="modal-label-total" class="pull-right">Total: 0</h2></td>
+                          
+                          <td colspan="5"><h2 id="modal-label-total" class="pull-right">Total: 0</h2></td>
                         </tr>
                       </tfoot>
                     </table>

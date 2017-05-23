@@ -46,6 +46,7 @@ Vue.component('reports-medics', require('./components/ReportsMedics.vue'));
 Vue.component('reports-clinics', require('./components/ReportsClinics.vue'));
 Vue.component('reports-patients', require('./components/ReportsPatients.vue'));
 Vue.component('invoice-form', require('./components/InvoiceForm.vue'));
+Vue.component('invoice-list', require('./components/InvoiceList.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

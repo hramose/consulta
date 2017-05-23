@@ -103,18 +103,25 @@ class ClinicRepository extends DbRepository{
          $dir = 'desc';
 
         
-        $appointments = $this->model;
+        $total_rating_service_cache = 0;
+        $total_rating_service_count = 0;
 
-        if (isset($search['reviewType']) && $search['reviewType'] == "Médico" && isset($search['medic']) && $search['medic'] != "")
+        if (isset($search['clinic']) && $search['clinic'] != "")
         {
            
-            $polls = Poll::where('user_id', $search['medic'])->get();
+            $office = Office::find($search['clinic']);
+            $medics = $office->users()->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->get();
 
-           
+          
+            $total_rating_service_cache = ($medics->count() > 0 ) ? $medics->sum('rating_service_cache') / $medics->count() : 0;
+
+            $total_rating_service_count = $medics->sum('rating_service_count');
         }
         
         
-        if (isset($search['date1']) && $search['date1'] != "")
+        /*if (isset($search['date1']) && $search['date1'] != "")
         {
            
             
@@ -127,142 +134,17 @@ class ClinicRepository extends DbRepository{
             $polls = $polls->where([['polls.created_at', '>=', $date1],
                     ['polls.created_at', '<=', $date2->endOfDay()]]);
             
-        }
-//          $mod = @mysql_query("SELECT SUM(valor) as valor FROM opciones WHERE id_encuesta = ".$id);
-// while($result = @mysql_fetch_object($mod)){
-          $totalAnswers = 0;
-          $rateTotals = 0;
-         foreach ($polls as $poll) {
-             foreach ($poll->questions as $q) {
+        }*/
 
-                 $totalAnswers = \DB::table('answers')
-                               
-           
-                                   ->selectRaw('SUM(rate) as rate')
-                                   ->where('answers.question_id', $q->id)
+      
 
-                                   ->first();
+        $statisticsReview = [
+            'rating_service_cache' => $total_rating_service_cache,
+            'rating_service_count' => $total_rating_service_count,
 
-                $rateQuestionTotal = \DB::table('questions')
-                                  ->join('answers', 'questions.id', '=', 'answers.question_id')
-           
-                                   ->select('questions.name as pregunta', 'answers.id as id','answers.name as respuesta', 'answers.rate as rate')
-                                   ->where('questions.id', $q->id)
-
-                                   ->get();
-                 foreach ($rateQuestionTotal as $ans) {
-                         
-                         $answer = [
-                            'name' => $ans->respuesta,
-                            'rate' => $ans->rate
-                         ];
-                       $totalAns[]= $answer;
-
-                        $labels[] = $ans->respuesta;
-                        $values[] = round(($ans->rate * 100) / $totalAnswers->rate);
-                     }
-                
-
-                $question = [
-                    'question' => $q->name,
-                    'answers' => $totalAns,
-                    'totalAnswers' => $totalAnswers->rate,
-                    'dataLabels' => $labels,
-                    'dataSets' => [
-                        [
-                            'data' => $values,
-                            'backgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39'],
-                            'hoverBackgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39']
-                        ]
-                    ]
-                 ];
-
-                 $data[] = $question;
-             
-
-             }
-             
-         }
-         /*$ques = Question::find(1);
-
-         $totalAnswers = \DB::table('answers')
-                               
-           
-                                   ->selectRaw('SUM(rate) as rate')
-                                   ->where('answers.question_id', 1)
-
-                                   ->first();
-        // dd($totalAnswers);
-         
-         $rateQuestionTotal = \DB::table('questions')
-                                  ->join('answers', 'questions.id', '=', 'answers.question_id')
-           
-                                   ->select('questions.name as pregunta', 'answers.id as id','answers.name as respuesta', 'answers.rate as rate')
-                                   ->where('questions.id', 1)
-
-                                   ->get();
-
-         //$ques->answers()->sum('rate');
-          //$data['question'] =  $ques->name;
-          //$data['answers'] = [];
-          
-
-         foreach ($rateQuestionTotal as $ans) {
-             $ans = [
-                'name' => $ans->respuesta,
-                'rate' => $ans->rate
-             ];
-           $totalAns[]= $ans;
-         }
-        foreach ($rateQuestionTotal as $ans) {
-             
-             $labels[] = $ans->respuesta;
-             $values[] = round(($ans->rate * 100) / $totalAnswers->rate);
-            
-         }
-         $data = [
-             [
-                'question' => $ques->name,
-                'answers' => $totalAns,
-                'totalAnswers' => $totalAnswers->rate,
-                'dataLabels' => $labels,
-                'dataSets' => [
-                    [
-                        'data' => $values,
-                        'backgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39'],
-                        'hoverBackgroundColor' => ['#00c0ef','#00a65a','#f39c12','#dd4b39']
-                    ]
-                ]
-             ]
-          ];*/
-
-        //dd($data);
-         return [];
-        /* $sql = "SELECT a.titulo as titulo, a.fecha as fecha, b.id as id, b.nombre as nombre, b.valor as valor FROM encuestas a INNER JOIN opciones b ON a.id = b.id_encuesta WHERE a.id = ".$id;
-$req = @mysql_query($sql);
-
-while($result = @mysql_fetch_object($req)){
-    if($aux == 0){
-            echo "<h1>".$result->titulo."</h1>";
-            echo "<ul class='votacion'>";
-        $aux = 1;
-    }
-    echo '<li><div class="fl">'.$result->nombre.'</div><div class="fr">Votos: '.$result->valor.'</div>';
-    if($suma == 0){
-        echo '<div class="barra cero" style="width:0%;"></div></li>';
-    }else{
-        echo '<div class="barra" style="width:'.($result->valor*100/$suma).'%;">'.round($result->valor*100/$suma).'%</div></li>';
-    }
-
-}*/
-           
-        /*$statistics = $polls->selectRaw('name, count(*) items')
-                         ->groupBy('name')
-                         ->orderBy('name','DESC')
-                         ->get()
-                         ->toArray();*/
-         
-      //return $statistics;
+        ];
+        
+      return $statisticsReview;
        
     }
 

@@ -108,6 +108,12 @@
 			              				<invoice-form></invoice-form>
 			              			</div>
 			              		</div>
+			              		<div class="row">
+									<div class="col-md-12">
+										<h3>Facturas del Día</h3>
+			              				<invoice-list :invoices="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
+			              			</div>
+			              		</div>
 			              		
 		              </div>
 		               <!-- /.tab-pane -->

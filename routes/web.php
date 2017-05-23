@@ -191,6 +191,7 @@ Route::prefix('assistant')->middleware('authByRole:asistente')->group(function (
 	Route::put('/invoices/{id}', 'Assistant\InvoiceController@update');
 	Route::get('/invoices/{id}/details', 'Assistant\InvoiceController@getDetails');
 	Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
+	Route::get('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
 	Route::resource('invoices', 'Assistant\InvoiceController');
 
 

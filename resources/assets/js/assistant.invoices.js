@@ -72,6 +72,9 @@ $(function () {
               
 
                modal.find('#modal-label-medic').text(resp.medic.name);
+               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
+               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
+               $('input[name="client_name"]').val(resp.appointment.patient.fullname);
 
                $.each(resp.lines, function( index, item ) {
                    
