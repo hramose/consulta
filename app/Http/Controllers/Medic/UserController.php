@@ -27,10 +27,11 @@ class UserController extends Controller
     {
     	$tab = request('tab');
         $user = auth()->user();
-        $assistant = auth()->user()->assistants->first();
+        $assistants = auth()->user()->assistants()->with('clinicsAssistants')->get();
+
         $specialities = Speciality::all();
 
-    	return view('users.edit',compact('user','specialities','assistant','tab'));
+    	return view('users.edit',compact('user','specialities','assistants','tab'));
 
     }
 
@@ -79,22 +80,12 @@ class UserController extends Controller
       
        $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore(request('assistant_id')) ]
+                'email' => 'required|email|unique:users',
+                'office_id' => 'required',
             ]);
 
-       $data = request()->all();
-       
-       if(request('assistant_id'))
-       {
-
-            $assistant = $this->userRepo->update(request('assistant_id'), $data);
-          
-             flash('Asistente actualizado','success');
-
-            return Redirect('/medic/account/edit?tab=assistant');
-
-       }
-        
+        $data = request()->all();
+      
        
     
         $data['role'] = Role::whereName('asistente')->first();
@@ -103,13 +94,56 @@ class UserController extends Controller
 
 
         $user = $this->userRepo->store($data);
+
+        /*$dd = \DB::table('assistants_offices')->insert(
+                ['assistant_id' => $user->id, 'office_id' => $data['office_id']]
+            );*/
+        $user->clinicsAssistants()->sync([$data['office_id']]);
       
        
         auth()->user()->addAssistant($user);
 
-        flash('Asistente Registrado','success');
+        //flash('Asistente Registrado','success');
 
-        return Redirect('/medic/account/edit?tab=assistant');
+        return $user->load('clinicsAssistants');//Redirect('/medic/account/edit?tab=assistant');
+
+    }
+    /**
+     * Actualizar informacion basica del medico
+     */
+    public function updateAssistant($id)
+    {  
+       
+      
+       $this->validate(request(),[
+                'name' => 'required',
+                'email' => ['required','email', Rule::unique('users')->ignore($id) ],
+                'office_id' => 'required',
+            ]);
+       
+        $data = request()->all();
+       
+
+        $assistant = $this->userRepo->update($id, $data);
+        
+        $assistant = $assistant->clinicsAssistants()->sync([$data['office_id']]);
+      
+  
+        return $assistant;
+
+      
+
+
+    }
+    /**
+     * Actualizar informacion basica del medico
+     */
+    public function getAssistants()
+    {  
+       
+  
+        return auth()->user()->assistants()->with('clinicsAssistants')->get();
+
 
     }
 

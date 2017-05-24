@@ -289,7 +289,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'assistants_users', 'user_id', 'assistant_id');
     }
-
+     public function clinicsAssistants()
+    {
+        return $this->belongsToMany(Office::class, 'assistants_offices', 'assistant_id', 'office_id');
+    }
+    
     public function addAssistant(User $user)
     {
         $this->assistants()->attach($user->id);

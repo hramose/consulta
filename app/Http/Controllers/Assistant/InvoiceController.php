@@ -34,24 +34,28 @@ class InvoiceController extends Controller
         $search['q'] = request('q');
 
 
-        $assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+       /* $assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
         
         if(auth()->user()->isMedicAssistant($assistants_users->user_id))
             $offices = User::find($assistants_users->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
         if(auth()->user()->isClinicAssistant($assistants_users->user_id))
-            $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');
+            $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');*/
+
+        //$assistant = User::find(auth()->id())->with('clinicsAssistants');
+        //    dd( $assistant->all());
+        $office =  auth()->user()->clinicsAssistants->first();
 
             
-        //dd($offices);
+        //dd($office->id);
 
-        $medics = $this->medicRepo->findAllByOffices($offices);
+        $medics = $this->medicRepo->findAllByOffice($office->id);
 
         if(request('medic'))
             $medic = $this->medicRepo->findById(request('medic'));
         else
             $medic = null;
 
-        $invoices = Invoice::whereIn('office_id', $offices)->orderBy('created_at','DESC')->limit(10)->get();
+        $invoices = Invoice::where('office_id', $office->id)->orderBy('created_at','DESC')->limit(10)->get();
     
         
     	

@@ -197,7 +197,10 @@
                 </form>
               </div>
               <div class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }} tab-pane" id="assistant">
-                   <form method="POST" action="{{ url('/medic/account/assistant') }}" class="form-horizontal">
+                  <assistant-form :clinics="{{ $user->offices()->where('type','Consultorio Independiente')->get() }}"></assistant-form>
+                  <h3>Tus Asistentes registrados</h3> 
+                   <assistant-list :assistants="{{ $assistants }}"></assistant-list>
+                   <!-- <form method="POST" action="{{ url('/medic/account/assistant') }}" class="form-horizontal">
                       {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                       @if (isset($assistant))
                         <input name="assistant_id" type="hidden" value="{{ $assistant->id }}">
@@ -241,7 +244,7 @@
                         <button type="submit" class="btn btn-info">Guardar</button>
                       </div>
                     </div>
-                  </form>
+                  </form> -->
               </div>
               <!-- /.tab-pane -->
               <div class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }} tab-pane" id="clinics">

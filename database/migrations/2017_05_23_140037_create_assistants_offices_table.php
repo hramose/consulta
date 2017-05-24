@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssistantsUsersTable extends Migration
+class CreateAssistantsOfficesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateAssistantsUsersTable extends Migration
      */
     public function up()
     {
-          Schema::create('assistants_users', function(Blueprint $table)
+          Schema::create('assistants_offices', function(Blueprint $table)
         {
             $table->integer('assistant_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('office_id')->unsigned();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
             $table->foreign('assistant_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->primary(array('user_id', 'assistant_id'));
+            $table->primary(array('office_id', 'assistant_id'));
            
             
         });
@@ -34,6 +34,6 @@ class CreateAssistantsUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assistants_users');
+         Schema::dropIfExists('assistants_offices');
     }
 }
