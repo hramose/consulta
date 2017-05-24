@@ -280,11 +280,12 @@ class AppointmentRepository extends DbRepository{
 
     
         $appointments = $this->model;
+        $balances = Balance::get();
 
         if (isset($search['clinic']) && $search['clinic'] != "")
         {
             $appointments = $appointments->where('office_id', $search['clinic']);
-            $balances = Balance::where('office_id', $search['clinic']);
+            $balances = $balances->where('office_id', $search['clinic']);
 
           
         }
@@ -293,6 +294,7 @@ class AppointmentRepository extends DbRepository{
         {
             $appointments = $appointments->where('user_id', $search['medic']);
             $balances = $balances->where('user_id', $search['medic']);
+            
         }
         if (isset($search['speciality']) && $search['speciality'] != "")
         {
@@ -323,15 +325,16 @@ class AppointmentRepository extends DbRepository{
             
         }
 
-        $statisticsPatients = $appointments->where('status', 1)->count();
 
         $statisticsAppointment = $appointments->selectRaw('status, count(*) items')
                          ->groupBy('status')
                          ->orderBy('status','DESC')
                          ->get()
                          ->toArray();
-   
 
+        $statisticsPatients = $appointments->where('status', 1)->count();
+   
+       
         $statisticsSales = [
             'invoices' => $balances->sum('invoices'),
             'total' => $balances->sum('total'),

@@ -32,7 +32,7 @@ class AppointmentController extends Controller
     {
        
         //dd(auth()->user()->assistants->first());
-        $boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+        /*$boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
        
         if(auth()->user()->isMedicAssistant($boss->user_id)){
@@ -43,10 +43,12 @@ class AppointmentController extends Controller
         if(auth()->user()->isClinicAssistant($boss->user_id)){
             $offices = User::find($boss->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');
             $office = User::find($boss->user_id)->offices->first();
-        }
+        }*/
 
-        //$medics = $this->medicRepo->findAllByOffice($office->id);
-        $medics = $this->medicRepo->findAllByOffices($offices);
+        $office = auth()->user()->clinicsAssistants->first();
+
+        $medics = $this->medicRepo->findAllByOffice($office->id);
+      
 
         if(request('medic'))
             $medic = $this->medicRepo->findById(request('medic'));

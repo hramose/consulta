@@ -97,6 +97,7 @@
 
         		clear() {
 		          this.asistente = {
+                  id:'',
                   name:'',
                   email:'',
                   password:'',

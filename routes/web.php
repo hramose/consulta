@@ -65,6 +65,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::post('/account/assistant', 'Medic\UserController@addAssistant');
 	Route::put('/account/assistant/{assistant}', 'Medic\UserController@updateAssistant');
 	Route::get('/account/assistants', 'Medic\UserController@getAssistants');
+	Route::delete('/account/assistants/{assistant}', 'Medic\UserController@deleteAssistant');
 	Route::put('/account/settings', 'Medic\UserController@updateSettings');
 	
 	Route::post('/account/avatars', 'Medic\UserController@avatars');
@@ -112,6 +113,9 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::resource('heredos', 'Medic\HeredoController');
 	Route::resource('ginecos', 'Medic\GinecoController');
 	Route::resource('signs', 'Medic\VitalSignController');
+
+	Route::get('/reports', 'Medic\ReportsController@index');
+	Route::get('/reports/generate', 'Medic\ReportsController@generate');
 	
 
 });
@@ -121,7 +125,11 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 
 	Route::get('/account/edit', 'Clinic\UserController@edit');
 	Route::put('/account/edit', 'Clinic\UserController@update');
-	Route::put('/account/assistant', 'Clinic\UserController@addAssistant');
+	Route::post('/account/assistant', 'Clinic\UserController@addAssistant');
+	Route::put('/account/assistant/{assistant}', 'Clinic\UserController@updateAssistant');
+	Route::delete('/account/assistants/{assistant}', 'Clinic\UserController@deleteAssistant');
+	Route::get('/account/assistants', 'Clinic\UserController@getAssistants');
+
 	//Route::put('/account/settings', 'Clinic\UserController@updateSettings');
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');

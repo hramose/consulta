@@ -33,9 +33,9 @@ class PatientController extends Controller
         if(request('inita'))
             $inita = 1;
 
-        $boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
-        $office = User::find($boss->user_id)->offices->first();
+      
+        $office = auth()->user()->clinicsAssistants->first();
 
        
         $patients = $this->patientRepo->findAllOfClinic($office,$search);

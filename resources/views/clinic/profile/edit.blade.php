@@ -99,51 +99,10 @@
               </div>
               <!-- /.tab-pane -->
               <div class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }} tab-pane" id="assistant">
-                   <form method="POST" action="{{ url('/clinic/account/assistant') }}" class="form-horizontal">
-                      {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                       @if (isset($assistant))
-                        <input name="assistant_id" type="hidden" value="{{ $assistant->id }}">
-                      @endif
-                    <div class="form-group">
-                      <label for="name" class="col-sm-2 control-label">Nombre</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="assistant_name" name="name" placeholder="Name" value="{{ old('name') ?: (isset($assistant) ? $assistant->name : '') }}" required>
-                         @if ($errors->has('name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="email" class="col-sm-2 control-label">Email</label>
-
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="assistant_email"  name="email" placeholder="Email"  value="{{ old('email') ?: (isset($assistant) ? $assistant->email : '') }}" required>
-                        @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="password" class="col-sm-2 control-label">Contraseña</label>
-
-                      <div class="col-sm-10">
-                        <input type="password" class="form-control" id="assistant_password" name="password" placeholder="Escribe la nueva contraseña">
-                      </div>
-                    </div>
-                    
-                    
-                    
-                    <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-info">Guardar</button>
-                      </div>
-                    </div>
-                  </form>
+                  <assistant-form :clinics="{{ $user->offices()->where('type','Clínica Privada')->get() }}" url="/clinic/account/assistant"></assistant-form>
+                   <h3>Tus Asistentes registrados</h3> 
+                   <assistant-list :assistants="{{ $assistants }}" url="/clinic/account/assistants"></assistant-list>
+                  
               </div>
 
              

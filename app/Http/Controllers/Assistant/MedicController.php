@@ -40,10 +40,9 @@ class MedicController extends Controller
     public function index()
     {
         $search['q'] = request('q');
-        
-        $boss = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-      
-        $office = User::find($boss->user_id)->offices->first();
+
+        $office = auth()->user()->clinicsAssistants->first();
+
 
         $medics = $this->medicRepo->findAllByOffice($office->id,$search);
         

@@ -9,6 +9,7 @@ use App\Repositories\UserRepository;
 use App\Role;
 use App\Setting;
 use App\Speciality;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -135,6 +136,27 @@ class UserController extends Controller
 
 
     }
+
+     /**
+     * Actualizar informacion basica del medico
+     */
+    public function deleteAssistant($id)
+    {  
+      
+       $assistant = User::find($id);
+
+       auth()->user()->removeAssistant($assistant);
+
+       $assistant->delete();
+       
+  
+        return 'ok';
+
+      
+
+
+    }
+    
     /**
      * Actualizar informacion basica del medico
      */

@@ -64,7 +64,7 @@
 	        remove(item){
 	           
 
-	            this.$http.delete('/account/assistant/'+item.id).then((response) => {
+	            this.$http.delete(this.url +'/'+item.id).then((response) => {
 	                  
 	                  if(response.status == 200 && response.data == 'ok')
 	                  {

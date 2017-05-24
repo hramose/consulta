@@ -479,6 +479,53 @@ class MedicRepository extends DbRepository{
        
     }
 
+    /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportsStatisticsReviews($search)
+    {
+        
+         $order = 'created_at';
+         $dir = 'desc';
+
+        
+        $total_rating_service_cache = 0;
+        $total_rating_service_count = 0;
+
+        if (isset($search['medic']) && $search['medic'] != "")
+        {
+           
+            $medic = User::find($search['medic']);
+           
+
+          
+            $total_rating_service_cache = $medic->rating_service_cache;
+
+            $total_rating_service_count =$medic->rating_service_count;
+
+             $total_rating_medic_cache = $medic->rating_medic_cache;
+
+            $total_rating_medic_count =$medic->rating_medic_count;
+        }
+        
+        
+       
+      
+
+        $statisticsReview = [
+            'rating_service_cache' => $total_rating_service_cache,
+            'rating_service_count' => $total_rating_service_count,
+            'rating_medic_cache' => $total_rating_medic_cache,
+            'rating_medic_count' => $total_rating_medic_count,
+
+        ];
+        
+      return $statisticsReview;
+       
+    }
+
 
 
     

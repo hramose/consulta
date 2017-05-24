@@ -1,5 +1,6 @@
 <template>	
   <div>
+     <!-- reportes pacientes para el perfil del administrador -->
     <div class="box">
         <div class="box-header">
             

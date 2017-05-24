@@ -1,6 +1,6 @@
 <template>	
   <div>
-  <!-- reportes general para el perfil del clinica -->
+   <!-- reportes general para el perfil del medico -->
     <div class="box">
         <div class="box-header">
             
@@ -24,28 +24,8 @@
                             
                           
                       </div>
-                     <!--  <div class="col-xs-12 col-sm-2" v-show="search.type == 'Evaluación de usuario' ">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                              <select class="form-control " style="width: 100%;" name="type" v-model="search.reviewType" @change="changeReviews()">
-                                <option disabled="disabled"></option>
-                                 <option v-for="item in reviewTypes" v-bind:value="item">{{ item }}</option>
-                                
-                              </select>
-                            </div>
-                        </div>
-                            
-                          
-                      </div> -->
-                      <div class="col-xs-12 col-sm-4" v-show="(search.type != 'General' && search.type != 'Evaluación de usuario') || search.reviewType != 'Clínica' ">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                            <v-select :debounce="250" :on-search="getOptions"  :options="options" placeholder="Buscar..." label="name" :on-change="selectItem" :value.sync="selectedItem" ></v-select>
-                            </div>
-                        </div>
-                            
-                          
-                      </div>
+                   
+                     
                       <div class="col-xs-12 col-sm-2" v-show="search.type != 'Evaluación de usuario'">
                           <div class="input-group">
                             <input type="text" class="form-control"  name="date1" id="datepicker1" v-model="search.date1" @blur="onBlurDate1" >
@@ -250,6 +230,72 @@
                         </div> 
                     </div>
                   </div>
+                  
+            
+              </div>
+          </div>
+
+          <div class="box box-danger">
+              <div class="box-header">
+                 <h3 class="box-title">Nivel de satisfacción con el desempeño del médico</h3>
+                
+              </div>
+              <div class="box-body">
+
+                  <div class="row">
+                      <div class="col-xs-12 col-sm-6">
+                            <div class=" col-xs-12" >
+                                <div class="ratings">
+                              
+                                    <img src="/img/muy-malo.png" alt="1" title="Muy Malo" v-if="1 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 2">
+                                 
+                                    <img src="/img/muy-malo-off.png" alt="1" title="Muy Malo" v-else>
+                                
+                                
+                                   <img src="/img/malo.png" alt="2" title="Malo" v-if="2 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 3">
+                                 
+                                    <img src="/img/malo-off.png" alt="2" title="Malo" v-else>
+                                 
+                                   <img src="/img/regular.png" alt="3" title="regular" v-if="3 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 4">
+                                 
+                                    <img src="/img/regular-off.png" alt="3" title="regular" v-else>
+                                 
+                                 
+                                   <img src="/img/bueno.png" alt="4" title="Bueno" v-if="4 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 5">
+                                  
+                                    <img src="/img/bueno-off.png" alt="4" title="Bueno" v-else>
+                                 
+                        
+                                   <img src="/img/excelente.png" alt="5" title="Excelente" v-if="5 <= dataReviews.rating_medic_cache" >
+                                 
+                                    <img src="/img/excelente-off.png" alt="5" title="Excelente" v-else>
+                                 
+                               
+                             
+
+                              </div>
+                              <div class="ratings-targets">{{ dataReviews.rating_medic_cache }} Puntos</div>
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class=" col-xs-12" >
+                                  <!-- small box -->
+                                  <div class="small-box bg-green" >
+                                    <div class="inner">
+                                      <h3>{{ dataReviews.rating_medic_count }}</h3>
+
+                                      <p>Comentarios</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-comments"></i>
+                                    </div>
+                                    <div class="small-box-footer"></div>
+                       
+                                  </div>
+                          </div> 
+                      </div>
+                    </div>
+                  
             
               </div>
           </div>
@@ -268,22 +314,20 @@
     //import AppointmentsChart from './charts/AppointmentsChart.vue'
 
     export default {
-      props: ['clinic'],
+      props: ['medic'],
       data () {
         return {
-          reportTypes:['General','Médico','Evaluación de usuario'],
+          reportTypes:['General','Evaluación de usuario'],
           reviewTypes:['Clínica','Médico'],
           search:{
             type:'General',
-            reviewType: 'Clínica',
+            reviewType: 'Médico',
             medic:'',
             clinic:'',
             date1:'',
             date2:''
           },
-          options:[],
-          urlOptions:'/clinic/medics/list',
-          selectedItem:null,
+          
           data:[],
           dataPatients:[],
           dataSales:[],
@@ -330,23 +374,7 @@
             
            
           },
-          /*getDataPollForChart(){
-            let values = [];
-            let colors = [];
-            for (var i = 0; i < this.dataPoll.length; i++) {
-               this.dataLabels[i] = this.dataPoll[i]['answers'];
-               //colors[i] = this.getStatusColor(this.data[i]['status']);
-               values[i] = this.dataPoll[i]['rate']*100 / this.dataPoll[i]['totalAnswers']; // (ans.rate*100/statistic['totalAnswers'])
-            }
-
-            this.dataSets.push({
-                  data: values
-                  //backgroundColor: colors,
-                  //hoverBackgroundColor: colors
-               });
-            
-           
-          },*/
+         
         
           onBlurDate1(e){
             const value = e.target.value;
@@ -360,22 +388,7 @@
             this.search.date2 = value;
             
           },
-          getOptions:_.debounce(function(search,loading) {
-             loading(true)
-
-            
-              let queryParam = {
-                ['q']: search
-              }
-            this.$http.get(this.urlOptions, {params: Object.assign(queryParam, this.data)})
-            .then(resp => {
-               
-               this.options = resp.data
-               loading(false)
-            })
           
-
-        }, 500),
         getStatusName(status){
           return this.statuses[status];
         },
@@ -387,47 +400,22 @@
         },
         changeTypes(){
 
-            this.search.medic = '';
+            //this.search.medic = '';
             this.search.speciality ='';
-            this.search.reviewType ='Clínica';
+            this.search.reviewType ='Médico';
 
-          if(this.search.type == 'General')
-            this.urlOptions = '/clinic/medics/list';
-            
-          if(this.search.type == 'Médico')
-            this.urlOptions = '/clinic/medics/list';
-
-           if(this.search.type == 'Departamento')
-            this.urlOptions = '/clinic/specialities/list';
-
+        
          
-
-          this.selectedItem = null;
-          this.options = [];
 
         },
         changeReviews(){
 
            
-            if(this.search.reviewType == 'Médico')
-              this.urlOptions = '/clinic/medics/list';
-
-
-        },
-
-        selectItem(item){
           
-          if(item){
-            
-            if(this.search.type == 'Médico' || this.search.reviewType == 'Médico' )
-              this.search.medic = item.id
-             if(this.search.type == 'Departamento')
-              this.search.speciality = item.id
-            
-            this.selectedItem = item;
-           
-          }
+
         },
+
+       
         clearData(){
           
            this.dataSets = [];
@@ -444,11 +432,9 @@
           
             this.clearData();
             
-            if(this.search.type == "Médico" && !this.search.medic) return
+            
 
-            if(this.search.type == "Departamento" && !this.search.speciality) return
-
-            this.$http.get('/clinic/reports/generate', {params: Object.assign(queryParam, this.data)})
+            this.$http.get('/medic/reports/generate', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                //alert('reporte')
               // this.dataPoll = resp.data;
@@ -472,8 +458,8 @@
       created () {
              console.log('Component ready. reports Clinic')
 
-             if(this.clinic)
-               this.search.clinic = this.clinic
+             if(this.medic)
+               this.search.medic = this.medic
             
         }
     }

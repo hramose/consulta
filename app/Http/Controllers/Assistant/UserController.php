@@ -58,40 +58,7 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Actualizar informacion basica del medico
-     */
-    public function addAssistant()
-    {  
-      //  dd(request()->all());
-      //$data['name'] = request('assistant_name');
-      //$data['email'] = request('assistant_email');
-      //$data['password'] = request('assistant_password');
-
-      //dd($data);
-       $this->validate(request(),[
-                'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ]
-            ]);
-        
-        $data = request()->all();
-       
     
-        $data['role'] = Role::whereName('asistente')->first();
-        $data['provider'] = 'email';
-        $data['provider_id'] = $data['email'];
-
-
-        $user = $this->userRepo->store($data);
-      
-       
-        auth()->user()->addAssistant($user);
-
-        flash('Asistente Registrado','success');
-
-        return Redirect('/clinic/account/edit?tab=assistant');
-
-    }
 
     /**
      * Guardar avatar del medico
