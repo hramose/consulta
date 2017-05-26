@@ -16,10 +16,25 @@
   #app .tooltip{
   	display:none;
   }
+  .invoice-ticket
+  {
+	width:250px !important;
+	margin:0px !important;
+	text-align:center;
+  }
+  .main-footer{
+  	display:none;
+  }
 }
 .invoice-tab{
 	background-color: #dd4b39 !important;
 	color: white !important;
+}
+.invoice-ticket
+{
+	width:250px !important;
+	text-align:center;
+	margin:0px !important;
 }
 .general-review
 {

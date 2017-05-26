@@ -20,17 +20,23 @@ $(function () {
             url: '/assistant/invoices/'+invoice_id,
             data: {client_name: $('input[name="client_name"]').val()},
             success: function (resp) {
-               
+               debugger
+
               infoBox.addClass('alert-success').html('Factura procesada!!!').show();
               setTimeout(function()
               { 
                 infoBox.removeClass('alert-success').hide();
               },3000);
               
-              if(medic_id)
+             /* if(medic_id)
                  window.location.href = "/assistant/medics/"+ medic_id +"/invoices";
              else
-                window.location.href = "/assistant/invoices";
+                window.location.href = "/assistant/invoices";*/
+              if($("#rd_ticket").is(":checked"))
+                window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
+              else
+                window.location.href = "/assistant/invoices/"+invoice_id+'/print';
+              
               
                 
             },
@@ -78,7 +84,7 @@ $(function () {
 
                $.each(resp.lines, function( index, item ) {
                    
-                   detailsHtml +='<tr><td>'+ item.quantity +'</td><td>'+ item.service +'</td><td>'+ money(item.amount) +'</td><td>'+ money(item.amount * item.quantity)  +'</td><td>'+ money(item.total_line) +'</td></tr>'
+                   detailsHtml +='<tr><td>'+ item.quantity +'</td><td>'+ item.service +'</td><td>'+ money(item.amount) +'</td><td>'+ money(item.total_line) +'</td></tr>'
 
                 });
 

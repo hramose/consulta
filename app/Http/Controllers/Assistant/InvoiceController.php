@@ -163,10 +163,31 @@ class InvoiceController extends Controller
     public function print($id)
     {
 
-        /*$appointment =  $this->appointmentRepo->findById($id);
-        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+        $invoice = Invoice::find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('clinic');
+        $invoice->load('appointment.patient');
+
         
-        return view('appointments.print-summary',compact('appointment','history'));*/
+        return view('assistant.invoices.print',compact('invoice'));
+        
+    }
+
+    /**
+     * imprime resumen de la consulta
+     */
+    public function ticket($id)
+    {
+
+        $invoice = Invoice::find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('clinic');
+        $invoice->load('appointment.patient');
+
+        
+        return view('assistant.invoices.ticket',compact('invoice'));
         
     }
      /**

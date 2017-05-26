@@ -11,7 +11,7 @@
 		    <div class="row">
 		      <div class="col-xs-12">
 		        <h2 class="page-header">
-		          <i class="fa fa-globe"></i> Consulta
+		          <i class="fa fa-globe"></i> {{ config('app.name', 'Laravel') }}
 		          <small class="pull-right">Fecha: {{ \Carbon\Carbon::now() }}</small>
 		        </h2>
 		      </div>

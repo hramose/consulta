@@ -1,10 +1,10 @@
 {
-  "css/app.css": "css/app-b4a1580d20.css",
+  "css/app.css": "css/app-97e640bdcc.css",
   "js/admin.min.js": "js/admin-823bb0a100.min.js",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
   "js/app.js": "js/app-acb79c31e5.js",
   "js/appointments.min.js": "js/appointments-ef28246b28.min.js",
-  "js/assistant.invoices.min.js": "js/assistant-d220b17c16.invoices.min.js",
+  "js/assistant.invoices.min.js": "js/assistant-68123d5e84.invoices.min.js",
   "js/clinic.appointments.min.js": "js/clinic-ef7796f638.appointments.min.js",
   "js/clinic.dailyagenda.min.js": "js/clinic-4d1a1d6ed1.dailyagenda.min.js",
   "js/clinic.patients.min.js": "js/clinic-b03e1b7975.patients.min.js",
