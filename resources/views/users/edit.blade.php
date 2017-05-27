@@ -48,7 +48,7 @@
             <ul class="nav nav-tabs">
               <li class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }}"><a href="#profile" data-toggle="tab">Perfil</a></li>
               <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab">Consultorios</a></li>
-              <li class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }}"><a href="#assistant" data-toggle="tab">Asistente</a></li>
+              <li class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }}"><a href="#assistant" data-toggle="tab">Asistentes</a></li>
               <li class="{{ isset($tab) ? ($tab =='reviews') ? 'active' : '' : '' }}"><a href="#reviews" data-toggle="tab">Comentarios</a></li>
             </ul>
             <div class="tab-content">
