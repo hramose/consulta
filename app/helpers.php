@@ -79,7 +79,7 @@ function getAvatar($user)
     $url = '';
     
     if(Storage::disk('public')->exists('avatars/'. $user->id.'/avatar.jpg'))
-        $url = Storage::url('avatars/'.auth()->user()->id.'/avatar.jpg');
+        $url = Storage::url('avatars/'.$user->id.'/avatar.jpg');
     else
         $url = "/img/default-avatar.jpg";
 
