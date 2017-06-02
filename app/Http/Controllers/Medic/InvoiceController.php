@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Medic;
 
+use App\Balance;
 use App\Http\Controllers\Controller;
+use App\Invoice;
 use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,13 +29,30 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $search['q'] = request('q');
+        /*$search['q'] = request('q');
       
     	$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
-    	return view('invoices.index',compact('invoices','search'));
+    	return view('invoices.index',compact('invoices','search'));*/
+
+        $medic = auth()->user();
+
+       
+
+        $offices = auth()->user()->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+
+      
+
+        $invoices = $medic->invoices()->whereIn('office_id', $offices)->orderBy('created_at','DESC')->paginate(10);
+
+      
+      
+
+        return view('invoices.index',compact('medic','invoices'));
 
     }
+
+
 
     /**
      * Guardar consulta(cita)
@@ -39,7 +60,7 @@ class InvoiceController extends Controller
     public function store()
     {
 
-       // dd(request()->all());
+ 
 
         $invoice = $this->invoiceRepo->store(request()->all());
         
@@ -47,6 +68,42 @@ class InvoiceController extends Controller
 
         return $invoice;
 
+    }
+
+     /**
+     * update consulta(cita)
+     */
+    public function update($id)
+    {
+       
+        $invoice = Invoice::find($id);
+
+        $invoice->status = 1;
+        
+        if(request('client_name'))
+            $invoice->client_name = request('client_name');
+
+        $invoice->save();
+        
+
+
+        return $invoice;
+
+    }
+
+     /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function getDetails($id)
+    {
+        $invoice = Invoice::find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('appointment.patient');
+       
+
+        return $invoice;
+        
     }
 
    
@@ -64,9 +121,39 @@ class InvoiceController extends Controller
     }
     public function saveService()
     {
+        $this->validate(request(),[
+                'name' => 'required',
+                'amount' => 'required|numeric',
+                
+            ]);
+
         $service = InvoiceService::create(request()->all());
 
          return $service;
+    }
+    public function updateService($id)
+    {
+         $this->validate(request(),[
+                'name' => 'required',
+                'amount' => 'required|numeric',
+                
+            ]);
+
+         $service = InvoiceService::find($id);
+         $service->name = request('name');
+         $service->amount = request('amount');
+         $service->save();
+         
+         return $service;
+    }
+
+    public function deleteService($id)
+    {
+       
+         $service = InvoiceService::find($id);
+         $service->delete();
+        
+         return 'ok';
     }
     /**
      * imprime resumen de la consulta
@@ -74,10 +161,65 @@ class InvoiceController extends Controller
     public function print($id)
     {
 
-        /*$appointment =  $this->appointmentRepo->findById($id);
-        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+        $invoice = Invoice::find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('clinic');
+        $invoice->load('appointment.patient');
+
         
-        return view('appointments.print-summary',compact('appointment','history'));*/
+        return view('invoices.print',compact('invoice'));
+        
+    }
+
+    /**
+     * imprime resumen de la consulta
+     */
+    public function ticket($id)
+    {
+
+        $invoice = Invoice::find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('clinic');
+        $invoice->load('appointment.patient');
+
+        
+        return view('invoices.ticket',compact('invoice'));
+        
+    }
+
+      /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function balance()
+    {
+        $medic_id = auth()->id();
+
+        $bala = Balance::where('user_id', $medic_id)->whereDate('created_at',Carbon::now()->toDateString())->count();
+
+
+        if($bala)
+        {
+            flash('Cierre ya fue ejecutado el dia de hoy','error');
+            return Redirect()->back();
+        }
+
+        $invoices = Invoice::where('user_id', $medic_id)->where('status', 1)->whereDate('created_at',Carbon::now()->toDateString());
+        $totalInvoices =  $invoices->sum('total');
+        $countInvoices =  $invoices->count();
+       
+
+        $balance = Balance::create([
+            'user_id' => $medic_id,
+            'invoices' => $countInvoices,
+            'total' => $totalInvoices
+            ]);
+
+       
+        flash('Se ha ejecutado el cierre correctamente','success');
+
+        return Redirect()->back();
         
     }
 

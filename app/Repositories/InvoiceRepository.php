@@ -30,6 +30,7 @@ class InvoiceRepository extends DbRepository{
         $invoice = $this->model;
         $invoice->appointment_id = $data['appointment_id'];
         $invoice->office_id = $data['office_id'];
+        $invoice->status = $data['status'];
 
         $invoice = auth()->user()->invoices()->save($invoice);
         

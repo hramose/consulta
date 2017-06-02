@@ -6,7 +6,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="reason" cols="30" rows="4" class="form-control" v-model="disease_notes.reason" @keydown="keydown()"></textarea>
+                <textarea name="reason" cols="30" rows="4" class="form-control" v-model="disease_notes.reason" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
             <div class="overlay" v-show="loader">
@@ -19,7 +19,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="symptoms" cols="30" rows="4" class="form-control" v-model="disease_notes.symptoms" @keydown="keydown()" ></textarea>
+                <textarea name="symptoms" cols="30" rows="4" class="form-control" v-model="disease_notes.symptoms" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
             <div class="overlay" v-show="loader">
@@ -32,7 +32,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="phisical_review" cols="30" rows="4" class="form-control" v-model="disease_notes.phisical_review" @keydown="keydown()"></textarea>
+                <textarea name="phisical_review" cols="30" rows="4" class="form-control" v-model="disease_notes.phisical_review" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
             <div class="overlay" v-show="loader">
@@ -47,7 +47,16 @@
 <script>
 
     export default {
-      props: ['notes'],
+      //props: ['notes', read],
+      props: {
+        notes: {
+          type: Object
+        },
+        read:{
+          type:Boolean,
+          default: false
+        }
+      },
       data () {
         return {
           disease_notes: {

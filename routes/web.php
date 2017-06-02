@@ -101,6 +101,16 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 
 	Route::get('/invoices/services/list', 'Medic\InvoiceController@getServices');
 	Route::post('/invoices/services', 'Medic\InvoiceController@saveService');
+	Route::put('/invoices/services/{id}', 'Medic\InvoiceController@updateService');
+	Route::delete('/invoices/services/{id}', 'Medic\InvoiceController@deleteService');
+
+	Route::get('/invoices', 'Medic\InvoiceController@index');
+	Route::post('/balance', 'Medic\InvoiceController@balance');
+	Route::put('/invoices/{id}', 'Medic\InvoiceController@update');
+	Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
+	Route::get('/invoices/{id}/print', 'Medic\InvoiceController@print');
+	Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
+
 	Route::resource('invoices', 'Medic\InvoiceController');
 
 	Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
@@ -204,7 +214,7 @@ Route::prefix('assistant')->middleware('authByRole:asistente')->group(function (
 	Route::get('/invoices/{id}/print', 'Assistant\InvoiceController@print');
 	Route::get('/invoices/{id}/ticket', 'Assistant\InvoiceController@ticket');
 	Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
-	Route::get('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
+	Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
 	Route::resource('invoices', 'Assistant\InvoiceController');
 
 

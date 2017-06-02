@@ -16,7 +16,7 @@
           <div class="box-body">
            
              
-             <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Nombre...">
+             <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Nombre..." :readonly="read">
               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataDiagnostics.length">
                
                 <li v-for="item in dataDiagnostics">
@@ -25,7 +25,7 @@
                   <!-- General tools such as edit or delete-->
                   <div class="tools">
                     
-                    <i class="fa fa-trash-o delete" @click="remove(item)"></i>
+                    <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
                   </div>
                 </li>
                
@@ -43,7 +43,19 @@
 
 <script>
     export default {
-      props: ['diagnostics','appointment_id'],
+      //props: ['diagnostics','appointment_id'],
+      props: {
+        diagnostics: {
+          type: Array
+        },
+        appointment_id: {
+          type: Number
+        },
+        read:{
+          type:Boolean,
+          default: false
+        }
+      },
       data () {
         return {
           query : "",

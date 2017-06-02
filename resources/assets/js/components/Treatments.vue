@@ -17,13 +17,13 @@
            
              
              <div class="form-group">
-                <input type="text" name="search" class="form-control"  v-model="query" placeholder="Nombre...">
+                <input type="text" name="search" class="form-control"  v-model="query" placeholder="Nombre..." :readonly="read">
              </div>
              <div class="form-group">
-                <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomendación (Dosis)...">
+                <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomendación (Dosis)..." :readonly="read">
              </div>
               <div class="form-group">
-                <button @click="hit" class="btn btn-success">Agregar</button> 
+                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button> 
               </div>
               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataTreatments.length">
                
@@ -33,7 +33,7 @@
                   <!-- General tools such as edit or delete-->
                   <div class="tools">
                     
-                    <i class="fa fa-trash-o delete" @click="remove(item)"></i>
+                    <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
                   </div>
                 </li>
                
@@ -51,7 +51,19 @@
 
 <script>
     export default {
-      props: ['treatments','appointment_id'],
+      //props: ['treatments','appointment_id'],
+       props: {
+        treatments: {
+          type: Array
+        },
+        appointment_id: {
+          type: Number
+        },
+        read:{
+          type:Boolean,
+          default: false
+        }
+      },
       data () {
         return {
           query : "",

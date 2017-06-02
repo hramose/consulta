@@ -6,7 +6,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="medical_instructions" cols="30" rows="4" class="form-control" v-model="medical_instructions" @keydown="keydown()"></textarea>
+                <textarea name="medical_instructions" cols="30" rows="4" class="form-control" v-model="medical_instructions" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
       </div>
@@ -18,7 +18,16 @@
 <script>
 
     export default {
-      props: ['appointment'],
+      //props: ['appointment'],
+      props: {
+        appointment: {
+          type: Object
+        },
+        read:{
+          type:Boolean,
+          default: false
+        }
+      },
       data () {
         return {
           medical_instructions: "",

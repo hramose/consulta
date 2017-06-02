@@ -69,26 +69,27 @@
 									
 								</div>
 								<div class="col-md-6">
-		              				<diseasenotes :notes="{{ $appointment->diseaseNotes }}"></diseasenotes>
+								
+		              				<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></diseasenotes>
 			              		</div>
 			              	</div>
 		              </div>
 		              <!-- /.tab-pane -->
 					  <div class="tab-pane" id="physical">
-		              		<physicalexam :physical="{{ $appointment->physicalExams }}"></physicalexam>
+		              		<physicalexam :physical="{{ $appointment->physicalExams }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></physicalexam>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">
 
 								<div class="row">
 									<div class="col-md-12">
-			              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}"></diagnostics>
+			              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></diagnostics>
 			              			</div>
 			              		</div>
 			              		<div class="row">
 									<div class="col-md-12">
 									    <a href="/medic/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Print</a>
-			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}"></treatments>
+			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></treatments>
 			              			</div>
 			              		</div>
 			              		<div class="row">
@@ -96,13 +97,20 @@
 			              				
 			              			</div>
 			              			<div class="col-md-12">
-			              				<instructions :appointment="{{ $appointment }}" ></instructions>
+			              				<instructions :appointment="{{ $appointment }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></instructions>
 			              			</div>
 			              		</div>
 		              </div>
 		               <!-- /.tab-pane -->
 		                <div class="tab-pane" id="invoice">
+								@if(\Carbon\Carbon::now()->ToDateString() > $appointment->date)
+									 <div class="callout callout-danger">
+					                    <h4>Información importante!</h4>
 
+					                    <p>No se puede facturar en consultas pasadas... para ver todas tus facturas, ingresa al modulo facturación</p>
+					                </div>
+
+								@else
 								<div class="row">
 									<div class="col-md-12">
 			              				<invoice-form :appointment_id="{{ $appointment->id }}" :office_id="{{ $appointment->office->id }}" ></invoice-form>
@@ -114,6 +122,7 @@
 			              				<invoice-list :invoices="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
 			              			</div>
 			              		</div>
+			              		@endif
 			              		
 		              </div>
 		               <!-- /.tab-pane -->

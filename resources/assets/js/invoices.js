@@ -15,12 +15,13 @@ $(function () {
       
          var invoice_id = $(this).attr('data-invoice');
          var medic_id = $(this).attr('data-medic');
+        
         $.ajax({
             type: 'PUT',
-            url: '/assistant/invoices/'+invoice_id,
+            url: '/medic/invoices/'+invoice_id,
             data: {client_name: $('input[name="client_name"]').val()},
             success: function (resp) {
-             
+            
 
               infoBox.addClass('alert-success').html('Factura procesada!!!').show();
               setTimeout(function()
@@ -33,9 +34,9 @@ $(function () {
              else
                 window.location.href = "/assistant/invoices";*/
               if($("#rd_ticket").is(":checked"))
-                window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
+                window.location.href = "/medic/invoices/"+invoice_id+'/ticket';
               else
-                window.location.href = "/assistant/invoices/"+invoice_id+'/print';
+                window.location.href = "/medic/invoices/"+invoice_id+'/print';
               
               
                 
@@ -63,6 +64,7 @@ $(function () {
       var medic_id = button.attr('data-medic')  
       var table_details = modal.find('#table-details')
       var detailsHtml = '';
+      debugger
       modal.find('.btn-facturar').attr('data-invoice', invoice_id);
       modal.find('.btn-facturar').attr('data-medic', medic_id);
 
@@ -70,7 +72,7 @@ $(function () {
      
        $.ajax({
             type: 'GET',
-            url: '/assistant/invoices/'+invoice_id+'/details',
+            url: '/medic/invoices/'+invoice_id+'/details',
             data: {},
             success: function (resp) {
                modal.find('#modal-label-medic').text('')

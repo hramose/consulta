@@ -31,7 +31,7 @@
 		      </div>
 		      <!-- /.col -->
 		      <div class="col-sm-4 invoice-col">
-		        Consulta
+		      {{ config('app.name', 'Laravel') }}
 		        <address>
 		          <strong>{{ $appointment->title }}</strong><br>
 		          <b>Fecha:</b> {{ $appointment->date }}<br>
@@ -45,7 +45,7 @@
 		        <b>{{ $appointment->office->name }}</b><br>
 		        {{ $appointment->office->address }}, {{ $appointment->office->province }}<br>
 		        <b>Tel:</b> {{ $appointment->office->phone }}<br>
-		        <b>Generado por:  Consulta</b><br>
+		        <b>Generado por:  {{ config('app.name', 'Laravel') }}</b><br>
 		        <b>Impreso por: </b> {{ auth()->user()->name }}<br>
 		        
 		      </div>
@@ -59,8 +59,10 @@
 		      	
 		      	<h4>Tratamiento</h4>
 		      	@foreach($appointment->treatments as $treatment)
-					<span>{{ $treatment->name }}</span>
+					<div><b>{{ $treatment->name }}</b>: {{ $treatment->comments }}</div>
 		      	@endforeach
+		      	
+		      	  <div><b>Recomendaciones  Médicas</b>:{{ $appointment->medical_instructions }} </div>
 		      </div>
 		    </div>
 		    <!-- /.row -->

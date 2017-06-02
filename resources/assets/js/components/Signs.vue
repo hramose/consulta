@@ -63,9 +63,9 @@
           <div class="pull-right">
             <!-- <span style="margin-right: 5px;">mm/hg</span> -->
             <span style="margin-right: 5px; float:right;">P.D</span>
-            <input type="text" v-model="vital_signs.blood_ps" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.S" /> 
-            <span style="margin-right: 5px; float:right;">P.S</span>
             <input type="text" v-model="vital_signs.blood_pd" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.D" /> 
+            <span style="margin-right: 5px; float:right;">P.S</span>
+            <input type="text" v-model="vital_signs.blood_ps" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.S" /> 
             <form-error v-if="errors.blood" :errors="errors" style="float:right;">
                   {{ errors.blood[0] }}
               </form-error>

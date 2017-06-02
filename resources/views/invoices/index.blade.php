@@ -1,4 +1,4 @@
-@extends('layouts.app-assistant')
+@extends('layouts.app')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
@@ -10,11 +10,9 @@
 @section('content')
     <div id="infoBox" class="alert"></div> 
     
-     @if($medic)
-       @include('layouts/partials/header-pages',['page'=>'Facturas del médico: '. $medic->name ])
-    @else
-       @include('layouts/partials/header-pages',['page'=>'Facturación'])
-    @endif
+    
+   @include('layouts/partials/header-pages',['page'=>'Facturación'])
+ 
      
     
     <section class="content">
@@ -23,11 +21,12 @@
         
         <div class="col-md-12">
          
-          <form method="POST" action="{{ url('/assistant/medics/'. $medic->id.'/balance') }}" class="form-horizontal">
+           <form method="POST" action="{{ url('/medic/balance') }}" class="form-horizontal">
                        {{ csrf_field() }}
                        <button type="submit" class="btn btn-danger">Ejecutar cierre de ventas</button>
                   </form>
        
+
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
@@ -94,13 +93,13 @@
 
     </section>
 
-    @include('assistant/invoices/partials/modal')
+    @include('invoices/partials/modal')
   
 
 
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
-<script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
+<script src="{{ elixir('/js/invoices.min.js') }}"></script>
 
 @endsection

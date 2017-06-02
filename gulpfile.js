@@ -64,6 +64,10 @@ elixir(mix => {
       mix.scripts([
             'assistant.invoices.js'
         ],'public/js/assistant.invoices.min.js','resources/assets/js');
+
+       mix.scripts([
+            'invoices.js'
+        ],'public/js/invoices.min.js','resources/assets/js');
      
     mix.version([
         'public/js/app.js',
@@ -78,6 +82,7 @@ elixir(mix => {
         'public/js/clinic.dailyagenda.min.js',
         'public/js/clinic.patients.min.js',
         'public/js/assistant.invoices.min.js',
+        'public/js/invoices.min.js',
         'public/css/app.css',
         
     

@@ -17,7 +17,7 @@
               <div id="cardio" class="panel-collapse collapse" :class="(physical_exams.cardio) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="cardio" cols="30" rows="3" class="form-control" v-model="physical_exams.cardio" @keydown="keydown()"></textarea>
+                    <textarea name="cardio" cols="30" rows="3" class="form-control" v-model="physical_exams.cardio" @keydown="keydown()" :readonly="read"></textarea>
                     
                 </div>
                
@@ -35,7 +35,7 @@
               <div id="linfatico" class="panel-collapse collapse" :class="(physical_exams.linfatico) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="linfatico" cols="30" rows="3" class="form-control" v-model="physical_exams.linfatico" @keydown="keydown()"></textarea>
+                    <textarea name="linfatico" cols="30" rows="3" class="form-control" v-model="physical_exams.linfatico" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -55,7 +55,7 @@
               <div id="osteoarticular" class="panel-collapse collapse" :class="(physical_exams.osteoarticular) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="osteoarticular" cols="30" rows="3" class="form-control" v-model="physical_exams.osteoarticular" @keydown="keydown()"></textarea>
+                    <textarea name="osteoarticular" cols="30" rows="3" class="form-control" v-model="physical_exams.osteoarticular" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -75,7 +75,7 @@
               <div id="psiquiatrico" class="panel-collapse collapse" :class="(physical_exams.psiquiatrico) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="psiquiatrico" cols="30" rows="3" class="form-control" v-model="physical_exams.psiquiatrico" @keydown="keydown()"></textarea>
+                    <textarea name="psiquiatrico" cols="30" rows="3" class="form-control" v-model="physical_exams.psiquiatrico" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -97,7 +97,7 @@
               <div id="digestivo" class="panel-collapse collapse" :class="(physical_exams.digestivo) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="cardio" cols="30" rows="3" class="form-control" v-model="physical_exams.digestivo" @keydown="keydown()"></textarea>
+                    <textarea name="cardio" cols="30" rows="3" class="form-control" v-model="physical_exams.digestivo" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -117,7 +117,7 @@
               <div id="dermatologico" class="panel-collapse collapse" :class="(physical_exams.dermatologico) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="dermatologico" cols="30" rows="3" class="form-control" v-model="physical_exams.dermatologico" @keydown="keydown()"></textarea>
+                    <textarea name="dermatologico" cols="30" rows="3" class="form-control" v-model="physical_exams.dermatologico" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -137,7 +137,7 @@
               <div id="otorrinolaringologico" class="panel-collapse collapse" :class="(physical_exams.otorrinolaringologico) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="otorrinolaringologico" cols="30" rows="3" class="form-control" v-model="physical_exams.otorrinolaringologico" @keydown="keydown()"></textarea>
+                    <textarea name="otorrinolaringologico" cols="30" rows="3" class="form-control" v-model="physical_exams.otorrinolaringologico" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -157,7 +157,7 @@
               <div id="reproductor" class="panel-collapse collapse" :class="(physical_exams.reproductor) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="reproductor" cols="30" rows="3" class="form-control" v-model="physical_exams.reproductor" @keydown="keydown()"></textarea>
+                    <textarea name="reproductor" cols="30" rows="3" class="form-control" v-model="physical_exams.reproductor" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -179,7 +179,7 @@
               <div id="urinario" class="panel-collapse collapse" :class="(physical_exams.urinario) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="urinario" cols="30" rows="3" class="form-control" v-model="physical_exams.urinario" @keydown="keydown()"></textarea>
+                    <textarea name="urinario" cols="30" rows="3" class="form-control" v-model="physical_exams.urinario" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -199,7 +199,7 @@
               <div id="neurologico" class="panel-collapse collapse" :class="(physical_exams.neurologico) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="neurologico" cols="30" rows="3" class="form-control" v-model="physical_exams.neurologico" @keydown="keydown()"></textarea>
+                    <textarea name="neurologico" cols="30" rows="3" class="form-control" v-model="physical_exams.neurologico" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -219,7 +219,7 @@
               <div id="pulmonar" class="panel-collapse collapse" :class="(physical_exams.pulmonar) ? 'in' : '' " aria-expanded="false">
                 <div class="box-body">
                   
-                    <textarea name="pulmonar" cols="30" rows="3" class="form-control" v-model="physical_exams.pulmonar" @keydown="keydown()"></textarea>
+                    <textarea name="pulmonar" cols="30" rows="3" class="form-control" v-model="physical_exams.pulmonar" @keydown="keydown()" :readonly="read"></textarea>
                     
                  
                   
@@ -233,59 +233,22 @@
       <small >{{ loader_message }}</small>
   </div>
 	
-  <!--<div class="form-group">
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.cardio" v-model="checkboxes.cardio"> Cardiaco
-     
-      <textarea name="cardio" cols="30" rows="4" class="form-control" v-model="physical_exams.cardio" @keydown="keydown()" ></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.digestivo" v-model="checkboxes.digestivo"> digestivo
-      <textarea name="digestivo" cols="30" rows="4" class="form-control" v-model="physical_exams.digestivo" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.urinario" v-model="checkboxes.urinario"> urinario
-      <textarea name="urinario" cols="30" rows="4" class="form-control" v-model="physical_exams.urinario" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.linfatico" v-model="checkboxes.linfatico"> linfatico
-      <textarea name="linfatico" cols="30" rows="4" class="form-control" v-model="physical_exams.linfatico" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.dermatologico" v-model="checkboxes.dermatologico"> dermatologico
-      <textarea name="dermatologico" cols="30" rows="4" class="form-control" v-model="physical_exams.dermatologico" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.neurologico" v-model="checkboxes.neurologico"> neurologico
-      <textarea name="neurologico" cols="30" rows="4" class="form-control" v-model="physical_exams.neurologico" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.osteoarticular" v-model="checkboxes.osteoarticular"> osteoarticular
-      <textarea name="osteoarticular" cols="30" rows="4" class="form-control" v-model="physical_exams.osteoarticular" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.otorrinolaringologico" v-model="checkboxes.otorrinolaringologico"> otorrinolaringologico
-      <textarea name="otorrinolaringologico" cols="30" rows="4" class="form-control" v-model="physical_exams.otorrinolaringologico" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.pulmonar" v-model="checkboxes.pulmonar"> pulmonar
-      <textarea name="pulmonar" cols="30" rows="4" class="form-control" v-model="physical_exams.pulmonar" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.psiquiatrico" v-model="checkboxes.psiquiatrico"> psiquiatrico
-      <textarea name="psiquiatrico" cols="30" rows="4" class="form-control" v-model="physical_exams.psiquiatrico" @keydown="keydown()"></textarea>
-    </label>
-    <label>
-      <input type="checkbox" class="flat-red" :checked="physical_exams.reproductor" v-model="checkboxes.reproductor"> reproductor
-      <textarea name="reproductor" cols="30" rows="4" class="form-control" v-model="physical_exams.reproductor" @keydown="keydown()"></textarea>
-    </label>
-  </div>-->
+ 
              
 </template>
 
 <script>
     export default {
-      props: ['physical'],
+      // props: ['physical'],
+       props: {
+        physical: {
+          type: Object
+        },
+        read:{
+          type:Boolean,
+          default: false
+        }
+      },
       data () {
         return {
 

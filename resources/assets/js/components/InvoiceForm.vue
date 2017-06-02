@@ -2,7 +2,7 @@
 	<div class="form-horizontal">
   
       
-      <div class="form-invoice-service" v-show="!newService">
+      <div class="form-invoice-service" v-show="!newService && !updateService">
           <div class="form-group">
             <label for="service" class="col-sm-2 control-label">Servicio</label>
 
@@ -14,7 +14,8 @@
             </div>
             <div class="col-sm-5">
                 <button type="submit" class="btn btn-default" @click="addToInvoice()">Agregar a Factura</button>
-                <button type="submit" class="btn btn-default" @click="newService = !newService">Crear Servicio</button>
+                <button type="submit" class="btn btn-default" @click="editService()" v-show="service">Modificar Servicio</button>
+                <button type="submit" class="btn btn-default" @click="createService()">Crear Servicio</button>
             </div>
           </div>
           <div class="invoice-summary" v-show="servicesToInvoice.length">
@@ -71,7 +72,8 @@
 
            <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-success" @click="invoice()">Facturar</button>
+              <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
+              <button type="submit" class="btn btn-success" @click="invoice('here')">Facturar</button>
             </div>
           </div>
               
@@ -80,22 +82,23 @@
          
          
       </div>
-      <div class="form-create-service" v-show="newService">
+      <div class="form-create-service" v-show="newService || updateService">
           <div class="form-group">
             <label for="service" class="col-sm-2 control-label">Nuevo Servicio</label>
 
             <div class="col-sm-10">
               <input type="text" class="form-control" name="service" placeholder="Servicio" v-model="new_service">
-              <form-error v-if="errors.new_service" :errors="errors" style="float:right;">
-                  {{ errors.new_service[0] }}
+              <form-error v-if="errors.name" :errors="errors" style="float:right;">
+                  {{ errors.name[0] }}
               </form-error>
             </div>
           </div>
           <div class="form-group">
-            <label for="amount" class="col-sm-2 control-label">monto</label>
+            <label for="amount" class="col-sm-2 control-label">monto ₡</label>
 
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="amount" placeholder="amount" v-model="amount">
+              <input type="text" class="form-control" name="amount" placeholder="Ej: ₡ 1000" v-model="amount">
+              <span>Escribe el monto <b>sin comas</b> o <b>puntos</b>. Ejemplo: 10000</span>
               <form-error v-if="errors.amount" :errors="errors" style="float:right;">
                   {{ errors.amount[0] }}
               </form-error>
@@ -103,8 +106,10 @@
           </div>
            <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-success" @click="save()">Guardar</button>
-                <button type="submit" class="btn btn-danger" @click="cancel()">Cancelar</button>
+                <button type="submit" class="btn btn-success" @click="update()" v-if="updateService">Actualizar</button>
+                <button type="submit" class="btn btn-success" @click="save()" v-else>Guardar</button>
+                <button type="submit" class="btn btn-danger" @click="remove()" v-show="updateService">Eliminar</button>
+                <button type="submit" class="btn btn-info" @click="cancel()">Regresar</button>
               </div>
             </div>
       </div>
@@ -127,6 +132,7 @@
             amount: 0,
 	          errors: [],
             newService:false,
+            updateService:false,
             service:null
            
 	         
@@ -145,9 +151,31 @@
             },
         		cancel() {
 		          this.new_service = "";
+              this.amount = 0;
 		          this.newService = false;
-		        
+		          this.updateService = false;
 		        },
+             createService(){
+             
+              this.newService = !this.newService
+              
+                this.new_service = "";
+                this.amount = 0;
+              
+
+            },
+            editService(){
+             
+              
+              if(this.service)
+              {
+               
+                 this.updateService = !this.updateService
+                this.new_service = this.service.name;
+                this.amount = this.service.amount;
+              }
+
+            },
             getTotalInvoice(){
               var totalInvoice = 0;
               for (var i = this.servicesToInvoice.length - 1; i >= 0; i--) {
@@ -176,10 +204,12 @@
 
           },
             selectService(service) {
-            
+           
                   if(service){
                     this.service = service;
                 
+                  }else{
+                    this.service = null;
                   }
 
            },
@@ -201,7 +231,7 @@
           
 		        save() {
 
-		          
+		            
 		              this.$http.post('/medic/invoices/services', {name: this.new_service, amount: this.amount}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
@@ -211,6 +241,8 @@
 		                      bus.$emit('alert', 'Servicio Agregado','success');
 		                      this.service = response.data;
                           this.newService = false;
+                          this.new_service= "";
+                          this.amount = 0;
 		                      this.errors = [];
 		                    }
 		                   this.loader = false;
@@ -223,11 +255,64 @@
 		           
 
 		      	},//save service
-	          invoice(){
+             update() {
 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, services: this.servicesToInvoice}).then((response) => {
-                        console.log(response.status);
-                        console.log(response.data);
+                 var resource = this.$resource('/medic/invoices/services/'+ this.service.id);
+
+                    resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
+                        
+                         bus.$emit('alert', 'Servicio Actualizado','success');
+                         //bus.$emit('updateList', 'Paciente Actualizado','success');
+                         this.service = response.data;
+                         this.updateService = false;
+                         
+                    }, (response) => {
+                        console.log(response.data)
+                        this.loader = false;
+                        this.loader_message ="Error al guardar cambios";
+                        this.errors = response.data;
+                    });
+              
+                  
+               
+
+            },//update service
+            remove(){
+             
+
+              this.$http.delete('/medic/invoices/services/'+this.service.id).then((response) => {
+                    
+                    if(response.status == 200 && response.data == 'ok')
+                    {
+                       var index = this.services.indexOf(this.service)
+                      this.services.splice(index, 1);
+                      this.updateService = false;
+                      this.service = null;
+                      bus.$emit('alert', 'Servicio Eliminado','success');
+                    }
+
+                }, (response) => {
+                    
+                     bus.$emit('alert', 'Error al eliminar el Servicio', 'danger');
+                    this.loader = false;
+                });
+
+
+            }, //remove
+            openInNewTab(url) {
+                var a = document.createElement("a");
+                a.target = "_blank";
+                a.href = url;
+                a.click();
+            },
+	          invoice(here){
+
+                let status = 0;
+
+                if(here) status = 1;
+                      
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, services: this.servicesToInvoice, status: status}).then((response) => {
+                       
                         if(response.status == 200 && response.data)
                         {
                       
@@ -236,6 +321,13 @@
                           this.service = null;
                           this.servicesToInvoice = [];
                           this.errors = [];
+
+                          if(here){
+                            window.location.href = "/medic/invoices/"+response.data.id+"/print";
+    
+                            //this.openInNewTab("/medic/invoices/"+response.data.id+"/print");
+                          }
+
                         }
                        this.loader = false;
                   }, (response) => {

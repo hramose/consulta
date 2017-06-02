@@ -11,20 +11,6 @@
 	<!-- /.box-header -->
 	<div class="box-body summary-flex">
 	  <dl class="summary-dl">
-	    <dt class="text-aqua"><h4>Historial</h4></dt>
-	    <dd>
-        <div><strong v-show="summary.history.allergies.length">Alergias: </strong><div v-for="item in summary.history.allergies">- {{ item.name }}</div></div>
-	      <div><strong v-show="summary.history.pathologicals.length">Ant. Patológicos: </strong><div v-for="item in summary.history.pathologicals">- {{ item.name }} </div> </div>
-	      <div><strong v-show="summary.history.no_pathologicals.length">Ant. No Patológicos: </strong><div v-for="item in summary.history.no_pathologicals">- {{ item.name }} </div> </div>
-	      <div><strong v-show="summary.history.heredos.length">Ant. Heredofamiliares: </strong><div v-for="item in summary.history.heredos">- {{ item.name }} </div></div>
-	      <div><strong v-show="summary.history.ginecos.length">Ant. Gineco-obstetricios: </strong><div v-for="item in summary.history.ginecos">- {{ item.name }} </div> </div>
-		   
-         
-	    </dd>
-      
-	    
-	  </dl>
-    <dl class="summary-dl">
       <dt class="text-aqua"><h4>Medicamentos Activos</h4></dt>
       <dd>
          <div v-for="item in summary.medicines"><span>{{ item.name }}</span></div>
@@ -66,6 +52,21 @@
          <div><strong v-show="summary.medical_instructions">Recomendaciones  Médicas: </strong>{{ summary.medical_instructions }} </div>
       </dd>
     </dl>
+    <dl class="summary-dl">
+	    <dt class="text-aqua"><h4>Historial</h4></dt>
+	    <dd>
+        <div><strong v-show="summary.history.allergies.length">Alergias: </strong><div v-for="item in summary.history.allergies">- {{ item.name }}</div></div>
+	      <div><strong v-show="summary.history.pathologicals.length">Ant. Patológicos: </strong><div v-for="item in summary.history.pathologicals">- {{ item.name }} </div> </div>
+	      <div><strong v-show="summary.history.no_pathologicals.length">Ant. No Patológicos: </strong><div v-for="item in summary.history.no_pathologicals">- {{ item.name }} </div> </div>
+	      <div><strong v-show="summary.history.heredos.length">Ant. Heredofamiliares: </strong><div v-for="item in summary.history.heredos">- {{ item.name }} </div></div>
+	      <div><strong v-show="summary.history.ginecos.length">Ant. Gineco-obstetricios: </strong><div v-for="item in summary.history.ginecos">- {{ item.name }} </div> </div>
+		   
+         
+	    </dd>
+      
+	    
+	  </dl>
+    
 	</div>
 
 </div>
