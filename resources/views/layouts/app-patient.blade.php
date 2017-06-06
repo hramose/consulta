@@ -64,7 +64,7 @@
               <a href="/clinics/search" class="btn btn-sm btn-success {{ set_active('clinics/search') }}">Buscar Clínica</a>
               <a href="/account/edit?tab=patients" class="btn btn-sm btn-danger {{ set_active('account/edit') }}">Crear Pacientes</a>
              
-              @if(auth()->user()->patients)
+              @if(auth()->user()->patients->count())
                 <a href="/expedients/{{ auth()->user()->patients->first()->id }}/show" class="btn btn-sm btn-warning {{ set_active('appointments') }} ">Mi Expediente</a>
               @endif
             </div>
