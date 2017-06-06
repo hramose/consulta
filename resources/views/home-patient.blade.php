@@ -18,7 +18,7 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua box-search-medic" style="position: relative;">
                   <div class="inner">
-                   <h3>Buscar Medico</h3>
+                   <h3>Buscar Médico</h3>
                     <div class="row">
                       <div class=" col-xs-12 col-sm-4">
                         <div class="small-box bg-white">
@@ -62,7 +62,7 @@
                 <!-- small box -->
                 <div class="small-box bg-green" style="position: relative;">
                   <div class="inner">
-                    <h3>Buscar clinica</h3>
+                    <h3>Buscar clínica</h3>
 
                     <p>Hospital</p>
                   </div>

@@ -30,7 +30,7 @@
 			<div class="nav-tabs-custom">
 	            <ul class="nav nav-tabs">
 	              <li class="{{ isset($tab) ? ($tab =='pressure') ? 'active' : '' : 'active' }}"><a href="#pressure" data-toggle="tab">Control de presión</a></li>
-	              <li class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }}"><a href="#sugar" data-toggle="tab">Control de azucar</a></li>
+	              <li class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }}"><a href="#sugar" data-toggle="tab">Control de azúcar</a></li>
 	              <li class="{{ isset($tab) ? ($tab =='medicines') ? 'active' : '' : '' }}"><a href="#medicines" data-toggle="tab">Mis medicamentos</a></li>
  				  <li class="{{ isset($tab) ? ($tab =='alergies') ? 'active' : '' : '' }}"><a href="#alergies" data-toggle="tab">Soy alergico a:</a></li>
  				   <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>	             

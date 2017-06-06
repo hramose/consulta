@@ -6,7 +6,7 @@
 @endsection
 @section('content')
      
-     @include('layouts/partials/header-pages',['page'=>'Busqueda de Medicos'])
+     @include('layouts/partials/header-pages',['page'=>'Busqueda de Médicos'])
 
     
     <section class="content">
@@ -33,7 +33,7 @@
                              <div class="form-group">
                                 <label for="q" class="control-label col-sm-2">Médico</label>
                                 <div class="col-sm-10">
-                                  <input type="text" name="q" class="form-control pull-right" placeholder="Nombre del medico" value="{{ isset($search['q']) ? $search['q'] : ''}}" >
+                                  <input type="text" name="q" class="form-control pull-right" placeholder="Nombre del médico" value="{{ isset($search['q']) ? $search['q'] : ''}}" >
                                 </div>
                               </div>
                            </div>
