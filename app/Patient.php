@@ -49,6 +49,14 @@ class Patient extends Model
     {
         return $this->hasMany(Medicine::class);
     }
+     public function pressures()
+    {
+        return $this->hasMany(Pressure::class);
+    }
+     public function sugars()
+    {
+        return $this->hasMany(Sugar::class);
+    }
     public function vitalSigns()
     {
         return $this->hasOne(VitalSign::class);

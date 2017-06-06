@@ -21,6 +21,14 @@ Route::post('/account/avatars', 'UserController@avatars');
 Route::post('/account/patients', 'UserController@storePatient');
 Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
 Route::put('/account/patients/{id}', 'UserController@updatePatient');
+Route::post('/account/patients/{id}/medicines', 'PatientController@medicines');
+Route::delete('/account/patients/medicines/{id}', 'PatientController@deleteMedicines');
+Route::post('/account/patients/{id}/allergies', 'PatientController@allergies');
+Route::delete('/account/patients/allergies/{id}', 'PatientController@deleteAllergies');
+Route::post('/account/patients/{id}/pressures', 'PatientController@pressures');
+Route::delete('/account/patients/pressures/{id}', 'PatientController@deletePressures');
+Route::post('/account/patients/{id}/sugars', 'PatientController@sugars');
+Route::delete('/account/patients/sugars/{id}', 'PatientController@deleteSugars');
 
 Route::get('/medics/search', 'MedicController@index');
 Route::get('/medics/general/search', 'MedicController@search');
@@ -42,6 +50,8 @@ Route::resource('appointments', 'AppointmentController');
 Route::post('/patients', 'PatientController@store');
 Route::put('/patients/{patient}', 'PatientController@update');
 
+Route::get('/expedients/{patient}/show', 'PatientController@expedient');
+
 Route::get('/patients/create', 'PatientController@create');
 Route::post('/patients/register', 'PatientController@register');
 
@@ -55,6 +65,8 @@ Route::get('/medics/{medic}/polls', 'PollController@show');
 Route::post('/medics/{medic}/polls', 'PollController@store');
 //Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
 Route::resource('polls', 'PollController');
+
+
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(function ()

@@ -50,6 +50,9 @@ Vue.component('invoice-list', require('./components/InvoiceList.vue'));
 Vue.component('assistant-form', require('./components/AssistantForm.vue'));
 Vue.component('assistant-list', require('./components/AssistantList.vue'));
 Vue.component('reports-medic', require('./components/ReportsMedic.vue'));
+Vue.component('allergies', require('./components/Allergies.vue'));
+Vue.component('pressure-control', require('./components/PressureControl.vue'));
+Vue.component('sugar-control', require('./components/SugarControl.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

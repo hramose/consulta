@@ -2,16 +2,16 @@
 	
 <div>
   
-      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Medicamentos">
-      <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataMedicines.length">
+      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Alergias">
+      <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataAllergies.length">
        
-        <li v-for="item in dataMedicines">
+        <li v-for="item in dataAllergies">
           <!-- todo text -->
           <span><span class="text"> {{ item.name }}</span></span>
           <!-- General tools such as edit or delete-->
           <div class="tools">
             
-            <i class="fa fa-trash-o delete" @click="remove(item)"></i>
+            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="item.user.roles[0].name == 'paciente'"></i>
           </div>
         </li>
        
@@ -24,25 +24,25 @@
 
 <script>
     export default {
-      //props: ['medicines','patient_id'],
+      //props: ['allergies','patient_id'],
        props: {
          patient_id: {
           type: Number
           
         },
-        medicines: {
+        allergies: {
           type: Array
           
         },
         url:{
           type:String,
-          default: '/medic/patients'
+          default: '/account/patients'
         }
     },
       data () {
         return {
           query : "",
-          dataMedicines:[],
+          dataAllergies:[],
           loader:false
 
 
@@ -61,22 +61,22 @@
             this.add(this.query);
             this.query = "";
           },
-          add(medicine) {
+          add(allergy) {
 
             
             
-              this.$http.post(this.url +'/'+ this.patient_id +'/medicines', {name: medicine}).then((response) => {
+              this.$http.post(this.url +'/'+ this.patient_id +'/allergies', {name: allergy}).then((response) => {
     
                   if(response.status == 200)
                   {
-                    this.dataMedicines.push(response.data);
-                    bus.$emit('alert', 'Medicamento Agregado','success');
-                    bus.$emit('actSummaryMedicines', this.dataMedicines);
+                    this.dataAllergies.push(response.data);
+                    bus.$emit('alert', 'Alergia Agregado','success');
+                    
                   }
 
               }, (response) => {
                  
-                   bus.$emit('alert', 'Error al guardar el medicamento', 'danger');
+                   bus.$emit('alert', 'Error al guardar la alergia', 'danger');
                   this.loader = false;
               });
 
@@ -86,18 +86,18 @@
           remove(item){
            
 
-            this.$http.delete(this.url +'/medicines/'+item.id).then((response) => {
+            this.$http.delete(this.url +'/allergies/'+item.id).then((response) => {
 
                   if(response.status == 200)
                   {
-                     var index = this.dataMedicines.indexOf(item)
-                    this.dataMedicines.splice(index, 1);
-                    bus.$emit('alert', 'Medicamento Eliminado','success');
+                     var index = this.dataAllergies.indexOf(item)
+                    this.dataAllergies.splice(index, 1);
+                    bus.$emit('alert', 'Alergia Eliminada','success');
                   }
 
               }, (response) => {
                   
-                   bus.$emit('alert', 'Error al guardar el medicamento', 'danger');
+                   bus.$emit('alert', 'Error al eliminar la alergia', 'danger');
                   this.loader = false;
               });
 
@@ -106,12 +106,12 @@
      
       },
       created () {
-           console.log('Component ready. Medicines.')
+           console.log('Component ready. Allergies.')
           
-           if(this.medicines.length)
+           if(this.allergies.length)
            {
             
-                this.dataMedicines = this.medicines;
+                this.dataAllergies = this.allergies;
             }
            
       }

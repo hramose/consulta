@@ -48,11 +48,11 @@ class ClinicController extends Controller
                 $clinics = $this->clinicRepo->findAll($search);
               
 
-                return view('clinics.index',compact('clinics','search'));
+                return view('search.clinics.index',compact('clinics','search'));
             }
         }
 
-        return view('clinics.index',compact('clinics'));
+        return view('search.clinics.index',compact('clinics'));
 
     }
 
@@ -74,7 +74,7 @@ class ClinicController extends Controller
         
        // if(!$medic->hasrole('medico')) return redirect('/');
         
-        return view('clinics.schedule',compact('medics','medic','office'));
+        return view('search.clinics.schedule',compact('medics','medic','office'));
     }
 
     public function getAllOffices()

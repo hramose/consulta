@@ -72,7 +72,7 @@
                     <span><span class="text"> {{ item.name }}</span></span>
                     <!-- General tools such as edit or delete-->
                     <div class="tools">
-                      <span>Dr. {{ item.user.name }} - </span>
+                      <span>Agregado por: {{ item.user.name }} - </span>
                       <span>{{ item.created_at }}</span>
                     </div>
                   </li>
