@@ -64,7 +64,8 @@
       <div class="row">
      
         <div class="form-group">
-          <button @click="hit" class="btn btn-success">Agregar</button> 
+          <button @click="hit" class="btn btn-success" :disabled="dataPressures.length >= this.limit">Agregar</button>
+          <span class="label label-warning" v-show="dataPressures.length >= this.limit">Haz alcanzado el limite de {{ limit}} registros</span> 
         </div>
       </div>
       <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataPressures.length">
@@ -118,6 +119,7 @@
           dataPressures:[],
           loader:false,
           errors: [],
+          limit: 10
 
 
         }

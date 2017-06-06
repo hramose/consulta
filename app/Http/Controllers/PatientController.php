@@ -86,6 +86,9 @@ class PatientController extends Controller
     {
        
         $patient = $this->patientRepo->findById($id);
+
+        if(!auth()->user()->hasPatient($patient->id)) // verifica que el paciente es del usuario logueado
+            return redirect('/');
         
 
         return view('patients.expedient', compact('patient'));
@@ -131,7 +134,7 @@ class PatientController extends Controller
         $data['history_id'] = $history->id;
        
         $allergy = Allergy::create($data);
-
+        $allergy->load('user.roles');
      
         return $allergy;
     

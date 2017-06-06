@@ -5,17 +5,24 @@
 @endsection
 @section('content')
 	<div id="infoBox" class="alert"></div> 
-	@include('layouts/partials/header-pages',['page'=>'Pacientes'])
-	<div class="row">
+	@include('layouts/partials/header-pages',['page'=>'Expediente del paciente'])
+	
+	<section class="content">
+      <div class="row">
 		<div class="col-md-12">
 			<form action="/">
-				<select name="patient" id="" class="form-control"></select>
+				<div class="form-group">
+					<select name="patient" id="" class="form-control">
+						@foreach(auth()->user()->patients as $p)
+							<option value="{{ $p->id}}" {{ ($patient->id == $p->id) ? 'selected': ''}} >{{ $p->fullname }}</option>
+						@endforeach
+					</select>
+					
+				</div>
 			</form>
 			
 		</div>
 	</div>
-	<section class="content">
-      
       <div class="row">
        
 		 
@@ -25,7 +32,8 @@
 	              <li class="{{ isset($tab) ? ($tab =='pressure') ? 'active' : '' : 'active' }}"><a href="#pressure" data-toggle="tab">Control de presión</a></li>
 	              <li class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }}"><a href="#sugar" data-toggle="tab">Control de azucar</a></li>
 	              <li class="{{ isset($tab) ? ($tab =='medicines') ? 'active' : '' : '' }}"><a href="#medicines" data-toggle="tab">Mis medicamentos</a></li>
- 				  <li class="{{ isset($tab) ? ($tab =='alergies') ? 'active' : '' : '' }}"><a href="#alergies" data-toggle="tab">Soy alergico a:</a></li>	             
+ 				  <li class="{{ isset($tab) ? ($tab =='alergies') ? 'active' : '' : '' }}"><a href="#alergies" data-toggle="tab">Soy alergico a:</a></li>
+ 				   <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>	             
 	              
 	            </ul>
 	            <div class="tab-content">
@@ -88,6 +96,9 @@
 							    <!-- /.box-body -->
 							</div>
 				    </div>
+				    <div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }} tab-pane" id="history">
+					   		<history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments->load('user','diagnostics') }}" :read="true"></history>	
+				    </div>
 				    
 
 				              
@@ -116,6 +127,16 @@
 <script>
   $(function () {
    
+      $('select[name="patient"]').on('change',function (e) {
+        e.preventDefault();
+  
+       // console.log($(this).val());
+       window.location.href = "/expedients/"+ $(this).val()+'/show';
+       
+     });
+
+     //$('select[name="patient"]').val();
+
      $(".dropdown-toggle").dropdown();
     //Initialize Select2 Elements
     $('#datetimepicker1').datetimepicker({
