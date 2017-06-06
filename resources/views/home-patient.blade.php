@@ -86,11 +86,11 @@
                   <div class="icon">
                     <i class="fa fa-edit"></i>
                   </div>
-                  @if(auth()->user()->patients)
+                  @if(auth()->user()->patients->count())
                     <a href="/expedients/{{ auth()->user()->patients->first()->id }}/show" class="small-box-footer">Iniciar <i class="fa fa-arrow-circle-right"></i></a>
                      <a href="/expedients/{{ auth()->user()->patients->first()->id }}/show" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
                    @else
-                      <p>Necesitas tener al menos un paciente para ir a su expediente</p>
+                      <span class="label label-danger">Necesitas tener al menos un paciente para ir a su expediente</span>
                    @endif
                 </div>
               </div>
