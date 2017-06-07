@@ -291,13 +291,16 @@ $(function () {
                       confirmButtonText: 'Eliminar cita'
                     }).then(function () {
                       
-                      deleteAppointment(event._id, event);
+                      var resp = deleteAppointment(event._id, event);
+                      
+                      if(resp){
 
-                      swal(
-                        'Cita cancelada!',
-                        'Tu cita ha sido eliminada del calendario.',
-                        'success'
-                      )
+                        swal(
+                          'Cita cancelada!',
+                          'Tu cita ha sido eliminada del calendario.',
+                          'success'
+                        )
+                      }
 
                     },function (dismiss) {});
 
@@ -490,7 +493,7 @@ $(function () {
               }
                if(method == "DELETE")
                {
-                
+                 
                  if(resp.resp == 'error')
                  {
                   infoBox.addClass('alert-danger').html('No se puede eliminar consulta ya que se encuentra iniciada!!').show();
@@ -499,13 +502,15 @@ $(function () {
                           infoBox.removeClass('alert-danger').hide();
                         },3000);
 
-                   return
+                  return resp.resp;
                   }
 
                   calendar.fullCalendar('removeEvents',data.idRemove);
                   calendar.attr('data-appointmentsday', resp.appointmentsToday);
                   modalForm.find('.btn-finalizar-cita').attr('data-appointment', '');
                   modalForm.find('.btn-cancelar-cita').attr('data-appointment', '');
+
+
                }
                
                if(method == "PUT")

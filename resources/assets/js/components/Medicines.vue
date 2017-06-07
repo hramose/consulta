@@ -11,7 +11,7 @@
           <!-- General tools such as edit or delete-->
           <div class="tools">
             
-            <i class="fa fa-trash-o delete" @click="remove(item)"></i>
+            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
           </div>
         </li>
        
@@ -37,6 +37,10 @@
         url:{
           type:String,
           default: '/medic/patients'
+        },
+         read:{
+          type:Boolean,
+          default: false
         }
     },
       data () {
@@ -55,7 +59,7 @@
           hit(){
             console.log('hit');
 
-            if(!this.query)
+            if(!this.query || this.read)
               return
 
             this.add(this.query);

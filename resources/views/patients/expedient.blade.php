@@ -26,14 +26,15 @@
       <div class="row">
        
 		 
-		<div class="col-md-12">
+		<div class="col-md-7">
+			<h3>Mi control personal</h3>
 			<div class="nav-tabs-custom">
 	            <ul class="nav nav-tabs">
 	              <li class="{{ isset($tab) ? ($tab =='pressure') ? 'active' : '' : 'active' }}"><a href="#pressure" data-toggle="tab">Control de presión</a></li>
 	              <li class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }}"><a href="#sugar" data-toggle="tab">Control de azúcar</a></li>
 	              <li class="{{ isset($tab) ? ($tab =='medicines') ? 'active' : '' : '' }}"><a href="#medicines" data-toggle="tab">Mis medicamentos</a></li>
  				  <li class="{{ isset($tab) ? ($tab =='alergies') ? 'active' : '' : '' }}"><a href="#alergies" data-toggle="tab">Soy alergico a:</a></li>
- 				   <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>	             
+ 				  
 	              
 	            </ul>
 	            <div class="tab-content">
@@ -96,9 +97,7 @@
 							    <!-- /.box-body -->
 							</div>
 				    </div>
-				    <div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }} tab-pane" id="history">
-					   		<history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments->load('user','diagnostics') }}" :read="true"></history>	
-				    </div>
+				    
 				    
 
 				              
@@ -107,6 +106,67 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
+			 
+		</div>
+		<div class="col-md-5">
+					<h3>Control Médico</h3>
+					<div class="nav-tabs-custom">
+			            <ul class="nav nav-tabs">
+			              <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : 'active' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>
+			              <li class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }}"><a href="#appointments" data-toggle="tab">Historial Consultas</a></li>
+			              
+		 				  
+			              
+			            </ul>
+			            <div class="tab-content">
+			              	<div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : 'active' }} tab-pane" id="history">
+								
+								 <history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments->load('user','diagnostics') }}" :read="true"></history>
+
+						    </div>
+						    <!-- /.tab-pane -->
+						    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
+							   	<ul class="products-list product-list-in-box">
+			                       @foreach($patient->appointments()->where('status', 1)->limit(5)->get() as $appointment)
+			                          <li class="item">
+			                            <div class="product-img">
+			                              
+			                                 <img class="profile-user-img img-responsive img-circle" src="{{ getAvatar($appointment->patient) }}" alt="User profile picture">
+			                            </div>
+			                            <div class="product-info">
+			                              <a href="{{ url('/appointments/'.$appointment->id.'/show') }}" class="product-title"> {{ $appointment->title }}
+			                                <span class="label label-warning pull-right">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</span></a>
+			                                  <span class="product-description">
+			                                   {{ $appointment->patient->first_name }} <span class="label label-success">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }} a {{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</span>
+			                                  </span>
+			                            </div>
+			                          </li>
+			                       @endforeach
+			                    </ul>
+			                    <div>
+			                    	 <p><a href="/appointments">Ver más consultas</a></p>
+			                    </div>
+			                   
+						    </div>
+						    <!-- /.tab-pane -->
+						    
+						    
+						    
+
+						              
+						             
+			            </div>
+			            <!-- /.tab-content -->
+			        </div>
+	          <!-- /.nav-tabs-custom -->
+					
+	              	
+				  
+				    
+
+				              
+				             
+	           
 			 
 		</div>
 

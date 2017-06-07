@@ -6,8 +6,10 @@ use App\Appointment;
 use App\Mail\NewAppointment;
 use App\Reminder;
 use App\Repositories\AppointmentRepository;
+use App\Repositories\PatientRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 class AppointmentController extends Controller
@@ -17,10 +19,11 @@ class AppointmentController extends Controller
      *
      * @return void
      */
-    public function __construct(AppointmentRepository $appointmentRepo)
+    public function __construct(AppointmentRepository $appointmentRepo, PatientRepository $patientRepo)
     {
         $this->middleware('auth')->except('sendReminder');
         $this->appointmentRepo = $appointmentRepo;
+        $this->patientRepo = $patientRepo;
   
 
     }
@@ -45,6 +48,27 @@ class AppointmentController extends Controller
         
 
         return view('appointments.history',compact('initAppointments','scheduledAppointments'));
+
+    }
+
+    /**
+     * Mostrar vista de actualizar consulta(cita)
+     */
+    public function show($id)
+    {
+
+        $appointment =   $this->appointmentRepo->findById($id); //$this->appointmentRepo->update_status($id, 1);
+        $patient = $appointment->patient;
+
+        if(!auth()->user()->hasPatient($patient->id)) // verifica que el paciente es del usuario logueado
+            return redirect('/');
+        
+        $history =  $this->patientRepo->findById($patient->id)->history;
+        $appointments =  $this->patientRepo->findById($patient->id)->appointments->load('user','diagnostics');
+        
+        $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
+       
+        return view('appointments.show',compact('appointment', 'files', 'history','appointments','patient'));
 
     }
 

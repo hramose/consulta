@@ -26,7 +26,8 @@
                        @foreach($appointments as $appointment)
                           <li class="item">
                             <div class="product-img">
-                              <img class="profile-user-img img-responsive img-circle" src="{{ (Storage::disk('public')->exists('patients/'.$appointment->patient->id.'/photo.jpg')) ? Storage::url('patients/'.$appointment->patient->id.'/photo.jpg') : Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture">
+                              
+                              <img class="profile-user-img img-responsive img-circle" src="{{ getAvatar($appointment->patient) }}" alt="User profile picture">
                             </div>
                             <div class="product-info">
                               <a href="{{ url('/appointments/'.$appointment->id.'/edit') }}" class="product-title"> {{ $appointment->title }}

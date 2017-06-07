@@ -14,9 +14,8 @@
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-green" >
                 <div class="widget-user-image">
-                  <!-- <img class="profile-user-img img-responsive img-circle" src="{{ (Storage::disk('public')->exists('patients/'.auth()->user()->patients->first()->id.'/photo.jpg')) ? Storage::url('patients/'.auth()->user()->patients->first()->id.'/photo.jpg') : Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture"> -->
-                  <!-- <img class="profile-user-img img-responsive img-circle" v-bind:src="'/storage/avatars/'+ paciente.id +'/avatar.jpg'" alt="User profile picture"> -->
-                  <img class="profile-user-img img-responsive img-circle" v-bind:src="'/storage/avatars/default-avatar.jpg'" alt="User profile picture">  
+                  
+                  <img class="profile-user-img img-responsive img-circle" v-bind:src="'/img/default-avatar.jpg'" alt="User profile picture">  
                  
                 </div>
                 <!-- /.widget-user-image -->

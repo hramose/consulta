@@ -45,6 +45,7 @@ Route::delete('/appointments/{appointment}/delete', 'AppointmentController@delet
 Route::post('/appointments/{appointment}/reminder', 'AppointmentController@reminder');
 Route::get('/appointments/reminder', 'AppointmentController@sendReminder');
 Route::get('/appointments/{appointment}/poll', 'AppointmentController@poll');
+Route::get('/appointments/{appointment}/show', 'AppointmentController@show');
 Route::resource('appointments', 'AppointmentController');
 
 Route::post('/patients', 'PatientController@store');
