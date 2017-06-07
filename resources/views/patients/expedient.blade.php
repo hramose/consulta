@@ -127,7 +127,7 @@
 						    <!-- /.tab-pane -->
 						    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
 							   	<ul class="products-list product-list-in-box">
-			                       @foreach($patient->appointments()->where('status', 1)->limit(5)->get() as $appointment)
+			                       @foreach($appointments = $patient->appointments()->where('status', 1)->limit(5)->get() as $appointment)
 			                          <li class="item">
 			                            <div class="product-img">
 			                              
@@ -143,9 +143,12 @@
 			                          </li>
 			                       @endforeach
 			                    </ul>
+			                    @if($appointments->count() > 5)
 			                    <div>
+
 			                    	 <p><a href="/appointments">Ver más consultas</a></p>
 			                    </div>
+			                    @endif
 			                   
 						    </div>
 						    <!-- /.tab-pane -->
