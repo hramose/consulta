@@ -244,7 +244,7 @@
          
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-danger" @click="save()">Guardar</button>
+              <button type="submit" class="btn btn-danger" @click="save()">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
             </div>
           </div>
         
@@ -754,7 +754,7 @@
         },
       
         save() {
-
+          this.loader = true;
           //var resource = this.$resource('/medic/account/offices');
            if(this.office.id)
            {

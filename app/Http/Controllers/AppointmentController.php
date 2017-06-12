@@ -98,7 +98,15 @@ class AppointmentController extends Controller
                 $medic->patients()->sync($ids_patients);
             }
         
-        \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
+        try {
+                        
+            \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+        
 
         $appointmentsToday = auth()->user()->appointmentsToday();
 

@@ -124,6 +124,7 @@
         save() {
 
           //var resource = this.$resource('/medic/account/offices');
+           this.loader = true;
            if(this.paciente.id)
            {
              var resource = this.$resource('/patients/'+ this.paciente.id);

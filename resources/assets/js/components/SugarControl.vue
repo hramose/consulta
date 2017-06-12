@@ -53,7 +53,7 @@
       <div class="row">
      
         <div class="form-group">
-          <button @click="hit" class="btn btn-success" :disabled="dataSugars.length >= this.limit">Agregar</button>
+          <button @click="hit" class="btn btn-success" :disabled="dataSugars.length >= this.limit">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
           <span class="label label-warning" v-show="dataSugars.length >= this.limit">Haz alcanzado el limite de {{ limit}} registros</span> 
         </div>
       </div>
@@ -139,7 +139,7 @@
         },
           hit(){
             console.log('hit');
-
+            this.loader = true;
            /* if(!this.ps)
               return*/
 
@@ -160,6 +160,7 @@
                     bus.$emit('alert', 'Control de Presion Agregado','success');
                     this.errors = [];
                   }
+                  this.loader = false;
 
               }, (response) => {
                  
@@ -173,7 +174,7 @@
           },
           remove(item){
            
-
+            this.loader = true;
             this.$http.delete(this.url +'/sugars/'+item.id).then((response) => {
 
                   if(response.status == 200)
@@ -182,6 +183,7 @@
                     this.dataSugars.splice(index, 1);
                     bus.$emit('alert', 'Control de Presion Eliminado','success');
                   }
+                  this.loader = false;
 
               }, (response) => {
                   

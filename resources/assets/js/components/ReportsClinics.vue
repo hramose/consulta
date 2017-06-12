@@ -65,7 +65,7 @@
                     <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
                             <div class="col-sm-12">
-                              <button @click="generateReport()" class="btn btn-success">Generar</button>
+                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                             </div>
                         </div>
                             
@@ -168,7 +168,8 @@
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
           dataLabelsAppointments:[],
-          dataSetsAppointments:[]
+          dataSetsAppointments:[],
+          loader:false
           
         }
       },
@@ -301,7 +302,7 @@
         },
 
         generateReport(){
-
+            this.loader = true;
            let queryParam = this.search;
            
             
@@ -319,6 +320,7 @@
                    this.data = resp.data
                   
                    this.getDataForChartAppointments();
+                   this.loader = false;
                 });
 
 

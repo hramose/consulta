@@ -92,7 +92,16 @@ class RegisterController extends Controller
         
         $user = $this->userRepo->store($data);
 
-        \Mail::to($this->administrators)->send(new NewMedic($user));
+        try {
+                        
+            \Mail::to($this->administrators)->send(new NewMedic($user));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+        
+        
 
         return $user;
 

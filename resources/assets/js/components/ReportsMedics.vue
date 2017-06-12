@@ -63,7 +63,7 @@
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
                             <div class="col-sm-12">
-                              <button @click="generateReport()" class="btn btn-success">Generar</button>
+                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                             </div>
                         </div>
                             
@@ -216,7 +216,8 @@
           dataLabelsMedics:[],
           dataLabelsAppointments:[],
           dataSetsMedics:[],
-          dataSetsAppointments:[]
+          dataSetsAppointments:[],
+          loader: false
           
         }
       },
@@ -366,7 +367,7 @@
         },
 
         generateReport(){
-
+          this.loader = true;
            let queryParam = this.search;
            
             this.dataSetsMedics = [];
@@ -384,6 +385,7 @@
                      this.data = resp.data
                      //this.getDataForChartMedics();
                      this.getDataForChartAppointments();
+                     this.loader = false;
                   });
               }else{
 
@@ -394,6 +396,7 @@
                    this.data = resp.data
                    this.getDataForChartMedics();
                    this.getDataForChartAppointments();
+                   this.loader = false;
                 });
 
 

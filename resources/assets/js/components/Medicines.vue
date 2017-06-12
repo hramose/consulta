@@ -2,7 +2,7 @@
 	
 <div>
   
-      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Medicamentos">
+      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Medicamentos"><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
       <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataMedicines.length">
        
         <li v-for="item in dataMedicines">
@@ -58,10 +58,10 @@
           
           hit(){
             console.log('hit');
-
             if(!this.query || this.read)
               return
 
+            this.loader = true;
             this.add(this.query);
             this.query = "";
           },
@@ -77,6 +77,7 @@
                     bus.$emit('alert', 'Medicamento Agregado','success');
                     bus.$emit('actSummaryMedicines', this.dataMedicines);
                   }
+                  this.loader = false;
 
               }, (response) => {
                  
@@ -89,7 +90,7 @@
           },
           remove(item){
            
-
+            this.loader = true;
             this.$http.delete(this.url +'/medicines/'+item.id).then((response) => {
 
                   if(response.status == 200)
@@ -98,7 +99,7 @@
                     this.dataMedicines.splice(index, 1);
                     bus.$emit('alert', 'Medicamento Eliminado','success');
                   }
-
+                  this.loader = false;
               }, (response) => {
                   
                    bus.$emit('alert', 'Error al guardar el medicamento', 'danger');

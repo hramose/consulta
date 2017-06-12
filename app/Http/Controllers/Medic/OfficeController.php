@@ -75,8 +75,16 @@ class OfficeController extends Controller
 
         $medic = auth()->user();
 
+        try {
+                        
+            \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
 
-        \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+        
 
        
 
@@ -96,8 +104,16 @@ class OfficeController extends Controller
         $office = auth()->user()->offices()->save($office);
         $medic = auth()->user();
         
-      
-        \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+        try {
+                        
+            \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+
+    
 
         return $office;
 

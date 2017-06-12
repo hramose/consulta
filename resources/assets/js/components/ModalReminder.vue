@@ -28,7 +28,7 @@
          
           <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-primary btn-finalizar-reminder">Crear Recordatorio</button>
-          <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
         </div>
       </div>
     </div>

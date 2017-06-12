@@ -23,7 +23,7 @@
                 <input type="text" name="search" class="form-control" v-model="comments" placeholder="Recomendación (Dosis)..." :readonly="read">
              </div>
               <div class="form-group">
-                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button> 
+                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
               </div>
               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataTreatments.length">
                
@@ -80,10 +80,12 @@
           
           hit(){
             console.log('hit');
+           
 
             if(!this.query)
               return
 
+            this.loader = true;
             this.add(this.query, this.comments);
             this.query = "";
             this.comments = "";
@@ -104,6 +106,7 @@
                  
                     bus.$emit('actSummaryTreatments', this.dataTreatments);
                   }
+                  this.loader = false;
 
               }, (response) => {
                  
@@ -116,7 +119,7 @@
           },
           remove(item){
            
-
+            this.loader = true;
             this.$http.delete('/medic/treatments/'+item.id).then((response) => {
 
                  
@@ -130,6 +133,7 @@
                 
                     bus.$emit('actSummaryTreatments', this.dataTreatments);
                   }
+                  this.loader = false;
 
               }, (response) => {
                   

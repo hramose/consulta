@@ -40,7 +40,7 @@
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
                             <div class="col-sm-12">
-                              <button @click="generateReport()" class="btn btn-success">Generar</button>
+                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                             </div>
                         </div>
                             
@@ -137,7 +137,8 @@
           selectedItem:null,
           data:[],
           dataLabelsPatients:[],
-          dataSetsPatients:[]
+          dataSetsPatients:[],
+          loader:false
           
         }
       },
@@ -286,7 +287,7 @@
         },
        
         generateReport(){
-
+           this.loader = true;
            let queryParam = this.search;
            
             
@@ -303,6 +304,7 @@
                    this.data = resp.data
                   
                    this.getDataForChartPatients();
+                   this.loader = false;
                 });
 
 

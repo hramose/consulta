@@ -9,9 +9,9 @@
                 <textarea name="reason" cols="30" rows="4" class="form-control" v-model="disease_notes.reason" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
-            <div class="overlay" v-show="loader">
+            <!-- <div class="overlay" v-show="loader">
               <i class="fa fa-refresh fa-spin"></i>
-            </div>
+            </div> -->
       </div>
       <div class="box box-default">
             <div class="box-header with-border">
@@ -22,9 +22,9 @@
                 <textarea name="symptoms" cols="30" rows="4" class="form-control" v-model="disease_notes.symptoms" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
-            <div class="overlay" v-show="loader">
+           <!--  <div class="overlay" v-show="loader">
               <i class="fa fa-refresh fa-spin"></i>
-            </div>
+            </div> -->
       </div>
       <div class="box box-default">
             <div class="box-header with-border">
@@ -35,9 +35,9 @@
                 <textarea name="phisical_review" cols="30" rows="4" class="form-control" v-model="disease_notes.phisical_review" @keydown="keydown()" :readonly="read"></textarea>
             </div>
             <!-- /.box-body -->
-            <div class="overlay" v-show="loader">
+           <!--  <div class="overlay" v-show="loader">
               <i class="fa fa-refresh fa-spin"></i>
-            </div>
+            </div> -->
       </div>
         
   </div>

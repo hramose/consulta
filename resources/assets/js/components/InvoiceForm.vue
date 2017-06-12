@@ -73,7 +73,7 @@
            <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
-              <button type="submit" class="btn btn-success" @click="invoice('here')">Facturar</button>
+              <button type="submit" class="btn btn-success" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
             </div>
           </div>
               
@@ -109,7 +109,7 @@
                 <button type="submit" class="btn btn-success" @click="update()" v-if="updateService">Actualizar</button>
                 <button type="submit" class="btn btn-success" @click="save()" v-else>Guardar</button>
                 <button type="submit" class="btn btn-danger" @click="remove()" v-show="updateService">Eliminar</button>
-                <button type="submit" class="btn btn-info" @click="cancel()">Regresar</button>
+                <button type="submit" class="btn btn-info" @click="cancel()">Regresar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
               </div>
             </div>
       </div>
@@ -231,7 +231,7 @@
           
 		        save() {
 
-		            
+		              this.loader = true;
 		              this.$http.post('/medic/invoices/services', {name: this.new_service, amount: this.amount}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
@@ -256,7 +256,7 @@
 
 		      	},//save service
              update() {
-
+                  this.loader = true;
                  var resource = this.$resource('/medic/invoices/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
@@ -265,7 +265,7 @@
                          //bus.$emit('updateList', 'Paciente Actualizado','success');
                          this.service = response.data;
                          this.updateService = false;
-                         
+                         this.loader = false;
                     }, (response) => {
                         console.log(response.data)
                         this.loader = false;
@@ -279,7 +279,7 @@
             },//update service
             remove(){
              
-
+              this.loader = true;
               this.$http.delete('/medic/invoices/services/'+this.service.id).then((response) => {
                     
                     if(response.status == 200 && response.data == 'ok')
@@ -290,6 +290,7 @@
                       this.service = null;
                       bus.$emit('alert', 'Servicio Eliminado','success');
                     }
+                    this.loader = false;
 
                 }, (response) => {
                     
@@ -310,7 +311,7 @@
                 let status = 0;
 
                 if(here) status = 1;
-                      
+                this.loader = true; 
                 this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, services: this.servicesToInvoice, status: status}).then((response) => {
                        
                         if(response.status == 200 && response.data)

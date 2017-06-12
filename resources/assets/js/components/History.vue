@@ -83,7 +83,7 @@
                   <textarea name="alergias" cols="30" rows="3" class="form-control" v-model="allergy"></textarea>
                   <div class="form-group pull-right">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/allergies',allergy,'allergy')">Guardar</button>
+                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/allergies',allergy,'allergy')">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                     </div>
                   </div>
                   
@@ -121,7 +121,7 @@
                     <textarea name="pathological" cols="30" rows="3" class="form-control" v-model="pathological" placeholder="Ej: Hospitalizacion previa, Cirugías, Diabetes, Enfermedades Tiroideas, Hipertensión Arterial, etc."></textarea>
                     <div class="form-group pull-right">
                       <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/pathologicals',pathological,'pathological')">Guardar</button>
+                        <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/pathologicals',pathological,'pathological')">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                       </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                   <textarea name="no_pathological" cols="30" rows="3" class="form-control" v-model="no_pathological" placeholder="Ej: Actividad Física, Tabaquismo, Alcoholismo, Uso de otras sustancias (Drogas), etc."></textarea>
                   <div class="form-group pull-right">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/nopathologicals',no_pathological,'no_pathological')">Guardar</button>
+                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/nopathologicals',no_pathological,'no_pathological')">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                     </div>
                   </div>
                 </div>
@@ -195,7 +195,7 @@
                   <textarea name="heredo" cols="30" rows="3" class="form-control" v-model="heredo" placeholder="Ej: Diabetes, Cardiopatías, Hipertensión Arterial, etc."></textarea>
                   <div class="form-group pull-right">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/heredos',heredo,'heredo')">Guardar</button>
+                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/heredos',heredo,'heredo')">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                     </div>
                   </div>
                 </div>
@@ -232,7 +232,7 @@
                   <textarea name="gineco" cols="30" rows="3" class="form-control" v-model="gineco" placeholder="Ej: Fecha de primera menstruación, Fecha de última menstruación, Características menstruación, Embarazos, etc."></textarea>
                   <div class="form-group pull-right">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/ginecos',gineco,'gineco')">Guardar</button>
+                      <button type="submit" class="btn btn-success"  @click="saveHistory('/medic/ginecos',gineco,'gineco')">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                     </div>
                   </div>
                 </div>
@@ -313,7 +313,7 @@
          saveHistory(url,item,cat) {
 
             
-            
+            this.loader = true;
             this.$http.post(url, {history_id: this.history.id, name: item}).then((response) => {
 
                   
@@ -351,6 +351,7 @@
                     
                     
                   }
+                  this.loader = false;
 
               }, (response) => {
                  

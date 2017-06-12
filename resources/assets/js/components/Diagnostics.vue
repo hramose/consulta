@@ -16,7 +16,7 @@
           <div class="box-body">
            
              
-             <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Nombre..." :readonly="read">
+             <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Nombre..." :readonly="read"><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataDiagnostics.length">
                
                 <li v-for="item in dataDiagnostics">
@@ -71,10 +71,10 @@
           
           hit(){
             console.log('hit');
-
             if(!this.query)
               return
 
+            this.loader = true;
             this.add(this.query);
             this.query = "";
           },
@@ -94,7 +94,7 @@
                     bus.$emit('actHistoryDiagnostics', response.data);
                     bus.$emit('actSummaryDiagnostics', this.dataDiagnostics);
                   }
-
+                  this.loader = false;
               }, (response) => {
                  
                    bus.$emit('alert', 'Error al guardar el diagnostico', 'danger');
@@ -106,7 +106,7 @@
           },
           remove(item){
            
-
+            this.loader = true;
             this.$http.delete('/medic/diagnostics/'+item.id).then((response) => {
 
                  
@@ -120,6 +120,7 @@
                 
                     bus.$emit('actSummaryDiagnostics', this.dataDiagnostics);
                   }
+                  this.loader = false;
 
               }, (response) => {
                   

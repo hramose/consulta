@@ -11,7 +11,7 @@
                   </div>
                   
                 <div class="form-group">
-                  <input type="submit" :value="Guardar" class="btn btn-info" @click="save(review1)">
+                  <input type="submit" :value="Guardar" class="btn btn-info" @click="save(review1)"><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                </div>
              
                 
@@ -35,6 +35,7 @@
               comments:'',
               score:''
            },
+           loader: false
            
         }
       },
@@ -42,11 +43,12 @@
        methods: {
        
          save(question){
-            
+           
           if(question.completed == 1){
               bus.$emit('alert', 'La Pregunta ya fue contestada!','danger');
             return false;
           }
+            this.loader = true;
              var resource = this.$resource('/polls/'+this.encuesta.id);
                 
                 resource.update({rate: this.rate, question: question.id}).then((response) => {
@@ -58,9 +60,10 @@
                      this.encuesta.questions[index].completed = 1;
                      this.rate = '';
                    }
+                   this.loader = false;
                 }, (response) => {
                     console.log(response.data)
-                    
+                    this.loader = false;
                 });
 
           
@@ -70,7 +73,7 @@
       },
       created () {
              console.log('Component ready. Poll Clinic')
-              debugger
+            
              if(this.poll)
                this.encuesta = this.poll;
             

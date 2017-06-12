@@ -2,7 +2,7 @@
 	
 <div>
   
-      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Alergias">
+      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Alergias"><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
       <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataAllergies.length">
        
         <li v-for="item in dataAllergies">
@@ -58,6 +58,7 @@
             if(!this.query)
               return
 
+            this.loader = true;
             this.add(this.query);
             this.query = "";
           },
@@ -73,6 +74,7 @@
                     bus.$emit('alert', 'Alergia Agregado','success');
                     
                   }
+                   this.loader = false;
 
               }, (response) => {
                  
@@ -85,7 +87,7 @@
           },
           remove(item){
            
-
+            this.loader = true;
             this.$http.delete(this.url +'/allergies/'+item.id).then((response) => {
 
                   if(response.status == 200)
@@ -94,6 +96,7 @@
                     this.dataAllergies.splice(index, 1);
                     bus.$emit('alert', 'Alergia Eliminada','success');
                   }
+                  this.loader = false;
 
               }, (response) => {
                   

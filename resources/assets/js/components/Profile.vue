@@ -25,7 +25,7 @@
        
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-danger"  @click="updateUser(profile)">Guardar</button>
+            <button type="submit" class="btn btn-danger"  @click="updateUser(profile)">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
       methods: {
          
           updateUser (data) {
-
+            this.loader = true;
             var resource = this.$resource('/medic/account/edit');
 
                 resource.update(data).then((response) => {

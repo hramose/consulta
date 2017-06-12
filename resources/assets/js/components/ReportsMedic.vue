@@ -47,7 +47,7 @@
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
                             <div class="col-sm-12">
-                              <button @click="generateReport()" class="btn btn-success">Generar</button>
+                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                             </div>
                         </div>
                             
@@ -337,7 +337,8 @@
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
           dataLabels:[],
           dataSets:[],
-          dataValues:[]
+          dataValues:[],
+          loader: false
         }
       },
       components:{
@@ -427,7 +428,7 @@
         },
 
         generateReport(){
-
+           this.loader = true;
            let queryParam = this.search;
           
             this.clearData();
@@ -440,7 +441,8 @@
               // this.dataPoll = resp.data;
               if(this.search.type == "Evaluación de usuario")
               {
-                this.dataReviews = resp.data
+                this.dataReviews = resp.data;
+                this.loader = false;
                 return;
               }
 
@@ -449,6 +451,7 @@
                this.dataSales = resp.data.sales
               
                this.getDataForChart();
+               this.loader = false;
 
             });
 
