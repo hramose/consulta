@@ -5,7 +5,7 @@
         <label for="asistente_name" class="col-sm-2 control-label">Nombre</label>
 
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="name" placeholder="Nombre del paciente" v-model="asistente.name" >
+          <input type="text" class="form-control" name="name" placeholder="Nombre del asistente" v-model="asistente.name" >
           <form-error v-if="errors.name" :errors="errors" style="float:right;">
               {{ errors.name[0] }}
           </form-error>
