@@ -277,7 +277,7 @@ Route::post('/logout', 'Auth\LoginController@logout');
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
-Route::get('patient/auth/{provider}', 'Auth\AuthPatientController@redirectToProvider');
-Route::get('patient/auth/{provider}/callback', 'Auth\AuthPatientController@handleProviderCallback');
+//Route::get('patient/auth/{provider}', 'Auth\AuthPatientController@redirectToProvider');
+//Route::get('patient/auth/{provider}/callback', 'Auth\AuthPatientController@handleProviderCallback');
 
 

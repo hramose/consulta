@@ -82,6 +82,7 @@ class AuthController extends Controller
         $data['provider_id'] = $user->id;
         //$data['speciality'] = [53];
         $data['role'] = Role::whereName('paciente')->first();
+        $data['api_token'] = $user->token;
         
         $user = $this->userRepo->store($data);
 

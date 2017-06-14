@@ -90,6 +90,7 @@ class RegisterClinicController extends Controller
         $data['role'] = Role::whereName('clinica')->first();
         $data['provider'] = 'email';
         $data['provider_id'] = $data['email'];
+        $data['api_token'] = str_random(50);
 
         $user = $this->userRepo->store($data);
 

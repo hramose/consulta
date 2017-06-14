@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
 {
     
     private $tables = [
-        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars'
+        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars','allergies','appointments','diagnostics', 'disease_notes','ginecos','heredos','medicines','nopathologicals','pathologicals', 'physical_exams', 'reminders','schedules','treatments','vital_signs'
     ];
     
     /**
@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456'),
             'provider' => 'email',
             'provider_id' => 'admin@admin.com',
+            'api_token' => str_random(50),
             'remember_token' => str_random(10),
         ]);
         $admin2 = factory(User::class, 1)->create([
@@ -59,6 +60,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456'),
             'provider' => 'email',
             'provider_id' => 'farmaciamonserrat@gmail.com',
+            'api_token' => str_random(50),
             'remember_token' => str_random(10),
         ]);
             \DB::table('role_user')->insert(

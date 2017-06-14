@@ -84,6 +84,7 @@ class RegisterPatientController extends Controller
         $data['provider'] = 'email';
         $data['provider_id'] = $data['email'];
         $data['role'] = Role::whereName('paciente')->first();
+        $data['api_token'] = str_random(50);
 
         return $this->userRepo->store($data);
 
