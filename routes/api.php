@@ -19,7 +19,11 @@ Route::get('/user', function (Request $request) {
 
 })->middleware('auth:api');
 
-Route::post('/token', function (Request $request) {
+
+Route::post('/token', 'Api\AuthController@token');
+Route::post('/user/register', 'Api\AuthController@register');
+
+/*Route::post('/token', function (Request $request) {
 	   
 	    
 	    if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
@@ -46,9 +50,10 @@ Route::post('/token', function (Request $request) {
  		
 	    
 	   
-});
+});*/
 
-Route::post('/user/register', function (Request $request) {
+
+/*Route::post('/user/register', function (Request $request) {
 	    
 	    $user = \User::where('email',$request->input('email'))->first();
 		
@@ -76,7 +81,7 @@ Route::post('/user/register', function (Request $request) {
 	    ];
 	   
 	    return json_encode($token);
-});
+});*/
 
 Route::get('/login', function (Request $request) {
 	    
