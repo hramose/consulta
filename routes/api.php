@@ -64,6 +64,8 @@ Route::post('/user/register', function (Request $request) {
 	    	$user = \User::create([
 	    			'name' => $request->input('name'),
 	    			'email' => $request->input('email'),
+	    			'provider' => 'social',
+        			'provider_id' => ($request->input('api_token')) ? substr($request->input('api_token'), 0, 90) : str_random(90),
 	    			'password' =>'',
 	    			'api_token' => ($request->input('api_token')) ? substr($request->input('api_token'), 0, 90) : str_random(90)
 	    		]);
