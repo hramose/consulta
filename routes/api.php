@@ -14,5 +14,69 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/user', function (Request $request) {
+
     return $request->user();
+
 })->middleware('auth:api');
+
+Route::post('/token', function (Request $request) {
+	   
+	    
+	    if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            // Authentication passed...
+            $user = \Auth::user();
+
+			$token = [
+	    		'access_token' => $user->api_token
+	    	];
+
+	    	\Auth::logout();
+
+             return json_encode($token);
+        }
+
+	    
+	    $error = [
+	    	'error' => 'Unauthenticated'
+	    ];
+   
+	    
+	    return  json_encode($error);
+
+ 		
+	    
+	   
+});
+
+Route::post('/user/register', function (Request $request) {
+	    
+	    $user = \User::where('email',$request->input('email'))->first();
+		
+		if($user)
+	    {
+			$user->name = $request->input('name');
+			$user->save();
+		}
+	
+	   
+	    if(!$user)
+	    {
+	    	$user = \User::create([
+	    			'name' => $request->input('name'),
+	    			'email' => $request->input('email'),
+	    			'password' =>'',
+	    			'api_token' => ($request->input('api_token')) ? substr($request->input('api_token'), 0, 90) : str_random(90)
+	    		]);
+	    }
+
+ 		$token = [
+	    	'access_token' => $user->api_token
+	    ];
+	   
+	    return json_encode($token);
+});
+
+Route::get('/login', function (Request $request) {
+	    
+	    return $request->user();
+	});
