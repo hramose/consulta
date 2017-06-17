@@ -294,6 +294,7 @@ class AppointmentRepository extends DbRepository{
         {
             $appointments = $appointments->where('user_id', $search['medic']);
             $balances = $balances->where('user_id', $search['medic']);
+             
             
         }
         if (isset($search['speciality']) && $search['speciality'] != "")
@@ -310,7 +311,7 @@ class AppointmentRepository extends DbRepository{
         if (isset($search['date1']) && $search['date1'] != "")
         {
            
-            
+            debug($balances);
             
             $date1 = new Carbon($search['date1']);
             $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
@@ -320,8 +321,8 @@ class AppointmentRepository extends DbRepository{
             $appointments = $appointments->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]]);
 
-            $balances = $balances->where([['balances.created_at', '>=', $date1],
-                    ['balances.created_at', '<=', $date2->endOfDay()]]);
+            //$balances = $balances->where([['balances.created_at', '>=', $date1],
+            //        ['balances.created_at', '<=', $date2->endOfDay()]]);
             
         }
 
