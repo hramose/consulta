@@ -83,6 +83,8 @@
 		      <!-- /.col -->
 		    </div>
 		    <!-- /.row -->
+		   
+	      
 		  </section>
 		  <!-- /.content -->
 		

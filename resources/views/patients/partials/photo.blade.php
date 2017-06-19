@@ -11,7 +11,7 @@
                 
                 <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/patients/photos">Subir Foto</a> 
               @else
-                <img class="profile-user-img img-responsive img-circle" src="{{ Storage::url('avatars/default-avatar.jpg') }}" alt="User profile picture">
+                <img class="profile-user-img img-responsive img-circle" src="/img/default-avatar.jpg" alt="User profile picture">
               @endif
 
                
