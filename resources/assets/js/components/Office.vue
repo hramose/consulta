@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <div class="col-sm-10">
                     <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
-                    <a href="#" class="btn btn-default " @click="nuevo()">Crear Consultorio Nuevo</a>
+                    <a href="#" class="btn btn-default " @click="nuevo()" v-show="officeNotFound">Crear Consultorio Nuevo</a>
                     </div>
                 </div>
                     
@@ -39,7 +39,7 @@
               <label for="office_name" class="col-sm-2 control-label">Nombre</label>
               <div class="col-sm-10">
 
-                 <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" :disabled="office.id && office.type != 'Consultorio Independiente'">
+                 <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio, clínica u hospital" v-model="office.name" :disabled="office.id && office.type != 'Consultorio Independiente'">
                 <form-error v-if="errors.name" :errors="errors" style="float:right;">
                     {{ errors.name[0] }}
                 </form-error> 
@@ -697,7 +697,8 @@
           },
           selectedValue:null,
           allOffices: [],
-          errors: []
+          errors: [],
+          officeNotFound:false
          
         
           
@@ -879,7 +880,10 @@
                     if(response.status == 200 && response.data)
                     {
                       this.consultorios.push(response.data);
-                      bus.$emit('alert', 'Consultorio Agregado','success');
+                      if(this.office.type != 'Consultorio Independiente')
+                        bus.$emit('alert', 'Consultorio Agregado - Esperando confirmación por parte del administrador de la clinica u hospital','success');
+                      else
+                        bus.$emit('alert', 'Consultorio Agregado','success');
                       this.office = {};
                       this.newOffice = false;
                       this.errors = [];
@@ -942,9 +946,10 @@
 
 
           },
-          getOffices(search, loading) {
-         
-            loading(true)
+           getOffices:_.debounce(function(search, loading) {
+             
+
+           loading(true)
            
            let queryParam = {
                 ['q']: search
@@ -953,10 +958,18 @@
             .then(resp => {
                
                this.allOffices = resp.data
+
+               if(this.allOffices.length <= 0)
+                  this.officeNotFound = true;
+                else
+                  this.officeNotFound = false;
+
                loading(false)
             })
-            
-          },
+          
+
+        }, 500),
+        
           selectOffice(clinica) {
             
             if(clinica){

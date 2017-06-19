@@ -43,6 +43,7 @@ $(function () {
         }
     };
 
+
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
       $('.box-offices').hide();
@@ -143,6 +144,8 @@ $(function () {
             success: function (resp) {
               
              console.log('slotDuration actualizado')
+             window.location.href = "/medic/appointments/create?wizard=1";
+             
             },
             error: function () {
               console.log('error updating slotDuration');
@@ -346,7 +349,7 @@ $(function () {
        eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
        freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
        businessHours = [ 1, 2, 3, 4, 5, 6, 0];
-
+      
       for(d in businessHours){
          for(f in freeDays){
                 if(freeDays[f] == businessHours[d])

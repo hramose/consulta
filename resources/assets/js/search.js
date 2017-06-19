@@ -21,6 +21,35 @@ $(function () {
         }
     };
 
+     var $root = $('html, body');
+   
+$(window).on('load', function() {
+
+     
+        var href = '#no-more-tables';
+        
+        if (typeof($(href)) != 'undefined' && $(href).length > 0) {
+            var anchor = '';
+
+            if (href.indexOf("#") != -1) {
+                anchor = href.substring(href.lastIndexOf("#"));
+            }
+
+            if (anchor.length > 0) {
+                console.log($(anchor).offset().top);
+                console.log(anchor);
+                $root.animate({
+                    scrollTop: $(anchor).offset().top-80
+                }, 500, function() {
+                    window.location.hash = anchor;
+                });
+                e.preventDefault();
+            }
+        }
+   
+
+});
+
   if( isMobile.any() ) {
       $('.box-create-appointment').hide();
        $('.breadcrumb').hide();

@@ -208,6 +208,7 @@ body.loading:before{
 
 .external-event{
 	padding: 0px 10px !important;
+	font-size:12px;
 }
 .fc-event:hover {
   border-color: #1c7d87 !important;
@@ -615,6 +616,9 @@ td.fc-day.fc-past{
         */
         #no-more-tables td:before { content: attr(data-title); }
       }
+
+
+
 
 /**** AdminLTE.css *****/
 @import "AdminLTE";

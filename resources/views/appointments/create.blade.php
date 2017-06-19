@@ -175,7 +175,7 @@
                    <option value="01:00:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "01:00:00") ? 'selected' : '' : '' }}>1 h</option>
                    <option value="00:30:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:30:00") ? 'selected' : '' : '' }}>30 min</option>
                    <option value="00:20:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:20:00") ? 'selected' : '' : '' }}>20 min</option>
-                   <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:15:00") ? 'selected' : '' : '' }}>10 min</option>
+                   <option value="00:10:00" {{ (auth()->user()->settings) ? (auth()->user()->settings->slotDuration == "00:10:00") ? 'selected' : '' : '' }}>10 min</option>
                 </select>
               </div>
              
@@ -202,7 +202,12 @@
           <div class="box box-solid box-citas">
             <div class="box-header with-border">
               <h4 class="box-title">Citas </h4>
+              @if($wizard)
+               <div><small>(Arrastra los elementos coloreados hacia la hora deseada para programar tu agenda y expande hasta el fin de la jornada o has click sobre la hora para crear una cita)</small></div>
+              @else
               <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div>
+
+              @endif
             </div>
             <div class="box-body">
               <!-- the events -->
@@ -217,7 +222,12 @@
           <div class="box box-solid box-offices">
             <div class="box-header with-border">
               <h4 class="box-title">Agenda </h4>
+               @if($wizard)
+               <div><small>(Arrastra los elementos coloreados hacia la hora deseada para programar tu agenda y expande hasta el fin de la jornada o has click sobre la hora para crear una cita)</small></div>
+              @else
               <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div>
+             
+              @endif
             </div>
             <div class="box-body">
               <!-- the events -->

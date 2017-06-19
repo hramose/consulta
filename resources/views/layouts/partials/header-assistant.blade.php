@@ -26,7 +26,7 @@
               <!-- <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
               <img src="{{ getAvatar(auth()->user()) }}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">{{ auth()->user()->name }}</span>
+              <span class="hidden-xs">{{ auth()->user()->name }} - Clínica: @foreach(auth()->user()->clinicsAssistants as $clinic) {{ $clinic->name }} @endforeach</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->

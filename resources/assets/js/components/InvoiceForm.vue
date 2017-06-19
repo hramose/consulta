@@ -7,7 +7,7 @@
             <label for="service" class="col-sm-2 control-label">Servicio</label>
 
             <div class="col-sm-5">
-               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el consultorio para la cita..." label="name" :on-change="selectService" :value.sync="service"></v-select>
+               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el consultorio para la cita..." label="name_price" :on-change="selectService" :value.sync="service"></v-select>
               <form-error v-if="errors.service" :errors="errors" style="float:right;">
                   {{ errors.service[0] }}
               </form-error>
@@ -213,7 +213,24 @@
                   }
 
            },
-            getServices(search, loading) {
+            getServices:_.debounce(function(search, loading) {
+             
+
+            loading(true)
+           
+           let queryParam = {
+                ['q']: search
+              }
+            this.$http.get('/medic/invoices/services/list', {params: Object.assign(queryParam, this.data)})
+            .then(resp => {
+               
+               this.services = resp.data
+               loading(false)
+            })
+          
+
+        }, 500),
+          /*  getServices(search, loading) {
          
             loading(true)
            
@@ -227,7 +244,7 @@
                loading(false)
             })
             
-          },
+          },*/
           
 		        save() {
 

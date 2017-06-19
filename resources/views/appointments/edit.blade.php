@@ -88,7 +88,7 @@
 			              		</div>
 			              		<div class="row">
 									<div class="col-md-12">
-									    <a href="/medic/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Print</a>
+									    <a href="/medic/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Imprimir Receta</a>
 			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></treatments>
 			              			</div>
 			              		</div>
@@ -132,7 +132,7 @@
 		          <!-- /.nav-tabs-custom -->
 		    </div>
 		    <div class="col-md-3" style="position: relative;">
-		    	<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Print</a>
+		    	<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Imprimir</a>
 		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" ></summary-appointment>
 		      
 		    </div>

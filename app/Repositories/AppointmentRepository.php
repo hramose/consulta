@@ -165,7 +165,7 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('user_id', $id)->where('patient_id','<>',0);
        
-        if (! count($search) > 0) return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->paginate($limit);
+        if (! count($search) > 0) return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
 
         if (isset($search['q']) && trim($search['q'] != ""))
         {
@@ -190,7 +190,7 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->paginate($limit);
+        return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
 
     }
     /**
@@ -311,19 +311,21 @@ class AppointmentRepository extends DbRepository{
         if (isset($search['date1']) && $search['date1'] != "")
         {
            
-            debug($balances);
+           
             
             $date1 = new Carbon($search['date1']);
             $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
             $date2 = new Carbon($date2);
             
-         
-            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+            if($appointments->count())
+                $appointments = $appointments->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]]);
 
-            //$balances = $balances->where([['balances.created_at', '>=', $date1],
-            //        ['balances.created_at', '<=', $date2->endOfDay()]]);
+            if($balances->count())
+                $balances = $balances->where([['balances.created_at', '>=', $date1],
+                   ['balances.created_at', '<=', $date2->endOfDay()]]);
             
+           
         }
 
 
