@@ -97,8 +97,25 @@ class ScheduleController extends Controller
     }
     public function copySchedule($week)
     {
-        $search['date1'] =  Carbon::now()->startOfWeek();
-        $search['date2'] = Carbon::now()->endOfWeek();
+       
+        $datefin1 = Carbon::parse(request('datefin1'));
+        $datefin2 = Carbon::parse(request('datefin2'));
+        $dateini1 = Carbon::parse(request('dateini1'));
+        $dateini2 = Carbon::parse(request('dateini2'));
+        $search['date1'] =  $datefin1;//Carbon::now()->startOfWeek();
+        $search['date2'] = $datefin2; //Carbon::now()->endOfWeek();
+
+        if(request('dateini1') == request('datefin1') || request('dateini2') == request('datefin2')){
+
+            flash('Seleccione fechas de inicio y fin diferentes!','error'); 
+            return back();
+        }
+
+         if($datefin1 <  $dateini1 || $datefin2 <  $dateini2){
+
+            flash('La fecha de inicio no puede ser mayor que la fecha final. Verifique!','error'); 
+            return back();
+        }
 
         $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination(auth()->id(), $search);
         
@@ -108,19 +125,46 @@ class ScheduleController extends Controller
             return back();
         }
 
-        //dd(Carbon::now()->subWeek()->startOfWeek() .'----'.Carbon::now()->subWeek()->endOfWeek());
 
-        $search['date1'] = Carbon::now()->subWeek()->startOfWeek();
-        $search['date2'] = Carbon::now()->subWeek()->endOfWeek();
-
+        $search['date1'] = $dateini1;//Carbon::now()->subWeek()->startOfWeek();
+        $search['date2'] = $dateini2;//Carbon::now()->subWeek()->endOfWeek();
+        $copiedSchedules = 0;
         $copySchedules = $this->scheduleRepo->findAllByDoctorWithoutPagination(auth()->id(), $search);  
 
         foreach ($copySchedules as $scheduleToCopy) {
+            $dateBetween = Carbon::parse($scheduleToCopy->date);
+            $dateStart = Carbon::parse($scheduleToCopy->start);
+            $dateEnd = Carbon::parse($scheduleToCopy->end);
+           
+            while (!$dateBetween->between($datefin1, $datefin2) &&  ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month)){
+                  $dateBetween->addWeek();
+                  $dateStart->addWeek();
+                  $dateEnd->addWeek();
+              
+            }
+           
 
-            Schedule::create([
+            if($scheduleToCopy->date != $dateBetween->toDateTimeString() && ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month))
+            {
+                Schedule::create([
+                        'user_id' => $scheduleToCopy->user_id,
+                        'office_id' => $scheduleToCopy->office_id,
+                        'date' => $dateBetween->toDateTimeString(),
+                        'start' => $dateStart->toDateString().'T'.$dateStart->toTimeString(),
+                        'end' => $dateEnd->toDateString().'T'.$dateEnd->toTimeString(),
+                        'allDay' => $scheduleToCopy->allDay,
+                        'title' => $scheduleToCopy->title,
+                        'backgroundColor' => $scheduleToCopy->backgroundColor,
+                        'borderColor' => $scheduleToCopy->borderColor,
+                        'status' => $scheduleToCopy->status
+                    ]);
+
+                $copiedSchedules++;
+            }
+            /*Schedule::create([
                     'user_id' => $scheduleToCopy->user_id,
                     'office_id' => $scheduleToCopy->office_id,
-                    'date' => Carbon::parse($scheduleToCopy->date)->addWeek()->toDateTimeString(),
+                    'date' => $dateBetween->toDateTimeString(),
                     'start' => Carbon::parse($scheduleToCopy->start)->addWeek()->toDateString().'T'.Carbon::parse($scheduleToCopy->start)->addWeek()->toTimeString(),
                     'end' => Carbon::parse($scheduleToCopy->end)->addWeek()->toDateString().'T'.Carbon::parse($scheduleToCopy->end)->addWeek()->toTimeString(),
                     'allDay' => $scheduleToCopy->allDay,
@@ -128,10 +172,11 @@ class ScheduleController extends Controller
                     'backgroundColor' => $scheduleToCopy->backgroundColor,
                     'borderColor' => $scheduleToCopy->borderColor,
                     'status' => $scheduleToCopy->status
-                ]);
+                ]);*/
         }
         
-         flash('Horario copiado con exito!','success'); 
+         flash($copiedSchedules. ' Horario(s) copiado(s) con exito!','success'); 
+
         return back();
     }
 

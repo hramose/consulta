@@ -10,6 +10,7 @@ use App\Role;
 use App\Speciality;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class RegisterClinicController extends Controller
@@ -58,6 +59,8 @@ class RegisterClinicController extends Controller
 
         return view('auth.register-clinic');
     }
+
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -104,21 +107,25 @@ class RegisterClinicController extends Controller
 
             //$office->save();
 
-
-        }
-        
-        try {
+              try {
                         
-            \Mail::to($this->administrators)->send(new NewClinic($user,$office));
-            
-        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-        {
-            \Log::error($e->getMessage());
+                    \Mail::to($this->administrators)->send(new NewClinic($user,$office));
+                    
+                }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+                {
+                    \Log::error($e->getMessage());
+                }
+
+          
+
         }
 
+    
+        
+      
+        return $user;
         
 
-        return $user;
 
 
     }

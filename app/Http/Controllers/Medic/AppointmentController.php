@@ -7,6 +7,7 @@ use App\Patient;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\findAllByDoctor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -53,9 +54,31 @@ class AppointmentController extends Controller
 
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id());
 
-       
+       $month = Carbon::now()->month;
+       //$carbon = new Carbon(new Carbon(date('Y-m-d', strtotime('next monday', strtotime('2017-' . $month . '-01'))), 'America/Costa_Rica'));
+        $carbon = Carbon::now()->startOfMonth();
+        $weeks_array = [];
+        $selectWeeks = [];
+        while (intval($carbon->month) == intval($month)){
+            $weeks_array[$carbon->weekOfMonth][ $carbon->dayOfWeek ] = $carbon->toDateString();
+            $carbon->addDay();
+          
+        }
+        foreach ($weeks_array as $key => $week) {
+            //dd($key);
 
-    	return view('appointments.create',compact('appointments', 'p','wizard'));
+             $itemSelect = [
+                'name' => 'Semana '. $key.' ('.head($week) .' | '.last($week).')',
+                'value' => $key
+            ];
+             $selectWeeks [] = $itemSelect;
+
+        }
+        
+       // dd($selectWeeks);
+
+       
+    	return view('appointments.create',compact('appointments', 'p','wizard','selectWeeks'));
 
     }
 

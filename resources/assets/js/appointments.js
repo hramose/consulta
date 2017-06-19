@@ -21,6 +21,10 @@ $(function () {
      var datetimepicker1 = $('#datetimepicker1');
      var datetimepicker2 = $('#datetimepicker2');
      var datetimepicker3 = $('#datetimepicker3');
+     var datetimepickerini1 = $('#datetimepickerini1');
+     var datetimepickerini2 = $('#datetimepickerini2');
+     var datetimepickerfin1 = $('#datetimepickerfin1');
+     var datetimepickerfin2 = $('#datetimepickerfin2');
 
       var isMobile = {
         Android: function() {
@@ -153,6 +157,32 @@ $(function () {
             }
         });
      } // onchange slotduration
+
+
+       datetimepickerini1.datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            defaultDate: new Date()
+            
+         });
+        datetimepickerini2.datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            defaultDate: new Date()
+            
+         });
+         datetimepickerfin1.datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            defaultDate: new Date()
+            
+         });
+          datetimepickerfin2.datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            defaultDate: new Date()
+            
+         });
 
      function isOverlapping(event) {
      

@@ -23,10 +23,7 @@
       
         <div class="row">
         <div class="col-md-3">
-          <form method="POST" action="{{ url('/medic/schedules/copyto/'. Carbon\carbon::now()->weekOfMonth) }}" class="form-horizontal">
-                   {{ csrf_field() }}
-                  <button class="btn bg-purple" style="margin-bottom: 1rem;float:right;">Copiar Horario de semana anterior</button>
-          </form>
+        
 
           <!-- /. box -->
           @if($wizard)
@@ -237,6 +234,97 @@
             </div>
             <!-- /.box-body -->
           </div>
+
+          <div class="box box-solid box-offices">
+            <div class="box-header with-border">
+              <h4 class="box-title">Copiar Horario de Agenda </h4>
+              
+            </div>
+            <div class="box-body">
+             
+              <form method="POST" action="{{ url('/medic/schedules/copyto/'. Carbon\carbon::now()->weekOfMonth) }}" class="form-horizontal">
+                     {{ csrf_field() }}
+                    
+                   <!--  <div class="form-group">
+                        <label for="selectWeek1" class="col-sm-7 control-label">De la Semana: </label>
+                        <div class="col-sm-12">
+                           <select name="selectWeek1" id="selectWeek1" class="form-control">
+                             @foreach($selectWeeks as $week)
+                             <option value="{{ $week['value'] }}">{{ $week['name'] }}</option>
+                             @endforeach
+                             
+                          </select>
+                        </div>
+                  </div> -->
+                
+                  <div class="col-xs-12 col-sm-6">
+                      <div class="form-group">
+                        <label>De la Fecha:</label>
+                        <div class="date col-sm-12">
+                         
+                         
+                          <input type="text" class="form-control pull-right"  name="dateini1" id="datetimepickerini1">
+                        </div>
+                      </div>
+                    </div>
+                  <div class="col-xs-12 col-sm-6">
+                      <div class="form-group">
+                        <label>Hasta Fecha:</label>
+                        <div class="date col-sm-12">
+                         
+                         
+                          <input type="text" class="form-control pull-right"  name="dateini2" id="datetimepickerini2">
+                        </div>
+                      </div>
+                    </div>
+                 <!--  <div class="form-group">
+                        <label for="selectWeek2" class="col-sm-7 control-label">A la Semana: </label>
+                        <div class="col-sm-12">
+                           <select name="selectWeek2" id="selectWeek2" class="form-control">
+                             @foreach($selectWeeks as $week)
+                             <option value="{{ $week['value'] }}">{{ $week['name'] }}</option>
+                             @endforeach
+                             
+                          </select>
+                        </div>
+                  </div> -->
+                 
+                 
+                       <h3>copiar a:</h3>
+                       <div class="col-xs-12 col-sm-6">
+                          <div class="form-group">
+                            <label>De la Fecha:</label>
+                            <div class="date col-sm-12">
+                              
+                             
+                              <input type="text" class="form-control "  name="datefin1" id="datetimepickerfin1">
+                            </div>
+                          </div>
+                        </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-group">
+                            <label>Hasta Fecha:</label>
+                            <div class="date col-sm-12">
+                              
+                             
+                              <input type="text" class="form-control "  name="datefin2" id="datetimepickerfin2">
+                            </div>
+                          </div>
+                        </div>
+                     
+                  <div class="form-group">
+                      <div class="col-sm-12">
+                        <button class="btn bg-purple" >Copiar</button>
+                      </div>
+                  </div>
+
+            </form>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+            
       @endif
           
           

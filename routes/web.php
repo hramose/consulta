@@ -184,6 +184,11 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::get('/reports', 'Clinic\ReportsController@index');
 	Route::get('/reports/generate', 'Clinic\ReportsController@generate');
 
+	Route::get('/register/office', 'Clinic\RegisterController@showRegistrationOfficeForm');
+	Route::post('/register/office', 'Clinic\RegisterController@registerOffice');
+
+
+
 });
 
 Route::prefix('assistant')->middleware('authByRole:asistente')->group(function ()
@@ -265,8 +270,8 @@ Route::post('/register', 'Auth\RegisterPatientController@register');
 Route::get('/medic/register', 'Auth\RegisterController@showRegistrationForm');
 Route::post('/medic/register', 'Auth\RegisterController@register');
 
-Route::get('/clinic/register', 'Auth\RegisterClinicController@showRegistrationForm');
-Route::post('/clinic/register', 'Auth\RegisterClinicController@register');
+Route::get('/clinic/register', 'Clinic\RegisterController@showRegistrationForm');
+Route::post('/clinic/register', 'Clinic\RegisterController@registerAdmin');
 
 
 Route::get('/login', 'Auth\LoginController@showLoginForm');

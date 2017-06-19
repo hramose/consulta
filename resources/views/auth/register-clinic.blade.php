@@ -7,11 +7,11 @@
 
 <div class="register-box">
   <div class="register-logo">
-    <a href="/"><b>Consulta</b></a>
+    <a href="/"><b>{{ config('app.name', 'Laravel') }}</b></a>
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Registra una nueva cuenta como Clinica para modificar datos</p>
+    <p class="login-box-msg">Registra una nueva cuenta como Administrador de Clinica</p>
 
     <form  role="form" method="POST" action="{{ url('/clinic/register') }}">
         {{ csrf_field() }}
@@ -48,7 +48,7 @@
         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmación de contraseña">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
-      
+
       
       <div class="row">
         

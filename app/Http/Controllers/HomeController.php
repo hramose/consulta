@@ -34,8 +34,12 @@ class HomeController extends Controller
         if(auth()->user()->hasRole('paciente'))
             return view('home-patient');
 
-         if(auth()->user()->hasRole('clinica'))
+         if(auth()->user()->hasRole('clinica')){
+            
+            if(!auth()->user()->offices->count()) return Redirect('/clinic/register/office');
+            
             return view('home-clinic');
+        }
 
         if(auth()->user()->hasRole('asistente'))
             return view('home-assistant');
