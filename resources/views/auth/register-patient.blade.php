@@ -7,7 +7,7 @@
 
 <div class="register-box">
   <div class="register-logo">
-    <a href="/"><b>Consulta</b></a>
+    <a href="/"><b>{{ config('app.name', 'Laravel') }}</b></a>
   </div>
 
   <div class="register-box-body">
