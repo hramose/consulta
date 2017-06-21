@@ -971,7 +971,13 @@
         }, 500),
         
           selectOffice(clinica) {
-            
+            this.office = {
+                lat : '',
+                lon: '',
+                notification_datetime: '',
+                notification_hour: '',
+                type:''
+              };
             if(clinica){
               var cant = [];
               var dist = [];

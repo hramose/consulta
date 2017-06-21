@@ -106,7 +106,7 @@ class OfficeController extends Controller
         
         try {
                         
-            \Mail::to($this->administrators)->send(new NewOffice($office,$medic));
+            \Mail::to($office->administrators())->send(new NewOffice($office,$medic));
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {

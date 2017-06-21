@@ -125,4 +125,12 @@ class Office extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function administrators()
+    {
+        return $this->users()->whereHas('roles', function ($query){
+                        $query->where('name',  'clinica')
+                             ->orWhere('name',  'asistente');
+                    })->get();
+    }
 }
