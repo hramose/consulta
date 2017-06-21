@@ -271,8 +271,8 @@ Route::get('/medic/register', 'Auth\RegisterController@showRegistrationForm');
 Route::post('/medic/register', 'Auth\RegisterController@register');
 
 Route::get('/clinic/register', 'Clinic\RegisterController@showRegistrationForm');
-Route::post('/clinic/register', 'Clinic\RegisterController@register'); // registro profile temp clinica ya creada
 Route::post('/clinic/register/admin', 'Clinic\RegisterController@registerAdmin'); // registro nuevo de admin y clinic
+Route::post('/clinic/register', 'Auth\RegisterClinicController@register'); // registro profile temp clinica ya creada
 
 Route::get('/login', 'Auth\LoginController@showLoginForm');
 Route::post('/login', 'Auth\LoginController@login');
