@@ -169,6 +169,18 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Actualizar informacion basica del medico
+     */
+    public function getConsultoriosIndependientes()
+    {  
+       
+
+        return auth()->user()->offices()->where('type','Consultorio Independiente')->get();
+
+
+    }
+
 
     /**
      * Guardar avatar del medico

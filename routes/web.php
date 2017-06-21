@@ -78,6 +78,8 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::post('/account/assistant', 'Medic\UserController@addAssistant');
 	Route::put('/account/assistant/{assistant}', 'Medic\UserController@updateAssistant');
 	Route::get('/account/assistants', 'Medic\UserController@getAssistants');
+	Route::get('/account/consultorios', 'Medic\UserController@getConsultoriosIndependientes');
+	
 	Route::delete('/account/assistants/{assistant}', 'Medic\UserController@deleteAssistant');
 	Route::put('/account/settings', 'Medic\UserController@updateSettings');
 	

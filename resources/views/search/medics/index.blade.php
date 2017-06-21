@@ -217,6 +217,7 @@
                         </thead>
                         @foreach($medics as $medic)
                           @if(isset($search['lat']) && $search['lat'] != '')
+                            <!-- Medic se refiere a clinica en esta seccion -->
                             <tr>
                               
                               <td data-title="Nombre">
@@ -228,6 +229,7 @@
                               <td data-title="Lugar">
                                   <div class="td-lugar">
                                       <div class="td-lugar-name"> 
+
                                         <span >{{ $medic->name }}</span>
                                         <b>Horario Semana Actual:</b><br>
                                           @foreach($medic->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
@@ -245,7 +247,7 @@
                                           <i class="fa fa-address"></i> Compartir ubicación
                                         </button> <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                         </button>
-                                        @if($medic->users->first()->verifyOffice($medic->id))
+                                        @if($medic->users->first()->verifyOffice($medic->id) && $medic->active)
                                             <a href="{{ url('/medics/'.$medic->users->first()->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
                                          @endif 
                                         
@@ -294,7 +296,7 @@
                                             <i class="fa fa-address"></i> Compartir ubicación
                                           </button>  <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $office->lat }}" data-lon="{{ $office->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                           </button>
-                                            @if($medic->verifyOffice($office->id)) 
+                                            @if($medic->verifyOffice($office->id) && $office->active) 
                                               <a href="{{ url('/medics/'.$medic->id.'/offices/'.$office->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
                                             @endif
                                           </p>

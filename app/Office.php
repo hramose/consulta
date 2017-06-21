@@ -129,8 +129,15 @@ class Office extends Model
     public function administrators()
     {
         return $this->users()->whereHas('roles', function ($query){
-                        $query->where('name',  'clinica')
-                             ->orWhere('name',  'asistente');
-                    })->get();
+                        $query->where('name',  'clinica');
+                             
+                    })->where('active', 1)->get();
+    }
+    public function assistants()
+    {
+        return $this->users()->whereHas('roles', function ($query){
+                        $query->where('name',  'asistente');
+                          
+                    })->where('active', 1)->get();
     }
 }

@@ -197,64 +197,22 @@
                 </form>
               </div>
               <div class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }} tab-pane" id="assistant">
-                  <assistant-form :clinics="{{ $user->offices()->where('type','Consultorio Independiente')->get() }}"></assistant-form>
-                  <h3>Tus Asistentes registrados</h3> 
-                   <assistant-list :assistants="{{ $assistants }}"></assistant-list>
-                   <!-- <form method="POST" action="{{ url('/medic/account/assistant') }}" class="form-horizontal">
-                      {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                      @if (isset($assistant))
-                        <input name="assistant_id" type="hidden" value="{{ $assistant->id }}">
-                      @endif
-                    <div class="form-group">
-                      <label for="name" class="col-sm-2 control-label">Nombre</label>
-
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="assistant_name" name="name" placeholder="Name" value="{{ old('name') ?: (isset($assistant) ? $assistant->name : '') }}" required>
-                         @if ($errors->has('name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="email" class="col-sm-2 control-label">Email</label>
-
-                      <div class="col-sm-10">
-                        <input type="email" class="form-control" id="assistant_email"  name="email" placeholder="Email"  value="{{ old('email') ?: (isset($assistant) ? $assistant->email : '') }}" required>
-                        @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="password" class="col-sm-2 control-label">Contraseña</label>
-
-                      <div class="col-sm-10">
-                        <input type="password" class="form-control" id="assistant_password" name="password" placeholder="Escribe la nueva contraseña">
-                      </div>
-                    </div>
-                    
-                    
-                    
-                    <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-info">Guardar</button>
-                      </div>
-                    </div>
-                  </form> -->
+                 
+                    <assistant-form :clinics="{{ $user->offices()->where('type','Consultorio Independiente')->get() }}"></assistant-form>
+                    <h3>Tus Asistentes registrados</h3> 
+                     <assistant-list :assistants="{{ $assistants }}"></assistant-list>
+                 
+                   
               </div>
               <!-- /.tab-pane -->
               <div class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }} tab-pane" id="clinics">
                   <div class="callout callout-info">
                     <h4>Informacion importante!</h4>
 
-                    <p>Agrega los consultorios donde brindarás consulta privada. Recuerda que en caso de ser de tipo <b>"Clinica privada"</b> tu agenda no se hará visible hasta tanto el administrador de la clínica confirme que laboras para dicho centro médico.</p>
+                    <p>Agrega los consultorios donde brindarás consulta privada. Recuerda que en caso de ser de tipo <b>"Clínica privada"</b> tu agenda no se hará visible hasta tanto el administrador de la clínica confirme que laboras para dicho centro médico.</p>
                   </div>
                   <div class="callout callout-info">
-                    <p> Ademas si tienes pensado trabajar con más medicos en tu consultorio te recomendamos utilizar el tipo de <b>"Clinica privada"</b> a la hora de crear el consultorio para asi tener mayor control</p>
+                    <p> Además si eres dueño del consultorio y deseas trabajar con otros médicos, te recomendamos seleccionar la opción<b>"Clínica privada"</b> para mejor control de su agenda</p>
                   </div>
                    <office :offices="{{ $user->offices }}"></office>
               </div>

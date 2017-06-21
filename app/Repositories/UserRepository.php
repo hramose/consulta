@@ -84,17 +84,23 @@ class UserRepository extends DbRepository{
     {
 
         $user = $this->model->findOrFail($id);
-        $user->active = $state;
-        $user->save();
+        
        
         if($user->hasRole('clinica'))
         {
+           
+
             foreach ($user->offices as $office) {
-                
-                 $office->active = $state;
-                 $office->save();
+
+                if($office->administrators()->count() < 2){
+                     $office->active = $state;
+                     $office->save();
+                 }
             }
         }
+
+        $user->active = $state;
+        $user->save();
 
         return $user;
     }
@@ -174,6 +180,20 @@ class UserRepository extends DbRepository{
     {
         
         $user = $this->model->findOrFail($id);
+
+
+        if($user->hasRole('clinica') && $user->active)
+        {
+           
+
+            foreach ($user->offices as $office) {
+
+                if($office->administrators()->count() < 2){
+                     $office->active = 0;
+                     $office->save();
+                 }
+            }
+        }
 
         \DB::table('office_user')->where('user_id', $user->id)->delete();
         \DB::table('verified_offices')->where('user_id', $user->id)->delete();

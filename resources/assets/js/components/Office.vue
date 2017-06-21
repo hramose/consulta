@@ -882,8 +882,11 @@
                       this.consultorios.push(response.data);
                       if(this.office.type != 'Consultorio Independiente')
                         bus.$emit('alert', 'Consultorio Agregado - Esperando confirmación por parte del administrador de la clinica u hospital','success');
-                      else
+                      else{
                         bus.$emit('alert', 'Consultorio Agregado','success');
+                        bus.$emit('newConsultorioIndependiente');
+
+                      }
                       this.office = {};
                       this.newOffice = false;
                       this.errors = [];
@@ -924,6 +927,7 @@
                     $vm.consultorios.splice(index, 1);
 
                     bus.$emit('alert', 'Consultorio Eliminado','success');
+                    bus.$emit('deleteConsultorioIndependiente');
                   }
                   $vm.loader = false;
 

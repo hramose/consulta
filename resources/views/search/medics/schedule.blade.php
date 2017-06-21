@@ -12,7 +12,7 @@
 
     <section class="content">
        @if(auth()->user()->patients->count())
-         
+         @if($office->active)
         <div class="row">
         <div class="col-md-3">
           
@@ -63,7 +63,10 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-        
+
+         @else
+              <div class="callout callout-danger"><h4>Clinica Inactiva!</h4><p>Regresar al buscador y revisa otra opción. <a href="/medics/general/search" >Regresar</a></p></div>
+         @endif
      @else
           <div class="callout callout-danger"><h4>Recuerda !</h4> <p>Necesitas tener al menos un paciente registrado para poder realizar citas en linea. <a href="/account/edit?tab=patients" class="btn btn-sm btn-success">Registre su paciente</a></p></div>
      @endif
