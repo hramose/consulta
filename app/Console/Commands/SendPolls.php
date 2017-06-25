@@ -79,7 +79,7 @@ class SendPolls extends Command
 
                     Log::info(url('/medics/'.$medic_id.'/polls'));
 
-                    }catch (Swift_RfcComplianceException $e)
+                    }catch (\Swift_TransportException $e)
                     {
                         Log::error($e->getMessage());
                     }

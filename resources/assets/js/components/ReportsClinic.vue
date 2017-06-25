@@ -67,7 +67,7 @@
                       <div class="col-xs-12 col-sm-2">
                         <div class="form-group">
                             <div class="col-sm-12">
-                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                              <button @click="generateReport()" class="btn btn-success">Generar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
                             </div>
                         </div>
                             
@@ -76,11 +76,92 @@
                      
                 
                 </div>
+                <div class="form-group" v-show="message">
+                  <div class="col-xs-12">
+                    <span class="label label-danger">{{  message }}</span>
+                    </div>
+                </div>
             </div>
            
           
         </div>
      </div>
+     <div v-if="dataIncomes.medics">
+           <div class="box box-danger">
+              <div class="box-header">
+                 <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                
+              </div>
+              <div class="box-body">
+
+                    
+                        <div class="col-xs-12 ">
+                             <div class="table-responsive">
+                              <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                  <th>Médico</th>
+                                  <th>Consultas Atendidas</th>
+                                  <th>Ingresos Recibidos</th>
+                                  <th>Pendientes de Pago</th>
+                                  <th>Pagos Aplicados</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="medic in dataIncomes.medics">
+                                    <td>{{ medic.name }}</td>
+                                    <td>{{ medic.incomes.length }}</td>
+                                    <td>₡{{ money(totalIncomes(medic.incomes)) }}</td>
+                                    <td>
+                                      ₡{{  money(totalIncomes(medic.incomes) - totalPaid(medic.incomes) ) }}
+                                    </td>
+                                    <td>
+                                      ₡{{  money(totalPaid(medic.incomes) ) }}
+                                    </td>
+                                </tr>
+                               
+                                <tr>
+                                    <td><b>Totales</b></td>
+                                    <td>{{ dataIncomes.totalAppointments }}</b></td>
+                                    <td><b>₡{{ money(dataIncomes.totalIncomes) }}</b></td>
+                                    <td>
+                                      <b>₡{{  money(dataIncomes.totalPending) }}</b>
+                                    </td>
+                                    <td>
+                                     <b> ₡{{  money(dataIncomes.totalPaid) }}</b>
+                                    </td>
+                                </tr>
+                                
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        
+                  
+
+                
+              </div>
+          </div>
+          <div class="row">
+                  <div class="col-xs-12">
+                      <div class="box box-default box-chart">
+                          <div class="box-header">
+                            <h4>Ingresos recibidos vs pendientes</h4>
+                          </div>
+                          <div class="box-body">
+                            <!-- <appointments-chart></appointments-chart> -->
+                           
+                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsIncomes"  :datasets="dataSetsIncomes"></chartjs-pie>
+                          </div>
+                          <!-- /.box-body -->
+                    </div>
+                  </div>
+                  
+            </div>
+         
+          
+         
+        </div>
       <div v-if="data.length">
            <div class="box box-danger">
               <div class="box-header">
@@ -288,19 +369,25 @@
           dataPatients:[],
           dataSales:[],
           dataReviews:[],
+          dataIncomes:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
           dataLabels:[],
           dataSets:[],
           dataValues:[],
-          loader: false
+          dataLabelsIncomes:[],
+          dataSetsIncomes:[],
+          dataValuesIncomes:[],
+          loader: false,
+          message:''
         }
       },
       components:{
         vSelect
       },
       computed:{
+
          totalAppointments(){
               let total = 0;
 
@@ -314,6 +401,32 @@
         },
 
        methods: {
+         money(n, currency) {
+                return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            },
+        totalIncomes(incomes){
+              let total = 0;
+
+              for (var i = 0; i < incomes.length; i++) {
+                total += parseInt(incomes[i].amount);
+              }
+              
+              return total;
+            
+          
+        },
+        totalPaid(incomes){
+              let total = 0;
+
+              for (var i = 0; i < incomes.length; i++) {
+                if(incomes[i].paid)
+                  total += parseInt(incomes[i].amount);
+              }
+              
+              return total;
+            
+          
+        },
          getDataForChart(){
             let values = [];
             let colors = [];
@@ -328,6 +441,25 @@
                   backgroundColor: colors,
                   hoverBackgroundColor: colors
                });
+
+             let valuesIncomes = [];
+           
+
+            this.dataLabelsIncomes[0] = 'Ingresos Recibidos';
+            this.dataLabelsIncomes[1] = 'Pendientes de Pago';
+         
+            valuesIncomes[0] = this.dataIncomes.totalIncomes;
+            valuesIncomes[1] = this.dataIncomes.totalPending;
+
+  
+
+            this.dataSetsIncomes.push({
+                  data: valuesIncomes,
+                  backgroundColor: ['#00c0ef','#00a65a'],
+                  hoverBackgroundColor: ['#00c0ef','#00a65a']
+               });
+
+        
             
            
           },
@@ -437,17 +569,36 @@
            this.dataPatients = [];
            this.dataSales = [];
            this.dataReviews = [];
+           this.dataIncomes = [];
+           this.dataSetsIncomes =[];
+           this.message = "";
         },
 
         generateReport(){
-           this.loader = true;
+         
            let queryParam = this.search;
           
             this.clearData();
             
-            if(this.search.type == "Médico" && !this.search.medic) return
+            if(this.search.type == "Médico" && !this.search.medic)
+            {
+              this.message = "Seleccione un Médico!";
+              return
+            }
 
-            if(this.search.type == "Departamento" && !this.search.speciality) return
+            if(this.search.type == "Departamento" && !this.search.speciality) 
+            {
+              this.message = "Seleccione una Especialidad!";
+              return
+            }
+
+            if(this.search.type != "Evaluación de usuario" && (this.search.date1 == "" || this.search.date2 == "")) 
+            {  
+              this.message = "Seleccione un rango de fechas!";
+              return
+            }
+
+            this.loader = true;
 
             this.$http.get('/clinic/reports/generate', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
@@ -463,6 +614,13 @@
                this.data = resp.data.appointments
                this.dataPatients = resp.data.patients
                this.dataSales = resp.data.sales
+
+               if(this.search.type == "General")
+              {
+                this.dataIncomes =  resp.data.incomes
+                
+              }
+               
               
                this.getDataForChart();
 

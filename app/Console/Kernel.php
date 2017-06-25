@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\NotificationOfficeLocation::class,
         \App\Console\Commands\ReminderAppointment::class,
-        \App\Console\Commands\SendPolls::class
+        \App\Console\Commands\SendPolls::class,
+         \App\Console\Commands\MonthlyCharge::class
     ];
 
     /**
@@ -29,6 +30,9 @@ class Kernel extends ConsoleKernel
        
         $schedule->command(\App\Console\Commands\NotificationOfficeLocation::class)
                  ->everyThirtyMinutes(); //se hace asi por que este no es necesario enviar email
+
+        $schedule->command(\App\Console\Commands\MonthlyCharge::class)
+                 ->monthlyOn(1, '00:15'); //se hace asi por que este no es necesario enviar email
 
         $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 

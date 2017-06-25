@@ -2,10 +2,12 @@
 
 
 
+use App\Configuration;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -34,11 +36,18 @@ class UserController extends Controller
     /**
      * Actualizar informacion basica del medico
      */
-    public function update()
+    public function updateConfig()
     {  
+        $data = request()->all();
+        $config = Configuration::first();
+        $config->fill($data);
+        $config->save();
+
+        Session::put('amount_specialist', $config->amount_specialist);
+        Session::put('amount_general', $config->amount_general);
     	
         
-    	//return Redirect('/admin/account/edit');
+    	return back();
 
     }
 
@@ -66,6 +75,34 @@ class UserController extends Controller
     public function inactive($id)
     {
         $this->userRepo->update_active($id, 0);
+
+         return Redirect('/admin/users');
+    }
+
+    /**
+     * Trial a user.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function trial($id)
+    {
+        $this->userRepo->update_trial($id, 1);
+
+        return Redirect('/admin/users');
+    }
+
+    /**
+     * No Trial a user.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function notrial($id)
+    {
+        $this->userRepo->update_trial($id, 0);
 
          return Redirect('/admin/users');
     }

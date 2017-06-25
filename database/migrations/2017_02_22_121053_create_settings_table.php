@@ -21,6 +21,8 @@ class CreateSettingsTable extends Migration
             $table->string('minTime')->default('06:00:00')->nullable();
             $table->string('maxTime')->default('18:00:00')->nullable();
             $table->string('freeDays')->default('["0"]')->nullable();
+            $table->tinyInteger('trial')->default(0);
+            $table->integer('trial_days')->default(30);
             
         });
          

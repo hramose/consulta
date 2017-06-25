@@ -72,6 +72,12 @@
                      
                 
                 </div>
+                <div class="form-group" v-show="message">
+                  <div class="col-xs-12">
+                    <span class="label label-danger">{{  message }}</span>
+                    </div>
+                </div>
+
             </div>
            
           
@@ -217,7 +223,8 @@
           dataLabelsAppointments:[],
           dataSetsMedics:[],
           dataSetsAppointments:[],
-          loader: false
+          loader: false,
+          message: ""
           
         }
       },
@@ -355,7 +362,7 @@
         
 
         selectItem(item){
-          
+          this.selectedItem = null;
           if(item){
             
             if(this.search.type == 'Médico')
@@ -367,14 +374,28 @@
         },
 
         generateReport(){
-          this.loader = true;
+          
            let queryParam = this.search;
            
             this.dataSetsMedics = [];
             this.dataSetsAppointments = [];
             this.data = [];
+            this.message = "";
             
-            if(this.search.type == "Médico" && !this.search.medic) return
+             if(this.search.type == "Médico" && !this.search.medic)
+            {
+              this.message = "Seleccione un Médico!";
+              return
+            }
+
+        
+            if(this.search.date1 == "" || this.search.date2 == "") 
+            {  
+              this.message = "Seleccione un rango de fechas!";
+              return
+            }
+
+            this.loader = true;
 
              if(this.search.type == "Médico"){
 

@@ -50,4 +50,11 @@ $factory->define(App\Speciality::class, function ($faker) {
     ];
 });
 
+$factory->define(App\Configuration::class, function ($faker) {
+    return [
+        'amount_general' => 1000,
+        'amount_specialist' => 1500,
+    ];
+});
+
 

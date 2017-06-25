@@ -56,6 +56,11 @@
                      
                 
                 </div>
+                <div class="form-group" v-show="message">
+                  <div class="col-xs-12">
+                    <span class="label label-danger">{{  message }}</span>
+                    </div>
+                </div>
             </div>
            
           
@@ -338,7 +343,8 @@
           dataLabels:[],
           dataSets:[],
           dataValues:[],
-          loader: false
+          loader: false,
+          message:""
         }
       },
       components:{
@@ -425,15 +431,24 @@
            this.dataPatients = [];
            this.dataSales = [];
            this.dataReviews = [];
+          this.message= "";
         },
 
         generateReport(){
-           this.loader = true;
+          
            let queryParam = this.search;
           
             this.clearData();
             
+         
             
+               if(this.search.type != "Evaluación de usuario" && (this.search.date1 == "" || this.search.date2 == ""))
+                {
+                  this.message = "Seleccione un rango de fechas!";
+                  return
+                }
+
+                 this.loader = true;
 
             this.$http.get('/medic/reports/generate', {params: Object.assign(queryParam, this.data)})
             .then(resp => {

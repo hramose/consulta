@@ -49,6 +49,11 @@
                      
                 
                 </div>
+                <div class="form-group" v-show="message">
+                  <div class="col-xs-12">
+                    <span class="label label-danger">{{  message }}</span>
+                    </div>
+                </div>
             </div>
            
           
@@ -138,7 +143,8 @@
           data:[],
           dataLabelsPatients:[],
           dataSetsPatients:[],
-          loader:false
+          loader:false,
+          message:""
           
         }
       },
@@ -287,16 +293,20 @@
         },
        
         generateReport(){
-           this.loader = true;
+          
            let queryParam = this.search;
            
             
             this.dataSetsPatients = [];
             this.data = [];
-            
-           
+            this.message = "";
+            if(this.search.date1 == "" || this.search.date2 == "") 
+            {  
+              this.message = "Seleccione un rango de fechas!";
+              return
+            }
 
-
+            this.loader = true;
                 this.$http.get('/admin/reports/patients/generate', {params: Object.assign(queryParam, this.data)})
                 .then(resp => {
                    //alert('reporte')

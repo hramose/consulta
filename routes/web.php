@@ -141,6 +141,8 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 
 	Route::get('/reports', 'Medic\ReportsController@index');
 	Route::get('/reports/generate', 'Medic\ReportsController@generate');
+
+	Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
 	
 
 });
@@ -242,13 +244,15 @@ Route::prefix('assistant')->middleware('authByRole:asistente')->group(function (
 
 Route::prefix('admin')->middleware('authByRole:administrador')->group(function ()
 {
-	foreach (['active', 'inactive'] as $key)
+	foreach (['active', 'inactive','trial','notrial'] as $key)
     {
         Route::post('users/{user}/' . $key, array(
             'as'   => 'users.' . $key,
             'uses' => 'Admin\UserController@' . $key,
         ));
     }
+    Route::put('/configuration', 'Admin\UserController@updateConfig');
+
     Route::get('/reports/patients', 'Admin\ReportsController@patients');
     Route::get('/reports/patients/generate', 'Admin\ReportsController@generatePatients');
     Route::get('/reports/patients/{medic}/generate', 'Admin\ReportsController@generatePatients');
@@ -259,10 +263,13 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
 
     Route::get('/reports/clinics', 'Admin\ReportsController@clinics');
     Route::get('/reports/clinics/generate', 'Admin\ReportsController@generateClinics');
+    Route::get('/reports/incomes/generate', 'Admin\ReportsController@generateIncomes');
     Route::get('/offices/list', 'ClinicController@getAllOffices');
 
     Route::resource('reports', 'Admin\ReportsController');
 	Route::resource('users', 'Admin\UserController');
+
+
 
 });
 

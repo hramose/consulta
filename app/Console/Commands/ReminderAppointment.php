@@ -73,9 +73,9 @@ class ReminderAppointment extends Command
                         $remider->active = 0;
                         $remider->save();
 
-                    }catch (Swift_RfcComplianceException $e)
+                     }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
                     {
-                        Log::error($e->getMessage());
+                        \Log::error($e->getMessage());
                     }
 
                     $countNotification++;

@@ -126,6 +126,18 @@ class Office extends Model
         return $this->hasMany(Schedule::class);
     }
 
+    public function medics($date1, $date2)
+    {
+       
+        return $this->users()->with(['incomes' => function ($query) use($date1, $date2) {
+                                $query->where('type', 'I')
+                                ->where([['incomes.date', '>=', $date1],
+                                    ['incomes.date', '<=', $date2->endOfDay()]]);
+                            }])->whereHas('roles', function ($query){
+                                                    $query->where('name',  'medico');
+                                                         
+                                                })->where('active', 1)->get();
+    }
     public function administrators()
     {
         return $this->users()->whereHas('roles', function ($query){

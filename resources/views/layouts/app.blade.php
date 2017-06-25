@@ -95,6 +95,16 @@
     @if(!auth()->user()->offices->count())
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif
+
+     
+        @foreach(auth()->user()->monthlyCharge() as $charge)
+          <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount) }}</b> a pagar del mes {{ $charge->month }} del {{ $charge->year }} ! <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
+                {{ csrf_field() }}
+               
+            <button type="submit" class="btn btn-success btn-sm">Pagar</button>
+          </form></div>
+        @endforeach
+    
     
      @foreach(auth()->user()->offices as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')

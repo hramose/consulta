@@ -47,6 +47,10 @@
               <!-- /.info-box -->
             </div>
        </div>
+          
+          <h2>Reporte de Ingresos</h2>
+          <reports-incomes></reports-incomes>
+     
         
     </div>
        

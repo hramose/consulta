@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PollRequest;
-use App\Poll;
-use App\PollOptions;
 use App\ReviewMedic;
 use App\ReviewService;
 use App\User;
@@ -58,7 +56,7 @@ class PollController extends Controller
     /**
      * Actualizar Poll
      */
-    public function update($id, PollRequest $request)
+   /* public function update($id, PollRequest $request)
     {
         $poll = Poll::find($id);
         //$poll->completed = 1;
@@ -75,5 +73,5 @@ class PollController extends Controller
         
         return $poll;
 
-    }
+    }*/
 }

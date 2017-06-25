@@ -58,6 +58,7 @@
                       <th>Email</th>
                       <th>Rol(tipo)</th>
                       <th>Estatus</th>
+                      <th>Periodo de Prueba</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -88,6 +89,22 @@
                               <button type="submit"  class="btn btn-danger btn-xs " form="form-active-inactive" formaction="{!! URL::route('users.active', [$user->id]) !!}" >Inactive</button>
 
                           @endif
+    
+                      </td>
+                      <td data-title="Prueba">
+                          
+                         @if($user->settings)
+                           @if ($user->settings->trial)
+                               
+                                    <button type="submit"  class="btn btn-success btn-xs" form="form-trial-notrial" formaction="{!! URL::route('users.notrial', [$user->id]) !!}">Active</button>
+                               
+
+                            @else
+                                
+                                <button type="submit"  class="btn btn-danger btn-xs " form="form-trial-notrial" formaction="{!! URL::route('users.trial', [$user->id]) !!}" >Inactive</button>
+
+                            @endif
+                        @endif
     
                       </td>
                       <td data-title="" style="padding-left: 5px;">
@@ -125,6 +142,9 @@
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
 </form>
 <form method="post" id="form-active-inactive">
+ {{ csrf_field() }}
+</form>
+<form method="post" id="form-trial-notrial">
  {{ csrf_field() }}
 </form>
 

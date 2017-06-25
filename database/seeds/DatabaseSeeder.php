@@ -1,5 +1,6 @@
 <?php
 
+use App\Configuration;
 use App\Role;
 use App\Speciality;
 use App\User;
@@ -9,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     
     private $tables = [
-        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars','allergies','appointments','diagnostics', 'disease_notes','ginecos','heredos','medicines','nopathologicals','pathologicals', 'physical_exams', 'reminders','schedules','treatments','vital_signs'
+        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars','allergies','appointments','diagnostics', 'disease_notes','ginecos','heredos','medicines','nopathologicals','pathologicals', 'physical_exams', 'reminders','schedules','treatments','vital_signs','incomes','configurations'
     ];
     
     /**
@@ -70,7 +71,7 @@ class DatabaseSeeder extends Seeder
     ['role_id' => 3, 'user_id' => 2]
 );
       
-        
+        $confi = factory(Configuration::class, 1)->create();
 
     }
 

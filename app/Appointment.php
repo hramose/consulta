@@ -12,6 +12,12 @@ class Appointment extends Model
     protected $fillable = [
         'created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions','office_info','office_id'
     ];
+     protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'date'
+    ];
 
      public function scopeSearch($query, $search)
     {

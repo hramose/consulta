@@ -73,7 +73,11 @@
                       </div>
                 </div>
             </div>
-           
+            <div class="form-group" v-show="message">
+                  <div class="col-xs-12">
+                    <span class="label label-danger">{{  message }}</span>
+                    </div>
+                </div>
           
         </div>
      </div>
@@ -169,7 +173,8 @@
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
           dataLabelsAppointments:[],
           dataSetsAppointments:[],
-          loader:false
+          loader:false,
+          message:""
           
         }
       },
@@ -302,16 +307,35 @@
         },
 
         generateReport(){
-            this.loader = true;
+         
            let queryParam = this.search;
            
             
             this.dataSetsAppointments = [];
             this.data = [];
-            
-            if(!this.search.clinic) return
+             this.message = "";
+          
 
-             
+            if(!this.search.clinic)
+            {
+              this.message = "Seleccione un Clínica!";
+              return
+            }
+
+            if(!this.search.medic)
+            {
+              this.message = "Seleccione un Médico!";
+              return
+            }
+
+        
+            if(this.search.date1 == "" || this.search.date2 == "") 
+            {  
+              this.message = "Seleccione un rango de fechas!";
+              return
+            }
+
+               this.loader = true;
 
                 this.$http.get('/admin/reports/clinics/generate', {params: Object.assign(queryParam, this.data)})
                 .then(resp => {

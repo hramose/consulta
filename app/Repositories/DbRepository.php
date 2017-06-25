@@ -56,6 +56,17 @@ class DbRepository {
         return $model;
     }
 
+     public function update_trial($id, $state)
+    {
+
+        $model = $this->findById($id);
+        $model->settings->trial = $state;
+        $model->settings->save();
+        //$model->save();
+
+        return $model;
+    }
+
     public function update_feat($id, $feat)
     {
         $model = $this->findById($id);

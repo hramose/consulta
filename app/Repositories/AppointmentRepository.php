@@ -3,7 +3,10 @@
 
 use App\Appointment;
 use App\Balance;
+use App\Income;
+use App\Office;
 use App\Patient;
+use App\Repositories\IncomeRepository;
 use App\User;
 use Carbon\Carbon;
 
@@ -14,9 +17,10 @@ class AppointmentRepository extends DbRepository{
      * Construct
      * @param User $model
      */
-    function __construct(Appointment $model)
+    function __construct(Appointment $model, IncomeRepository $incomeRepo)
     {
         $this->model = $model;
+        $this->incomeRepo = $incomeRepo;
         $this->limit = 10;
     }
 
@@ -116,6 +120,36 @@ class AppointmentRepository extends DbRepository{
 
         
     }
+
+     public function update_status($id, $status)
+    {
+
+        $appointment = $this->findById($id);
+
+        if($appointment->status == 0){
+          
+            $dataIncome['type'] = 'I';
+            $dataIncome['medic_type'] = auth()->user()->specialities->count() > 1 ? 'S' : (auth()->user()->hasNotSpeciality(53) ? 'S' : 'G');
+            $dataIncome['amount'] = auth()->user()->specialities->count() > 1 ? getAmountSpecialistPerAppointment() : (auth()->user()->hasNotSpeciality(53) ? getAmountSpecialistPerAppointment() : getAmountGeneralPerAppointment()); //53 es medico general
+            $dataIncome['appointment_id'] = $appointment->id;
+            $dataIncome['date'] = $appointment->date;
+            $dataIncome['month'] = $appointment->date->month;
+            $dataIncome['year'] = $appointment->date->year;
+
+
+
+            $income = $this->incomeRepo->store($dataIncome);
+        }
+
+
+        $appointment->status = $status;
+        $appointment->save();
+
+        return $appointment;
+    }
+
+
+    
 
     /**
      * Delete a appointment
@@ -281,12 +315,15 @@ class AppointmentRepository extends DbRepository{
     
         $appointments = $this->model;
         $balances = Balance::get();
+        $medics = [];
 
         if (isset($search['clinic']) && $search['clinic'] != "")
         {
             $appointments = $appointments->where('office_id', $search['clinic']);
             $balances = $balances->where('office_id', $search['clinic']);
-
+          
+           
+            //$incomes = Income::whereIn('user_id', $medicsIds)->where('type','I');
           
         }
         
@@ -325,6 +362,11 @@ class AppointmentRepository extends DbRepository{
                 $balances = $balances->where([['balances.created_at', '>=', $date1],
                    ['balances.created_at', '<=', $date2->endOfDay()]]);
             
+
+            if (isset($search['clinic']) && $search['clinic'] != "")
+            {
+              $medics = Office::find($search['clinic'])->medics($date1, $date2);
+            }
            
         }
 
@@ -343,12 +385,39 @@ class AppointmentRepository extends DbRepository{
             'total' => $balances->sum('total'),
 
         ];
+        
+        $totalAppointments = 0;
+        $totalIncomes = 0;
+        $totalPending = 0;
+        $totalPaid = 0;
+
+        foreach ($medics as $medic) {
+            $totalAppointments = $medic->incomes->count();
+            $totalIncomes = $medic->incomes->sum('amount');
+
+            
+            $paid =  $medic->incomes->filter(function ($item, $key) {
+                        return $item->paid == 1;
+                    });
+            $totalPaid =  $paid->sum('amount');
+             $totalPending = $totalIncomes - $totalPaid;
+
+        }
+          $statisticsIncomes = [
+            'medics' => $medics,
+            'totalAppointments' => $totalAppointments,
+            'totalIncomes' => $totalIncomes,
+            'totalPending' => $totalPending,
+            'totalPaid' => $totalPaid,
+
+        ];
 
 
         $data =  [
             'appointments' => $statisticsAppointment,
             'patients' => $statisticsPatients,
-            'sales' => $statisticsSales
+            'sales' => $statisticsSales,
+            'incomes' => $statisticsIncomes
 
         ];
          

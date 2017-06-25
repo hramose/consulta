@@ -130,6 +130,27 @@ class User extends Authenticatable
         if (is_string($speciality)) {
             return $this->specialities->contains('name', $speciality);
         }
+         if (is_numeric($speciality)) {
+            return $this->specialities->contains('id', $speciality);
+        }
+
+        return !! $speciality->intersect($this->specialities)->count();
+    }
+
+     /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function hasNotSpeciality($speciality)
+    {
+        if (is_string($speciality)) {
+            return !$this->specialities->contains('name', $speciality);
+        }
+         if (is_numeric($speciality)) {
+            return !$this->specialities->contains('id', $speciality);
+        }
 
         return !! $speciality->intersect($this->specialities)->count();
     }
@@ -161,7 +182,7 @@ class User extends Authenticatable
     {
         return $this->speciality_id != 0 ? Speciality::find($this->speciality_id)->name : '';
     }
-
+   
      public function appointments()
     {
         return $this->hasMany(Appointment::class);
@@ -177,6 +198,10 @@ class User extends Authenticatable
      public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+      public function incomes()
+    {
+        return $this->hasMany(Income::class);
     }
     /**
      * create a setting to user
@@ -196,6 +221,14 @@ class User extends Authenticatable
          //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
         
         return Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count();
+    } 
+
+      public function monthlyCharge()
+    {
+        
+         //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
+        
+        return Income::where('user_id', $this->id)->where('type','M')->where('paid',0)->get();
     } 
 
     /**

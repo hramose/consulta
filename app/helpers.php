@@ -1,5 +1,8 @@
 <?php 
 
+use App\Configuration;
+use Illuminate\Support\Facades\Session;
+
 
 
 function money($amount, $symbol = '₡')
@@ -87,3 +90,48 @@ function getAvatar($user)
         
      
 }
+/**
+     * obtiene el monto que se cobra por cita atendita de los medicos generales
+     *
+     * @param $monto El monto a convertir
+     * @return float El monto convertido
+     */
+    function getAmountGeneralPerAppointment()
+    {
+         $amount = 0;
+        
+        /*if(Session::has('amount_general'))
+        {
+            $amount =  Session::get('amount_general');
+
+        }else{
+            $amount = Configuration::first()->amount_general;
+            Session::put('amount_general', $amount);
+        }*/
+        $amount = Configuration::first()->amount_general;
+       
+        return $amount;
+    }  
+
+    /**
+     * obtiene el monto que se cobra por cita atendita de los medicos especialistas
+     *
+     * @param $monto El monto a convertir
+     * @return float El monto convertido
+     */
+    function getAmountSpecialistPerAppointment()
+    {
+        $amount = 0;
+
+        /*if(Session::has('amount_specialist'))
+        {
+            $amount =  Session::get('amount_specialist');
+
+        }else{
+            $amount = Configuration::first()->amount_specialist;
+            Session::put('amount_specialist', $amount);
+        }*/
+        $amount = Configuration::first()->amount_specialist;
+       
+        return $amount;
+    }    
