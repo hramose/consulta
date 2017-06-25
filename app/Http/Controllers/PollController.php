@@ -74,4 +74,13 @@ class PollController extends Controller
         return $poll;
 
     }*/
+
+    public function sendPolls()
+    {
+    
+        $exitCode = \Artisan::call('consulta:sendPolls');
+
+        return $exitCode;
+
+    }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
      
-     protected $fillable = ['slotDuration','minTime','maxTime','freeDays'];
+     protected $fillable = ['slotDuration','minTime','maxTime','freeDays','trial','trial_days'];
      public $timestamps = false;
 
      public function user()

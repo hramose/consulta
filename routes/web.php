@@ -65,6 +65,7 @@ Route::get('/clinics/list', 'ClinicController@getAllOffices');
 Route::get('/medics/{medic}/polls', 'PollController@show');
 Route::post('/medics/{medic}/polls', 'PollController@store');
 //Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
+Route::get('/polls/send', 'PollController@sendPolls');
 Route::resource('polls', 'PollController');
 
 

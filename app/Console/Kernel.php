@@ -53,14 +53,14 @@ class Kernel extends ConsoleKernel
 
         })->everyThirtyMinutes();
 
-        $schedule->command(\App\Console\Commands\SendPolls::class)
-                 ->daily();
+       /* $schedule->command(\App\Console\Commands\SendPolls::class)
+                 ->daily();*/
 
-        /*$schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
+        $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 
         
                 //url contra la que atacamos
-                $ch = curl_init("http://consulta.avotz.com/appointments/sendpolls");
+                $ch = curl_init("http://consulta.avotz.com/polls/send");
                 //a true, obtendremos una respuesta de la url, en otro caso, 
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -73,7 +73,7 @@ class Kernel extends ConsoleKernel
                 // Se cierra el recurso CURL y se liberan los recursos del sistema
                 curl_close($ch);
 
-        })->daily();*/
+        })->daily();
         
         
        
