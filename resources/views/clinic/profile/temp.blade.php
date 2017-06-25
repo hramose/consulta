@@ -33,7 +33,8 @@
                       <li class="item">
                         <div class="medic-img">
                         <!--/img/default-50x50.gif-->
-                          <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                          <img src="{{ getAvatar($doctor) }}" alt="Medic Image" width="50" height="50">
+                          
                         </div>
                         <div class="medic-info">
                           <a href="javascript:void(0)" class="medic-title">{{ $doctor->name }}
