@@ -34,6 +34,9 @@ class Kernel extends ConsoleKernel
         $schedule->command(\App\Console\Commands\MonthlyCharge::class)
                  ->monthlyOn(1, '00:15'); //se hace asi por que este no es necesario enviar email
 
+        /*$schedule->command(\App\Console\Commands\ReminderAppointment::class) //hay q verificar si en el nuevo servidor si funciona asi
+                 ->everyThirtyMinutes();*/
+
         $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 
         
@@ -53,7 +56,7 @@ class Kernel extends ConsoleKernel
 
         })->everyThirtyMinutes();
 
-       /* $schedule->command(\App\Console\Commands\SendPolls::class)
+       /* $schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
                  ->daily();*/
 
         $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
