@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <div class="col-sm-10">
                     <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
-                    <a href="#" class="btn btn-default " @click="nuevo()" v-show="officeNotFound">Crear Consultorio Nuevo</a>
+                    <a href="#" class="btn btn-default " @click="nuevo()">Crear Consultorio Nuevo</a>
                     </div>
                 </div>
                     
