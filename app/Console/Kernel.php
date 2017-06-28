@@ -60,8 +60,8 @@ class Kernel extends ConsoleKernel
 
         })->everyThirtyMinutes();
 
-        $schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
-                 ->everyFiveMinutes();
+       /* $schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
+                 ->daily();*/
 
         $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 
