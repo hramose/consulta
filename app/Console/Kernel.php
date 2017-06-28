@@ -28,6 +28,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
        
+        // Run every 5 minutes
+        //$schedule->command('queue:work')->everyFiveMinutes();
+
         $schedule->command(\App\Console\Commands\NotificationOfficeLocation::class)
                  ->everyThirtyMinutes(); //se hace asi por que este no es necesario enviar email
 

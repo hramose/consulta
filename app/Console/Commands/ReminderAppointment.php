@@ -68,7 +68,7 @@ class ReminderAppointment extends Command
                     try {
                         
                         
-                         \Mail::to([$remider->appointment->patient->email])->send(new ReminderAppointments($remider->appointment));
+                         \Mail::to([$remider->appointment->patient->email])->queue(new ReminderAppointments($remider->appointment));
 
                         $remider->active = 0;
                         $remider->save();

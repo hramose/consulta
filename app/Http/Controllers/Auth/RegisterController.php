@@ -94,7 +94,7 @@ class RegisterController extends Controller
 
         try {
                         
-            \Mail::to($this->administrators)->send(new NewMedic($user));
+            \Mail::to($this->administrators)->queue(new NewMedic($user));
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
