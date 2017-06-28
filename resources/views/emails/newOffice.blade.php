@@ -12,7 +12,7 @@ Se ha registrado un nuevo consultorio o clinica a un médico en el sistema. Verf
 - Dirección: {{ $office->address }}
 - Telefono: {{ $office->phone }}
 
-@component('mail::button', ['url' => 'http://consulta.avotz.com/clinics/'. $office->id .'/profile'])
+@component('mail::button', ['url' => env('APP_URL').'/clinics/'. $office->id .'/profile'])
 Link a compartir con el administrador de la clinica
 @endcomponent
 
