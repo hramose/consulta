@@ -41,12 +41,12 @@ class Kernel extends ConsoleKernel
 
         
                 //url contra la que atacamos
-                $ch = curl_init("http://consulta.avotz.com/appointments/reminder");
+                $ch = curl_init(env('APP_URL')."/appointments/reminder");
                 //a true, obtendremos una respuesta de la url, en otro caso, 
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 //establecemos el verbo http que queremos utilizar para la petición
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
                 //enviamos el array data
                 //curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
                 //obtenemos la respuesta
@@ -56,19 +56,19 @@ class Kernel extends ConsoleKernel
 
         })->everyThirtyMinutes();
 
-       /* $schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
+        /*$schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
                  ->daily();*/
 
         $schedule->call(function () { // lo hacemos de esta forma porque no esta enviando los email
 
         
                 //url contra la que atacamos
-                $ch = curl_init("http://consulta.avotz.com/polls/send");
+                $ch = curl_init(env('APP_URL')."/polls/send");
                 //a true, obtendremos una respuesta de la url, en otro caso, 
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 //establecemos el verbo http que queremos utilizar para la petición
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
                 //enviamos el array data
                 //curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
                 //obtenemos la respuesta

@@ -33,6 +33,6 @@ class NewOffice extends Mailable
      */
     public function build()
     {
-        return $this->subject('Nueva Clínica creada o asignada a un médico')->markdown('emails.newOffice');
+        return $this->subject('Nueva clínica creada o asignada a un médico')->markdown('emails.newOffice');
     }
 }
