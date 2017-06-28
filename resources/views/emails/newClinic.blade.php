@@ -7,7 +7,7 @@ Se ha registrado un nuevo usuario como administrador de clínica en el sistema. 
 - Correo: {{ $user->email }}
 - Clínica: {{ $clinic->name }}
 
-@component('mail::button', ['url' => 'http://consulta.avotz.com/'])
+@component('mail::button', ['url' => env('APP_URL')])
 Ir a usuarios
 @endcomponent
 
