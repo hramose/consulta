@@ -75,7 +75,7 @@ class SendPolls extends Command
                     try {
                         
                         
-                        \Mail::to([$user->email])->send(new SendPoll($medic_id));
+                        \Mail::to([$user->email])->queue(new SendPoll($medic_id));
 
                     Log::info(url('/medics/'.$medic_id.'/polls'));
 
