@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     {
        
         // Run every 5 minutes
-        //$schedule->command('queue:work')->everyFiveMinutes();
+        $schedule->command('queue:work')->everyFiveMinutes();
 
         $schedule->command(\App\Console\Commands\NotificationOfficeLocation::class)
                  ->everyThirtyMinutes(); //se hace asi por que este no es necesario enviar email
