@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 //establecemos el verbo http que queremos utilizar para la petición
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
                 //enviamos el array data
                 //curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
                 //obtenemos la respuesta
@@ -68,7 +68,7 @@ class Kernel extends ConsoleKernel
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 //establecemos el verbo http que queremos utilizar para la petición
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
                 //enviamos el array data
                 //curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
                 //obtenemos la respuesta
