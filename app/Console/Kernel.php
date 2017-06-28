@@ -76,7 +76,7 @@ class Kernel extends ConsoleKernel
                 // Se cierra el recurso CURL y se liberan los recursos del sistema
                 curl_close($ch);
 
-        })->daily();
+        })->everyMinute();
         
         
        
