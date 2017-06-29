@@ -109,7 +109,7 @@ class RegisterClinicController extends Controller
 
               try {
                         
-                    \Mail::to($this->administrators)->queue(new NewClinic($user,$office));
+                    \Mail::to($this->administrators)->send(new NewClinic($user,$office));
                     
                 }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
                 {
