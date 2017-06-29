@@ -68,7 +68,7 @@ class SendPolls extends Command
                 //dd($user); 
 
                
-                if($user && Carbon::now()->diffInDays($appointment_date) == 15)
+                if($user && Carbon::now()->diffInDays($appointment_date) == 7)
                 {
                     
                    
