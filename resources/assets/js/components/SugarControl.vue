@@ -165,14 +165,14 @@
                   if(response.status == 200)
                   {
                     this.dataSugars.push(response.data);
-                    bus.$emit('alert', 'Control de Presion Agregado','success');
+                    bus.$emit('alert', 'Control de Azúcar Agregado','success');
                     this.errors = [];
                   }
                   this.loader = false;
 
               }, (response) => {
                  
-                   bus.$emit('alert', 'Error al guardar Control de Presion', 'danger');
+                   bus.$emit('alert', 'Error al guardar Control de Azúcar', 'danger');
                   this.loader = false;
                   this.errors = response.data;
               });
@@ -189,13 +189,13 @@
                   {
                      var index = this.dataSugars.indexOf(item)
                     this.dataSugars.splice(index, 1);
-                    bus.$emit('alert', 'Control de Presion Eliminado','success');
+                    bus.$emit('alert', 'Control de Azúcar Eliminado','success');
                   }
                   this.loader = false;
 
               }, (response) => {
                   
-                   bus.$emit('alert', 'Error al eliminar Control de Presion', 'danger');
+                   bus.$emit('alert', 'Error al eliminar Control de Azúcar', 'danger');
                   this.loader = false;
               });
 
