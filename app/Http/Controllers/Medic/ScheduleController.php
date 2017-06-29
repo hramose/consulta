@@ -130,21 +130,27 @@ class ScheduleController extends Controller
         $search['date2'] = $dateini2;//Carbon::now()->subWeek()->endOfWeek();
         $copiedSchedules = 0;
         $copySchedules = $this->scheduleRepo->findAllByDoctorWithoutPagination(auth()->id(), $search);  
-
+        
         foreach ($copySchedules as $scheduleToCopy) {
+            // var_dump('id:'.$scheduleToCopy->id . '-'.$scheduleToCopy->date);
             $dateBetween = Carbon::parse($scheduleToCopy->date);
             $dateStart = Carbon::parse($scheduleToCopy->start);
             $dateEnd = Carbon::parse($scheduleToCopy->end);
            
-            while (!$dateBetween->between($datefin1, $datefin2) &&  ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month)){
+           // while (!$dateBetween->between($datefin1, $datefin2) &&  ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month)){
+            while (!$dateBetween->between($datefin1, $datefin2)){
                   $dateBetween->addWeek();
                   $dateStart->addWeek();
                   $dateEnd->addWeek();
+
+                  if($dateBetween->month > $datefin2->month)
+                    break;
               
             }
            
 
-            if($scheduleToCopy->date != $dateBetween->toDateTimeString() && ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month))
+            // if($scheduleToCopy->date != $dateBetween->toDateTimeString() && ($dateBetween->month == $datefin1->month || $dateBetween->month == $datefin2->month))
+             if($scheduleToCopy->date != $dateBetween->toDateTimeString() && ($dateBetween->between($datefin1, $datefin2)))
             {
                 Schedule::create([
                         'user_id' => $scheduleToCopy->user_id,
@@ -158,9 +164,10 @@ class ScheduleController extends Controller
                         'borderColor' => $scheduleToCopy->borderColor,
                         'status' => $scheduleToCopy->status
                     ]);
-
+                  
                 $copiedSchedules++;
             }
+            
             /*Schedule::create([
                     'user_id' => $scheduleToCopy->user_id,
                     'office_id' => $scheduleToCopy->office_id,
@@ -174,7 +181,7 @@ class ScheduleController extends Controller
                     'status' => $scheduleToCopy->status
                 ]);*/
         }
-        
+         
          flash($copiedSchedules. ' Horario(s) copiado(s) con exito!','success'); 
 
         return back();
