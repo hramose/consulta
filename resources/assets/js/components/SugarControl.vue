@@ -85,6 +85,14 @@
           type: Number
           
         },
+         today: {
+          type: String
+          
+        },
+         time: {
+          type: String
+          
+        },
         sugars: {
           type: Array
           
@@ -102,8 +110,8 @@
       data () {
         return {
           glicemia : "",
-          date_control : new Date().toLocaleDateString(),
-          time_control : new Date().toLocaleTimeString(),
+          date_control : '',
+          time_control : '',
           dataSugars:[],
           loader:false,
           errors: [],
@@ -202,6 +210,16 @@
            {
             
                 this.dataSugars = this.sugars;
+            }
+            if(this.today)
+           {
+            
+                this.date_control = this.today;
+            }
+            if(this.time)
+           {
+            
+                this.time_control = this.time;
             }
            
       }

@@ -100,6 +100,14 @@
           type: Array
           
         },
+        today: {
+          type: String
+          
+        },
+         time: {
+          type: String
+          
+        },
         url:{
           type:String,
           default: '/account/patients'
@@ -114,8 +122,8 @@
         return {
           ps : "",
           pd : "",
-          date_control : new Date().toLocaleDateString(),
-          time_control : new Date().toLocaleTimeString(),
+          date_control : '',
+          time_control : '',
           dataPressures:[],
           loader:false,
           errors: [],
@@ -214,7 +222,16 @@
             
                 this.dataPressures = this.pressures;
             }
-           
+            if(this.today)
+           {
+            
+                this.date_control = this.today;
+            }
+            if(this.time)
+           {
+            
+                this.time_control = this.time;
+            }
       }
       
     }

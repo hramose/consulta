@@ -40,12 +40,12 @@
 	            <div class="tab-content">
 	              	<div class="{{ isset($tab) ? ($tab =='pressure') ? 'active' : '' : 'active' }} tab-pane" id="pressure">
 						
-						<pressure-control :pressures="{{ $patient->pressures }}" :patient_id="{{ $patient->id }}"></pressure-control>	
+						<pressure-control :pressures="{{ $patient->pressures }}" :patient_id="{{ $patient->id }}" today="{{ Carbon\Carbon::now()->toDateString() }}" time="{{ Carbon\Carbon::now()->toTimeString() }}"></pressure-control>	
 
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }} tab-pane" id="sugar">
-					   <sugar-control :sugars="{{ $patient->sugars }}" :patient_id="{{ $patient->id }}"></sugar-control>	
+					   <sugar-control :sugars="{{ $patient->sugars }}" :patient_id="{{ $patient->id }}" today="{{ Carbon\Carbon::now()->toDateString() }}" time="{{ Carbon\Carbon::now()->toTimeString() }}"></sugar-control>	
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='medicines') ? 'active' : '' : '' }} tab-pane" id="medicines">
