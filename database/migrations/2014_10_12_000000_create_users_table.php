@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->float('rating_medic_cache',2,1)->unsigned()->default(3.0);
             $table->integer('rating_service_count')->unsigned()->default(0);
             $table->integer('rating_medic_count')->unsigned()->default(0);
+            $table->double('commission')->default(0);
+            $table->string('medic_code')->nullable();
 
 
             $table->rememberToken();

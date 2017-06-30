@@ -138,6 +138,17 @@ class Office extends Model
                                                          
                                                 })->where('active', 1)->get();
     }
+    public function medicsWithInvoices($date1, $date2)
+    {
+          return $this->users()->with(['invoices' => function ($query) use($date1, $date2) {
+                                $query->where('status', 1)
+                                ->where([['invoices.created_at', '>=', $date1],
+                                    ['invoices.created_at', '<=', $date2->endOfDay()]]);
+                            }])->whereHas('roles', function ($query){
+                                                    $query->where('name',  'medico');
+                                                         
+                                                })->where('active', 1)->get();
+    }
     public function administrators()
     {
         return $this->users()->whereHas('roles', function ($query){

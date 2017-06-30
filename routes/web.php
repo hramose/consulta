@@ -183,6 +183,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::resource('appointments', 'Clinic\AppointmentController');
 	
 	Route::post('/medics/{medic}/offices/{office}/assign', 'Clinic\MedicController@assignOffice');
+	Route::put('/medics/{medic}/commission/', 'Clinic\MedicController@updateCommission');
 	Route::get('/medics/list', 'Clinic\MedicController@getMedics');
 	Route::resource('medics', 'Clinic\MedicController');
 

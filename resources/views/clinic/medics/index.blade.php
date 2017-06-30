@@ -41,6 +41,7 @@
                       <th>Nombre</th>
                       <th>Teléfono</th>
                       <th>Email</th>
+                      <th>Comisión</th>
                       <th>Especialidades</th>
                       <th></th>
                     </tr>
@@ -59,6 +60,20 @@
                       </td>
                       <td data-title="Teléfono">{{ $medic->phone }}</td>
                       <td data-title="Email">{{ $medic->email }}</td>
+                      <td data-title="Comisión">
+                         <form action="{!! url('/clinic/medics/'. $medic->id .'/commission') !!}" method="post" id="form-updateMedicCommission"  class="form-horizontal">
+                            {{ csrf_field() }} <input type="hidden" name="_method" value="PUT">
+                            <div class="input-group">
+                              <div class="input-group-btn">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i> Actualizar</button>
+                              </div>
+                              <!-- /btn-group -->
+                              <input type="text" name="commission" placeholder="Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />
+                            </div>
+                             
+                          </form>
+
+                      </td>
                      <td data-title="Especialidades"> 
                        @foreach($medic->specialities as $speciality)
                             <span class="btn btn-warning btn-xs">{{ $speciality->name }}</span>

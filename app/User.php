@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id'
+        'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code'
     ];
     protected $appends = array('distance');
 

@@ -160,6 +160,25 @@ class MedicController extends Controller
        
 
     }
+    public function updateCommission($medic_id)
+    {
+         $this->validate(request(),[
+                'commission' => 'required|numeric',
+                
+            ]);
+
+        
+         $medic = $this->medicRepo->findbyId($medic_id);
+         $medic->commission = request('commission');
+         $medic->save();
+         
+       
+
+        return back();
+
+       
+
+    }
 
     /**
      * Lista de todas las citas de un doctor sin paginar

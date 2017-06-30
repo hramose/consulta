@@ -66,6 +66,61 @@
           
         </div>
      </div>
+     <div v-if="dataInvoices.medics">
+           <div class="box box-danger">
+              <div class="box-header">
+                 <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                
+              </div>
+              <div class="box-body">
+
+                    
+                        <div class="col-xs-12 ">
+                             <div class="table-responsive">
+                              <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                  <th>Médico</th>
+                                  <th>Consultas Atendidas (facturadas)</th>
+                                  <th>Ingresos Recibidos</th>
+                                  <th>Comisión</th>
+                                  
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="medic in dataInvoices.medics">
+                                    <td>{{ medic.name }}</td>
+                                    <td>{{ medic.invoices.length }}</td>
+                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
+                                    <td>
+                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
+                                    </td>
+                                   
+                                </tr>
+                               
+                                <tr>
+                                    <td><b>Totales</b></td>
+                                    <td>{{ dataInvoices.totalAppointments }}</b></td>
+                                    <td><b>₡{{ money(dataInvoices.totalInvoices) }}</b></td>
+                                    <td>
+                                      <b>₡{{ money(dataInvoices.totalCommission) }}</b>
+                                    </td>
+                                    
+                                </tr>
+                                
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        
+                  
+
+                
+              </div>
+          </div>
+          
+         
+        </div>
       <div v-if="data.length">
            <div class="box box-danger">
               <div class="box-header">
@@ -120,58 +175,7 @@
           </div>
         </div>
 
-         <div v-if="data.length">
-           <div class="box box-danger">
-              <div class="box-header">
-                 <h3 class="box-title">Ventas</h3>
-                
-              </div>
-              <div class="box-body">
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                              <div class=" col-xs-12" >
-                                    <!-- small box -->
-                                    <div class="small-box bg-aqua" >
-                                      <div class="inner">
-                                        <h3>₡{{ dataSales.total }}</h3>
-
-                                        <p>Facturas: {{ dataSales.invoices}}</p>
-                                      </div>
-                                      <div class="icon">
-                                        <i class="fa fa-money"></i>
-                                      </div>
-                                      <div class="small-box-footer"></div>
-                         
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class=" col-xs-12" >
-                                    <!-- small box -->
-                                    <div class="small-box bg-green" >
-                                      <div class="inner">
-                                        <h3>{{ dataPatients }}</h3>
-
-                                        <p>Paciente(s) atendidos</p>
-                                      </div>
-                                      <div class="icon">
-                                        <i class="fa fa-user"></i>
-                                      </div>
-                                      <div class="small-box-footer"></div>
-                         
-                                    </div>
-                            </div> 
-                        </div>
-                      </div>
-                
-              </div>
-          </div>
          
-          
-         
-        </div>
-        
 
          
       <div v-if="dataReviews.rating_service_cache && this.search.type == 'Evaluación de usuario'" >
@@ -335,7 +339,7 @@
           
           data:[],
           dataPatients:[],
-          dataSales:[],
+          dataInvoices:[],
           dataReviews:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
@@ -364,6 +368,31 @@
         },
 
        methods: {
+        money(n, currency) {
+                return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            },
+        totalInvoices(invoices){
+              let total = 0;
+
+              for (var i = 0; i < invoices.length; i++) {
+                total += parseInt(invoices[i].total);
+              }
+              
+              return total;
+            
+          
+        },
+         totalCommission(invoices,commission){
+              let total = 0;
+
+              for (var i = 0; i < invoices.length; i++) {
+                total += parseInt(invoices[i].total) * parseInt(commission);
+              }
+              
+              return total;
+            
+          
+        },
          getDataForChart(){
             let values = [];
             let colors = [];
@@ -429,7 +458,7 @@
            this.dataPoll = [];
            this.data = [];
            this.dataPatients = [];
-           this.dataSales = [];
+           this.dataInvoices = [];
            this.dataReviews = [];
           this.message= "";
         },
@@ -463,7 +492,7 @@
 
                this.data = resp.data.appointments
                this.dataPatients = resp.data.patients
-               this.dataSales = resp.data.sales
+               this.dataInvoices = resp.data.invoices
               
                this.getDataForChart();
                this.loader = false;

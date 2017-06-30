@@ -86,7 +86,7 @@
           
         </div>
      </div>
-     <div v-if="dataIncomes.medics">
+     <div v-if="dataInvoices.medics">
            <div class="box box-danger">
               <div class="box-header">
                  <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
@@ -101,35 +101,31 @@
                                 <thead>
                                 <tr>
                                   <th>Médico</th>
-                                  <th>Consultas Atendidas</th>
+                                  <th>Consultas Atendidas (facturadas)</th>
                                   <th>Ingresos Recibidos</th>
-                                  <th>Pendientes de Pago</th>
-                                  <th>Pagos Aplicados</th>
+                                  <th>Comisión</th>
+                                  
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="medic in dataIncomes.medics">
+                                <tr v-for="medic in dataInvoices.medics">
                                     <td>{{ medic.name }}</td>
-                                    <td>{{ medic.incomes.length }}</td>
-                                    <td>₡{{ money(totalIncomes(medic.incomes)) }}</td>
+                                    <td>{{ medic.invoices.length }}</td>
+                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
                                     <td>
-                                      ₡{{  money(totalIncomes(medic.incomes) - totalPaid(medic.incomes) ) }}
+                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
                                     </td>
-                                    <td>
-                                      ₡{{  money(totalPaid(medic.incomes) ) }}
-                                    </td>
+                                   
                                 </tr>
                                
                                 <tr>
                                     <td><b>Totales</b></td>
-                                    <td>{{ dataIncomes.totalAppointments }}</b></td>
-                                    <td><b>₡{{ money(dataIncomes.totalIncomes) }}</b></td>
+                                    <td>{{ dataInvoices.totalAppointments }}</b></td>
+                                    <td><b>₡{{ money(dataInvoices.totalInvoices) }}</b></td>
                                     <td>
-                                      <b>₡{{  money(dataIncomes.totalPending) }}</b>
+                                      <b>₡{{ money(dataInvoices.totalCommission) }}</b>
                                     </td>
-                                    <td>
-                                     <b> ₡{{  money(dataIncomes.totalPaid) }}</b>
-                                    </td>
+                                    
                                 </tr>
                                 
                                 </tbody>
@@ -142,22 +138,22 @@
                 
               </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
                   <div class="col-xs-12">
                       <div class="box box-default box-chart">
                           <div class="box-header">
                             <h4>Ingresos recibidos vs pendientes</h4>
                           </div>
                           <div class="box-body">
-                            <!-- <appointments-chart></appointments-chart> -->
+                       
                            
                             <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsIncomes"  :datasets="dataSetsIncomes"></chartjs-pie>
                           </div>
-                          <!-- /.box-body -->
+                          
                     </div>
                   </div>
                   
-            </div>
+            </div> -->
          
           
          
@@ -216,7 +212,7 @@
           </div>
         </div>
 
-         <div v-if="data.length">
+         <!-- <div v-if="data.length">
            <div class="box box-danger">
               <div class="box-header">
                  <h3 class="box-title">Ventas</h3>
@@ -227,7 +223,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
                               <div class=" col-xs-12" >
-                                    <!-- small box -->
+                                   
                                     <div class="small-box bg-aqua" >
                                       <div class="inner">
                                         <h3>₡{{ dataSales.total }}</h3>
@@ -244,7 +240,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class=" col-xs-12" >
-                                    <!-- small box -->
+                                   
                                     <div class="small-box bg-green" >
                                       <div class="inner">
                                         <h3>{{ dataPatients }}</h3>
@@ -266,7 +262,7 @@
          
           
          
-        </div>
+        </div> -->
         
 
          
@@ -367,9 +363,9 @@
           selectedItem:null,
           data:[],
           dataPatients:[],
-          dataSales:[],
+          //dataSales:[],
           dataReviews:[],
-          dataIncomes:[],
+          dataInvoices:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
@@ -404,29 +400,29 @@
          money(n, currency) {
                 return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
             },
-        totalIncomes(incomes){
+        totalInvoices(invoices){
               let total = 0;
 
-              for (var i = 0; i < incomes.length; i++) {
-                total += parseInt(incomes[i].amount);
+              for (var i = 0; i < invoices.length; i++) {
+                total += parseInt(invoices[i].total);
               }
               
               return total;
             
           
         },
-        totalPaid(incomes){
+         totalCommission(invoices,commission){
               let total = 0;
 
-              for (var i = 0; i < incomes.length; i++) {
-                if(incomes[i].paid)
-                  total += parseInt(incomes[i].amount);
+              for (var i = 0; i < invoices.length; i++) {
+                total += parseInt(invoices[i].total) * parseInt(commission);
               }
               
               return total;
             
           
         },
+       
          getDataForChart(){
             let values = [];
             let colors = [];
@@ -442,7 +438,7 @@
                   hoverBackgroundColor: colors
                });
 
-             let valuesIncomes = [];
+            /* let valuesIncomes = [];
            
 
             this.dataLabelsIncomes[0] = 'Ingresos Recibidos';
@@ -458,7 +454,7 @@
                   backgroundColor: ['#00c0ef','#00a65a'],
                   hoverBackgroundColor: ['#00c0ef','#00a65a']
                });
-
+*/
         
             
            
@@ -567,9 +563,9 @@
            this.dataPoll = [];
            this.data = [];
            this.dataPatients = [];
-           this.dataSales = [];
+           //this.dataSales = [];
            this.dataReviews = [];
-           this.dataIncomes = [];
+           this.dataInvoices = [];
            this.dataSetsIncomes =[];
            this.message = "";
         },
@@ -613,13 +609,12 @@
 
                this.data = resp.data.appointments
                this.dataPatients = resp.data.patients
-               this.dataSales = resp.data.sales
+               //this.dataSales = resp.data.sales
 
-               if(this.search.type == "General")
-              {
-                this.dataIncomes =  resp.data.incomes
+              
+                this.dataInvoices =  resp.data.invoices
                 
-              }
+             
                
               
                this.getDataForChart();
