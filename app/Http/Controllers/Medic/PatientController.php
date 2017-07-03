@@ -62,6 +62,7 @@ class PatientController extends Controller
         $patient =$this->patientRepo->store($request->all());
 
         $data = $request->all();
+        $data['password'] = ($data['password']) ? $data['password'] : '123456';
         $data['name'] = $data['first_name'];
         $data['provider'] = 'email';
         $data['provider_id'] = $data['email'];

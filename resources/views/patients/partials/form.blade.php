@@ -127,7 +127,7 @@
     <div class="form-group">
       <label for="password" class="col-sm-2 control-label">Contraseña (Accesso a la plataforma): </label>
        <div class="col-sm-10">
-         <input type="text" class="form-control" name="password" placeholder="Contraseña" value="123456" >
+         <input type="text" class="form-control" name="password" placeholder="Contraseña" value="123456" required>
          <span class="label label-warning">Recordar Cambiar la contraseña al usuario</span>
        </div>
 
