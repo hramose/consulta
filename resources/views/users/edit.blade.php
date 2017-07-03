@@ -98,6 +98,18 @@
                       @endif
                     </div>
                   </div>
+                   <div class="form-group">
+                    <label for="medic_code" class="col-sm-2 control-label">Código de Médico</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="medic_code" name="medic_code" placeholder="Código de Médico" value="{{ old('medic_code') ?: $user->medic_code }}" required>
+                       @if ($errors->has('medic_code'))
+                          <span class="help-block">
+                              <strong>{{ $errors->first('medic_code') }}</strong>
+                          </span>
+                      @endif
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label for="speciality_id" class="col-sm-2 control-label">Especialidad</label>
 

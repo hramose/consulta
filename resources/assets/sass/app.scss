@@ -214,6 +214,10 @@ body.loading:before{
 .external-event{
 	padding: 0px 10px !important;
 	font-size:12px;
+	width: 130px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .fc-event:hover {
   border-color: #1c7d87 !important;

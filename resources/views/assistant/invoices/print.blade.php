@@ -46,8 +46,9 @@
           <b>Factura #{{$invoice->id }}</b><br>
           <b>Fecha:</b> {{ $invoice->created_at }}<br>
           <b>Médico:</b> {{ $invoice->medic->name }}<br>
+           <b>Código de Médico:</b> {{ $invoice->medic->medic_code }}<br>
            @foreach($invoice->medic->specialities as $speciality)
-           	{{ $speciality->name }},
+            {{ $speciality->name }},
            @endforeach
           
         </div>

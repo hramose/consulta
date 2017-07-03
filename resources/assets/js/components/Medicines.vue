@@ -1,8 +1,12 @@
 <template>
 	
 <div>
-  
-      <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Medicamentos"><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+      <div class="form-group">
+          <input type="text" name="search" class="form-control" @keydown.enter="hit" v-model="query" placeholder="Medicamentos">
+       </div>
+       <div class="form-group">
+                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+        </div>
       <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataMedicines.length">
        
         <li v-for="item in dataMedicines">

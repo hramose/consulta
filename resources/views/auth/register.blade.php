@@ -72,6 +72,15 @@
           @endif
         
       </div>
+      <div class="form-group has-feedback">
+        <input id="medic_code" type="text" class="form-control" name="medic_code" value="{{ old('medic_code') }}" required autofocus placeholder="Código de Médico">
+         @if ($errors->has('medic_code'))
+            <span class="help-block">
+                <strong>{{ $errors->first('medic_code') }}</strong>
+            </span>
+        @endif
+        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+      </div>
 
       <div class="row">
         

@@ -36,6 +36,7 @@
 		          <strong>{{ $appointment->title }}</strong><br>
 		          <b>Fecha:</b> {{ $appointment->date }}<br>
 		          <b>Medico:</b> {{ auth()->user()->name }}<br>
+		          <b>Código de Médico:</b> {{ auth()->user()->medic_code }}<br>
 		          <b>Especialidad:</b> {{ auth()->user()->getSpecialityName() }}
 		          
 		        </address>
