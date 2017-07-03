@@ -6,17 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
+use App\Repositories\UserRepository;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PatientController extends Controller
 {
-    function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo)
+    function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
     {
     	$this->middleware('auth');
         $this->patientRepo = $patientRepo;
         $this->appointmentRepo = $appointmentRepo;
+         $this->userRepo = $userRepo;
     }
 
     /**
@@ -60,6 +63,17 @@ class PatientController extends Controller
     {
         
         $patient =$this->patientRepo->store($request->all());
+
+        $data = $request->all();
+        $data['password'] = ($data['password']) ? $data['password'] : '123456';
+        $data['name'] = $data['first_name'];
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
+        $data['role'] = Role::whereName('paciente')->first();
+        $data['api_token'] = str_random(50);
+
+        $user_patient = $this->userRepo->store($data);
+        $user_patient = $user_patient->patients()->save($patient);
 
         flash('Paciente Creado','success');
 
