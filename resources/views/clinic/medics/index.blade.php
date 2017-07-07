@@ -68,7 +68,7 @@
                                 <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i> Actualizar</button>
                               </div>
                               <!-- /btn-group -->
-                              <input type="text" name="commission" placeholder="Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />
+                              <input type="text" name="commission" placeholder="Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />%
                             </div>
                              
                           </form>

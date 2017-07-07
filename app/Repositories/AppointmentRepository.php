@@ -404,7 +404,7 @@ class AppointmentRepository extends DbRepository{
             $invoicesTotalMedic = $medic->invoices->sum('total');
             $totalAppointments += $medic->invoices->count();
             $totalInvoices += $invoicesTotalMedic;
-            $totalCommission += $medic->commission * $invoicesTotalMedic;
+            $totalCommission += ($medic->commission / 100 ) * $invoicesTotalMedic;
             
             /*$paid =  $medic->invoices->filter(function ($item, $key) {
                         return $item->status == 1;
