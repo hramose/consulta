@@ -65,10 +65,14 @@
                             {{ csrf_field() }} <input type="hidden" name="_method" value="PUT">
                             <div class="input-group">
                               <div class="input-group-btn">
-                                <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i> Actualizar</button>
+                                <button type="submit" class="btn btn-success">Actualizar</button>
                               </div>
                               <!-- /btn-group -->
-                              <input type="text" name="commission" placeholder="Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />%
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                                 <input type="text" name="commission" placeholder="% Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />
+                              </div>
+                             
                             </div>
                              
                           </form>
