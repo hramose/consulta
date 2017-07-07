@@ -26,11 +26,34 @@
   	display:none;
   }
 }
-.login-page{
-	background-image: url('/img/bg.jpg');
+.login-page, .register-page{
+	background: url('/img/bg.jpg') !important;
 	background-size:cover;
 	background-position: center center;
+	img{
+		width:100%;
+	}
 }
+.login-page .login-logo a,  .login-page .register-logo a{
+	max-width: 200px;
+    display: inline-block;
+}
+.logo-mini{
+	/*img{
+		width:90%;
+	}*/
+}
+.logo-lg{
+	/*img{
+		width:30px;
+		width:30px;
+	}*/
+}
+
+.navbar-brand{
+	padding: 0;
+}
+
 .invoice-tab{
 	background-color: #dd4b39 !important;
 	color: white !important;

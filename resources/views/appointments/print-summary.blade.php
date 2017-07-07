@@ -79,7 +79,7 @@
 		      </div>
 		      <!-- /.col -->
 		      <div class="col-xs-6">
-		        
+		        <img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}" width="150" style="float: right;">
 		      </div>
 		      <!-- /.col -->
 		    </div>

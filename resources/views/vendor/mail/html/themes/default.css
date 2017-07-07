@@ -73,6 +73,10 @@ img {
     max-width: 100%;
 }
 
+.logo{
+    width: 115px;
+    display: inline-block;
+}
 /* Layout */
 
 .wrapper {

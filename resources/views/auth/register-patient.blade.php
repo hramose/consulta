@@ -7,7 +7,7 @@
 
 <div class="register-box">
   <div class="register-logo">
-    <a href="/"><b>{{ config('app.name', 'Laravel') }}</b></a>
+     <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
   </div>
 
   <div class="register-box-body">

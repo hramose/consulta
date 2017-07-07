@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="/" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>G</b></span>
+     <span class="logo-mini"><b><img src="/img/logo-white-50x50.png" alt="{{ config('app.name', 'Laravel') }}"></b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>{{ config('app.name', 'Laravel') }}</b></span>
+      <span class="logo-lg"><b><img src="/img/logo-white-50x50.png" alt="{{ config('app.name', 'Laravel') }}"> {{ config('app.name', 'Laravel') }}</b></span>
     </a>
 
     <!-- Header Navbar -->

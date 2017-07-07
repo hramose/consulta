@@ -3,7 +3,7 @@
 <!-- Main Content -->
 @section('content')
 <div class="login-logo">
-    <a href="/"><b>Consulta</a>
+     <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
