@@ -218,22 +218,25 @@
                         @foreach($medics as $medic)
                           @if(isset($search['lat']) && $search['lat'] != '')
                             <!-- Medic se refiere a clinica en esta seccion -->
+                            
+                             @foreach($medic->doctors($search['q']) as $doctor)
+                             
                             <tr>
                               
                               <td data-title="Nombre">
-                                   Dr. {{ $medic->users->first()->name }} <br>
-                               @if($medic->users->first()->phone)
-                                      <a href="tel:{{ $medic->users->first()->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $medic->users->first()->phone }}"></i> Llamar ({{ $medic->users->first()->phone }})</a>
+                                   Dr. {{ $doctor->name }} <br>
+                               @if($doctor->phone)
+                                      <a href="tel:{{ $doctor->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $doctor->phone }}"></i> Llamar ({{ $doctor->phone }})</a>
                                   @endif
                               </td>
                               <td data-title="Lugar">
                                   <div class="td-lugar">
                                       <div class="td-lugar-name"> 
 
-                                        <span >{{ $medic->name }}</span>
+                                        <span >{{ $medic->name }}</span><br>
                                         <b>Horario Semana Actual:</b><br>
-                                          @foreach($medic->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
-                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
+                                          @foreach($medic->schedules()->where('user_id',$doctor->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
+                                            @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() <= Carbon\Carbon::now()->endOfWeek())
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
                                              @endif
                                           @endforeach
@@ -243,12 +246,12 @@
                                         <span>{{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }}</span> 
                                         </p>
                                         <p>
-                                         <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $medic->users->first()->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $medic->users->first()->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
+                                         <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" data-address="{{ $doctor->name }} - Direccion: {{ $medic->province }}, {{ $medic->canton }}. {{ $medic->address }} - Tel: {{ $doctor->phone }}" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}">
                                           <i class="fa fa-address"></i> Compartir ubicación
                                         </button> <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#locationModal" data-lat="{{ $medic->lat }}" data-lon="{{ $medic->lon }}"><i class="fa fa-address"></i> Abrir ubicación
                                         </button>
-                                        @if($medic->users->first()->verifyOffice($medic->id) && $medic->active)
-                                            <a href="{{ url('/medics/'.$medic->users->first()->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
+                                        @if($doctor->verifyOffice($medic->id) && $medic->active)
+                                            <a href="{{ url('/medics/'.$doctor->id.'/offices/'.$medic->id .'/schedule') }}" class="btn btn-danger btn-xs"><i class="fa fa-calendar"></i> Reservar cita</a>
                                          @endif 
                                         
                                         </p>
@@ -261,6 +264,7 @@
                               </td>
                              
                             </tr>
+                             @endforeach
                           @else
                             <tr>
                               
@@ -278,9 +282,12 @@
                                          <div class="td-lugar-name">
                                           <span >{{ $office->name }}</span> <br>
                                           <b>Horario Semana Actual:</b><br>
-                                          @foreach($office->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
-                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->weekOfMonth == Carbon\Carbon::now()->weekOfMonth)
+                                          
+                                          @foreach($office->schedules()->where('user_id',$medic->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
+                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() <= Carbon\Carbon::now()->endOfWeek())
+                                               
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
+                                                
                                              @endif
                                           @endforeach
                                           

@@ -70,15 +70,17 @@ class MedicRepository extends DbRepository{
 
             $offices = Office::whereHas('users', function($q) use($search){
 
+                                       
                                         //$q->where('speciality_id', '=', $search['speciality']);
                                            //->where('name', 'like', '%' . $search['q'] . '%');
                                         if (trim($search['q']))
                                         {
-                                            $q->where('name', 'like', '%' . $search['q'] . '%');
+                                             $q->where('name', 'like', '%' . $search['q'] . '%');
                                               
-                                            return $q;
-                                        } 
-                                       
+                                           
+                                        }
+
+                                        return $q;
                                    
                                     });
            // dd($offices->get()->all());

@@ -126,6 +126,26 @@ class Office extends Model
         return $this->hasMany(Schedule::class);
     }
 
+    public function doctors($search = null)
+    {
+       
+        if($search){
+
+            $data = $this->users()->whereHas('roles', function ($query) use($search){
+                                                    $query->where('name',  'medico');
+                                                         
+                                                })->where('name', 'like', '%'.$search.'%')->get();
+        }
+        else{
+            $data = $this->users()->whereHas('roles', function ($query){
+                                                    $query->where('name',  'medico');
+                                                         
+                                                })->get();
+            
+        }
+
+        return $data;
+    }
     public function medics($date1, $date2)
     {
        
