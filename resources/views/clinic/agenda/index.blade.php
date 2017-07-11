@@ -52,7 +52,9 @@
                            
                           @endif
                             <span class="medic-description">
-                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                              E: @foreach($doctor->specialities as $speciality)
+                                {{ $speciality->name }} | 
+                                @endforeach
                             </span>
                       </div>
                     </li>

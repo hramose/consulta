@@ -43,7 +43,7 @@ $(window).on('load', function() {
                 }, 500, function() {
                     window.location.hash = anchor;
                 });
-                e.preventDefault();
+               
             }
         }
    
@@ -57,39 +57,69 @@ $(window).on('load', function() {
        
     }else{
       
-      $('.box-search-filters').removeClass('collapsed-box');
+      //$('.box-search-filters').removeClass('collapsed-box');
      
     }
 
    $(".dropdown-toggle").dropdown();
     
-      function obtainGeolocation(){
-       //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
-       window.navigator.geolocation.getCurrentPosition(localitation);
-       }
-       function localitation(geo){
+       // function obtainGeolocation(){
+       // //obtener la posición actual y llamar a la función  "localitation" cuando tiene éxito
+
+       //   window.navigator.geolocation.getCurrentPosition(localitation);
+       // }
+      //  function localitation(geo){
        
-      // En consola nos devuelve el Geoposition object con los datos nuestros
+      // // En consola nos devuelve el Geoposition object con los datos nuestros
           
-          $('input[name="lat"]').val(geo.coords.latitude);
-          $('input[name="lon"]').val(geo.coords.longitude);
+      //     $('input[name="lat"]').val(geo.coords.latitude);
+      //     $('input[name="lon"]').val(geo.coords.longitude);
           
-          var speciality = $('select[name="speciality"]').val();
+      //     var speciality = $('select[name="speciality"]').val();
 
-          if(speciality === undefined || speciality != '')
-            $('form').submit();
-          else
-          {
-            alert('Selecciona una especialidad');
+      //     if(speciality === undefined || speciality != '')
+      //       $('form').submit();
+      //     else
+      //     {
+      //       alert('Selecciona una especialidad');
 
-          }
-       }
+      //     }
+      //  }
        //llamando la funcion inicial para ver trabajar la API
-       
+        function success(pos) {
+            var crd = pos.coords;
+
+            $('input[name="lat"]').val(crd.latitude);
+            $('input[name="lon"]').val(crd.longitude);
+            
+            var speciality = $('select[name="speciality"]').val();
+
+            if(speciality === undefined || speciality != ''){
+              $('.btn-search').click();
+             // $('form').submit();
+            }else
+            {
+              alert('Selecciona una especialidad');
+
+            }
+          };
+
+          function error(err) {
+            // console.warn(`ERROR(${err.code}): ${err.message}`);
+            console.warn('Error: '+ err.message);
+          };
 
        $('.btn-geo').on('click', function (e) {
-           obtainGeolocation();
-       });
+            var options = {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0
+            };
+
+          window.navigator.geolocation.getCurrentPosition(success, error, options);
+
+         });
+
       $('.callout button.close').on('click', function (e) {
            $(this).parents('.callout').hide();
        });

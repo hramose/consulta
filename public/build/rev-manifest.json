@@ -1,8 +1,8 @@
 {
-  "css/app.css": "css/app-be8182bb5e.css",
+  "css/app.css": "css/app-2074ffdc77.css",
   "js/admin.min.js": "js/admin-823bb0a100.min.js",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
-  "js/app.js": "js/app-0958c0d59f.js",
+  "js/app.js": "js/app-9dfa6f2901.js",
   "js/appointments.min.js": "js/appointments-f716468986.min.js",
   "js/assistant.invoices.min.js": "js/assistant-68123d5e84.invoices.min.js",
   "js/clinic.appointments.min.js": "js/clinic-ef7796f638.appointments.min.js",
@@ -12,5 +12,5 @@
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
   "js/patients.min.js": "js/patients-1da76dd63c.min.js",
   "js/schedule.min.js": "js/schedule-5d3dc43963.min.js",
-  "js/search.min.js": "js/search-76ba6bce3f.min.js"
+  "js/search.min.js": "js/search-6e9d3d4f2d.min.js"
 }

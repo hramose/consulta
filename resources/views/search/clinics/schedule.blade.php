@@ -34,7 +34,7 @@
                    <li class="item {{ (isset($medic) && $doctor->id == $medic->id) ? 'medic-list-selected': '' }}">
                       <div class="medic-img">
                       <!--/img/default-50x50.gif-->
-                        <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                        <img src="{{ getAvatar($doctor) }}" alt="Medic Image" width="50" height="50">
                       </div>
                       <div class="medic-info">
                         <a href="/clinics/{{ $office->id }}/schedule?medic={{$doctor->id }}{{ (request('page')) ? '&page='.request('page') : '' }}" class="medic-title">{{ $doctor->name }}
@@ -45,7 +45,9 @@
                            
                         
                             <span class="medic-description">
-                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                              E: @foreach($doctor->specialities as $speciality)
+                                {{ $speciality->name }} | 
+                                @endforeach
                             </span>
                       </div>
                     </li>
@@ -53,7 +55,8 @@
                     <li class="item">
                       <div class="medic-img">
                       <!--/img/default-50x50.gif-->
-                        <img src="{{ Storage::url('avatars/'.$doctor->id.'/avatar.jpg') }}" alt="Medic Image" width="50" height="50">
+                       
+                        <img src="{{ getAvatar($doctor) }}" alt="Medic Image" width="50" height="50">
                       </div>
                       <div class="medic-info">
                            <div>{{ $doctor->name }}</div>
