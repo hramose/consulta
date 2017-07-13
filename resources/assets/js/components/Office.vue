@@ -2,12 +2,11 @@
 	<div class="form-horizontal">
      
       <div class="form-group">
-        <label for="office_name" class="col-sm-2 control-label">Buscar</label>
-         
+        
               <div class="col-xs-12 col-sm-5">
                 <div class="form-group">
                     <div class="col-sm-12">
-                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar consultorio..." label="name" :on-change="selectOffice" :value.sync="selectedValue" ></v-select>
+                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar Clínica..." label="name" :on-change="selectOffice" :value.sync="selectedValue" ></v-select>
                     </div>
                 </div>
                     
@@ -17,14 +16,14 @@
                 <div class="form-group">
                     <div class="col-sm-10">
                     <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
-                    <a href="#" class="btn btn-default " @click="nuevo()">Crear Consultorio Nuevo</a>
+                   
                     </div>
                 </div>
                     
                   
               </div> 
         
-          
+         
         <!--<div class="col-sm-10">
 
            <input type="text" class="form-control" name="name" placeholder="Nombre del consultorio" v-model="office.name" >
@@ -32,6 +31,12 @@
               {{ errors.name[0] }}
           </form-error> 
           </div>-->
+      </div>
+      <div class="form-group">
+        <div class="col-xs-12 col-sm-12">
+           <a href="#" class="btn btn-default " @click="nuevo('Consultorio Independiente')" title="Selecciona esta opción si usted va a ser el único médico que trabajará en su consultorio">Crear Consultorio Independiente</a>
+           <a href="#" class="btn btn-default " @click="nuevo('Clínica Privada')" title="Selecciona esta opción si va a trabajar con otros médicos en sus instalaciones">Crear Clínica Privada</a>
+          </div>
       </div>
       <div class="newform" v-show="newOffice">
 
@@ -709,7 +714,7 @@
         vSelect
       },
       methods: {
-        nuevo(){
+        nuevo(type){
           if(this.newOffice && this.office.id) {
            
 
@@ -719,14 +724,14 @@
           
           }
 
+           this.selectedValue = null;
            this.office = {
                 lat : '',
                 lon: '',
                 notification_datetime: '',
                 notification_hour: '',
-                type:''
+                type: type
               };
-          this.selectedValue = null;
           this.allOffices = [];
           
         },

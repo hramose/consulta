@@ -24,6 +24,33 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
         }
+
+        view()->composer('layouts.app', function ($view)
+        {
+             $appointments = \App\Appointment::where('user_id', auth()->id())->where('status', 0)->where('patient_id','<>',0)->whereDate('date', \Carbon\Carbon::today()->toDateTimeString());
+               
+            
+
+            $newAppointments = $appointments->count();
+
+           
+            $view->with('newAppointments', $newAppointments);
+        });
+
+         view()->composer('layouts.app-assistant', function ($view)
+        {
+               $office = auth()->user()->clinicsAssistants->first();
+
+            
+                $appointments = \App\Appointment::where('office_id', $office->id)->where('status', 0)->where('patient_id','<>',0)->whereDate('date', \Carbon\Carbon::today()->toDateTimeString());
+               
+            
+
+            $newAppointments = $appointments->count();
+
+           
+            $view->with('newAppointments', $newAppointments);
+        });
         /* \DB::listen(function ($query) {
             var_dump($query->sql);
             // $query->bindings

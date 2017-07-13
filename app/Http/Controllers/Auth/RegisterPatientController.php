@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Role;
-use App\Speciality;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Validator;

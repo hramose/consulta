@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
-use App\Speciality;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;

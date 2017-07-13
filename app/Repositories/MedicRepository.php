@@ -161,13 +161,11 @@ class MedicRepository extends DbRepository{
             
             if (isset($search['general']) && $search['general'] != ""){
 
-                $users = $users->whereHas('specialities', function($q) use($search){
+                $users = $users->doesntHave('specialities');
+                /*$users = $users->whereHas('specialities', function($q) use($search){
                                         $q->where('specialities.id', 53);
-                                    });
-                /*$users->where(function($q) use($search){
-                                        $q->where('speciality_id', 53)
-                                        ->orWhere('speciality_id', 0);
-                                    });*/               
+                                    });*/
+                    
             }
 
 

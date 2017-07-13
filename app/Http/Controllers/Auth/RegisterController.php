@@ -69,7 +69,6 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'speciality' =>'required',
             'medic_code' =>'required'
         ]);
     }
@@ -91,6 +90,8 @@ class RegisterController extends Controller
         $data['provider'] = 'email';
         $data['provider_id'] = $data['email'];
         $data['api_token'] = str_random(50);
+
+        
         $user = $this->userRepo->store($data);
 
         try {

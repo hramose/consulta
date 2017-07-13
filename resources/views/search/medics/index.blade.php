@@ -225,9 +225,7 @@
                               
                               <td data-title="Nombre">
                                    Dr. {{ $doctor->name }} <br>
-                               @if($doctor->phone)
-                                      <a href="tel:{{ $doctor->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $doctor->phone }}"></i> Llamar ({{ $doctor->phone }})</a>
-                                  @endif
+                                 
                               </td>
                               <td data-title="Lugar">
                                   <div class="td-lugar">
@@ -271,9 +269,7 @@
                               <td data-title="Nombre">
                                 Dr. {{ $medic->name }} <br>
 
-                                  @if($medic->phone)
-                                  <a href="tel:{{ $medic->phone }}" class="btn btn-success btn-xs" title="{{ $medic->phone }}"><i class="fa fa-phone"></i> Llamar ({{ $medic->phone }})</a>
-                                  @endif
+                                 
 
                               </td>
                               <td data-title="Lugar" >

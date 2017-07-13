@@ -7,7 +7,6 @@ use App\Mail\NewClinic;
 use App\Office;
 use App\Repositories\UserRepository;
 use App\Role;
-use App\Speciality;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;

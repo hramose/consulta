@@ -52,9 +52,13 @@
                            
                           @endif
                             <span class="medic-description">
-                              E: @foreach($doctor->specialities as $speciality)
-                                {{ $speciality->name }} | 
-                                @endforeach
+                              @if($doctor->specialities->count())
+                                  @foreach($doctor->specialities as $speciality) {{ $speciality->name }} @endforeach
+                                @else
+                                  Médico General
+                                @endif 
+
+                             
                             </span>
                       </div>
                     </li>
@@ -105,7 +109,14 @@
                       @foreach($medics as $doc)
                       <th class="text-center">
                          <div >{{ $doc->name }}</div> 
-                         <small><span class="label label-warning">{{ $doc->specialities->first()->name }}</span></small>
+                         <small><span class="label label-warning">
+                           
+                            @if($doc->specialities->count())
+                              @foreach($doc->specialities as $speciality) {{ $speciality->name }} @endforeach
+                            @else
+                              Médico General
+                            @endif
+                         </span></small>
                       </th>
                       @endforeach
                      

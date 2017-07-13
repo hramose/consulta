@@ -27,6 +27,11 @@
             </div>
             <div class="box-body">
               <!-- the events -->
+                @if($office->phone)
+                  <p> Reserve su cita en la hora deseada y llame para confirmar su espacio</p>
+                  <p>Tel: <a href="tel:{{ $office->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $office->phone }}"></i> Llamar ({{ $office->phone }})</a></p>
+                                
+                   @endif
               <div id="external-medics">
                <ul class="medic-list medic-list-in-box">
                 @foreach($medics as $doctor)
@@ -45,9 +50,12 @@
                            
                         
                             <span class="medic-description">
-                              E: @foreach($doctor->specialities as $speciality)
-                                {{ $speciality->name }} | 
-                                @endforeach
+                            @if($doctor->specialities->count())
+                                  @foreach($doctor->specialities as $speciality) {{ $speciality->name }} @endforeach
+                                @else
+                                  Médico General
+                                @endif 
+                             
                             </span>
                       </div>
                     </li>
@@ -67,7 +75,12 @@
                            
                         
                             <span class="medic-description">
-                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
+                               @if($doctor->specialities->count())
+                                  @foreach($doctor->specialities as $speciality) {{ $speciality->name }} @endforeach
+                                @else
+                                  Médico General
+                                @endif 
+                             
                             </span>
                       </div>
                     </li>

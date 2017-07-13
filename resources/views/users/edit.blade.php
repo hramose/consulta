@@ -26,7 +26,14 @@
               
               <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
-              <p class="text-muted text-center">{{ $user->specialities->first()->name }}</p>
+              <p class="text-muted text-center">
+                 
+                  @if($user->specialities->count())
+                    @foreach($user->specialities as $speciality) {{ $speciality->name }} @endforeach
+                  @else
+                    Médico General
+                  @endif
+              </p>
 
                <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/account/avatars">Subir Foto</a>
                <small class="center txt-center">Medidas recomendadas (128 x 128)</small>
@@ -114,8 +121,8 @@
                     <label for="speciality_id" class="col-sm-2 control-label">Especialidad</label>
 
                     <div class="col-sm-10">
-                      <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple required>
-                        <option value="">Especialidad</option>
+                      <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple>
+                        
                         @foreach($specialities as $speciality)
                             <option value="{{$speciality->id}}" @foreach($user->specialities as $s) @if($speciality->id == $s->id)selected="selected"@endif @endforeach>{{$speciality->name}}</option>
                         @endforeach
@@ -223,9 +230,7 @@
 
                     <p>Agrega los consultorios donde brindarás consulta privada. Recuerda que en caso de ser de tipo <b>"Clínica privada"</b> tu agenda no se hará visible hasta tanto el administrador de la clínica confirme que laboras para dicho centro médico.</p>
                   </div>
-                  <div class="callout callout-info">
-                    <p> Además si eres dueño del consultorio y deseas trabajar con otros médicos, te recomendamos seleccionar la opción<b>"Clínica privada"</b> para mejor control de su agenda</p>
-                  </div>
+                  
                    <office :offices="{{ $user->offices }}"></office>
               </div>
               <!-- /.tab-pane -->

@@ -58,10 +58,10 @@
         <span class="glyphicon glyphicon-phone form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple required>
-            <option value="">Especialidad</option>
+        <select class="form-control select2" style="width: 100%;" name="speciality[]" multiple >
+            <!-- <option value="">Especialidad</option> -->
             @foreach ($specialities as $speciality)
-              <option value="{{ $speciality->id }}" @if($speciality->id == 53) selected @endif >{{ $speciality->name }}</option>
+              <option value="{{ $speciality->id }}" >{{ $speciality->name }}</option>
             @endforeach
           </select>
           <!--<input type="text" class="form-control" name="province" placeholder="Provincia" value="{{ old('province') ?: isset($user->office) ? $user->office->province : '' }}">-->
@@ -105,7 +105,11 @@
 <script>
   $(function () {
     //Initialize Select2 Elements
-    $(".select2").select2();
+    $(".select2").select2({
+      placeholder: "Tu Especialidad",
+      allowClear: true
+    });
+
 
   });
 </script>

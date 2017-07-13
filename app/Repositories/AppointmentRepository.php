@@ -129,8 +129,8 @@ class AppointmentRepository extends DbRepository{
         if($appointment->status == 0){
           
             $dataIncome['type'] = 'I';
-            $dataIncome['medic_type'] = auth()->user()->specialities->count() > 1 ? 'S' : (auth()->user()->hasNotSpeciality(53) ? 'S' : 'G');
-            $dataIncome['amount'] = auth()->user()->specialities->count() > 1 ? getAmountSpecialistPerAppointment() : (auth()->user()->hasNotSpeciality(53) ? getAmountSpecialistPerAppointment() : getAmountGeneralPerAppointment()); //53 es medico general
+            $dataIncome['medic_type'] = auth()->user()->specialities->count() > 0 ? 'S' :  'G';
+            $dataIncome['amount'] = auth()->user()->specialities->count() > 0 ? getAmountSpecialistPerAppointment() :getAmountGeneralPerAppointment(); 
             $dataIncome['appointment_id'] = $appointment->id;
             $dataIncome['date'] = $appointment->date;
             $dataIncome['month'] = $appointment->date->month;

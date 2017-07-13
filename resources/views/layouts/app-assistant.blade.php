@@ -83,6 +83,10 @@
        <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos!</div> 
      @endif
 
+     @if($newAppointments > 0)
+       <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/assistant/appointments" title="Ir a citas">Aquí</a> !</div> 
+     @endif
+
     @if (session()->has('flash_message'))
 
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>

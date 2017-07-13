@@ -211,6 +211,10 @@ class UserRepository extends DbRepository{
         {
             $data['freeDays'] = [];
         }
+        if(! isset($data['speciality']) )
+        {
+            $data['speciality'] = [];
+        }
        
         if(empty($data['password']))
            return $data = array_except($data, array('password'));

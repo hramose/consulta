@@ -91,7 +91,9 @@
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
     @endif
-    
+     @if($newAppointments > 0)
+       <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/medic/appointments" title="Ir a citas">Aquí</a> !</div> 
+     @endif
     @if(!auth()->user()->offices->count())
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif

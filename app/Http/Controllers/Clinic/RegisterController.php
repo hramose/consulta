@@ -9,7 +9,6 @@ use App\Mail\NewClinic;
 use App\Repositories\OfficeRepository;
 use App\Repositories\UserRepository;
 use App\Role;
-use App\Speciality;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
