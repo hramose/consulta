@@ -57,7 +57,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper bg-patient">
     <div class="container">
-      @if(! Request::is('/'))
+      @if(! Request::is('/') && ! Request::is('home'))
         <div class="menu-fixed">
             <div class="menu-fixed-container">
               <a href="/" class="btn btn-sm btn-info {{ set_active('/') }}" >Buscar Médico</a>
