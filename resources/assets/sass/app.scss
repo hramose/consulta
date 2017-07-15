@@ -53,7 +53,29 @@
 .navbar-brand{
 	padding: 0;
 }
-
+.bg-patient{
+	background: url('/img/bg-patient.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.banner{
+	text-align: center;
+	.banner-logo{
+		display: inline-block;
+		width:100px;
+		img {
+			width:100%;
+		}
+	}
+}
+@media screen and (min-width:768px){
+	.banner{
+		.banner-logo{
+			width:200px;
+			
+		}
+	}
+}
 .invoice-tab{
 	background-color: #dd4b39 !important;
 	color: white !important;

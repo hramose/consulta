@@ -4,11 +4,17 @@
     
 
 
-      <h1>
-         Bienvenido
-        <small>{{ auth()->user()->name }}</small>
-      </h1>
-      <h3>¿Que deseas hacer?</h3>
+      <div class="banner">
+          <div class="banner-logo">
+            <img src="/img/logo.png" alt="GPS Médica" />
+          </div>
+          <!-- <h1>
+           Bienvenido
+          <small>{{ auth()->user()->name }}</small>
+        </h1> -->
+        <h3>¿Que deseas hacer?</h3>
+      </div>
+      
       @if(auth()->user()->active)
       <section class="content">
         <div class="row">

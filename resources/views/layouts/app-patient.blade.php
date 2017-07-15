@@ -47,7 +47,7 @@
     </div>
     
 </div>
-<div id="app" class="wrapper">
+<div id="app" class="wrapper ">
 
   <!-- Main Header -->
   <header class="main-header">
@@ -55,7 +55,7 @@
   </header>
   
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper bg-patient">
     <div class="container">
       @if(! Request::is('/'))
         <div class="menu-fixed">
