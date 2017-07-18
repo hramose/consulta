@@ -55,7 +55,7 @@
   </header>
   
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper bg-patient">
+  <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(1) : 'bg-home' }}">
     <div class="container">
       @if(! Request::is('/') && ! Request::is('home'))
         <div class="menu-fixed">

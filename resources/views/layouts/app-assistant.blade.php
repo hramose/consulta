@@ -47,7 +47,7 @@
     </div>
     
 </div>
-<div id="app" class="wrapper">
+<div id="app" class="wrapper ">
 
   <!-- Main Header -->
   <header class="main-header">
@@ -61,7 +61,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
     <!-- @include('layouts/partials/flash-message') -->
      @if(! Request::is('/'))
      <div class="menu-fixed">

@@ -61,7 +61,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper bg-clinics">
     <!-- @include('layouts/partials/flash-message') -->
      
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>

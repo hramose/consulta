@@ -61,7 +61,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
     <!-- @include('layouts/partials/flash-message') -->
     @if (session()->has('flash_message'))
 

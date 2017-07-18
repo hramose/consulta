@@ -27,7 +27,7 @@
   }
 }
 .login-page, .register-page{
-	background: url('/img/bg.jpg') !important;
+	background-image: url('/img/bg.jpg') !important;
 	background-size:cover;
 	background-position: center center;
 	img{
@@ -53,11 +53,52 @@
 .navbar-brand{
 	padding: 0;
 }
-.bg-patient{
-	background: url('/img/bg-patient.jpg') !important;
+.bg-home{
+	background-image: url('/img/bg-home.jpg') !important;
 	background-size: cover !important;
 	background-position: center center!important ;
 }
+.bg-medics{
+	background-image: url('/img/bg-medics.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-clinics{
+	background-image: url('/img/bg-clinics.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-account{
+	background-image: url('/img/bg-account.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-expedients{
+	background-image: url('/img/bg.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-appointments{
+	background-image: url('/img/bg-appointments.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-patients{
+	background-image: url('/img/bg-patients.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-reports{
+	background-image: url('/img/bg-reports.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+.bg-invoices{
+	background-image: url('/img/bg-invoices.jpg') !important;
+	background-size: cover !important;
+	background-position: center center!important ;
+}
+
 .banner{
 	text-align: center;
 	.banner-logo{
