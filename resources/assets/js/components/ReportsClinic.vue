@@ -415,7 +415,7 @@
               let total = 0;
 
               for (var i = 0; i < invoices.length; i++) {
-                total += parseInt(invoices[i].total) * parseInt(commission);
+                total += parseInt(invoices[i].total) * (parseInt(commission)/100);
               }
               
               return total;
