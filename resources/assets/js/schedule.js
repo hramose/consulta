@@ -1,14 +1,14 @@
 $(function () {
 
      
-     var slotDuration = '00:30:00';
+     var calendar = $('#calendar');
+     var slotDuration = calendar.attr('data-slotDuration');//'00:30:00';
      var minTime = '06:00:00';
      var maxTime ='18:00:00';
      var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
      var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
      var freeDays = [0];
      var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
-     var calendar = $('#calendar');
      var externalEvent = $('.external-event');
      var infoBox = $('#infoBox');
      var modalForm = $('#myModal');
