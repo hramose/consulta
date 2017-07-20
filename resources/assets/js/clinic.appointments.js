@@ -386,6 +386,7 @@ $(function () {
                 modalForm.modal({backdrop:'static', show:true });
                 modalForm.find('#modal-new-event').attr('data-modaldate', date.format());
                 modalForm.find('.modal-body').attr('data-modaldate', date.format());
+                 modalForm.find('.modal-body').attr('data-medic',  calendar.attr('data-medic'));
                 modalForm.find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
               
               

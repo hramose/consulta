@@ -243,6 +243,26 @@ class PatientRepository extends DbRepository{
         return $patients;
     }
 
+     /**
+     * List of patients for the appointments form
+     */
+   public function listForClinics($search = null)
+   {
+       
+        $patients = [];
+
+         
+        if (isset($search) && trim($search))
+        {
+            $patients = $this->model->search($search)->paginate(10);
+
+        } 
+
+       
+
+        return $patients;
+    }
+
     private function prepareData($data)
     {
         

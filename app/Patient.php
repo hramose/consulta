@@ -79,6 +79,10 @@ class Patient extends Model
     }
     public function isPatientOf($user)
     {
+        if (is_string($user) || is_numeric($user)) {
+            return $this->user->contains('id', $user);
+        }
+        
         return $this->user->contains('id', $user->id);
     }
 

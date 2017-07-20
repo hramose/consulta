@@ -176,6 +176,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::delete('/patients/medicines/{id}', 'Clinic\PatientController@deleteMedicines');
 	Route::post('/patients/{id}/add', 'Clinic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Clinic\PatientController@list');
+	Route::get('/patients/verify', 'Clinic\PatientController@verifyIsPatient');
 	Route::resource('patients', 'Clinic\PatientController');
 
 	Route::get('/appointments/list', 'Clinic\AppointmentController@getAppointments');

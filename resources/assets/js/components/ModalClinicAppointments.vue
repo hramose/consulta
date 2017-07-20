@@ -11,6 +11,11 @@
             
             <div class="box box-widget widget-user-2"  v-show="!newPatient" v-bind:data-patient="(paciente) ? paciente.id : '' " v-bind:data-title=" (paciente) ? paciente.first_name : '' " v-bind:data-office="(office) ? office : '' " >
                <patient-search :patient="paciente" :url="'/clinic/patients/list'"></patient-search>
+                <div class="form-group" v-show="!isPatient">
+                  <p>Este paciente no esta asociado al medico. Asignalo agregando el ID del paciente para confirmar</p>
+                  <input id="modal-patient-id" type="text" class="form-control" v-model ="patientId" placeholder="ID" @keyup="verifyId()">
+                  <span class="label label-danger"  v-show="!validated && (patientId && selectedPatient)">ID incorrecto</span>
+                </div>
                <div class="form-group">
                   <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita" data-modaldate data-modaldate-end>
               </div>
@@ -30,7 +35,7 @@
          <div class="modal-footer" v-show="!newPatient">
          
           <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary btn-finalizar-cita">Crear cita</button>
+          <button type="button" class="btn btn-primary btn-finalizar-cita" :disabled="!validated">Crear cita</button>
           <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
         </div>
       </div>
@@ -59,6 +64,9 @@
           newPatient:false,
           selectedPatient: 0,
           options: [],
+          isPatient: true,
+          patientId:'',
+          validated: false
          
          
 
@@ -66,7 +74,15 @@
       },
   
       methods: {
-       
+         verifyId(){
+          
+          if(this.selectedPatient == this.patientId)
+          {
+            this.validated = true;
+          }else
+            this.validated = false;
+          //this.paciente = {};
+        },
         nuevo(){
           this.newPatient = true;
           //this.paciente = {};
@@ -81,8 +97,31 @@
         select(patient) {
   
           if(patient){
-            this.paciente = patient;
-            this.selectedPatient = patient.id;
+            
+             let queryParam = {
+                ['patient_id']: patient.id,
+                ['medic_id']: $('.modal-body').attr('data-medic')
+              }
+             this.$http.get('/clinic/patients/verify', {params: Object.assign(queryParam, this.data)})
+                .then(resp => {
+                   //alert('reporte')
+                   console.log(resp.data);
+
+                  if(resp.data == 'yes')
+                   { 
+                    this.isPatient = true;
+                    this.validated = true;
+                   }
+                  else{
+                    this.isPatient = false;
+                    this.validated = false;
+                  }
+
+                  this.paciente = patient;
+                  this.selectedPatient = patient.id;
+                });
+
+            
             
           }else{
               this.selectedPatient = 0;

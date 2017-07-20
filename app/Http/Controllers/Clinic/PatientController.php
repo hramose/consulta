@@ -235,7 +235,7 @@ class PatientController extends Controller
      */
     public function list()
     {
-        if(auth()->user()->hasRole('asistente'))
+        /*if(auth()->user()->hasRole('asistente'))
         {
             $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
       
@@ -244,13 +244,23 @@ class PatientController extends Controller
             $patients = $this->patientRepo->list(request('q'), $boss);
             
             return $patients;
-        }
-
-        $patients = $this->patientRepo->list(request('q'));
+        }*/
+       
+        $patients = $this->patientRepo->listForClinics(request('q'));
        
         return $patients;
 
     }
+
+     public function verifyIsPatient()
+    {
+         $patient = $this->patientRepo->findById(request('patient_id'));
+
+        
+        return ($patient->isPatientOf(request('medic_id'))) ? 'yes' :'no';
+
+    }
+    
 
     /**
      * Guardar paciente
