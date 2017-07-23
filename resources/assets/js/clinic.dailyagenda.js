@@ -11,6 +11,20 @@ $(function () {
      var modalForm = $('#myModal');
      var searchPatients = $(".modal-search-patients");
 
+     //Initialize Select2 Elements
+    $('.date').datetimepicker({
+            format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
+   
+ 
+   $('.btn-gotodate').on('click', function (e) {
+       var mid = $(this).data('mid');
+       var date = $('#go_date_'+ mid).val();
+       $('#calendar-m'+ mid).fullCalendar( 'gotoDate', date );
+    })
+
 
     function dayNumber(date){
 

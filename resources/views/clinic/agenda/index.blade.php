@@ -117,6 +117,14 @@
                               Médico General
                             @endif
                          </span></small>
+                         <div class="input-group input-group-sm" style="margin-top: 1rem;">
+                         
+                      
+                          <input type="text" class="date form-control" name="go_date" id="go_date_{{$doc->id}}">
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-info btn-flat btn-gotodate" data-mid="{{$doc->id}}">Ir!</button>
+                              </span>
+                         </div>
                       </th>
                       @endforeach
                      
@@ -127,7 +135,12 @@
                   <tbody>
                     <tr>
                      @foreach($medics as $doc)
-                      <td class="calendar-medic-day"><div id="calendar-m{{$doc->id}}" data-slotDuration="{{ $doc->settings->slotDuration }}" data-minTime="{{ $doc->settings->minTime }}" data-maxTime="{{ $doc->settings->maxTime }}" data-freeDays="{{ $doc->settings->freeDays }}" data-medic="{{ $doc->id }}" data-office="{{ $office->id }}"></div></td>
+                       
+                      <td class="calendar-medic-day">
+                      
+                     
+                      <div id="calendar-m{{$doc->id}}" data-slotDuration="{{ $doc->settings->slotDuration }}" data-minTime="{{ $doc->settings->minTime }}" data-maxTime="{{ $doc->settings->maxTime }}" data-freeDays="{{ $doc->settings->freeDays }}" data-medic="{{ $doc->id }}" data-office="{{ $office->id }}"></div>
+                      </td>
                       @endforeach
                     </tr>
                    
@@ -176,4 +189,10 @@
 @else
   <script src="{{ elixir('/js/clinic.dailyagenda.min.js') }}"></script>
 @endif
+<script>
+  $(function () {
+   
+
+  });
+</script>
 @endsection
