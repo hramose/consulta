@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
+use App\Mail\NewPatient;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
@@ -58,7 +59,12 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-        
+        //validamos que en users no hay email que va a registrase como paciente
+        $this->validate(request(),[
+                'email' => 'required|email|max:255|unique:users'
+            ]);
+
+
         $patient =$this->patientRepo->store($request->all());
 
         $data = $request->all();
@@ -69,8 +75,18 @@ class PatientController extends Controller
         $data['role'] = Role::whereName('paciente')->first();
         $data['api_token'] = str_random(50);
 
-        $user_patient = $this->userRepo->store($data);
-        $user_patient = $user_patient->patients()->save($patient);
+        
+        $user = $this->userRepo->store($data);
+        $user_patient = $user->patients()->save($patient);
+
+         try {
+                        
+            \Mail::to($user)->send(new NewPatient($user));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
 
         flash('Paciente Creado','success');
 

@@ -2,7 +2,7 @@
     <label for="office_name" class="col-sm-2 control-label">Nombre</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="first_name" placeholder="Nombre" value="{{ old('first_name') ?: isset($patient) ? $patient->first_name : '' }}" required {{ isset($patient) ? 'readonly' : ''}}>
+      <input type="text" class="form-control" name="first_name" placeholder="Nombre" value="{{ isset($patient) ? $patient->first_name : old('first_name') }}" required {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('first_name'))
           <span class="help-block">
               <strong>{{ $errors->first('first_name') }}</strong>
@@ -14,7 +14,7 @@
     <label for="last_name" class="col-sm-2 control-label">Apellidos</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ old('last_name') ?: isset($patient) ? $patient->last_name : '' }}" {{ isset($patient) ? 'readonly' : ''}}>
+      <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ isset($patient) ? $patient->last_name : old('last_name') }}" {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('last_name'))
           <span class="help-block">
               <strong>{{ $errors->first('last_name') }}</strong>
@@ -26,7 +26,7 @@
     <label for="birth_date" class="col-sm-2 control-label">Fecha de Nacimiento</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ old('birth_date') ?: isset($patient) ? $patient->birth_date : '' }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask {{ isset($patient) ? 'readonly' : ''}}>
+      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ isset($patient) ? $patient->birth_date : old('birth_date') }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('birth_date'))
           <span class="help-block">
               <strong>{{ $errors->first('birth_date') }}</strong>
@@ -43,7 +43,7 @@
         <option value="m" {{ isset($patient) ? $patient->gender == 'm' ? 'selected' : '' : '' }}>Masculino</option>
         <option value="f" {{ isset($patient) ? $patient->gender == 'f' ? 'selected' : '' : '' }}>Femenino</option>
       </select>
-      <!--<input type="text" class="form-control" name="province" placeholder="Provincia" value="{{ old('province') ?: isset($patient->office) ? $patient->office->province : '' }}">-->
+   
        @if ($errors->has('gender'))
           <span class="help-block">
               <strong>{{ $errors->first('gender') }}</strong>
@@ -55,7 +55,7 @@
     <label for="phone" class="col-sm-2 control-label">Teléfono</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="phone" placeholder="Celular" value="{{ old('phone') ?: isset($patient) ? $patient->phone : '' }}" >
+      <input type="text" class="form-control" name="phone" placeholder="Celular" value="{{ isset($patient) ? $patient->phone : old('phone') }}" >
        @if ($errors->has('phone'))
           <span class="help-block">
               <strong>{{ $errors->first('phone') }}</strong>
@@ -68,7 +68,7 @@
     <label for="email" class="col-sm-2 control-label">Email</label>
 
     <div class="col-sm-10">
-      <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') ?: isset($patient) ? $patient->email : '' }}" >
+      <input type="email" class="form-control" name="email" placeholder="Email" value="{{ isset($patient) ? $patient->email : old('email') }}" >
        @if ($errors->has('email'))
           <span class="help-block">
               <strong>{{ $errors->first('email') }}</strong>
@@ -91,7 +91,7 @@
         <option {{ isset($patient) ? $patient->province == 'Puntarenas' ? 'selected' : '' : '' }}>Puntarenas</option>
          <option {{ isset($patient) ? $patient->province == 'Alajuela' ? 'selected' : '' : '' }}>Alajuela</option>
       </select>
-      <!--<input type="text" class="form-control" name="province" placeholder="Provincia" value="{{ old('province') ?: isset($user->office) ? $user->office->province : '' }}">-->
+     
        @if ($errors->has('province'))
           <span class="help-block">
               <strong>{{ $errors->first('province') }}</strong>
@@ -103,7 +103,7 @@
     <label for="office_city" class="col-sm-2 control-label">Ciudad</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="city" placeholder="Ciudad" value="{{ old('city') ?: isset($patient) ? $patient->city : '' }}" >
+      <input type="text" class="form-control" name="city" placeholder="Ciudad" value="{{ isset($patient) ? $patient->city : old('city') }}" >
        @if ($errors->has('city'))
           <span class="help-block">
               <strong>{{ $errors->first('city') }}</strong>
@@ -115,7 +115,7 @@
     <label for="address" class="col-sm-2 control-label">Dirección</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="address" placeholder="Dirección" value="{{ old('address') ?: isset($patient) ? $patient->address : '' }}" >
+      <input type="text" class="form-control" name="address" placeholder="Dirección" value="{{ isset($patient) ? $patient->address : old('address') }}" >
        @if ($errors->has('address'))
           <span class="help-block">
               <strong>{{ $errors->first('address') }}</strong>
@@ -128,7 +128,7 @@
       <label for="password" class="col-sm-2 control-label">Contraseña (Accesso a la plataforma): </label>
        <div class="col-sm-10">
          <input type="text" class="form-control" name="password" placeholder="Contraseña" value="123456" required>
-         <span class="label label-warning">Recordar Cambiar la contraseña al usuario</span>
+         <span class="label label-warning">Recordar al usuario que su perfil queda creado y que esta es su clave genérica.</span>
        </div>
 
     </div>

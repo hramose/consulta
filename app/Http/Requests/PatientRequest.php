@@ -29,7 +29,7 @@ class PatientRequest extends FormRequest
             'gender' => 'required',
             'phone' => 'required',
             'birth_date' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255|unique:patients',
             'province' => 'required',
             
         ];
