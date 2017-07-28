@@ -141,6 +141,9 @@ class AppointmentRepository extends DbRepository{
             $income = $this->incomeRepo->store($dataIncome);
         }
 
+         if($appointment->status == 2){ // si esta finalizada no la actualizamos
+              return $appointment;
+         }
 
         $appointment->status = $status;
         $appointment->save();
@@ -224,7 +227,7 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->with('user','patient')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
+        return $appointments->with('user','patient','notes')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
 
     }
     /**

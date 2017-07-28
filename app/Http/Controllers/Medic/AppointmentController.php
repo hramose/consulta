@@ -105,15 +105,17 @@ class AppointmentController extends Controller
      */
     public function edit($id)
     {
-
+       
         $appointment =  $this->appointmentRepo->update_status($id, 1);
 
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
         $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments->load('user','diagnostics');
         
         $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
-       
-        return view('appointments.edit',compact('appointment', 'files', 'history','appointments'));
+        
+        $tab = request('tab');
+
+        return view('appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
 
     }
 
@@ -169,6 +171,17 @@ class AppointmentController extends Controller
             ->update(['status' => 2]); //no asistio a la cita  
 
          return back();
+
+    }
+
+     public function finished($id)
+    {
+
+        $reservation = \DB::table('appointments')
+            ->where('id', $id)
+            ->update(['finished' => 1]); //cita finalizada
+
+         return 'finished';
 
     }
 

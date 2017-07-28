@@ -114,6 +114,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::get('/appointments/{id}/treatment/print', 'Medic\AppointmentController@printTreatment');
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
+	Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
 	Route::get('/invoices/services/list', 'Medic\InvoiceController@getServices');
@@ -140,6 +141,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::resource('heredos', 'Medic\HeredoController');
 	Route::resource('ginecos', 'Medic\GinecoController');
 	Route::resource('signs', 'Medic\VitalSignController');
+	Route::resource('notes', 'Medic\NoteController');
 
 	Route::get('/reports', 'Medic\ReportsController@index');
 	Route::get('/reports/generate', 'Medic\ReportsController@generate');

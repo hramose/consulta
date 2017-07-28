@@ -47,7 +47,13 @@
                      
                       <tr>
                         <td data-title="ID">{{ $appointment->id }}</td>
-                        <td data-title="Paciente"><a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a></td>
+                        <td data-title="Paciente">
+                          @if($appointment->status == 2)
+                            {{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}
+                          @else
+                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                          @endif
+                        </td>
                         <td data-title="Motivo">{{ $appointment->title }}</td>
                         <td data-title="Fecha">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
                         <td data-title="De">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
@@ -69,6 +75,9 @@
 
                             @endif
                           </div>
+                           
+                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit?tab=notesAppointment') }}" class="btn btn-default" title="Notas"><i class="fa fa-note"></i> Agregar Nota @if($notes_count = $appointment->notes->count()) <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ $notes_count }} Notas">{{ $notes_count }}</span>@endif</a>
+                           
                         </td>
                       </tr>
                     

@@ -26,10 +26,11 @@
 		        <div class="nav-tabs-custom">
 		            <ul class="nav nav-tabs">
 		              <li><a href="#history" data-toggle="tab">Historial</a></li>
-		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
+		              <li class="{{ isset($tab) ? '' : 'active' }}"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
+		                <li class="{{ isset($tab) ? ($tab =='notesAppointment') ? 'active' : '' :'' }}"><a href="#notesAppointment" data-toggle="tab">Notas <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ $appointment->notes->count() }} Notas">{{ $appointment->notes->count() }}</span></a></li>
 		            </ul>
 		            <div class="tab-content">
 		              <div class="tab-pane" id="history">
@@ -44,7 +45,7 @@
 		                 </div>
 		              </div>
 		              <!-- /.tab-pane -->
-		              <div class="active tab-pane" id="notes">
+		              <div class="{{ isset($tab) ? '' : 'active' }} tab-pane" id="notes">
 		              		<div class="row">
 								<div class="col-md-6">
 									<div class="box box-info">
@@ -70,26 +71,26 @@
 								</div>
 								<div class="col-md-6">
 								
-		              				<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></diseasenotes>
+		              				<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></diseasenotes>
 			              		</div>
 			              	</div>
 		              </div>
 		              <!-- /.tab-pane -->
 					  <div class="tab-pane" id="physical">
-		              		<physicalexam :physical="{{ $appointment->physicalExams }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></physicalexam>
+		              		<physicalexam :physical="{{ $appointment->physicalExams }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></physicalexam>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">
 
 								<div class="row">
 									<div class="col-md-12">
-			              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></diagnostics>
+			              				<diagnostics :diagnostics="{{ $appointment->diagnostics }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></diagnostics>
 			              			</div>
 			              		</div>
 			              		<div class="row">
 									<div class="col-md-12">
 									    <a href="/medic/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Imprimir Receta</a>
-			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></treatments>
+			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></treatments>
 			              			</div>
 			              		</div>
 			              		<div class="row">
@@ -97,17 +98,17 @@
 			              				
 			              			</div>
 			              			<div class="col-md-12">
-			              				<instructions :appointment="{{ $appointment }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date) ? 'true' : 'false' }}"></instructions>
+			              				<instructions :appointment="{{ $appointment }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></instructions>
 			              			</div>
 			              		</div>
 		              </div>
 		               <!-- /.tab-pane -->
 		                <div class="tab-pane" id="invoice">
-								@if(\Carbon\Carbon::now()->ToDateString() > $appointment->date)
+								@if(\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1)
 									 <div class="callout callout-danger">
 					                    <h4>Información importante!</h4>
 
-					                    <p>No se puede facturar en consultas pasadas... para ver todas tus facturas, ingresa al modulo facturación</p>
+					                    <p>No se puede facturar en consultas pasadas o finalizadas... para ver todas tus facturas, ingresa al modulo facturación</p>
 					                </div>
 
 								@else
@@ -124,6 +125,15 @@
 			              		</div>
 			              		@endif
 			              		
+		              </div>
+		               <div class="{{ isset($tab) ? ($tab =='notesAppointment') ? 'active' : '' :'' }} tab-pane" id="notesAppointment">
+		              		<div class="row">
+								<div class="col-md-12">
+									<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
+									
+								</div>
+								
+			              	</div>
 		              </div>
 		               <!-- /.tab-pane -->
 		            </div>
@@ -219,13 +229,47 @@
             //cancelButtonClass: 'btn btn-danger',
             //buttonsStyling: false
           }).then(function () {
-             window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
+          	  $.ajax({
+		            type: 'PUT',
+		            url: '/medic/appointments/{{ $appointment->id }}/finished',
+		            data: {},
+		            success: function (resp) {
+		              
+		             console.log('cita finalizada');
+		             window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
+		             
+		            },
+		            error: function () {
+		              console.log('error finalizando citan');
+
+		            }
+
+		        });
+
+            
           }, function (dismiss) {
             // dismiss can be 'cancel', 'overlay',
             // 'close', and 'timer'
             if (dismiss === 'cancel') {
 
-               window.location = '/medic/appointments';
+               $.ajax({
+		            type: 'PUT',
+		            url: '/medic/appointments/{{ $appointment->id }}/finished',
+		            data: {},
+		            success: function (resp) {
+		              
+		             console.log('cita finalizada');
+		            window.location = '/medic/appointments';
+		             
+		            },
+		            error: function () {
+		              console.log('error finalizando citan');
+
+		            }
+
+		        });
+
+               
             }
           })
     });

@@ -33,6 +33,10 @@ class Appointment extends Model
     {
         return $this->status == 1;
     }
+    public function isFinished()
+    {
+        return $this->finished == 1;
+    }
     public function isBackgroundEvent()
     {
         return $this->patient_id == 0;
@@ -79,6 +83,10 @@ class Appointment extends Model
      public function reminders()
     {
         return $this->hasMany(Reminder::class);
+    }
+      public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
      public function createDiseaseNotes($diseaseNotes = null)
