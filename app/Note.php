@@ -8,7 +8,8 @@ class Note extends Model
 {
      protected $fillable = [
         'user_id', 'appointment_id','description'
-    ];
+     ];
+
 
      public function medic()
     {
@@ -19,4 +20,6 @@ class Note extends Model
     {
         return $this->belongsTo(Appointment::class);
     }
+
+
 }
