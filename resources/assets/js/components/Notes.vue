@@ -1,29 +1,19 @@
 <template>
 	
+      <div class="box box-success collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Notas</h3>
 
-      <div class="box box-info">
-
-          <div class="box-header with-border">
-            <h3 class="box-title">Notas</h3>
-
-            <div class="box-tools pull-right">
-              
-            </div>
-            <!-- /.box-tools -->
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-           
-             
-             <div class="form-group">
-                <textarea name="description" cols="30" rows="4" v-model="description" class="form-control"></textarea>
-              
-             </div>
-            
-              <div class="form-group">
-                <button @click="hit" class="btn btn-success">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+              <div class="box-tools pull-right">
+                <span data-toggle="tooltip" title="" class="badge bg-red" :data-original-title="dataNotes.length +' Nota(s)'" v-show="dataNotes.length > 0">{{ dataNotes.length }}</span>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
               </div>
-              <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataNotes.length">
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" style="display: none;">
+               <ul id="diagnostics-list" class="todo-list ui-sortable" v-show="dataNotes.length">
                
                 <li v-for="item in dataNotes">
                   <!-- todo text -->
@@ -32,12 +22,19 @@
                   
                 </li>
                
-              </ul>
-            
+               </ul>
+               <div class="form-group">
+                  <textarea name="description" cols="30" rows="4" v-model="description" class="form-control"></textarea>
+                
+              </div>
               
-          </div>
-          <!-- /.box-body -->
+                <div class="form-group">
+                  <button @click="hit" class="btn btn-success">Agregar Nota</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+                </div>
+            </div>
+            <!-- /.box-body -->
       </div>
+     
             
       
 

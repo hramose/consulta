@@ -26,11 +26,11 @@
 		        <div class="nav-tabs-custom">
 		            <ul class="nav nav-tabs">
 		              <li><a href="#history" data-toggle="tab">Historial</a></li>
-		              <li class="{{ isset($tab) ? '' : 'active' }}"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
+		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
-		                <li class="{{ isset($tab) ? ($tab =='notesAppointment') ? 'active' : '' :'' }}"><a href="#notesAppointment" data-toggle="tab">Notas <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ $appointment->notes->count() }} Notas">{{ $appointment->notes->count() }}</span></a></li>
+		                
 		            </ul>
 		            <div class="tab-content">
 		              <div class="tab-pane" id="history">
@@ -45,7 +45,7 @@
 		                 </div>
 		              </div>
 		              <!-- /.tab-pane -->
-		              <div class="{{ isset($tab) ? '' : 'active' }} tab-pane" id="notes">
+		              <div class="active tab-pane" id="notes">
 		              		<div class="row">
 								<div class="col-md-6">
 									<div class="box box-info">
@@ -126,15 +126,7 @@
 			              		@endif
 			              		
 		              </div>
-		               <div class="{{ isset($tab) ? ($tab =='notesAppointment') ? 'active' : '' :'' }} tab-pane" id="notesAppointment">
-		              		<div class="row">
-								<div class="col-md-12">
-									<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
-									
-								</div>
-								
-			              	</div>
-		              </div>
+		               
 		               <!-- /.tab-pane -->
 		            </div>
 		            <!-- /.tab-content -->

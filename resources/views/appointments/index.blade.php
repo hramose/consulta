@@ -76,7 +76,7 @@
                             @endif
                           </div>
                            
-                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit?tab=notesAppointment') }}" class="btn btn-default" title="Notas"><i class="fa fa-note"></i> Agregar Nota @if($notes_count = $appointment->notes->count()) <span data-toggle="tooltip" title="" class="badge bg-green" data-original-title="{{ $notes_count }} Notas">{{ $notes_count }}</span>@endif</a>
+                              
                            
                         </td>
                       </tr>

@@ -300,7 +300,7 @@ class AppointmentRepository extends DbRepository{
         }
 
 
-        return $appointments->with('user')->orderBy('appointments.'.$order , $dir)->paginate($this->limit);
+        return $appointments->with('user','notes')->orderBy('appointments.'.$order , $dir)->paginate($this->limit);
 
     }
 
