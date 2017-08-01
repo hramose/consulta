@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Allergy;
 use App\Http\Requests\PatientRequest;
@@ -10,7 +10,7 @@ use App\Sugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-class PatientController extends Controller
+class PatientController extends ApiController
 {
     /**
      * Create a new controller instance.
