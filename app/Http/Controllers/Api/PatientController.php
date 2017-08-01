@@ -32,9 +32,8 @@ class PatientController extends ApiController
      */
     public function store(PatientRequest $request)
     {
-        dd($request->user());
-
-        $patient =$this->patientRepo->store($request->all());
+      
+        $patient =$this->patientRepo->store($request->all(),$request->user());
 
 
 
