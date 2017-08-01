@@ -23,7 +23,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/token', 'Api\AuthController@token');
 Route::post('/user/social/register', 'Api\AuthController@registerSocial');
 Route::post('/user/register', 'Api\AuthController@register');
-Route::post('/patient/register', 'Api\PatientController@store');
+Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
