@@ -284,10 +284,20 @@ class AppointmentRepository extends DbRepository{
 
         if (! count($search) > 0) return $appointments->with('user')->paginate($this->limit);
 
-        if (trim($search['q']))
+        if (isset($search['q']) && trim($search['q']))
         {
             $appointments = $appointments->Search($search['q']);
-        } 
+        }
+
+        if (isset($search['status']) && $search['status'] == 1)
+        {
+            $appointments = $appointments->where('status','>=', 1);
+        }
+        
+        if (isset($search['status']) && $search['status'] == 0)
+        {
+            $appointments = $appointments->where('status', 0);
+        }  
 
 
         if (isset($search['order']) && $search['order'] != "")
