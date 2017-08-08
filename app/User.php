@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code'
     ];
-    protected $appends = array('distance');
+    protected $appends = array('distance','photo');
 
     public function getDistanceAttribute()
     {
