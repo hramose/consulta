@@ -3,7 +3,7 @@
   "js/admin.min.js": "js/admin-823bb0a100.min.js",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
   "js/app.js": "js/app-5e070bdcf3.js",
-  "js/appointments.min.js": "js/appointments-f716468986.min.js",
+  "js/appointments.min.js": "js/appointments-0689f2593a.min.js",
   "js/assistant.invoices.min.js": "js/assistant-68123d5e84.invoices.min.js",
   "js/clinic.appointments.min.js": "js/clinic-6da8cb10af.appointments.min.js",
   "js/clinic.dailyagenda.min.js": "js/clinic-0384b88338.dailyagenda.min.js",
@@ -11,6 +11,6 @@
   "js/invoices.min.js": "js/invoices-298feff584.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
   "js/patients.min.js": "js/patients-1da76dd63c.min.js",
-  "js/schedule.min.js": "js/schedule-98c286c93c.min.js",
+  "js/schedule.min.js": "js/schedule-0a76cff15e.min.js",
   "js/search.min.js": "js/search-6e9d3d4f2d.min.js"
 }
