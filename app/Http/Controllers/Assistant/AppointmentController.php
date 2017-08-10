@@ -150,6 +150,9 @@ class AppointmentController extends Controller
     public function getAppointments()
     {
         $search['office'] = (auth()->user()->offices->count()) ? auth()->user()->offices->first()->id : '';
+        
+        $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
+        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
         $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination(request('medic'),$search);
 

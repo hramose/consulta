@@ -199,8 +199,11 @@ class AppointmentController extends Controller
      */
     public function getAppointments($id)
     {
+        $search = request()->all();
+        $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
+        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
-        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id);
+        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, $search);
         
         return $appointments;
         

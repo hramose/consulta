@@ -124,8 +124,11 @@ class MedicController extends Controller
      */
     public function getAppointments($id)
     {
+        $search = request()->all();
+        $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
+        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
-        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, request()->all());
+        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, $search);
         
         return $appointments;
         
@@ -136,8 +139,11 @@ class MedicController extends Controller
      */
     public function getSchedules($id)
     {
+        $search = request()->all();
+        $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
+        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
-        $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, request()->all());
+        $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, $search);
 
         return $schedules;
         
