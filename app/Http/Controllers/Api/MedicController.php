@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Repositories\MedicRepository;
+use App\Speciality;
 use Illuminate\Http\Request;
 
 
@@ -59,6 +60,10 @@ class MedicController extends ApiController
 
          return $medics;
 
+    }
+
+   function getSpecialities () {
+        return Speciality::all();
     }
 
 
