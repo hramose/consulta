@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Repositories\MedicRepository;
+use App\Repositories\AppointmentRepository;
+use App\Repositories\ScheduleRepository;
 use Illuminate\Http\Request;
 
 
@@ -14,10 +16,12 @@ class MedicController extends ApiController
      *
      * @return void
      */
-    public function __construct(MedicRepository $medicRepo)
+    public function __construct(MedicRepository $medicRepo, AppointmentRepository $appointmentRepo, ScheduleRepository $scheduleRepo)
     {
        
         $this->medicRepo = $medicRepo;
+        $this->appointmentRepo = $appointmentRepo;
+        $this->scheduleRepo = $scheduleRepo;
 
         
     }
@@ -59,6 +63,17 @@ class MedicController extends ApiController
 
          return $medics;
 
+    }
+    /*
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function getSchedules($id)
+    {
+
+        $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, request()->all());
+
+        return $schedules;
+        
     }
 
 
