@@ -26,6 +26,7 @@ Route::post('/user/register', 'Api\AuthController@register');
 Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 Route::get('/medics', 'Api\MedicController@search')->middleware('auth:api');
 Route::get('/medics/specialities', 'Api\MedicController@getSpecialities')->middleware('auth:api');
+Route::get('/medics/{medic}/schedules/list', 'Api\MedicController@getSchedules')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    

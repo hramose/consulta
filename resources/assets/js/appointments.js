@@ -232,74 +232,74 @@ $(function () {
   
   }
 
+        //se desabilito de aqui por que se va a obtener desde view render de fullcalendar
+   //  if(prog_schedule)  
+   //    fetch_schedules();
+   //  else
+   //    fetch_events();
 
-    if(prog_schedule)
-      fetch_schedules();
-    else
-      fetch_events();
+   // function fetch_schedules() {
 
-   function fetch_schedules() {
-
-        $.ajax({
-            type: 'GET',
-            url: '/medic/schedules/list',
-            data: {},
-            success: function (resp) {
+   //      $.ajax({
+   //          type: 'GET',
+   //          url: '/medic/schedules/list',
+   //          data: {},
+   //          success: function (resp) {
                
 
-                var schedules = [];
+   //              var schedules = [];
 
-                $.each(resp, function( index, item ) {
+   //              $.each(resp, function( index, item ) {
                    
-                    item.allDay = parseInt(item.allDay); // = false;
+   //                  item.allDay = parseInt(item.allDay); // = false;
                     
-                    /*if(item.patient_id == 0) item.rendering = 'background';*/
+   //                  /*if(item.patient_id == 0) item.rendering = 'background';*/
                 
-                    schedules.push(item);
-                });
+   //                  schedules.push(item);
+   //              });
                
-                initCalendar(schedules);
+   //              initCalendar(schedules);
                 
-            },
-            error: function (resp) {
-                console.log('Error - '+ resp);
+   //          },
+   //          error: function (resp) {
+   //              console.log('Error - '+ resp);
 
-            }
-        });
+   //          }
+   //      });
 
 
-    } // fetch schedules
+   //  } // fetch schedules
 
-    function fetch_events() {
+   //  function fetch_events() {
 
-        $.ajax({
-            type: 'GET',
-            url: '/medic/appointments/list',
-            data: {},
-            success: function (resp) {
+   //      $.ajax({
+   //          type: 'GET',
+   //          url: '/medic/appointments/list',
+   //          data: {},
+   //          success: function (resp) {
 
-                var appointments = [];
+   //              var appointments = [];
 
-                $.each(resp, function( index, item ) {
+   //              $.each(resp, function( index, item ) {
                    
-                    item.allDay = parseInt(item.allDay); // = false;
+   //                  item.allDay = parseInt(item.allDay); // = false;
                     
-                    if(item.patient_id == 0) item.rendering = 'background';
+   //                  if(item.patient_id == 0) item.rendering = 'background';
 
-                    appointments.push(item);
-                });
+   //                  appointments.push(item);
+   //              });
                
-                initCalendar(appointments);
+   //              initCalendar(appointments);
                 
-            },
-            error: function (resp) {
-                console.log('Error - '+ resp);
+   //          },
+   //          error: function (resp) {
+   //              console.log('Error - '+ resp);
 
-            }
-        });
+   //          }
+   //      });
 
 
-    } // fetch appointments
+   //  } // fetch appointments
 
     
     fetch_offices();
@@ -367,7 +367,8 @@ $(function () {
 
 
     } // fetch offices
-
+    var loadedEvents = false;
+    initCalendar([]);
 
     function initCalendar(appointments)
     {
@@ -698,7 +699,83 @@ $(function () {
 
               
            
-          }
+          },
+          viewRender: function(view){
+              console.log(view.start.format() +' - '+view.end.format())
+            
+              calendar.fullCalendar( 'removeEventSources');
+            
+            
+
+                if(prog_schedule)
+                {
+                  $.ajax({
+                      type: 'GET',
+                      url: '/medic/schedules/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                      data: {},
+                      success: function (resp) {
+                         
+
+                          var schedules = [];
+
+                          $.each(resp, function( index, item ) {
+                             
+                              item.allDay = parseInt(item.allDay); // = false;
+                              
+                              /*if(item.patient_id == 0) item.rendering = 'background';*/
+                          
+                              schedules.push(item);
+                          });
+
+                         
+                          calendar.fullCalendar('addEventSource', schedules);
+                          //calendar.fullCalendar( 'updateEvents', schedules )
+                      },
+                      error: function (resp) {
+                          console.log('Error - '+ resp);
+
+                      }
+                  }); //ajax schedules
+
+              }else{
+                      $.ajax({
+                        type: 'GET',
+                        url: '/medic/appointments/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                        data: {},
+                        success: function (resp) {
+
+                            var appointments = [];
+
+                            $.each(resp, function( index, item ) {
+                               
+                                item.allDay = parseInt(item.allDay); // = false;
+                                
+                                if(item.patient_id == 0) item.rendering = 'background';
+
+                                appointments.push(item);
+                            });
+                           
+                           calendar.fullCalendar('addEventSource', appointments);
+                           //calendar.fullCalendar( 'updateEvents', appointments )
+                            
+                        },
+                        error: function (resp) {
+                            console.log('Error - '+ resp);
+
+                        }
+                    
+                    }); //ajax appoitnments
+
+              } //else
+
+
+
+         
+            
+
+           
+            
+          } //view render
         
       });
 

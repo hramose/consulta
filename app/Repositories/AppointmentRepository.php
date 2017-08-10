@@ -255,6 +255,21 @@ class AppointmentRepository extends DbRepository{
             $appointments = $appointments->where('office_id', $search['office']);
         } 
 
+         if (isset($search['date1']) && $search['date1'] != "")
+        {
+           
+           // dd($search['date2']);
+            
+            $date1 = $search['date1'];
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = $date2;
+            
+         
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]]);
+            
+        }
+
 
         if (isset($search['order']) && $search['order'] != "")
         {

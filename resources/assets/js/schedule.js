@@ -96,80 +96,82 @@ $(function () {
 
     } //init events
 
-    fetch_schedules_and_appointments();
+    //fetch_schedules_and_appointments(); se desabilita por que lo vamos a obtener con el view render de fullcalendar
 
-    function fetch_schedules_and_appointments() {
-        var schedules = [];
+    // function fetch_schedules_and_appointments() {
+    //     var schedules = [];
 
-        $.ajax({
-            type: 'GET',
-            url: '/medics/'+ externalEvent.data('doctor') +'/schedules/list?office='+ externalEvent.data('office'),
-            data: {},
-            success: function (resp) {
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: '/medics/'+ externalEvent.data('doctor') +'/schedules/list?office='+ externalEvent.data('office'),
+    //         data: {},
+    //         success: function (resp) {
               
 
-                $.each(resp, function( index, item ) {
+    //             $.each(resp, function( index, item ) {
                    
-                    item.allDay = parseInt(item.allDay); // = false;
-                    //item.rendering = 'background';
+    //                 item.allDay = parseInt(item.allDay); // = false;
+    //                 //item.rendering = 'background';
                      
-                     var working_hours = {
-                      // days of week. an array of zero-based day of week integers (0=Sunday)
-                      dow: [dayNumber(item.date)], // Monday - Thursday
+    //                  var working_hours = {
+    //                   // days of week. an array of zero-based day of week integers (0=Sunday)
+    //                   dow: [dayNumber(item.date)], // Monday - Thursday
 
-                      start: item.start,//.split('T')[1], // a start time (10am in this example)
-                      end: item.end//.split('T')[1], // an end time (6pm in this example)
-                     }
+    //                   start: item.start,//.split('T')[1], // a start time (10am in this example)
+    //                   end: item.end//.split('T')[1], // an end time (6pm in this example)
+    //                  }
 
-                    schedules.push(working_hours);
+    //                 schedules.push(working_hours);
 
-                });
+    //             });
                 
-                //initCalendar(schedules,schedules);
+    //             //initCalendar(schedules,schedules);
 
-                $.ajax({
-                  type: 'GET',
-                  url: '/medics/'+ externalEvent.data('doctor') +'/appointments/list?office='+ externalEvent.data('office'),
-                  data: {},
-                  success: function (resp) {
+    //             $.ajax({
+    //               type: 'GET',
+    //               url: '/medics/'+ externalEvent.data('doctor') +'/appointments/list?office='+ externalEvent.data('office'),
+    //               data: {},
+    //               success: function (resp) {
                      
 
-                      var appointments = [];
+    //                   var appointments = [];
 
-                      $.each(resp, function( index, item ) {
+    //                   $.each(resp, function( index, item ) {
                          
-                          item.allDay = parseInt(item.allDay); // = false;
+    //                       item.allDay = parseInt(item.allDay); // = false;
                           
-                          if((item.patient_id != 0 && item.created_by != externalEvent.data('createdby')) || item.patient_id == 0){
-                             item.rendering = 'background';
-                          }
+    //                       if((item.patient_id != 0 && item.created_by != externalEvent.data('createdby')) || item.patient_id == 0){
+    //                          item.rendering = 'background';
+    //                       }
                           
 
-                          appointments.push(item);
-                      });
+    //                       appointments.push(item);
+    //                   });
                      
-                      initCalendar(appointments,schedules);
+    //                   initCalendar(appointments,schedules);
                       
-                  },
-                  error: function (resp) {
-                      console.log('Error - '+ resp);
+    //               },
+    //               error: function (resp) {
+    //                   console.log('Error - '+ resp);
 
-                  }
-              });
+    //               }
+    //           });
                
-                //initCalendar(schedules);
+    //             //initCalendar(schedules);
                 
-            },
-            error: function (resp) {
-                console.log('Error - '+ resp);
+    //         },
+    //         error: function (resp) {
+    //             console.log('Error - '+ resp);
 
-            }
-        });
+    //         }
+    //     });
 
 
-    } // fetch appointments and schedules
+    // } // fetch appointments and schedules
 
-    
+     var appointments = [];
+     var schedules = [];
+     initCalendar(appointments,schedules);
 
     function initCalendar(appointments,schedules)
     {
@@ -382,10 +384,11 @@ $(function () {
            
           },
           viewRender: function(view){
-            
+            console.log(view.start.format() +' - '+view.end.format())
+           
             $.ajax({
               type: 'GET',
-              url: '/medics/'+ externalEvent.data('doctor') +'/schedules/list?office='+ externalEvent.data('office'),
+              url: '/medics/'+ externalEvent.data('doctor') +'/schedules/list?office='+ externalEvent.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
               data: {},
               success: function (resp) {
                 
@@ -424,13 +427,48 @@ $(function () {
                     calendar.fullCalendar('option', 'businessHours', bh);
 
 
+
+
               },
             error: function (resp) {
                 console.log('Error - '+ resp);
 
             }
 
-          }); //ajax
+          }); //ajax schedules
+
+          calendar.fullCalendar( 'removeEventSources')
+
+          $.ajax({
+              type: 'GET',
+              url: '/medics/'+ externalEvent.data('doctor') +'/appointments/list?office='+ externalEvent.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
+              data: {},
+              success: function (resp) {
+                 
+
+                  var appointments = [];
+
+                  $.each(resp, function( index, item ) {
+                     
+                      item.allDay = parseInt(item.allDay); // = false;
+                      
+                      if((item.patient_id != 0 && item.created_by != externalEvent.data('createdby')) || item.patient_id == 0){
+                         item.rendering = 'background';
+                      }
+                      
+
+                      appointments.push(item);
+                  });
+                 
+                 // initCalendar(appointments,schedules);
+                  
+                  calendar.fullCalendar('addEventSource', appointments);
+              },
+              error: function (resp) {
+                  console.log('Error - '+ resp);
+
+              }
+          }); // ajax appointments
 
            
             
