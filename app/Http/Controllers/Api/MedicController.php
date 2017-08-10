@@ -70,8 +70,8 @@ class MedicController extends ApiController
     public function getSchedules($id)
     {
         $search = request()->all();
-        $search['date1'] = Carbon::parse(request('date1'))
-        $search['date2'] = Carbon::parse(request('date2'))
+        $search['date1'] = Carbon::parse(request('date1'));
+        $search['date2'] = Carbon::parse(request('date2'));
 
 
         $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, $search);
