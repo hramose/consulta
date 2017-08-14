@@ -19,7 +19,7 @@ class MedicRepository extends DbRepository{
     function __construct(User $model)
     {
         $this->model = $model;
-        $this->limit = 1;
+        $this->limit = 10;
     }
 
    
