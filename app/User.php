@@ -31,6 +31,10 @@ class User extends Authenticatable
     {
         return getAvatar($this);
     }
+    public function getSlotAttribute()
+    {
+        return $this->settings->slotDuration;
+    }
 
 
 
