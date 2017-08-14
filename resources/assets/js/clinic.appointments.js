@@ -3,8 +3,8 @@ $(function () {
      var minTime = '06:00:00';
      var maxTime = '18:00:00';
      var slotDuration = '00:30';
-     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+     var eventDurationNumber = moment.duration(slotDuration).asMinutes(); //(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     var eventDurationMinHours = 'minutes'; //(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
      var freeDays = [];
      var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
      var infoBox = $('#infoBox');
@@ -139,8 +139,8 @@ $(function () {
        minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
        maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
        slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : calendar.attr('data-slotDuration');
-       eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-       eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+       eventDurationNumber = moment.duration(slotDuration).asMinutes();//(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       eventDurationMinHours = 'minutes';//(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
        freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
      
          

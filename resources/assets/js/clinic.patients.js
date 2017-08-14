@@ -33,14 +33,14 @@ $(function () {
    $(".dropdown-toggle").dropdown();
 
     var slotDuration = $('#initAppointment').find('.modal-body').attr('data-slotDuration');
-    var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-    var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
-    var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+    var eventDurationNumber = moment.duration(slotDuration).asMinutes(); //(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+    var eventDurationMinHours = 'minutes'; //(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+    var stepping = moment.duration(slotDuration).asMinutes();//(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
           
-          if(stepping == '01')
-          {
-            stepping = '60';
-          }   
+          // if(stepping == '01')
+          // {
+          //   stepping = '60';
+          // }   
     
     $('#datetimepicker1').datetimepicker({
             format:'YYYY-MM-DD',

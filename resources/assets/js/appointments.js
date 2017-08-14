@@ -3,8 +3,10 @@ $(function () {
      var minTime = '06:00:00';
      var maxTime = '18:00:00';
      var slotDuration = '00:30';
-     var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-     var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+     // var eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     // var eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+     var eventDurationNumber = moment.duration(slotDuration).asMinutes();//(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+     var eventDurationMinHours = 'minutes'//(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
      var freeDays = [];
      var businessHours = [ 1, 2, 3, 4, 5, 6, 0];
      var setupSchedule = $('#setupSchedule');
@@ -60,12 +62,12 @@ $(function () {
 
     if(slotDurationSchedule)
     {
-          var stepping = (slotDurationSchedule.split(':')[1] == "00" ? slotDurationSchedule.split(':')[0] : slotDurationSchedule.split(':')[1]);
-          
-          if(stepping == '01')
+          var stepping = moment.duration(slotDurationSchedule).asMinutes(); //(slotDurationSchedule.split(':')[1] == "00" ? slotDurationSchedule.split(':')[0] : slotDurationSchedule.split(':')[1]);
+         
+          /*if(stepping == '01')
           {
             stepping = '60';
-          }   
+          } */  
 
          datetimepicker1.datetimepicker({
             format:'YYYY-MM-DD',
@@ -110,12 +112,12 @@ $(function () {
         datetimepicker3.data("DateTimePicker").destroy();
 
   
-        var stepping = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+        var stepping = //(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
        
-       if(stepping == '01')
+       /*if(stepping == '01')
        {
           stepping = '60';
-       }
+       }*/
 
        datetimepicker2.datetimepicker({
                     format: 'LT',
@@ -135,8 +137,8 @@ $(function () {
      function onChangeSlotDurarion(slotDuration) {
        
 
-        eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-        eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+        eventDurationNumber = moment.duration(slotDuration).asMinutes();//(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+        eventDurationMinHours = 'minutes';//(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
 
         calendar.attr('data-slotduration', slotDuration);
         calendar.fullCalendar('option','slotDuration', slotDuration);
@@ -376,8 +378,8 @@ $(function () {
        minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
        maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
        slotDuration = $('#selectSlotDuration').val() ? $('#selectSlotDuration').val() : calendar.attr('data-slotDuration');
-       eventDurationNumber = (slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
-       eventDurationMinHours = (slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
+       eventDurationNumber = moment.duration(slotDuration).asMinutes(); //(slotDuration.split(':')[1] == "00" ? slotDuration.split(':')[0] : slotDuration.split(':')[1]);
+       eventDurationMinHours = 'minutes'; //(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
        freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
        businessHours = [ 1, 2, 3, 4, 5, 6, 0];
       
