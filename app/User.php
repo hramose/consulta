@@ -33,7 +33,7 @@ class User extends Authenticatable
     }
     public function getSlotAttribute()
     {
-        return $this->settings->slotDuration;
+        return ($this->settings) ? $this->settings->slotDuration : 0;
     }
 
 
