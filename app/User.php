@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code'
     ];
-    protected $appends = array('photo','slot');
+    protected $appends = array('photo');
 
 
 
@@ -28,10 +28,10 @@ class User extends Authenticatable
     {
         return getAvatar($this);
     }
-    public function getSlotAttribute()
-    {
-        return '00:30:00';//($this->settings) ? $this->settings->slotDuration : 0;
-    }
+    // public function getSlotAttribute()
+    // {
+    //     return '00:30:00';//($this->settings) ? $this->settings->slotDuration : 0;
+    // }
 
 
 
