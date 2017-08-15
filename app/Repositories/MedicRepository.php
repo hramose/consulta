@@ -191,6 +191,139 @@ class MedicRepository extends DbRepository{
      * @param null $search
      * @return mixed
      */
+    public function apiFindAll($search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        if (! count($search) > 0) return $this->model->whereHas('roles', function($q){
+                                                    $q->where('name', 'medico');
+                                                })->paginate($this->limit);
+
+        
+          if (isset($search['lat']) && $search['lat'] != "" && isset($search['lon']) && $search['lon'] != "")
+        {
+
+            $offices = Office::whereHas('users', function($q) use($search){
+
+                                    
+                                        if (trim($search['q']))
+                                        {
+                                             $q->where('name', 'like', '%' . $search['q'] . '%');
+                                              
+                                           
+                                        }
+
+                                        return $q;
+                                   
+                                    });
+         
+
+             if (isset($search['province']) && $search['province'] != "")
+            {
+                $offices = $offices->where('province', $search['province']);
+                                  
+            }
+             if (isset($search['canton']) && $search['canton'] != "")
+            {
+                $offices = $offices->where('canton', $search['canton']);
+            }
+             if (isset($search['district']) && $search['district'] != "")
+            {
+                $offices = $offices->where('district', $search['district']);
+            }
+
+
+
+            
+             $offices = $offices->NearLatLng($search['lat'], $search['lon'], 25, 'K');
+             $paginator = paginate($offices->with('users')->orderBy('distance', 'ASC')->get()->all(), $this->limit);
+          
+             return $paginator; //$offices->with('user')->orderBy('distance', 'ASC')->get();//paginate($this->limit);
+        
+        }else{
+
+
+
+            if (isset($search['q']) && trim($search['q']))
+            {
+                $users = $this->model->whereHas('roles', function($q){
+                                                        $q->where('name', 'medico');
+                                                    })->Search($search['q']);
+            } else
+            {
+                $users = $this->model->whereHas('roles', function($q){
+                                        $q->where('name', 'medico');
+                                    });
+            }
+
+            if (isset($search['active']) && $search['active'] != "")
+            {
+                $users = $users->where('active', '=', $search['active']);
+            }
+
+            if (isset($search['province']) && $search['province'] != "")
+            {
+                
+                $users = $users->whereHas('offices', function($q) use($search){
+                                        $q->where('province', $search['province']);
+                                    });
+                //dd($users->get());
+            }
+             if (isset($search['canton']) && $search['canton'] != "")
+            {
+                $users = $users->whereHas('offices', function($q) use($search){
+                                        $q->where('canton', $search['canton']);
+                                    });
+            }
+             if (isset($search['district']) && $search['district'] != "")
+            {
+                $users = $users->whereHas('offices', function($q) use($search){
+                                        $q->where('district', $search['district']);
+                                    });
+            }
+
+            if (isset($search['speciality']) && $search['speciality'] != "")
+            {
+                $users = $users->whereHas('specialities', function($q) use($search){
+                                        $q->where('specialities.id', $search['speciality']);
+                                    });
+                                //$users->where('speciality_id', '=', $search['speciality']);
+            
+            }
+            
+            if (isset($search['general']) && $search['general'] != ""){
+
+                $users = $users->doesntHave('specialities');
+                /*$users = $users->whereHas('specialities', function($q) use($search){
+                                        $q->where('specialities.id', 53);
+                                    });*/
+                    
+            }
+
+
+            if (isset($search['order']) && $search['order'] != "")
+            {
+                $order = $search['order'];
+            }
+            if (isset($search['dir']) && $search['dir'] != "")
+            {
+                $dir = $search['dir'];
+            }
+
+            return $users->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        }
+
+
+
+    }
+
+     /**
+     * Find all the users for the admin panel
+     * @internal param $username
+     * @param null $search
+     * @return mixed
+     */
     public function findAllByOffice($office_id, $search = null)
     {
         $order = 'created_at';
