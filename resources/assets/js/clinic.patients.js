@@ -78,7 +78,7 @@ $(function () {
       });
 
       /** load events from db **/
-    //   var appointmentsFromCalendar = [];
+       var appointmentsFromCalendar = [];
     //   fetch_events();
     //   function fetch_events() {
 
