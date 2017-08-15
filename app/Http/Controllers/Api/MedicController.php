@@ -54,7 +54,7 @@ class MedicController extends ApiController
                 $selectedSpeciality = $search['speciality'];
                 
                 
-                $medics = $this->medicRepo->apiFindAll($search);
+                $medics = $this->medicRepo->findAll($search);
                
                
                     
