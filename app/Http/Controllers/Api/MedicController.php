@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\MedicRepository;
 use App\Speciality;
+use App\User;
 use App\Repositories\ScheduleRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -66,6 +67,28 @@ class MedicController extends ApiController
          return $medics;
 
     }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param $id
+     * @return Response
+     * @internal param int $id
+     */
+     public function show($id)
+     {
+         $medic = User::with('offices')->find($id);
+ 
+         if(! $medic)
+         {
+             return $this->respondNotFound('Medico does not exist');
+ 
+         }
+         return $this->respond([
+            'data' => $medic//$this->productTransformer->transform($product)
+         ]);
+     }
+
     /*
      * Lista de todas las citas de un doctor sin paginar
      */
