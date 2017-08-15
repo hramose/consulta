@@ -112,6 +112,14 @@
                                   Médico General
                                 @endif 
                          </span></small>
+                         <div class="input-group input-group-sm" style="margin-top: 1rem;">
+                         
+                      
+                          <input type="text" class="date form-control" name="go_date" id="go_date_{{$doc->id}}">
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-info btn-flat btn-gotodate" data-mid="{{$doc->id}}">Ir!</button>
+                              </span>
+                         </div>
                       </th>
                       @endforeach
                      

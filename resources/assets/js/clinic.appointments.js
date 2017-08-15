@@ -61,7 +61,7 @@ $(function () {
         });
   } //init events
   
-  fetch_schedules_and_appointments();
+  /*fetch_schedules_and_appointments();
 
   function fetch_schedules_and_appointments() {
 
@@ -132,6 +132,8 @@ $(function () {
           }
       });
   } // fetch schedules y appointments
+*/
+   initCalendar([],[]);
 
   function initCalendar(appointments, schedules)
     {
@@ -396,7 +398,7 @@ $(function () {
             
             $.ajax({
               type: 'GET',
-              url: '/medics/'+ calendar.data('medic') +'/schedules/list?office='+ calendar.data('office'),
+              url: '/medics/'+ calendar.data('medic') +'/schedules/list?office='+ calendar.data('office') +'&date1='+ view.start.format() +'&date2='+view.end.format(),
               data: {},
               success: function (resp) {
                 
@@ -441,10 +443,41 @@ $(function () {
 
             }
 
-          }); //ajax
+          }); //ajax schedule
 
+          calendar.fullCalendar( 'removeEventSources')
            
-            
+            $.ajax({
+                type: 'GET',
+                url: '/medics/'+ calendar.data('medic') +'/appointments/list?office='+ calendar.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
+                data: {},
+                success: function (resp) {
+                   
+
+                    var appointments = [];
+
+                    $.each(resp, function( index, item ) {
+                       
+                        item.allDay = parseInt(item.allDay); // = false;
+                        
+                        if((item.patient_id != 0 && item.office_id != calendar.data('office')) || item.patient_id == 0){
+                           item.rendering = 'background';
+                        }
+                        
+
+                        appointments.push(item);
+                    });
+                   
+                   // initCalendar(appointments,schedules);
+                   calendar.fullCalendar('addEventSource', appointments);
+                    
+                },
+                error: function (resp) {
+                    console.log('Error - '+ resp);
+
+                }
+            });
+
           } //view render
         
       }); //fullcalendar

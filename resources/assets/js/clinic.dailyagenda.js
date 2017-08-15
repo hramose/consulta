@@ -55,12 +55,13 @@ $(function () {
               var medic =  $(this).find('> div').data('medic');
               var office =  $(this).find('> div').data('office');
               
-              fetch_schedules_and_appointments(medic,office);
+             // fetch_schedules_and_appointments(medic,office);
+             init_calendar(medic, [], []);
              
             });
     }
 
-    function fetch_schedules_and_appointments(medic, office) {
+    /*function fetch_schedules_and_appointments(medic, office) {
         var schedules = [];
          
         $.ajax({
@@ -128,7 +129,7 @@ $(function () {
             }
         });
 
-    }
+    }*/
 
     function init_calendar(medic,appointments, schedules) {
      
@@ -355,7 +356,7 @@ $(function () {
             
             $.ajax({
               type: 'GET',
-              url: '/medics/'+ medic +'/schedules/list?office='+ calendar.data('office'),
+              url: '/medics/'+ medic +'/schedules/list?office='+ calendar.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
               data: {},
               success: function (resp) {
                 
@@ -400,7 +401,40 @@ $(function () {
 
             }
 
-          }); //ajax
+          }); //ajax schedules
+          
+          calendar.fullCalendar( 'removeEventSources')
+          
+            $.ajax({
+              type: 'GET',
+              url: '/medics/'+ medic +'/appointments/list?office='+ calendar.data('office') +'&date1='+ view.start.format() +'&date2='+view.end.format(),
+              data: {},
+              success: function (resp) {
+                
+
+                  var appointments = [];
+
+                  $.each(resp, function( index, item ) {
+                    
+                      item.allDay = parseInt(item.allDay); // = false;
+                      
+                      if((item.patient_id != 0 && item.office_id != calendar.data('office')) || item.patient_id == 0){
+                        item.rendering = 'background';
+                      }
+                      
+
+                      appointments.push(item);
+                  });
+                 
+                  //init_calendar(medic, appointments, schedules);
+                  calendar.fullCalendar('addEventSource', appointments);
+                  
+              },
+              error: function (resp) {
+                  console.log('Error - '+ resp);
+
+              }
+          }); // ajax appointments
 
            
             
