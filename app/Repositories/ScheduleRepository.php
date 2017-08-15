@@ -179,7 +179,7 @@ class ScheduleRepository extends DbRepository{
         }
 
 
-        return $schedules->with('office', 'user')->orderBy('schedules.'.$order , $dir)->get();
+        return $schedules->with('office', 'user.settings')->orderBy('schedules.'.$order , $dir)->get();
 
     }
     
