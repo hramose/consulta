@@ -78,38 +78,38 @@ $(function () {
       });
 
       /** load events from db **/
-      var appointmentsFromCalendar = [];
-      fetch_events();
-      function fetch_events() {
+    //   var appointmentsFromCalendar = [];
+    //   fetch_events();
+    //   function fetch_events() {
 
-        $.ajax({
-            type: 'GET',
-            url: '/clinic/appointments/list',
-            data: {},
-            success: function (resp) {
-                console.log(resp);
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: '/clinic/appointments/list',
+    //         data: {},
+    //         success: function (resp) {
+    //             console.log(resp);
 
-                appointmentsFromCalendar = [];
+    //             appointmentsFromCalendar = [];
 
-                $.each(resp, function( index, item ) {
+    //             $.each(resp, function( index, item ) {
                    
-                    item.allDay = parseInt(item.allDay); // = false;
+    //                 item.allDay = parseInt(item.allDay); // = false;
                     
 
-                    appointmentsFromCalendar.push(item);
-                });
+    //                 appointmentsFromCalendar.push(item);
+    //             });
                
                
                 
-            },
-            error: function (resp) {
-                console.log('Error - '+ resp);
+    //         },
+    //         error: function (resp) {
+    //             console.log('Error - '+ resp);
 
-            }
-        });
+    //         }
+    //     });
 
 
-    }
+    // }
 
       function isOverlapping(event) {
      
