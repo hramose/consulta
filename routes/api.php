@@ -30,6 +30,7 @@ Route::get('/medics/specialities', 'Api\MedicController@getSpecialities')->middl
 Route::get('/medics/{medic}', 'Api\MedicController@show')->middleware('auth:api');
 Route::get('/medics/{medic}/schedules/list', 'Api\MedicController@getSchedules')->middleware('auth:api');
 Route::get('/medics/{medic}/appointments/list', 'Api\MedicController@getAppointments')->middleware('auth:api');
+Route::get('/appointments', 'Api\AppointmentController@store')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
