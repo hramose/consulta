@@ -104,6 +104,21 @@ class MedicController extends ApiController
         return $schedules;
         
     }
+    
+    /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+    public function getAppointments($id)
+    {
+        $search = request()->all();
+        $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
+        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
+
+        $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, $search);
+        
+        return $appointments;
+        
+    }
 
    function getSpecialities () {
         return Speciality::all();
