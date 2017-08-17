@@ -33,7 +33,7 @@ class AppointmentController extends ApiController
     /**
      * Lista de todas las citas de un doctor sin paginar
      */
-    public function store()
+    public function store(Request $request)
     {
         $user = $request->user();
         $appointmentsToday = $user->appointmentsToday();
