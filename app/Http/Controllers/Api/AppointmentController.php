@@ -39,7 +39,10 @@ class AppointmentController extends ApiController
         $appointmentsToday = $user->appointmentsToday();
          
         if($appointmentsToday >= 2)
-            return 'max-per-day';
+            return [
+                    'error' => 'max-per-day',
+                    'message' => 'Numero de citas por dia alcanzado'
+                ];
 
         $appointment = $this->appointmentRepo->store(request()->all(), request('user_id'));
         $appointment['patient'] = $appointment->patient;
