@@ -121,7 +121,7 @@ class UserController extends Controller
                 'province' => 'required',  
                 'city' => 'required', 
                 'phone' => 'required',
-                'email' => 'required|email',   
+                'email' => ['required','email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
