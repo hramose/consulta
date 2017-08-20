@@ -10,7 +10,14 @@ class Patient extends Model
      protected $fillable = [
 		'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'phone2', 'email', 'address', 'province', 'conditions', 'city','created_by'
 	];
-    protected $appends = array('fullname','IDhash');
+    protected $appends = array('fullname','IDhash','photo');
+
+
+
+    public function getPhotoAttribute()
+    {
+        return getAvatar($this);
+    }
 
     public function getFullnameAttribute()
     {
