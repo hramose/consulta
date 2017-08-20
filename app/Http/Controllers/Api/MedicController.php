@@ -77,7 +77,7 @@ class MedicController extends ApiController
      */
      public function show($id)
      {
-         $medic = User::with('offices')->find($id);
+         $medic = User::with('offices','specialities')->find($id);
  
          if(! $medic)
          {
