@@ -7,7 +7,7 @@ use App\Repositories\ClinicRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-class ClinicController extends Controller
+class ClinicController extends ApiController
 {
     /**
      * Create a new controller instance.
