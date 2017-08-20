@@ -63,7 +63,7 @@ class ClinicController extends ApiController
      */
      public function show($id)
      {
-         $clinic = Office::with('users','specialities')->find($id);
+         $clinic = Office::find($id);
          $clinic['medics'] = $clinic->doctors();
          if(! $clinic)
          {
