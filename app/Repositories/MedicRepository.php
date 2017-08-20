@@ -312,7 +312,7 @@ class MedicRepository extends DbRepository{
         
        
 
-        return $medics->with('offices')->orderBy('users.'.$order , $dir)->get();
+        return $medics->with('offices','specialities')->orderBy('users.'.$order , $dir)->get();
        
 
 
