@@ -79,10 +79,11 @@ class UserController extends ApiController
         ]);
 
         $data = request()->all();
-        
-        if(auth()->user()->hasRole('asistente'))
+        $user = request()->user();
+
+        if($user->hasRole('asistente'))
         {
-            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',$user->id)->first();
       
             $boss = User::find($boss_assistant->user_id);
 
