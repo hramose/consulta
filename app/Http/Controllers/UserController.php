@@ -84,7 +84,7 @@ class UserController extends Controller
                 'province' => 'required',  
                 'city' => 'required', 
                 'phone' => 'required',
-                'email' => 'required|email',
+                'email' => 'required|email|max:255|unique:patients',
 
         ]);
 
