@@ -64,40 +64,7 @@ class UserController extends ApiController
 
     }
 
-    public function storePatient()
-    {
-        
-        $this->validate(request(),[
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
-                'phone' => 'required',
-                'email' => 'required|email',
-
-        ]);
-
-        $data = request()->all();
-        $user = request()->user();
-
-        if($user->hasRole('asistente'))
-        {
-            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',$user->id)->first();
-      
-            $boss = User::find($boss_assistant->user_id);
-
-            $patient = $this->patientRepo->store($data, $boss);
-            
-            return $patient;
-        }
-        
-
-        $patient = $this->patientRepo->store($data);
-
-
-        return $patient;
-    }
+    
 
      /**
      * Actualizar datos de paciente
