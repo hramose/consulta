@@ -178,7 +178,7 @@ class MedicRepository extends DbRepository{
                 $dir = $search['dir'];
             }
 
-            return $users->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
+            return $users->with('offices','specialities')->orderBy('users.'.$order , $dir)->paginate($this->limit);
         }
 
 
