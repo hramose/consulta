@@ -24,6 +24,7 @@ Route::post('/token', 'Api\AuthController@token');
 Route::post('/user/social/register', 'Api\AuthController@registerSocial');
 Route::post('/user/register', 'Api\AuthController@register');
 Route::get('/users/{user}/patients', 'Api\AuthController@getPatients');
+Route::put('/account/edit', 'Api\UserController@update');
 Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 Route::get('/medics', 'Api\MedicController@search')->middleware('auth:api');
 Route::get('/medics/specialities', 'Api\MedicController@getSpecialities')->middleware('auth:api');
