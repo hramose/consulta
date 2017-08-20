@@ -131,13 +131,13 @@ class Office extends Model
        
         if($search){
 
-            $data = $this->users()->whereHas('roles', function ($query) use($search){
+            $data = $this->users()->with('specialities')->whereHas('roles', function ($query) use($search){
                                                     $query->where('name',  'medico');
                                                          
                                                 })->where('name', 'like', '%'.$search.'%')->get();
         }
         else{
-            $data = $this->users()->whereHas('roles', function ($query){
+            $data = $this->users()->with('specialities')->whereHas('roles', function ($query){
                                                     $query->where('name',  'medico');
                                                          
                                                 })->get();
