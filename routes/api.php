@@ -32,6 +32,8 @@ Route::get('/medics/{medic}/schedules/list', 'Api\MedicController@getSchedules')
 Route::get('/medics/{medic}/appointments/list', 'Api\MedicController@getAppointments')->middleware('auth:api');
 Route::post('/appointments', 'Api\AppointmentController@store')->middleware('auth:api');
 Route::post('/appointments/{appointment}/reminder', 'Api\AppointmentController@reminder')->middleware('auth:api');
+Route::get('/clinics', 'Api\ClinicController@index')->middleware('auth:api');
+Route::get('/clinics/{clinic}', 'Api\ClinicController@show')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
