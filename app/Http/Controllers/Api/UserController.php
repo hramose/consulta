@@ -30,7 +30,7 @@ class UserController extends ApiController
 
         $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore($user->id ]
+                'email' => ['required','email', Rule::unique('users')->ignore($user->id) ]
             ]);
 
     	$user = $this->userRepo->update($user->id, request()->all());
