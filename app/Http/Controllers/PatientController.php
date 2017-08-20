@@ -9,6 +9,7 @@ use App\Repositories\PatientRepository;
 use App\Sugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
@@ -69,10 +70,20 @@ class PatientController extends Controller
     /**
      * Actualizar Paciente
      */
-    public function update($id, PatientRequest $request)
+    public function update($id)
     {
        
-        $patient = $this->patientRepo->update($id, $request->all());
+         $this->validate(request(),[
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'address' => 'required',  
+                'province' => 'required',  
+                'city' => 'required', 
+                'phone' => 'required',
+                'email' => ['required','email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
+        ]);
+
+        $patient = $this->patientRepo->update($id, request()->all());
         
 
         return $patient;
