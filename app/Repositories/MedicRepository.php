@@ -219,7 +219,7 @@ class MedicRepository extends DbRepository{
         
        
 
-        return $medics->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        return $medics->with('offices','specialities')->orderBy('users.'.$order , $dir)->paginate($this->limit);
        
 
 
@@ -271,7 +271,7 @@ class MedicRepository extends DbRepository{
         
        
 
-        return $medics->with('offices')->orderBy('users.'.$order , $dir)->paginate($this->limit);
+        return $medics->with('offices','specialities')->orderBy('users.'.$order , $dir)->paginate($this->limit);
        
 
 
