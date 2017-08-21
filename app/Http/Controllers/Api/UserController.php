@@ -49,7 +49,7 @@ class UserController extends ApiController
         
         $mimes = ['jpg','jpeg','bmp','png'];
         $fileUploaded = "error";
-       
+       dd(request()->file('photo'));
         if(request()->file('photo'))
         {
         
