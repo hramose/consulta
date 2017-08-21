@@ -55,7 +55,7 @@ class UserController extends ApiController
         
             $file = request()->file('photo');
             $ext = $file->guessClientExtension();
-           
+            dd(in_array($ext, $mimes));
             if(in_array($ext, $mimes))
                 $fileUploaded = $file->storeAs("avatars/". request()->user()->id, "avatar.jpg",'public');
         }
