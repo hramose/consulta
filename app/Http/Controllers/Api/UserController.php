@@ -57,7 +57,7 @@ class UserController extends ApiController
             $ext = $file->guessClientExtension();
            
             if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("avatars/". auth()->id(), "avatar.jpg",'public');
+                $fileUploaded = $file->storeAs("avatars/". request()->user()->id, "avatar.jpg",'public');
         }
 
         return $fileUploaded;
