@@ -28,6 +28,14 @@ Route::put('/account/edit', 'Api\UserController@update')->middleware('auth:api')
 Route::delete('/account/patients/{id}', 'Api\UserController@destroyPatient')->middleware('auth:api');
 Route::put('/account/patients/{id}', 'Api\UserController@updatePatient')->middleware('auth:api');
 Route::post('/account/avatars', 'Api\UserController@avatars')->middleware('auth:api');
+Route::post('/account/patients/{id}/medicines', 'Api\PatientController@medicines')->middleware('auth:api');
+Route::delete('/account/patients/medicines/{id}', 'Api\PatientController@deleteMedicines')->middleware('auth:api');
+Route::post('/account/patients/{id}/allergies', 'Api\PatientController@allergies')->middleware('auth:api');
+Route::delete('/account/patients/allergies/{id}', 'Api\PatientController@deleteAllergies')->middleware('auth:api');
+Route::post('/account/patients/{id}/pressures', 'Api\PatientController@pressures')->middleware('auth:api');
+Route::delete('/account/patients/pressures/{id}', 'Api\PatientController@deletePressures')->middleware('auth:api');
+Route::post('/account/patients/{id}/sugars', 'Api\PatientController@sugars')->middleware('auth:api');
+Route::delete('/account/patients/sugars/{id}', 'Api\PatientController@deleteSugars')->middleware('auth:api');
 Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 Route::get('/medics', 'Api\MedicController@search')->middleware('auth:api');
 Route::get('/medics/specialities', 'Api\MedicController@getSpecialities')->middleware('auth:api');

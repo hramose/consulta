@@ -99,7 +99,7 @@ class PatientController extends ApiController
 
         $data = request()->all();
 
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = request()->user()->id;
 
         $data['history_id'] = $history->id;
        
