@@ -179,7 +179,7 @@ class PatientController extends ApiController
      
       
         
-        return '';
+        return 'ok';
 
     }
 
