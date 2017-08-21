@@ -174,13 +174,15 @@ class PatientController extends ApiController
     public function deletePressures($id)
     {
       
-       $pressure = Pressure::findOrFail($id)->delete($id);
+       $pressure = Pressure::find($id);
 
        if(! $pressure)
          {
              return $this->respondNotFound('Control does not exist');
  
          }
+
+         $pressure->delete($id);
          
          return $this->respond([
             'data' => 'ok'
