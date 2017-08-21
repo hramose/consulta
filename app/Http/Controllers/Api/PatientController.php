@@ -85,7 +85,16 @@ class PatientController extends ApiController
       
         $medicine = $this->patientRepo->deleteMedicine($id);
         
-        return '';
+       
+
+       if(! $medicine)
+         {
+             return $this->respondNotFound('Medicina does not exist');
+ 
+         }
+
+         
+         return $this->respondDeleted('Medicina Eliminada Correctamente');
 
     }
 
@@ -118,12 +127,18 @@ class PatientController extends ApiController
     public function deleteAllergies($id)
     {
       
-       $allergy = Allergy::findOrFail($id)->delete($id);
+       
+        $allergy = Allergy::find($id);
 
-     
-      
-        
-        return '';
+       if(! $allergy)
+         {
+             return $this->respondNotFound('Alergia does not exist');
+ 
+         }
+
+         $allergy->delete($id);
+         
+         return $this->respondDeleted('Alergia Eliminada Correctamente');
 
     }
 
@@ -220,12 +235,17 @@ class PatientController extends ApiController
     public function deleteSugars($id)
     {
       
-       $sugar = Sugar::findOrFail($id)->delete($id);
+      $sugar = Sugar::find($id);
 
-     
-      
-        
-        return '';
+       if(! $sugar)
+         {
+             return $this->respondNotFound('Control does not exist');
+ 
+         }
+
+         $sugar->delete($id);
+         
+         return $this->respondDeleted('Control Eliminado Correctamente');
 
     }
 }
