@@ -184,9 +184,7 @@ class PatientController extends ApiController
 
          $pressure->delete($id);
          
-         return $this->respond([
-            'data' => 'ok'
-         ]);
+         return $this->respondDeleted('Control Eliminado Correctamente');
       
         
       

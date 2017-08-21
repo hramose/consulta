@@ -93,6 +93,20 @@ class ApiController extends Controller {
     }
 
     /**
+     * @param $message
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function respondDeleted($message)
+    {
+        $this->setStatusCode(200);
+
+        return $this->respond([
+            'message' => $message
+
+        ]);
+    }
+
+    /**
      * @param $products
      * @return \Illuminate\Http\JsonResponse
      */
