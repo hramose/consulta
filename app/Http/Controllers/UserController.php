@@ -66,7 +66,7 @@ class UserController extends Controller
             $file = request()->file('photo');
             $ext = $file->guessClientExtension();
            
-            if(in_array($ext, $mimes))
+            //if(in_array($ext, $mimes))
                 $fileUploaded = $file->storeAs("avatars/". auth()->id(), "avatar.jpg",'public');
         }
 
