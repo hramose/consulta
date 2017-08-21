@@ -46,7 +46,7 @@ class UserController extends ApiController
      */
     public function avatars()
     {
-        dd(request()->file('photo'));
+        dd(request()->user()->id);
         $mimes = ['jpg','jpeg','bmp','png'];
         $fileUploaded = "error";
       
