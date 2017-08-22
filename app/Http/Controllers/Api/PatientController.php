@@ -288,4 +288,19 @@ class PatientController extends ApiController
          return $this->respondDeleted('Control Eliminado Correctamente');
 
     }
+     /**
+     * Agregar medicamentos a pacientes
+     */
+    public function getHistories($id)
+    {
+       $patient = $this->patientRepo->findById($id);
+       $histories = $patient->history;
+       $appoitments = $patient->appointments->load('user','diagnostics');
+        
+       return {
+            'histories' => $histories,
+            'appoitments'=> $appoitments
+        };
+
+    }
 }

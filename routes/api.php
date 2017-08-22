@@ -39,6 +39,7 @@ Route::get('/account/patients/{id}/pressures', 'Api\PatientController@getPressur
 Route::delete('/account/patients/pressures/{id}', 'Api\PatientController@deletePressures')->middleware('auth:api');
 Route::post('/account/patients/{id}/sugars', 'Api\PatientController@sugars')->middleware('auth:api');
 Route::get('/account/patients/{id}/sugars', 'Api\PatientController@getSugars')->middleware('auth:api');
+Route::get('/account/patients/{id}/histories', 'Api\PatientController@getHistories')->middleware('auth:api');
 Route::delete('/account/patients/sugars/{id}', 'Api\PatientController@deleteSugars')->middleware('auth:api');
 Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 Route::get('/medics', 'Api\MedicController@search')->middleware('auth:api');
