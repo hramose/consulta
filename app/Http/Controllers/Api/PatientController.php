@@ -295,11 +295,11 @@ class PatientController extends ApiController
     {
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
-       $appoitments = $patient->appointments->load('user','diagnostics');
-        
+       $appointments = $patient->appointments()->where('status', 1)->load('user','diagnostics')->limit(5)->get();//$patient->appointments->load('user','diagnostics');
+         
         $data = [
             'history' => $history,
-            'appointments'=> $appoitments
+            'appointments'=> $appointments
         ];
 
        return $data;
