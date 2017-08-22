@@ -73,7 +73,7 @@ class PatientController extends ApiController
     
        $medicine = $this->patientRepo->addMedicine($id, request()->all());
         
-       return  $medicine;
+       return $medicine;
 
     }
      /**
@@ -84,7 +84,7 @@ class PatientController extends ApiController
        $patient = $this->patientRepo->findById($id);
        $medicines = $patient->medicines;
         
-       return  $medicines;
+       return $medicines;
 
     }
 
