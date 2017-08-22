@@ -140,7 +140,7 @@ class PatientController extends ApiController
        $patient = $this->patientRepo->findById($id);
        $allergies = $patient->allergies;
         
-       return  $allergies;
+       return $allergies;
 
     }
 
