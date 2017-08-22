@@ -121,7 +121,7 @@
 			            <div class="tab-content">
 			              	<div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : 'active' }} tab-pane" id="history">
 								
-								 <history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments->load('user','diagnostics') }}" :read="true"></history>
+								 <history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments()->with('user','diagnostics')->where('status', 1)->limit(5)->get() }}" :read="true"></history>
 
 						    </div>
 						    <!-- /.tab-pane -->
