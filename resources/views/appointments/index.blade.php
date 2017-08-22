@@ -63,9 +63,11 @@
                             @if($appointment->status == 2)
                               <span class="label label-warning">Paciente No Asistió a la cita</span>
                             @else
-
-                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
-
+                              @if($appointment->status == 0 && \Carbon\Carbon::now()->ToDateString() > $appointment->date)
+                                <span class="label label-warning">Cita perdida</span>
+                              @else
+                                <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+                              @endif
                              @if($appointment->status != 2 && $appointment->status != 1)
                                 <button type="submit" class="btn btn-warning" form="form-noshows" formaction="{!! url('/medic/appointments/'.$appointment->id.'/noshows') !!}">No Asistió</button>
                               @endif
