@@ -297,10 +297,12 @@ class PatientController extends ApiController
        $history = $patient->history;
        $appoitments = $patient->appointments->load('user','diagnostics');
         
-       return {
+        $data = [
             'history' => $history,
-            'appoitments'=> $appoitments
-        };
+            'appointments'=> $appoitments
+        ];
+
+       return $data;
 
     }
 }
