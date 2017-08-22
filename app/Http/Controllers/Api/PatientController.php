@@ -138,7 +138,7 @@ class PatientController extends ApiController
     public function getAllergies($id)
     {
        $patient = $this->patientRepo->findById($id);
-       $allergies = $patient->history->allergies->load('user.roles')
+       $allergies = $patient->history->allergies->load('user.roles');
         
        return $allergies;
 
