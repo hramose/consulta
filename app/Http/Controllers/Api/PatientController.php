@@ -228,6 +228,23 @@ class PatientController extends ApiController
    
 
     }
+      /**
+     * get pressures a pacientes
+     */
+    public function getSugars($id)
+    {
+    
+
+        $patient = $this->patientRepo->findById($id);
+        $sugars = $patient->sugars;
+
+       
+     
+        return $sugars;
+    
+   
+
+    }
 
     /**
      * Eliminar medicamentos a pacientes
