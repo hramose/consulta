@@ -32,6 +32,7 @@ Route::post('/account/patients/{id}/medicines', 'Api\PatientController@medicines
 Route::get('/account/patients/{id}/medicines', 'Api\PatientController@getMedicines')->middleware('auth:api');
 Route::delete('/account/patients/medicines/{id}', 'Api\PatientController@deleteMedicines')->middleware('auth:api');
 Route::post('/account/patients/{id}/allergies', 'Api\PatientController@allergies')->middleware('auth:api');
+Route::get('/account/patients/{id}/allergies', 'Api\PatientController@getAllergies')->middleware('auth:api');
 Route::delete('/account/patients/allergies/{id}', 'Api\PatientController@deleteAllergies')->middleware('auth:api');
 Route::post('/account/patients/{id}/pressures', 'Api\PatientController@pressures')->middleware('auth:api');
 Route::get('/account/patients/{id}/pressures', 'Api\PatientController@getPressures')->middleware('auth:api');

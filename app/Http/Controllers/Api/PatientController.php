@@ -132,6 +132,18 @@ class PatientController extends ApiController
 
     }
 
+     /**
+     * Agregar medicamentos a pacientes
+     */
+    public function getAllergies($id)
+    {
+       $patient = $this->patientRepo->findById($id);
+       $allergies = $patient->allergies;
+        
+       return  $allergies;
+
+    }
+
     /**
      * Eliminar medicamentos a pacientes
      */
