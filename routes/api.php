@@ -29,6 +29,7 @@ Route::delete('/account/patients/{id}', 'Api\UserController@destroyPatient')->mi
 Route::put('/account/patients/{id}', 'Api\UserController@updatePatient')->middleware('auth:api');
 Route::post('/account/avatars', 'Api\UserController@avatars')->middleware('auth:api');
 Route::post('/account/patients/{id}/medicines', 'Api\PatientController@medicines')->middleware('auth:api');
+Route::get('/account/patients/{id}/medicines', 'Api\PatientController@getMedicines')->middleware('auth:api');
 Route::delete('/account/patients/medicines/{id}', 'Api\PatientController@deleteMedicines')->middleware('auth:api');
 Route::post('/account/patients/{id}/allergies', 'Api\PatientController@allergies')->middleware('auth:api');
 Route::delete('/account/patients/allergies/{id}', 'Api\PatientController@deleteAllergies')->middleware('auth:api');

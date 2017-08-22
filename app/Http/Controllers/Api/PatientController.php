@@ -76,6 +76,17 @@ class PatientController extends ApiController
        return  $medicine;
 
     }
+     /**
+     * Agregar medicamentos a pacientes
+     */
+    public function getMedicines($id)
+    {
+       $patient = $this->patientRepo->findById($id);
+       $medicines = $patient->medicines;
+        
+       return  $medicines;
+
+    }
 
     /**
      * Eliminar medicamentos a pacientes
