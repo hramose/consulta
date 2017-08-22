@@ -291,14 +291,14 @@ class PatientController extends ApiController
      /**
      * Agregar medicamentos a pacientes
      */
-    public function getHistories($id)
+    public function getHistory($id)
     {
        $patient = $this->patientRepo->findById($id);
-       $histories = $patient->history;
+       $history = $patient->history;
        $appoitments = $patient->appointments->load('user','diagnostics');
         
        return {
-            'histories' => $histories,
+            'history' => $history,
             'appoitments'=> $appoitments
         };
 
