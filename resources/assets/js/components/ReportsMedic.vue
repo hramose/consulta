@@ -91,9 +91,9 @@
                                 <tr v-for="medic in dataInvoices.medics">
                                     <td>{{ medic.name }}</td>
                                     <td>{{ medic.invoices.length }}</td>
-                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
+                                    <td>₡{{ money(parseFloat(totalInvoices(medic.invoices))) }}</td>
                                     <td>
-                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
+                                      ₡{{ money(parseFloat(totalCommission(medic.invoices, medic.commission))) }}
                                     </td>
                                    
                                 </tr>
