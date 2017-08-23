@@ -33,7 +33,11 @@ class InvoiceController extends Controller
       
     	$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
-    	return view('invoices.index',compact('invoices','search'));*/
+        return view('invoices.index',compact('invoices','search'));*/
+        $searchDate = Carbon::now()->toDateString();
+        
+        if(request('q'))
+            $searchDate = request('q');
 
         $medic = auth()->user();
 
@@ -43,12 +47,14 @@ class InvoiceController extends Controller
 
       
 
-        $invoices = $medic->invoices()->whereIn('office_id', $offices)->orderBy('created_at','DESC')->paginate(10);
+        $invoices = $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
+        $totalInvoicesAmount =  $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at',$searchDate)->sum('total');
+        $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date',$searchDate)->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
 
       
       
 
-        return view('invoices.index',compact('medic','invoices'));
+        return view('invoices.index',compact('medic','invoices', 'noInvoices','totalInvoicesAmount','searchDate'));
 
     }
 

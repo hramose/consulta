@@ -9,6 +9,11 @@ $(function () {
 
         return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
+    $('.date').datetimepicker({
+      format:'YYYY-MM-DD',
+      locale: 'es',
+      
+   });
 
     $('.btn-facturar').on('click',function (e) {
         e.preventDefault();
