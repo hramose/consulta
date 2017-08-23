@@ -196,19 +196,25 @@ class InvoiceController extends Controller
     {
         $medic_id = auth()->id();
 
-        $bala = Balance::where('user_id', $medic_id)->whereDate('created_at',Carbon::now()->toDateString())->count();
+       // $bala = Balance::where('user_id', $medic_id)->whereDate('created_at',Carbon::now()->toDateString())->count();
 
 
-        if($bala)
-        {
-            flash('Cierre ya fue ejecutado el dia de hoy','error');
-            return Redirect()->back();
-        }
+        // if($bala)
+        // {
+        //     flash('Cierre ya fue ejecutado el dia de hoy','error');
+        //     return Redirect()->back();
+        // }
 
         $invoices = Invoice::where('user_id', $medic_id)->where('status', 1)->whereDate('created_at',Carbon::now()->toDateString());
         $totalInvoices =  $invoices->sum('total');
         $countInvoices =  $invoices->count();
-       
+
+        if($countInvoices == 0)
+        {
+            flash('No hay Facturas nuevas para ejecutar un cierre','error');
+            
+            return Redirect()->back();
+        }
 
         $balance = Balance::create([
             'user_id' => $medic_id,
