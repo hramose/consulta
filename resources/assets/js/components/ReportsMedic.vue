@@ -91,9 +91,9 @@
                                 <tr v-for="medic in dataInvoices.medics">
                                     <td>{{ medic.name }}</td>
                                     <td>{{ medic.invoices.length }}</td>
-                                    <td>₡{{ money(parseFloat(totalInvoices(medic.invoices))) }}</td>
+                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
                                     <td>
-                                      ₡{{ money(parseFloat(totalCommission(medic.invoices, medic.commission))) }}
+                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
                                     </td>
                                    
                                 </tr>
@@ -386,7 +386,7 @@
               let total = 0;
 
               for (var i = 0; i < invoices.length; i++) {
-                total += parseFloat(invoices[i].total) * parseFloat(commission);
+                total += parseFloat(invoices[i].total) * parseFloat((commission)/100);
               }
               
               return total;
