@@ -23,10 +23,10 @@
         
         <div class="col-md-12">
          
-          <form method="POST" action="{{ url('/assistant/medics/'. $medic->id.'/balance') }}" class="form-horizontal">
+          <!-- <form method="POST" action="{{ url('/assistant/medics/'. $medic->id.'/balance') }}" class="form-horizontal">
                        {{ csrf_field() }}
                        <button type="submit" class="btn btn-danger">Ejecutar cierre de ventas</button>
-                  </form>
+                  </form> -->
        
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
