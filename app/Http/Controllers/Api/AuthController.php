@@ -31,7 +31,8 @@ class AuthController extends ApiController
 
             $data = [
                 'access_token' => $user->api_token,
-                'user' => $user
+                'user' => $user,
+                'patients' => $user->patients->count()
             ];
 
             \Auth::logout();
@@ -77,7 +78,8 @@ class AuthController extends ApiController
 
         $data = [
             'access_token' => $user->api_token,
-            'user' => $user
+            'user' => $user,
+            'patients' => $user->patients->count()
         ];
        
         return json_encode($data);
@@ -106,7 +108,8 @@ class AuthController extends ApiController
 
         $data = [
             'access_token' => $user->api_token,
-            'user' => $user
+            'user' => $user,
+            'patients' => $user->patients->count()
         ];
        
         return json_encode($data);
