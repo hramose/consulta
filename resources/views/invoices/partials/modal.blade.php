@@ -40,7 +40,7 @@
             </div>
              <div class="modal-footer" >
              <div class="printers pull-left">
-               <div class="form-group">
+               <!-- <div class="form-group">
                   <div class="radio">
                     <label>
                       <input type="radio" name="type_printer" id="rd_ticket" value="ticket">
@@ -54,7 +54,7 @@
                     </label>
                   </div>
                   
-                </div>
+                </div> -->
              </div>
              
            
