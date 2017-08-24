@@ -43,7 +43,8 @@ class InvoiceController extends Controller
 
        
 
-        $offices = auth()->user()->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+        //$offices = auth()->user()->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
+        $offices = auth()->user()->offices()->pluck('offices.id');//first();
 
       
 
