@@ -95,7 +95,7 @@ class UserController extends ApiController
     public function destroyPatient($id)
     {
         $patient = $this->patientRepo->findById($id);
-        $result = false;
+        $result = 0;
         if(!$patient->appointments->count())
         {
             if($patient->created_by == request()->user()->id)
@@ -105,12 +105,19 @@ class UserController extends ApiController
 
             $patient = auth()->user()->patients()->detach($id); 
 
-            $result =  true;
+            $result =  1;
+        }else{
+            $result =  2;
         }
 
-         if(! $result)
+         if($result == 0)
          {
-             return $this->respondNotFound('error al eliminar');
+             return $this->respondNotFound('error al eliminar el paciente');
+ 
+         }
+         if($result == 2)
+         {
+             return $this->respondForbidden('No se puede eliminar paciente por que tiene citas iniciadas');
  
          }
 
