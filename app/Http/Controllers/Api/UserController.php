@@ -112,7 +112,7 @@ class UserController extends ApiController
 
          if($result == 0)
          {
-             return $this->respondNotFound('error al eliminar el paciente');
+             return $this->respondNotFound('Error al eliminar el paciente');
  
          }
          if($result == 2)
