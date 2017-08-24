@@ -38,16 +38,16 @@ class AppointmentController extends ApiController
         $appointment =   $this->appointmentRepo->findById($id)->load('diseaseNotes','physicalExams','diagnostics','treatments'); 
         $patient = $appointment->patient;
         $medicines = $patient->medicines;
-        $vitalSigns = $patient->vitalSigns
+        $vitalSigns = $patient->vitalSigns;
         
         $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
         $data = [
            'appointment' => $appointment,
-           'file' => $files,
+           'files' => $files,
            'medicines' => $medicines,
            'vitalSigns' => $vitalSigns
         ];
-        
+
         return $data;
 
     }
