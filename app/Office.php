@@ -27,7 +27,7 @@ class Office extends Model
     }
     public function getNameAddressAttribute()
     {
-        return $this->name.' - '.$this->province.', '.$this->canton
+        return $this->name.' - '.$this->province.', '.$this->canton;
     }
 
      public function scopeSearch($query, $search)
