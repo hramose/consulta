@@ -29,6 +29,28 @@ class AppointmentController extends ApiController
     }
 
     
+     /**
+     * Mostrar vista de actualizar consulta(cita)
+     */
+    public function show($id)
+    {
+
+        $appointment =   $this->appointmentRepo->findById($id)->load('diseaseNotes','physicalExams','diagnostics','treatments'); 
+        $patient = $appointment->patient;
+        $medicines = $patient->medicines;
+        $vitalSigns = $patient->vitalSigns
+        
+        $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
+        $data = [
+           'appointment' => $appointment,
+           'file' => $files,
+           'medicines' => $medicines,
+           'vitalSigns' => $vitalSigns
+        ];
+        
+        return $data;
+
+    }
 
     /**
      * Lista de todas las citas de un doctor sin paginar
