@@ -30,6 +30,12 @@ $(function () {
       $('.box-search-filters').removeClass('collapsed-box');
     }
 
+    $("form[data-confirm]").submit(function() {
+      if ( ! confirm($(this).attr("data-confirm"))) {
+          return false;
+      }
+  });
+
 
    $(".dropdown-toggle").dropdown();
 

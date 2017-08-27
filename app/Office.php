@@ -15,7 +15,7 @@ class Office extends Model
         'type','name','address','province','canton','district','city','phone','lat','lon','address_map','notification','notification_date','active'
     ];
 
-    protected $appends = ['notification_datetime','notification_hour'];
+    protected $appends = ['notification_datetime','notification_hour','name_address'];
 
     public function getNotificationDatetimeAttribute()
     {
@@ -24,6 +24,10 @@ class Office extends Model
      public function getNotificationHourAttribute()
     {
         return Carbon::parse($this->notification_date)->toTimeString();
+    }
+    public function getNameAddressAttribute()
+    {
+        return $this->name.' - '.$this->province.', '.$this->canton;
     }
 
      public function scopeSearch($query, $search)

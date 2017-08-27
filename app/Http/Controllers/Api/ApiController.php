@@ -41,6 +41,17 @@ class ApiController extends Controller {
         return $this->respondWithError($message);
 
     }
+     /**
+     * @param string $message
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function respondforbidden($message = 'Forbidden!')
+    {
+
+        $this->setStatusCode(403);
+        return $this->respondWithError($message);
+
+    }
 
     /**
      * @param string $message

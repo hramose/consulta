@@ -6,7 +6,7 @@
               <div class="col-xs-12 col-sm-5">
                 <div class="form-group">
                     <div class="col-sm-12">
-                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar Clínica..." label="name" :on-change="selectOffice" :value.sync="selectedValue" ></v-select>
+                    <v-select :debounce="250" :on-search="getOffices"  :options="allOffices" placeholder="Buscar Clínica..." label="name_address" :on-change="selectOffice" :value.sync="selectedValue" ></v-select>
                     </div>
                 </div>
                     
