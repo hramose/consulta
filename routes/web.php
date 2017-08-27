@@ -164,7 +164,8 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	//Route::put('/account/settings', 'Clinic\UserController@updateSettings');
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');
-	Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
+	Route::post('/account/offices', 'Clinic\UserController@updateClinic');
+	//Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
 	Route::get('/specialities/list', 'Clinic\UserController@getSpecialities');
 	//Route::post('/account/patients', 'UserController@storePatient');
 	//Route::delete('/account/patients/{id}', 'UserController@destroyPatient');

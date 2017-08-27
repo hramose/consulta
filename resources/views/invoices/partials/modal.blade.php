@@ -40,7 +40,7 @@
             </div>
              <div class="modal-footer" >
              <div class="printers pull-left">
-               <!-- <div class="form-group">
+               <div class="form-group">
                   <div class="radio">
                     <label>
                       <input type="radio" name="type_printer" id="rd_ticket" value="ticket">
@@ -54,13 +54,14 @@
                     </label>
                   </div>
                   
-                </div> -->
+                </div>
              </div>
              
            
              
               
                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+               <button type="button" class="btn btn-secondary btn-print" data-invoice data-medic>Imprimir</button>
               <!-- <button type="button" class="btn btn-primary btn-facturar" data-invoice data-medic>Facturar</button> -->
              
             </div>

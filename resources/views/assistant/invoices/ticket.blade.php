@@ -90,8 +90,8 @@
       <!-- this row will not appear when printing -->
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Print</a>
-          <a href="/assistant/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar </a>
+          <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Imprimir</a>
+          <a href="/assistant/medics/{{$invoice->medic->id }}/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar </a>
          
         </div>
       </div>

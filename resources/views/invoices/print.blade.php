@@ -9,52 +9,59 @@
 		 <!-- Main content -->
     <section class="invoice">
       <!-- title row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <h2 class="page-header">
-            <i class="fa fa-globe"></i> {{ config('app.name', 'Laravel') }}
-            <small class="pull-right">Fecha: {{ \Carbon\Carbon::now() }}</small>
-          </h2>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- info row -->
-      <div class="row invoice-info">
+        <!-- info row -->
+        <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
+          <div class="logo">
+            <img src="{{ getLogo($invoice->clinic) }}" alt="logo">
+          </div>  
+        
+
           
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          <h2>{{ $invoice->clinic->name }}</h2>
           <address>
-            <strong>{{ $invoice->clinic->name }}</strong><br>
-            {{ $invoice->clinic->type }}<br>
-            {{ $invoice->clinic->address }}<br>
-            {{ $invoice->clinic->province }}<br>
-           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-            
+          {{ $invoice->clinic->type }}<br>
+          {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
+          {{ $invoice->clinic->address }}<br>
+          <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
           </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
-       
-          <address>
-            <strong>{{ $invoice->client_name }}</strong><br>
-            {{ $invoice->appointment->patient->address }}<br>
-            {{ $invoice->appointment->patient->province }}<br>
-            Tel: {{ $invoice->appointment->patient->phone }}<br>
-            Email: {{ $invoice->appointment->patient->email }}
-          </address>
-        </div>
-        <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          <b>Factura #{{$invoice->id }}</b><br>
-          <b>Fecha:</b> {{ $invoice->created_at }}<br>
-          <b>Médico:</b> {{ $invoice->medic->name }}<br>
-           @foreach($invoice->medic->specialities as $speciality)
-           	{{ $speciality->name }},
-           @endforeach
+          <div class="invoice-number">
+            <h3>Nro. Factura:</h3>
+            <h4>{{$invoice->id }}</h4>
+          </div>  
+          <div class="invoice-date">
+          <b>Fecha:</b> {{ $invoice->created_at }}
+          </div>
+          
+          
           
         </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
+      <hr>
+      <div class="row invoice-patient">
+        <div class="col-xs-4 invoice-col invoice-left">     
+            <b>Paciente:</b> {{ $invoice->client_name }}<br>
+            {{ $invoice->appointment->patient->address }}<br>
+        </div>
+        <div class="col-xs-4 invoice-col invoice-right">
+            
+        </div>
+        <div class="col-xs-4 invoice-col invoice-right">
+            <b>Médico:</b> {{ $invoice->medic->name }}<br>
+            @foreach($invoice->medic->specialities as $speciality)
+              {{ $speciality->name }} 
+            @endforeach
+        </div>
+      </div>
+      <hr>
 
       <!-- Table row -->
       <div class="row">

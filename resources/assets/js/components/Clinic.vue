@@ -241,6 +241,15 @@
               </div>            
                               
           </div>
+           <div class="form-group">
+              <label for="file" class="col-sm-2 control-label">Logo</label>
+               <div class="col-sm-4" v-show="office.id">
+                <img v-bind:src="'/storage/offices/'+ office.id+'/photo.jpg?'+ new Date().getTime()" alt="logo" style="height:100px;width:auto;">
+               </div>
+                <div class="col-sm-4">
+                    <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+                </div>
+          </div>
          
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -756,9 +765,21 @@
         save() {
           this.loader = true;
           //var resource = this.$resource('/medic/account/offices');
+            const config = {
+                headers: {
+                'content-type': 'multipart/form-data'
+                }
+            };
+            let form = new FormData();
+            let officeObj = this.office
+            
+            Object.keys(officeObj).forEach(function(key) {
+
+                form.append(key, officeObj[key]);
+            });
            if(this.office.id)
            {
-             var resource = this.$resource('/clinic/account/offices/'+ this.office.id);
+             /*var resource = this.$resource('/clinic/account/offices/'+ this.office.id);
 
                 resource.update(this.office).then((response) => {
                     
@@ -773,12 +794,38 @@
                     this.loader = false;
                     this.loader_message ="Error al guardar cambios";
                     this.errors = response.data;
+                });*/
+                this.$http.post('/clinic/account/offices', form, config).then(response => {
+                    bus.$emit('alert', 'Consultorio Actualizado','success');
+                     this.loader = false;
+                     this.errors = [];
+                     //this.office = {};
+                     this.newOffice = false;
+                }, response => {
+                       console.log(response.data)
+                    this.loader = false;
+                    this.loader_message ="Error al guardar cambios";
+                    this.errors = response.data;
                 });
 
            }
             $(window).scrollTop(580);
+             bus.$emit('clearImage');
 
       },
+       handleFileUpload(file){
+         
+          this.office.file = file
+        // let form = new FormData();
+        // form.append('photo', file);
+
+        // // or this.$http
+        // axios.post(`/api/upload`, form).then(res => {
+            
+        // }, res => {
+
+        // });
+    },
 	    
          
           selectOffice(clinica) {

@@ -90,6 +90,21 @@ function getAvatar($user)
         
      
 }
+function getLogo($clinic)
+{
+   
+
+    $url = '';
+    
+    if(Storage::disk('public')->exists('offices/'. $clinic->id.'/photo.jpg'))
+        $url = Storage::url('offices/'.$clinic->id.'/photo.jpg');
+    else
+        $url = "/img/logo.png";
+
+    return $url;
+        
+     
+}
 /**
      * obtiene el monto que se cobra por cita atendita de los medicos generales
      *

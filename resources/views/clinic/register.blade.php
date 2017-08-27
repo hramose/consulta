@@ -13,7 +13,7 @@
    
   <div class="register-box-body">
     <div class="callout callout-info"><h4>Ya casi terminas!</h4> <p>Agrega los siguientes datos de la clínica para finalizar el rergistro.</p></div>
-    <form method="POST" action="{{ url('/clinic/register/office') }}" class="form-horizontal register-patient">
+    <form method="POST" action="{{ url('/clinic/register/office') }}" class="form-horizontal register-patient"  enctype="multipart/form-data">
          {{ csrf_field() }}
          
          <div class="form-group">
@@ -103,7 +103,15 @@
               @endif
             </div>
           </div>
-         
+          <div class="form-group">
+            
+
+           
+            <div class="col-sm-12">
+              <input type="file" class="form-control" name="file" placeholder="Logo">
+               <span class="">Logo (jpg - png - bmp - jpeg)</span>
+            </div>
+          </div>
          
           <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">

@@ -55,6 +55,19 @@ $(function () {
 
     });
 
+    $('.btn-print').on('click',function (e) {
+      e.preventDefault();
+    
+       var invoice_id = $(this).attr('data-invoice');
+       var medic_id = $(this).attr('data-medic');
+      
+       if($("#rd_ticket").is(":checked"))
+        window.location.href = "/medic/invoices/"+invoice_id+'/ticket';
+      else
+        window.location.href = "/medic/invoices/"+invoice_id+'/print';
+
+  });
+
     modalForm.on('hidden.bs.modal', function (e) {
       var modal = $(this);
       var table_details = modal.find('#table-details')
@@ -69,9 +82,11 @@ $(function () {
       var medic_id = button.attr('data-medic')  
       var table_details = modal.find('#table-details')
       var detailsHtml = '';
-      debugger
+     
       modal.find('.btn-facturar').attr('data-invoice', invoice_id);
       modal.find('.btn-facturar').attr('data-medic', medic_id);
+      modal.find('.btn-print').attr('data-invoice', invoice_id);
+      modal.find('.btn-print').attr('data-medic', medic_id);
 
 
      

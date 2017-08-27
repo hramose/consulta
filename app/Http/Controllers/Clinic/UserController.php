@@ -232,7 +232,7 @@ class UserController extends Controller
     /**
      * Actualizar datos de consultorio
      */
-    public function updateClinic($id)
+    public function updateClinic()
     {
        
          $this->validate(request(),[
@@ -247,11 +247,31 @@ class UserController extends Controller
          
          $data = request()->all();
 
-        $office = $this->officeRepo->update($id, $data);
+         if(isset($data['id']) && $data['id']){ // update
+            
+            $office = $this->officeRepo->update($data['id'], $data);
+            
+            $mimes = ['jpg','jpeg','bmp','png'];
+            $fileUploaded = "error";
+        
+            if(request()->file('file'))
+            {
+            
+                $file = request()->file('file');
 
-        //flash('Consultorio Actualizado','success');
+                $ext = $file->guessClientExtension();
 
-        return $office;
+                if(in_array($ext, $mimes))
+                    $fileUploaded = $file->storeAs("offices/". $office->id, "photo.jpg",'public');
+            }
+
+            
+            return $office;
+            
+        }
+        
+
+
 
     }
     public function updateOfficeNotification($id)

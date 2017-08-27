@@ -93,6 +93,20 @@ class RegisterController extends Controller
 
         $office = $this->officeRepo->store($data);
 
+        $mimes = ['jpg','jpeg','bmp','png'];
+        $fileUploaded = "error";
+    
+        if(request()->file('file'))
+        {
+        
+            $file = request()->file('file');
+
+            $ext = $file->guessClientExtension();
+
+            if(in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("offices/". $office->id, "photo.jpg",'public');
+        }
+
         
         $adminClinic = auth()->user();
        

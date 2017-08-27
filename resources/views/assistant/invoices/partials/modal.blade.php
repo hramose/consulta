@@ -61,6 +61,7 @@
              
               
                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+               <button type="button" class="btn btn-secondary btn-print" data-invoice data-medic>Imprimir</button>
               <button type="button" class="btn btn-primary btn-facturar" data-invoice data-medic>Facturar</button>
              
             </div>

@@ -278,7 +278,15 @@
               </div>            
                               
           </div>
-         
+          <div class="form-group" v-show="office.id || office.type == 'Consultorio Independiente'">
+              <label for="file" class="col-sm-2 control-label">Logo</label>
+               <div class="col-sm-4" v-show="office.id">
+                <img v-bind:src="'/storage/offices/'+ office.id+'/photo.jpg?'+ new Date().getTime()" alt="logo" style="height:100px;width:auto;">
+               </div>
+                <div class="col-sm-4" v-show="office.type == 'Consultorio Independiente'">
+                    <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+                </div>
+          </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-danger" @click="save()" :disabled="loader">Guardar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
@@ -698,7 +706,8 @@
             lon: '',
             notification_datetime: '',
             notification_hour: '',
-            type:''
+            type:'',
+            file:''
           },
           selectedValue:null,
           allOffices: [],
@@ -730,7 +739,8 @@
                 lon: '',
                 notification_datetime: '',
                 notification_hour: '',
-                type: type
+                type: type,
+                file:''
               };
           this.allOffices = [];
           
@@ -858,28 +868,57 @@
 
           //var resource = this.$resource('/medic/account/offices');
            this.loader = true;
+           
+           const config = {
+                headers: {
+                'content-type': 'multipart/form-data'
+                }
+            };
+            let form = new FormData();
+            let officeObj = this.office
+            
+            Object.keys(officeObj).forEach(function(key) {
+
+                form.append(key, officeObj[key]);
+            });
+           
            if(this.office.id)
            {
-             var resource = this.$resource('/medic/account/offices/'+ this.office.id);
+            //  var resource = this.$resource('/medic/account/offices/'+ this.office.id);
 
-                resource.update(this.office).then((response) => {
+            //     resource.update(this.office).then((response) => {
                     
-                     bus.$emit('alert', 'Consultorio Actualizado','success');
+            //          bus.$emit('alert', 'Consultorio Actualizado','success');
+            //          this.loader = false;
+            //          this.errors = [];
+            //          this.office = {};
+            //          this.newOffice = false;
+            //          this.selectedValue = null;
+            //          this.allOffices = [];
+            //     }, (response) => {
+            //         console.log(response.data)
+            //         this.loader = false;
+            //         this.loader_message ="Error al guardar cambios";
+            //         this.errors = response.data;
+            //     });
+            // debugger
+            this.$http.post('/medic/account/offices', form, config).then(response => {
+                 bus.$emit('alert', 'Consultorio Actualizado','success');
                      this.loader = false;
                      this.errors = [];
                      this.office = {};
                      this.newOffice = false;
                      this.selectedValue = null;
                      this.allOffices = [];
-                }, (response) => {
+            }, response => {
                     console.log(response.data)
                     this.loader = false;
                     this.loader_message ="Error al guardar cambios";
                     this.errors = response.data;
-                });
+            });
 
            }else{
-              this.$http.post('/medic/account/offices', this.office).then((response) => {
+              this.$http.post('/medic/account/offices', form, config).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
                     if(response.status == 200 && response.data)
@@ -907,8 +946,22 @@
         
             }
             $(window).scrollTop(580);
+            bus.$emit('clearImage');
 
       },
+      handleFileUpload(file){
+          console.log(file)
+          this.office.file = file
+        // let form = new FormData();
+        // form.append('photo', file);
+
+        // // or this.$http
+        // axios.post(`/api/upload`, form).then(res => {
+            
+        // }, res => {
+
+        // });
+    },
 	     
 
       remove(item){

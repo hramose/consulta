@@ -53,15 +53,54 @@ class OfficeController extends Controller
         ]);
 
         $data = request()->all();
-
+       
          /*if($data['notification_date'])
          {
              $data['notification'] = 1;
          }*/
+
+         if(isset($data['id']) && $data['id']){ // update
+
+            $office = $this->officeRepo->update($data['id'], $data);
+
+            $mimes = ['jpg','jpeg','bmp','png'];
+            $fileUploaded = "error";
+           
+            if(request()->file('file'))
+            {
+            
+                $file = request()->file('file');
+    
+                $ext = $file->guessClientExtension();
+    
+                if(in_array($ext, $mimes))
+                    $fileUploaded = $file->storeAs("offices/". $office->id, "photo.jpg",'public');
+            }
+
+            return $office;
+    
+         }
         
         if($data['type'] == 'Consultorio Independiente') $data['active'] = 1;
 
         $office = $this->officeRepo->store($data);
+
+        $mimes = ['jpg','jpeg','bmp','png'];
+        $fileUploaded = "error";
+       
+        if(request()->file('file'))
+        {
+        
+            $file = request()->file('file');
+
+            $ext = $file->guessClientExtension();
+
+            if(in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("offices/". $office->id, "photo.jpg",'public');
+        }
+
+        //return $fileUploaded;
+
 
         if($office->type == 'Consultorio Independiente') {
          
@@ -125,7 +164,7 @@ class OfficeController extends Controller
      */
     public function update($id)
     {
-       
+        
     	 $this->validate(request(),[
                 'type' => 'required',
                 'name' => 'required',
@@ -146,7 +185,21 @@ class OfficeController extends Controller
              $data['notification'] = 0;
          }*/
 
-    	$office = $this->officeRepo->update($id, $data);
+        $office = $this->officeRepo->update($id, $data);
+        
+        $mimes = ['jpg','jpeg','bmp','png'];
+        $fileUploaded = "error";
+       
+        if(request()->file('file'))
+        {
+        
+            $file = request()->file('file');
+
+            $ext = $file->guessClientExtension();
+
+            if(in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("offices/". $office->id, "photo.jpg",'public');
+        }
 
         //flash('Consultorio Actualizado','success');
 
