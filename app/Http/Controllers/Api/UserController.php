@@ -40,6 +40,21 @@ class UserController extends ApiController
     	return $user;
 
     }
+    /**
+     * Actualizar informacion basica del medico
+     */
+     public function updatePushToken()
+     {  
+         $user = request()->user();
+
+ 
+         $user = $this->userRepo->update($user->id, request()->all());
+ 
+        
+ 
+         return $user;
+ 
+     }
 
     /**
      * Guardar avatar del medico

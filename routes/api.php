@@ -25,6 +25,7 @@ Route::post('/user/social/register', 'Api\AuthController@registerSocial');
 Route::post('/user/register', 'Api\AuthController@register');
 Route::get('/users/{user}/patients', 'Api\AuthController@getPatients');
 Route::put('/account/edit', 'Api\UserController@update')->middleware('auth:api');
+Route::put('/account/updatepush', 'Api\UserController@updatePushToken')->middleware('auth:api');
 Route::delete('/account/patients/{id}', 'Api\UserController@destroyPatient')->middleware('auth:api');
 Route::put('/account/patients/{id}', 'Api\UserController@updatePatient')->middleware('auth:api');
 Route::post('/account/avatars', 'Api\UserController@avatars')->middleware('auth:api');
