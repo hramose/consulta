@@ -233,8 +233,8 @@
 
                                         <span >{{ $medic->name }}</span><br>
                                         <b>Horario Semana Actual:</b><br>
-                                          @foreach($medic->schedules()->where('user_id',$doctor->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
-                                            @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() <= Carbon\Carbon::now()->endOfWeek())
+                                          @foreach($medic->schedules()->where('user_id',$doctor->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->orderBy('date','ASC')->get() as $schedule)
+                                            @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) <= Carbon\Carbon::now()->endOfWeek())
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
                                              @endif
                                           @endforeach
@@ -278,9 +278,10 @@
                                          <div class="td-lugar-name">
                                           <span >{{ $office->name }}</span> <br>
                                           <b>Horario Semana Actual:</b><br>
+                                         
+                                          @foreach($office->schedules()->where('user_id',$medic->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->orderBy('date','ASC')->get() as $schedule)
                                           
-                                          @foreach($office->schedules()->where('user_id',$medic->id)->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->get() as $schedule)
-                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->toDateString() <= Carbon\Carbon::now()->endOfWeek())
+                                             @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) <= Carbon\Carbon::now()->endOfWeek())
                                                
                                                 <span class="label label-warning"> {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} -  {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }}</span>
                                                 
