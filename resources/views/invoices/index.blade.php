@@ -34,7 +34,7 @@
                             <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
                             <div class="input-group-btn">
 
-                              <button type="submit" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                              <button type="submit" class="btn btn-primary">Buscar</button>
                             </div>
                           
                           
