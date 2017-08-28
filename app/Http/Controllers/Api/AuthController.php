@@ -72,7 +72,7 @@ class AuthController extends ApiController
             $data['provider_id'] = ($request->input('api_token')) ? substr($request->input('api_token'), 0, 90) : str_random(90);
             $data['role'] = Role::whereName('paciente')->first();
             $data['api_token'] = ($request->input('api_token')) ? substr($request->input('api_token'), 0, 90) : str_random(90);
-            
+            $data['push_token'] = $request->input('push_token');
             $user = $this->userRepo->store($data);
         }
 
