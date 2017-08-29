@@ -89,7 +89,7 @@ class AppointmentController extends ApiController
         }
         
 
-        $appointmentsToday = auth()->user()->appointmentsToday();
+        $appointmentsToday = $user->appointmentsToday();
 
         $resp = [
             'appointment' => $appointment,
@@ -139,25 +139,53 @@ class AppointmentController extends ApiController
     public function delete($id)
     {
 
-        $appointment = $this->appointmentRepo->delete($id);
-        $appointmentsToday = auth()->user()->appointmentsToday();
+        $appointment = $this->appointmentRepo->find($id);
+        $result = 0;
+
+        if(!$appointment) return $result;
+
+        if(request()->user()->hasRole('paciente')){
+
+            if( !$appointment->isStarted() && $appointment->isOwner(request()->user()) )
+            {
+                $appointment->reminders()->delete();
+
+               $appointment = $appointment->delete();
+
+                $result = 1;
+            }else{
+                $result = 2;
+            }
+        }else{
+
+            if( !$appointment->isStarted() )
+            {
+                $appointment->reminders()->delete();
+                
+                $appointment = $appointment->delete();
+
+                 $result = 1;
+            }else{
+                $result = 2;
+            }
+        }
+
+
         
-        if($appointment !== true)
-        {
-             $data = [
-                    'resp' => 'error',
-                    'appointmentsToday' => $appointmentsToday
-                ];
+         if($result == 0)
+         {
+             return $this->respondNotFound('Error al eliminar la cita');
+ 
+         }
+         if($result == 2)
+         {
+             return $this->respondForbidden('No se puede eliminar la cita por que ya esta iniciada');
+ 
+         }
 
-            return $data;//$appointment; //no se elimino correctamente
-        }  
-
-        $data = [
-            'resp' => 'ok',
-            'appointmentsToday' => $appointmentsToday
-        ];
-
-        return $data;
+         
+         return $this->respondDeleted('Cita Eliminada Correctamente');
+        
 
     }
    

@@ -42,9 +42,9 @@ class Appointment extends Model
         return $this->patient_id == 0;
     }
 
-    public function isOwner() 
+    public function isOwner($user = null) 
     {
-        return $this->created_by == auth()->id();
+        return $this->created_by == ($user) ? $user->id : auth()->id();
     }
 
      public function user()

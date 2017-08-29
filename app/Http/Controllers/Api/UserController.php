@@ -118,7 +118,7 @@ class UserController extends ApiController
                 $result = $patient->delete();
             }
 
-            $patient = auth()->user()->patients()->detach($id); 
+            $patient = request()->user()->patients()->detach($id); 
 
             $result =  1;
         }else{
