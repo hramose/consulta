@@ -102,7 +102,7 @@ class AuthController extends ApiController
         $data['provider_id'] = $request->input('email');
         $data['role'] = Role::whereName('paciente')->first();
         $data['api_token'] = str_random(90);
-            
+        $data['push_token'] = $request->input('push_token');    
         $user = $this->userRepo->store($data);
         
 
