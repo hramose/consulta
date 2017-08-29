@@ -30,7 +30,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('borderColor');
             $table->text('medical_instructions')->nullable();
             $table->text('office_info')->nullable();
-            $table->tinyInteger('status')->default(0); //1 iniciada
+            $table->tinyInteger('status')->default(0); //1 iniciada //2 no asistio
             $table->tinyInteger('finished')->default(0); //1 finalizada
             $table->timestamps();
         });

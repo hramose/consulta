@@ -31,7 +31,7 @@ class Appointment extends Model
    
     public function isStarted()
     {
-        return $this->status == 1;
+        return $this->status != 0;
     }
     public function isFinished()
     {
