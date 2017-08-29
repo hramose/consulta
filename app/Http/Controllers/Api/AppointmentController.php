@@ -139,7 +139,7 @@ class AppointmentController extends ApiController
     public function delete($id)
     {
 
-        $appointment = $this->appointmentRepo->find($id);
+        $appointment = $this->appointmentRepo->findById($id);
         $result = 0;
 
         if(!$appointment) return $result;
