@@ -118,7 +118,7 @@ class AppointmentController extends Controller
                     ->send()
                     ->getFeedback();
                     
-                    Log::info($response);
+                    Log::info('Mensaje Push code: '.$response->success);
            }
         
         try {

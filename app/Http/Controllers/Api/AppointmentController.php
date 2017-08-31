@@ -100,7 +100,7 @@ class AppointmentController extends ApiController
                     ->send()
                     ->getFeedback();
 
-                    Log::info($response);
+                    Log::info('Mensaje Push code: '.$response->success);
            }
         
         try {
