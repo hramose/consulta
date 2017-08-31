@@ -65,7 +65,7 @@ class ReminderAppointment extends Command
                 {
                     $usersToPush = [];
 
-                    $users_patient = $remider->appointment->patient->users()->whereHas('roles', function ($query){
+                    $users_patient = $remider->appointment->patient->user()->whereHas('roles', function ($query){
                         $query->where('name',  'paciente');
                     })->get();
                    
