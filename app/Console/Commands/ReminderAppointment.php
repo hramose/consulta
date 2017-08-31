@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-
+use Edujugon\PushNotification\PushNotification;
 use App\Mail\ReminderAppointments;
 use App\Reminder;
 use Carbon\Carbon;
