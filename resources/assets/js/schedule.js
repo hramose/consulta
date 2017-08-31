@@ -176,7 +176,9 @@ $(function () {
 
     function initCalendar(appointments,schedules)
     {
-
+      minTime = calendar.attr('data-minTime') ? calendar.attr('data-minTime') : '06:00:00';
+      maxTime = calendar.attr('data-maxTime') ? calendar.attr('data-maxTime') : '18:00:00';
+      
       calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaWeek',
