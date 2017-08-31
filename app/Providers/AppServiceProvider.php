@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
                
             
 
-            $newAppointments = $appointments->count();
+            $newAppointments = $appointments->get();
 
            
             $view->with('newAppointments', $newAppointments);
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                
             
 
-            $newAppointments = $appointments->count();
+            $newAppointments = $appointments->get();
 
            
             $view->with('newAppointments', $newAppointments);
