@@ -63,8 +63,38 @@ class ReminderAppointment extends Command
                 if(Carbon::now()->diffInHours($dtReminder) <= $timeArray[0])
                // if(Carbon::now()->diffInMinutes($dtReminder) == 0)
                 {
-                    
+                    $usersToPush = [];
+
+                    $users_patient = $remider->appointment->patient->users()->whereHas('roles', function ($query){
+                        $query->where('name',  'paciente');
+                    })->get();
                    
+                    foreach($users_patient as $user){
+                        if($user->push_token)
+                            $usersToPush[] = $user->push_token;
+                    }
+                    /*$remider->appointment->patient->users->each(function ($item, $key) {
+                        if($item->push_token)
+                            $usersToPush[] = $item->push_token;
+                    });*/
+                    
+                    if( count($usersToPush) ){
+                        $push = new PushNotification('fcm');
+                        $response = $push->setMessage([
+                            'notification' => [
+                                    'title'=>'Notificación',
+                                    'body'=>'Esto es un recordatorio para la cita de '.  Carbon::parse($remider->appointment->start)->toDateTimeString(),
+                                    'sound' => 'default'
+                                    ]
+                            
+                            ])
+                            ->setDevicesToken($usersToPush)
+                            ->send()
+                            ->getFeedback();
+                            
+                            \Log::info($response);
+                   }
+                    
                     try {
                         
                         

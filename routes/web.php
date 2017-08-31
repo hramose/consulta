@@ -1,5 +1,5 @@
 <?php
-
+use Edujugon\PushNotification\PushNotification;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,26 @@
 Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
+Route::get('/push', function(Request $request){
+	$push = new PushNotification('fcm');
+	$userToPush = ['fxpcUYLVUhQ:APA91bG6y1xhaKtdaoHf1MuBlMTWS_EG5EIttv_P1_XesMv0HfuJ_DgFRvorSfUhiSfYjGcFZsc1gGgWDyh5R0BNZxy78JRBYYf6P9Zh62z0RxXl1C9e4s5ODGmbhMWxHpdpNTwsgvYB'];
+	$response = $push->setMessage([
+		'notification' => [
+				'title'=>'Laravel',
+				'body'=>'This is the message from Laravel',
+				'sound' => 'default'
+				],
+		'data' => [
+				'extraPayLoad1' => 'value1',
+				'extraPayLoad2' => 'value2'
+				]
+		])
+		->setDevicesToken($userToPush)
+		->send()
+		->getFeedback();
+	dd($response);
+});
+
 
 Route::get('/account/edit', 'UserController@edit');
 Route::put('/account/edit', 'UserController@update');

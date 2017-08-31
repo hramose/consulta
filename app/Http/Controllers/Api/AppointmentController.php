@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Edujugon\PushNotification\PushNotification;
 use App\Appointment;
 use App\Mail\NewAppointment;
 use App\Reminder;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -67,10 +69,12 @@ class AppointmentController extends ApiController
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
         $appointment->load('office');
-
+        
+        $medic = User::find(request('user_id'));
+        
         if($appointment->user) //agregar paciente del usuario al medico tambien
             {
-                $medic = User::find($appointment->user->id);
+                //$medic = User::find($appointment->user->id);
 
                 $ids_patients = $medic->patients()->pluck('patient_id')->all();
 
@@ -78,6 +82,24 @@ class AppointmentController extends ApiController
 
                 $medic->patients()->sync($ids_patients);
             }
+           
+
+           if($medic->push_token){
+                $push = new PushNotification('fcm');
+                $response = $push->setMessage([
+                    'notification' => [
+                            'title'=>'Notificación',
+                            'body'=>'Un Usuario ha reservado una cita para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
+                            'sound' => 'default'
+                            ]
+                    
+                    ])
+                    ->setDevicesToken($medic->push_token)
+                    ->send()
+                    ->getFeedback();
+                    
+                    \Log::info($response);
+           }
         
         try {
                         
