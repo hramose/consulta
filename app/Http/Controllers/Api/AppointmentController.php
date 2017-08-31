@@ -89,15 +89,16 @@ class AppointmentController extends ApiController
                 $response = $push->setMessage([
                     'notification' => [
                             'title'=>'Notificación',
-                            'body'=>'Un Usuario ha reservado una cita para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
+                            'body'=>'Un Usuario ha reservado una cita para el '.Carbon::parse($appointment->start)->toDateTimeString(),
                             'sound' => 'default'
                             ]
                     
                     ])
+                    ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
                     ->send()
                     ->getFeedback();
-                    
+
                     \Log::info($response);
            }
         

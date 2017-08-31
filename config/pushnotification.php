@@ -4,12 +4,12 @@ return [
   'gcm' => [
       'priority' => 'normal',
       'dry_run' => false,
-      'apiKey' => env('API_WEB_KEY_FIREBASE'),
+      'apiKey' => env('API_WEB_KEY_FIREBASE_PATIENTS'),
   ],
   'fcm' => [
         'priority' => 'normal',
         'dry_run' => false,
-        'apiKey' => env('API_WEB_KEY_FIREBASE'),
+        'apiKey' => env('API_WEB_KEY_FIREBASE_PATIENTS'),
   ],
   'apn' => [
       'certificate' => __DIR__ . '/iosCertificates/apns-dev-cert.pem',

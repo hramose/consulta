@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Edujugon\PushNotification\PushNotification;
 use App\Appointment;
 use App\Mail\NewAppointment;
 use App\Reminder;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
+use Carbon\Carbon;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -110,6 +112,7 @@ class AppointmentController extends Controller
                             ]
                     
                     ])
+                    ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
                     ->send()
                     ->getFeedback();
