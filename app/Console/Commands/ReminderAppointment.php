@@ -92,7 +92,7 @@ class ReminderAppointment extends Command
                             ->send()
                             ->getFeedback();
                             
-                            \Log::info($response);
+                            Log::info($response);
                    }
                     
                     try {
@@ -105,7 +105,7 @@ class ReminderAppointment extends Command
 
                      }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
                     {
-                        \Log::error($e->getMessage());
+                        Log::error($e->getMessage());
                     }
 
                     $countNotification++;

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends ApiController
 {
@@ -99,7 +100,7 @@ class AppointmentController extends ApiController
                     ->send()
                     ->getFeedback();
 
-                    \Log::info($response);
+                    Log::info($response);
            }
         
         try {
@@ -108,7 +109,7 @@ class AppointmentController extends ApiController
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
         }
         
 

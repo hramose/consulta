@@ -13,6 +13,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
@@ -117,7 +118,7 @@ class AppointmentController extends Controller
                     ->send()
                     ->getFeedback();
                     
-                    \Log::info($response);
+                    Log::info($response);
            }
         
         try {
@@ -126,7 +127,7 @@ class AppointmentController extends Controller
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
         }
         
 
