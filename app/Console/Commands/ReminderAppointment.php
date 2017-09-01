@@ -59,7 +59,9 @@ class ReminderAppointment extends Command
                //$dt->setTime($timeArray[0], $timeArray[1], 0);
                //if($remider->id == 6)
                // dd(Carbon::now()->diffInHours($dtReminder));
-              
+            //    if($remider->id == 9)
+            //     $this->info('diff horas, ' . Carbon::now()->diffInHours($dtReminder) . '-- timearray '. $timeArray[0]);
+
                 if(Carbon::now()->diffInHours($dtReminder) <= $timeArray[0])
                // if(Carbon::now()->diffInMinutes($dtReminder) == 0)
                 {
@@ -110,7 +112,7 @@ class ReminderAppointment extends Command
 
                     $countNotification++;
                     
-                    Log::info(Carbon::now()->diffInMinutes($dtReminder));
+                    Log::info('diff in hours '.Carbon::now()->diffInHours($dtReminder));
                 }
                 
 
