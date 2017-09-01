@@ -47,7 +47,8 @@ class Kernel extends ConsoleKernel
                 //url contra la que atacamos
                 $ch = curl_init(env('APP_URL')."/appointments/reminder");
                 //a true, obtendremos una respuesta de la url, en otro caso,
-                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13'); 
+                $agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)';
+                curl_setopt($ch,CURLOPT_USERAGENT,$agent); 
                 //true si es correcto, false si no lo es
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 //establecemos el verbo http que queremos utilizar para la petición
