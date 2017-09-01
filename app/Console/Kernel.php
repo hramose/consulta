@@ -59,7 +59,7 @@ class Kernel extends ConsoleKernel
                 curl_close($ch);
                 Log::info('se llamó appointment/reminder: '.$response);
 
-        })->everyMinute();
+        })->everyThirtyMinutes();
 
        /* $schedule->command(\App\Console\Commands\SendPolls::class) //hay q verificar si en el nuevo servidor si funciona asi
                  ->daily();*/
