@@ -85,7 +85,7 @@ class ReminderAppointment extends Command
                         $response = $push->setMessage([
                             'notification' => [
                                     'title'=>'Notificación',
-                                    'body'=>'Esto es un recordatorio para la cita de '.  Carbon::parse($remider->appointment->start)->toDateTimeString(),
+                                    'body'=>'Esto es un recordatorio que tienes un cita el '.  Carbon::parse($remider->appointment->start)->toDateTimeString(),
                                     'sound' => 'default'
                                     ]
                             
