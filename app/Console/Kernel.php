@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use Illuminate\Support\Facades\Log;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -57,6 +57,7 @@ class Kernel extends ConsoleKernel
                 $response = curl_exec($ch);
                 // Se cierra el recurso CURL y se liberan los recursos del sistema
                 curl_close($ch);
+                Log::info('se llamó appointment/reminder: '.$response);
 
         })->everyThirtyMinutes();
 
