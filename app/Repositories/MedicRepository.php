@@ -104,7 +104,7 @@ class MedicRepository extends DbRepository{
             
              $offices = $offices->NearLatLng($search['lat'], $search['lon'], 25, 'K');
              //dd($offices->with('users')->orderBy('distance', 'ASC')->get()->all());
-             $paginator = paginate($offices->with('users')->orderBy('distance', 'ASC')->get()->all(), $this->limit);
+             $paginator = paginate($offices->with('users.specialities')->orderBy('distance', 'ASC')->get()->all(), $this->limit);
           
              return $paginator; //$offices->with('user')->orderBy('distance', 'ASC')->get();//paginate($this->limit);
         
