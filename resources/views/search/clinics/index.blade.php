@@ -101,7 +101,7 @@
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
                                                     <div class="form-group">
-                                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-5">Cerca de aquí</label>
+                                                       <label for="" class="control-label col-xs-12 col-sm-5 col-md-5 col-lg-5">Cerca de aquí <img class="loader-geo hide" src="/img/loading.gif" alt="Cargando"  /> </label>
                                                       <div class="col-sm-6">
                                                           <button type="button" class="btn btn-default btn-geo"><i class="fa fa-"></i>Tu ubicación</button>
                                                       </div>

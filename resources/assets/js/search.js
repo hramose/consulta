@@ -88,6 +88,7 @@ $(window).on('load', function() {
        //llamando la funcion inicial para ver trabajar la API
         function success(pos) {
             var crd = pos.coords;
+            $('.loader-geo').addClass('hide');
 
             $('input[name="lat"]').val(crd.latitude);
             $('input[name="lon"]').val(crd.longitude);
@@ -107,6 +108,7 @@ $(window).on('load', function() {
           function error(err) {
             // console.warn(`ERROR(${err.code}): ${err.message}`);
             console.warn('Error: '+ err.message);
+            $('.loader-geo').addClass('hide');
           };
 
        $('.btn-geo').on('click', function (e) {
@@ -115,7 +117,7 @@ $(window).on('load', function() {
               timeout: 5000,
               maximumAge: 0
             };
-
+          $('.loader-geo').removeClass('hide');
           window.navigator.geolocation.getCurrentPosition(success, error, options);
 
          });
