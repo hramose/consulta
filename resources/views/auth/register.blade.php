@@ -102,13 +102,13 @@
 <div id="conditions-popup" class="conditions-popup white-popup mfp-hide mfp-with-anim">
   <h3 style="text-align:center">CONDICIONES DE AFILIACIÓN:</h3>
 
- <p>Estimado Dr., con el objetivo de que usted conozca nuestra plataforma, ponemos a su disposición todos los elementos de esta herramienta de la que usted podrá hacer uso de manera gratuita por un período de tiempo indeterminado.</p> 
+ <p>Estimado Dr. , con el objetivo de que usted conozca nuestra plataforma, ponemos a su disposición GPS MEDICA 1.0, sistema que representa una versión demo limitada, en la que usted podrá hacer uso de algunos elementos de nuestra herramienta de manera gratuita y por un periodo mínimo de   3 meses.
 
- <p> Por favor nótese que hasta no tener una base de datos de médicos robusta, no haremos mercadeo que pretenda obtener reservaciones de citas en línea. Sin embargo, la plataforma estará habilitada tanto para médicos como para usuarios generales permitiendo inclusive a sus pacientes sacar su cita a través de nuestra página web o aplicación móvil.</p> 
+</p> 
 
- <p> GPS Médica se reserva el derecho de generar un cobro por los servicios brindados, en tal caso se informará con anticipación.</p> 
+ <p>Nótese que durante el uso de esta versión GPS MEDICA 1.0, no nos comprometemos a  realizar MERCADEO que pretenda atraerle pacientes o agendar citas en línea. Mas sin embargo, dicha plataforma está habilitada para permitirlo.</p> 
 
- <p> Para más información ver <a href="#">Términos y Condiciones.</a></p>
+ <p>Lo invitamos a leer y visitar nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>
 
 </div>
 @endsection
