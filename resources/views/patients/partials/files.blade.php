@@ -19,15 +19,16 @@
           <a href="{{ Storage::url($file) }}" title="{{ $file }}" target="_blank"><span class="text">{{  explode("/",$file)[3]  }}</span></a>
           <!-- General tools such as edit or delete-->
           <div class="tools">
-            
+          @if(! isset($read))
             <i class="fa fa-trash-o delete" data-file="{{ $file }}"></i>
+            @endif
           </div>
         </li>
         @endforeach
       </ul>
-    
-        <a class="UploadButton btn btn-primary btn-block" id="UploadFile">Subir Archivo</a> 
-        
+        @if(! isset($read))
+          <a class="UploadButton btn btn-primary btn-block" id="UploadFile">Subir Archivo</a> 
+        @endif
        
       
         

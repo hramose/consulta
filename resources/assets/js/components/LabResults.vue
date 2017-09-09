@@ -1,7 +1,7 @@
 <template>
 	
 <div>
-      <div class="form-group">
+      <div class="form-group" v-show="!read">
           <div class="input-group">
                 <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime">
 
@@ -11,7 +11,7 @@
             </div>
           
        </div>
-       <div class="form-group">
+       <div class="form-group" v-show="!read">
            <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
        </div>
        <div class="form-group">

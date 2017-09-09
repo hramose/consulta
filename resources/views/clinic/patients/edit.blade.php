@@ -16,10 +16,10 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo', ['patient' => $patient])
+          @include('patients/partials/photo', ['patient' => $patient, 'read' =>'true'])
           @include('patients/partials/signs', ['patient' => $patient])
-          @include('patients/partials/files', ['files' => $files])
-          
+          @include('patients/partials/files', ['files' => $files, 'read' =>'true'])
+          @include('patients/partials/labResults', ['patient' => $patient, 'read' =>'true'])
          
         </div>
 		 
@@ -36,18 +36,18 @@
 	              	<div class="active tab-pane" id="basic">
 						<form method="POST" action="{{ url('/clinic/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente'])
+					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente', 'read'=>'true'])
 					    </form>
 
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="tab-pane" id="history">
-					    <history :history="{{ $patient->history }}"></history>	
+					    <history :history="{{ $patient->history }}" :read="true"></history>	
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="tab-pane" id="appointments">
 						
-					      @include('patients/partials/appointments')
+					      @include('patients/partials/appointments', ['read' => 'true'])
 					    
 				    </div>
 				    <!-- /.tab-pane -->
@@ -59,7 +59,7 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
-			 @include('patients/partials/medicines', ['patient' => $patient])	
+			 @include('patients/partials/medicines', ['patient' => $patient, 'read' =>'true'])	
 		</div>
 
 	  </div>
@@ -80,7 +80,13 @@
 <script src="{{ elixir('/js/patients.min.js') }}"></script>
 <script>
   $(function () {
-  
+	
+	$('#datetimepickerLabResult').datetimepicker({
+			format:'YYYY-MM-DD',
+            locale: 'es',
+            
+		 });
+		 
     $("[data-mask]").inputmask();
 
      $("#UploadPhoto").ajaxUpload({

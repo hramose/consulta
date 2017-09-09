@@ -36,7 +36,11 @@
 								
 		            <!-- /.info-box-content -->
 							</a>
-							<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
+							@if(!isset($read))
+								<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
+							@else 
+								<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" :read="true"></notes>
+							@endif
 							
 								
 		@empty

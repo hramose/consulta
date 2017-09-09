@@ -8,8 +8,9 @@
                 <h3 class="profile-username text-center">{{ $patient->first_name }}</h3>
 
                 <p class="text-muted text-center">{{ $patient->city }}</p>
-                
-                <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/patients/photos">Subir Foto</a> 
+                @if(!isset($read))
+                  <a class="UploadButton btn btn-primary btn-block" id="UploadPhoto" data-url="/medic/patients/photos">Subir Foto</a> 
+                @endif
               @else
                 <img class="profile-user-img img-responsive img-circle" src="/img/default-avatar.jpg" alt="User profile picture">
               @endif

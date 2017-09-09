@@ -21,7 +21,7 @@
           @include('patients/partials/photo', ['patient' => $patient])
           @include('patients/partials/signs', ['patient' => $patient])
 		  @include('patients/partials/files', ['files' => $files])
-		  
+		  @include('patients/partials/labResults', ['patient' => $patient])
           
          
         </div>
@@ -63,7 +63,7 @@
 	        </div>
 	          <!-- /.nav-tabs-custom -->
 			 @include('patients/partials/medicines', ['patient' => $patient])	
-			 @include('patients/partials/labResults', ['patient' => $patient])
+			
 		</div>
 
 	  </div>

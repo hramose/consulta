@@ -13,9 +13,11 @@
     <!-- /.box-header -->
     <div class="box-body">
      
-       
-		<medicines :medicines="{{ $patient->medicines }}" :patient_id="{{ $patient->id }}"></medicines>	
-      
+    @if(! isset($read))
+      <medicines :medicines="{{ $patient->medicines }}" :patient_id="{{ $patient->id }}"></medicines>
+    @else
+      <medicines :medicines="{{ $patient->medicines }}" :patient_id="{{ $patient->id }}" :read="true"></medicines>
+    @endif
         
     </div>
     <!-- /.box-body -->

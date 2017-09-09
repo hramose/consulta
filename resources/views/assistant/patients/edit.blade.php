@@ -18,7 +18,8 @@
 			
           @include('patients/partials/photo', ['patient' => $patient])
           @include('patients/partials/signs', ['patient' => $patient])
-          @include('patients/partials/files', ['files' => $files])
+		  @include('patients/partials/files', ['files' => $files])
+		  @include('patients/partials/labResults', ['patient' => $patient])	
           
          
         </div>
@@ -59,7 +60,8 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
-			 @include('patients/partials/medicines', ['patient' => $patient])	
+			 @include('patients/partials/medicines', ['patient' => $patient])
+			 
 		</div>
 
 	  </div>
@@ -80,6 +82,12 @@
 <script src="{{ elixir('/js/patients.min.js') }}"></script>
 <script>
   $(function () {
+
+	$('#datetimepickerLabResult').datetimepicker({
+			format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
   
     $("[data-mask]").inputmask();
 
@@ -118,7 +126,7 @@
   });
 
     $("#UploadFile").ajaxUpload({
-      url : "/assistant/patients/files",
+      url : "/medic/patients/files",
       name: "file",
       data: {patient_id: {{ $patient->id }} },
       onSubmit: function() {
@@ -165,7 +173,7 @@
     function deleteFile()
     {
         var btn_delete = $(this),
-            url = "/assistant/patients/files/delete";
+            url = "/medic/patients/files/delete";
 
         $.post(url,{file: btn_delete.attr("data-file") }, function(data){
             btn_delete.parents('li').fadeOut("slow");

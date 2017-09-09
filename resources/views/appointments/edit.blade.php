@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('css')
  <link rel="stylesheet" href="/js/plugins/iCheck/all.css">
-   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
+	 <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
+	 <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
 @endsection
 @section('content')
 	
@@ -36,11 +37,13 @@
 		              <div class="tab-pane" id="history">
 		                 <div class="row">
 							<div class="col-md-6">
-		                 		<history :history="{{ $history }}" :appointments="{{ $appointments }}"></history>
+												 <history :history="{{ $history }}" :appointments="{{ $appointments }}"></history>
+												 @include('patients/partials/labResults', ['patient' => $appointment->patient])
 		                	</div>
 		                	<div class="col-md-6">
 		          				 @include('patients/partials/medicines', ['patient' => $appointment->patient]) 
-		                		 @include('patients/partials/files', ['files' => $files]) 
+												 @include('patients/partials/files', ['files' => $files]) 
+												 
 		                 	</div>
 		                 </div>
 		              </div>
@@ -145,12 +148,19 @@
 	
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/locale/es.js"></script>
+<script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="/js/plugins/iCheck/icheck.min.js"></script>
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
 <script>
   $(function () {
-
+		$('#datetimepickerLabResult').datetimepicker({
+			format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
   	$("#UploadFile").ajaxUpload({
       url : "/medic/patients/files",
       name: "file",

@@ -23,12 +23,12 @@
                 </li>
                
                </ul>
-               <div class="form-group">
+               <div class="form-group" v-show="!read">
                   <textarea name="description" cols="30" rows="4" v-model="description" class="form-control"></textarea>
                 
               </div>
               
-                <div class="form-group">
+                <div class="form-group" v-show="!read">
                   <button @click="hit" class="btn btn-success">Agregar Nota</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
                 </div>
             </div>
