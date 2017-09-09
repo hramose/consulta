@@ -44,6 +44,8 @@ Route::delete('/account/patients/{id}', 'UserController@destroyPatient');
 Route::put('/account/patients/{id}', 'UserController@updatePatient');
 Route::post('/account/patients/{id}/medicines', 'PatientController@medicines');
 Route::delete('/account/patients/medicines/{id}', 'PatientController@deleteMedicines');
+Route::post('/account/patients/{id}/labresults', 'PatientController@labResults');
+Route::delete('/account/patients/labresults/{id}', 'PatientController@deleteLabResults');
 Route::post('/account/patients/{id}/allergies', 'PatientController@allergies');
 Route::delete('/account/patients/allergies/{id}', 'PatientController@deleteAllergies');
 Route::post('/account/patients/{id}/pressures', 'PatientController@pressures');
@@ -120,6 +122,8 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::put('/patients/{id}/history', 'Medic\PatientController@history');
 	Route::post('/patients/{id}/medicines', 'Medic\PatientController@medicines');
 	Route::delete('/patients/medicines/{id}', 'Medic\PatientController@deleteMedicines');
+	Route::post('/patients/{id}/labresults', 'Medic\PatientController@labResults');
+	Route::delete('/patients/labresults/{id}', 'Medic\PatientController@deleteLabResults');
 	Route::post('/patients/{id}/add', 'Medic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Medic\PatientController@list');
 	Route::resource('patients', 'Medic\PatientController');
@@ -132,6 +136,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::get('/appointments/list', 'Medic\AppointmentController@getAppointments');
 	Route::get('/appointments/{id}/print', 'Medic\AppointmentController@printSummary');
 	Route::get('/appointments/{id}/treatment/print', 'Medic\AppointmentController@printTreatment');
+	Route::get('/appointments/{id}/pdf', 'Medic\AppointmentController@pdfSummary');
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');
@@ -197,6 +202,8 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::put('/patients/{id}/history', 'Clinic\PatientController@history');
 	Route::post('/patients/{id}/medicines', 'Clinic\PatientController@medicines');
 	Route::delete('/patients/medicines/{id}', 'Clinic\PatientController@deleteMedicines');
+	Route::post('/patients/{id}/labresults', 'Clinic\PatientController@labResults');
+	Route::delete('/patients/labresults/{id}', 'Clinic\PatientController@deleteLabResults');
 	Route::post('/patients/{id}/add', 'Clinic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Clinic\PatientController@list');
 	Route::get('/patients/verify', 'Clinic\PatientController@verifyIsPatient');

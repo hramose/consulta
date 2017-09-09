@@ -1,0 +1,172 @@
+<template>
+	
+<div>
+      <div class="form-group">
+          <div class="input-group">
+                <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime">
+
+                <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+          
+       </div>
+       <div class="form-group">
+           <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+       </div>
+       <div class="form-group">
+                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+        </div>
+      <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataResults.length">
+       
+        <li v-for="item in dataResults">
+          <!-- todo text -->
+          <span><span class="text"> {{ item.date }}</span> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a></span>
+          <!-- General tools such as edit or delete-->
+          <div class="tools">
+            
+            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
+          </div>
+        </li>
+       
+      </ul>
+      
+    
+</div>
+  
+</template>
+
+<script>
+    export default {
+      //props: ['medicines','patient_id'],
+       props: {
+         patient_id: {
+          type: Number
+          
+        },
+        results: {
+          type: Array
+          
+        },
+        url:{
+          type:String,
+          default: '/medic/patients'
+        },
+         read:{
+          type:Boolean,
+          default: false
+        }
+    },
+      data () {
+        return {
+          date : "",
+          file:'',
+          dataResults:[],
+          loader:false
+
+
+        }
+          
+      },
+      
+      methods: {
+           onBlurDatetime(e){
+            const value = e.target.value;
+            console.log('onInput fired', value)
+            
+            //Add this line
+            
+
+            this.date = value;
+            this.$emit('input')
+            },
+          hit(){
+            console.log('hit');
+            if(!this.date || !this.file)
+              return
+
+            this.loader = true;
+            this.add();
+            
+          },
+          add() {
+
+              const config = {
+                headers: {
+                'content-type': 'multipart/form-data'
+                }
+            };
+            let form = new FormData();
+            // let resultObj = {
+            //     date = this.date,
+            //     file = this.file
+            // }
+            form.append('date', this.date);
+            form.append('file', this.file);
+            
+            /*Object.keys(resultObj).forEach(function(key) {
+
+                form.append(key, resultObj[key]);
+            });*/
+            
+              this.$http.post(this.url +'/'+ this.patient_id +'/labresults', form, config).then((response) => {
+    
+                  if(response.status == 200)
+                  {
+                    this.dataResults.push(response.data);
+                    bus.$emit('alert', 'Resultado Agregado','success');
+                   
+                  }
+                  this.loader = false;
+                  this.date = "";
+                  this.file = "";
+              }, (response) => {
+                 
+                   bus.$emit('alert', 'Error al guardar el Resultado', 'danger');
+                  this.loader = false;
+              });
+             bus.$emit('clearImage');
+            
+
+          },
+          remove(item){
+            let fileToDelete = "/patients/"+ this.patient_id +"/labresults/"+ item.id +"/"+ item.name; 
+
+            this.loader = true;
+            this.$http.delete(this.url +'/labresults/'+item.id,{ body: { file: fileToDelete }}).then((response) => {
+
+                  if(response.status == 200)
+                  {
+                     var index = this.dataResults.indexOf(item)
+                    this.dataResults.splice(index, 1);
+                    bus.$emit('alert', 'Resultado Eliminado','success');
+                  }
+                  this.loader = false;
+              }, (response) => {
+                  
+                   bus.$emit('alert', 'Error al eliminar el Resultado', 'danger');
+                  this.loader = false;
+              });
+
+
+          },
+           handleFileUpload(file){
+                console.log(file)
+                this.file = file
+                
+            }
+
+      },
+      created () {
+           console.log('Component ready. Lab Results.')
+          
+           if(this.results.length)
+           {
+            
+                this.dataResults = this.results;
+            }
+           
+      }
+      
+    }
+</script>

@@ -10,7 +10,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-      <!-- Bootstrap 3.3.6 -->
+      <!-- Bootstrap 3.3.6s -->
       <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
       <!-- Font Awesome -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -40,61 +40,18 @@
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
-<div class="preloader">
-    <div class="img">
-      <img src="/img/loader.gif" alt="Preloader image">
-      <span>Cargando...</span>
-    </div>
-    
-</div>
+
 <div id="app" class="wrapper">
 
-  <!-- Main Header -->
-  <header class="main-header">
-      @include('layouts/partials/header-admin')
-  </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-      
-      @include('layouts/partials/sidebar-admin')
-    
-  </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
-    <!-- @include('layouts/partials/flash-message') -->
-    @if (session()->has('flash_message'))
 
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-    @endif
-     @if(! Request::is('/'))
-     <div class="menu-fixed">
-          <div class="menu-fixed-container">
-            <a href="/admin/users" class="btn btn-sm btn-info {{ set_active('admin/users') }}">Usuarios</a>
-            <a href="/admin/reports" class="btn btn-sm btn-warning {{ set_active('admin/reports') }}">Reportes</a>
-           
-          </div>
-       </div>
-    @endif 
-    <section class="content menu">
-        @include('layouts/partials/home-boxes-admin')  
-      </section> 
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    
     @yield('content')
-  </div>
-  <!-- /.content-wrapper -->
+ </div>
+  
 
-  @include('layouts/partials/footer')
-  <!-- Control Sidebar -->
-  <!--<aside class="control-sidebar control-sidebar-dark">
-    
-  </aside>-->
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+
 </div>
 <!-- ./wrapper -->
 
@@ -107,7 +64,6 @@
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
-<script src="{{ elixir('js/admin.min.js') }}"></script>
 
 
  @yield('scripts')

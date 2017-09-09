@@ -9,6 +9,7 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Role;
+use App\Labresult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -264,6 +265,60 @@ class PatientController extends Controller
         return '';
 
     }
+
+     /**
+     * Agregar medicamentos a pacientes
+     */
+     public function labResults($id)
+     {
+        $this->validate(request(),[
+                'date' => 'required',
+                'file' => 'required',
+                
+        ]);
+        $data = request()->all();
+        $data['patient_id'] = $id;
+
+        $mimes = ['jpg','jpeg','bmp','png','pdf'];
+        $fileUploaded = "error";
+
+        $labresult = Labresult::create($data);
+       
+        if(request()->file('file'))
+        {
+        
+            $file = request()->file('file');
+            $name = $file->getClientOriginalName();
+            $ext = $file->guessClientExtension();
+
+            if(in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("patients/". $id."/labresults/". $labresult->id, $name,'public');
+
+            $labresult->name = $name;
+            $labresult->save();
+        }
+
+        //return $fileUploaded;
+       
+
+        return $labresult;
+ 
+     }
+ 
+     /**
+      * Eliminar medicamentos a pacientes
+      */
+     public function deleteLabResults($id)
+     {
+       
+         $result = Labresult::find($id);
+         $result->delete();
+
+         Storage::disk('public')->delete(request('file'));
+         
+         return '';
+ 
+     }
 
     /**
      * Mostrar lista de pacientes para el formulario de consultas(citas)

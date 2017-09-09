@@ -56,6 +56,10 @@ class Patient extends Model
     {
         return $this->hasMany(Medicine::class);
     }
+    public function labresults()
+    {
+        return $this->hasMany(Labresult::class);
+    }
      public function pressures()
     {
         return $this->hasMany(Pressure::class);

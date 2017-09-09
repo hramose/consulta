@@ -7,6 +7,7 @@ use App\Patient;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\findAllByDoctor;
+//use Vsmoraes\Pdf\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,7 @@ class AppointmentController extends Controller
         $this->middleware('auth');
     	$this->appointmentRepo = $appointmentRepo;
         $this->patientRepo = $patientRepo;
+       // $this->pdf = $pdf;
 
     }
 
@@ -200,6 +202,33 @@ class AppointmentController extends Controller
         return $appointments;
         
     }
+
+    /**
+     * imprime resumen de la consulta
+     */
+     public function pdfSummary($id)
+     {
+ 
+         /*$appointment =  $this->appointmentRepo->findById($id);
+         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+
+         $html = view('appointments.pdf-summary',compact('appointment','history'))->render();
+         
+          return $this->pdf
+                     ->load($html,  'A4', 'landscape')
+                     ->show();*/
+         /*$pdf = App::make('dompdf.wrapper');
+         $pdf->loadHTML('<h1>Test</h1>');
+         return $pdf->stream();*/
+         //$this->pdf->loadHtml(view('appointments.pdf-summary',compact('appointment','history')));//loadFile('http://consulta.dev/medic/appointments/12/pdf')->save('/temp/my_stored_file.pdf')->stream('download.pdf');//loadHtml(view('appointments.pdf-summary',compact('appointment','history')));
+        // return $this->pdf->stream();
+        
+         //return $pdf->download('invoice.pdf');
+         
+        // return view('appointments.pdf-summary',compact('appointment','history'));
+         
+     }
+ 
 
     /**
      * imprime resumen de la consulta

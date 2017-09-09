@@ -179,6 +179,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Edujugon\PushNotification\Providers\PushNotificationServiceProvider::class,
+        
+        //Vsmoraes\Pdf\PdfServiceProvider::class
 
     ],
 
@@ -230,6 +232,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'PushNotification' => Edujugon\PushNotification\Facades\PushNotification::class,
+        //'PDF' => 'Vsmoraes\Pdf\PdfFacade',
 
     ],
 

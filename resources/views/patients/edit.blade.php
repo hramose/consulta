@@ -20,7 +20,8 @@
 			
           @include('patients/partials/photo', ['patient' => $patient])
           @include('patients/partials/signs', ['patient' => $patient])
-          @include('patients/partials/files', ['files' => $files])
+		  @include('patients/partials/files', ['files' => $files])
+		  
           
          
         </div>
@@ -62,6 +63,7 @@
 	        </div>
 	          <!-- /.nav-tabs-custom -->
 			 @include('patients/partials/medicines', ['patient' => $patient])	
+			 @include('patients/partials/labResults', ['patient' => $patient])
 		</div>
 
 	  </div>
@@ -83,7 +85,13 @@
 <script>
   $(function () {
   
-    $("[data-mask]").inputmask();
+	$("[data-mask]").inputmask();
+	
+	$('#datetimepickerLabResult').datetimepicker({
+			format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
 
      $("#UploadPhoto").ajaxUpload({
       url : $("#UploadPhoto").data('url'),
