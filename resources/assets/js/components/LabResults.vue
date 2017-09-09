@@ -15,7 +15,7 @@
            <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
        </div>
        <div class="form-group">
-                <button @click="hit" class="btn btn-success" v-show="!read">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+                <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
         </div>
       <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataResults.length">
        
@@ -25,7 +25,7 @@
           <!-- General tools such as edit or delete-->
           <div class="tools">
             
-            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
+            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read" v-bind:disabled="loader"></i>
           </div>
         </li>
        
