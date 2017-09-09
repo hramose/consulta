@@ -77,7 +77,7 @@
 <script src="/js/plugins/input-mask/jquery.inputmask.js"></script>
 <script src="/js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="/js/plugins/ajaxupload.js"></script>
-<script src="{{ elixir('/js/patients.min.js') }}"></script>
+<script src="{{ elixir('/js/clinic.patients.min.js') }}"></script>
 <script>
   $(function () {
 	
