@@ -48,7 +48,7 @@
       <hr>
       <div class="row invoice-patient">
         <div class="col-xs-4 invoice-col invoice-left">     
-            <b>Paciente:</b> {{ $invoice->client_name }}<br>
+            <b>Paciente:</b> {{ $invoice->appointment->patient->fullname }}<br>
             {{ $invoice->appointment->patient->address }}<br>
         </div>
         <div class="col-xs-4 invoice-col invoice-right">
