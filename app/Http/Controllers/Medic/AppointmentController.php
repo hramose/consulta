@@ -8,6 +8,7 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\findAllByDoctor;
 //use Vsmoraes\Pdf\Pdf;
+use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +22,7 @@ class AppointmentController extends Controller
         $this->middleware('auth');
     	$this->appointmentRepo = $appointmentRepo;
         $this->patientRepo = $patientRepo;
-       // $this->pdf = $pdf;
+        //$this->pdf = $pdf;
 
     }
 
@@ -208,24 +209,35 @@ class AppointmentController extends Controller
      */
      public function pdfSummary($id)
      {
- 
-         /*$appointment =  $this->appointmentRepo->findById($id);
+       
+         $appointment =  $this->appointmentRepo->findById($id);
          $history =  $this->patientRepo->findById($appointment->patient->id)->history;
 
-         $html = view('appointments.pdf-summary',compact('appointment','history'))->render();
          
-          return $this->pdf
-                     ->load($html,  'A4', 'landscape')
-                     ->show();*/
-         /*$pdf = App::make('dompdf.wrapper');
-         $pdf->loadHTML('<h1>Test</h1>');
-         return $pdf->stream();*/
-         //$this->pdf->loadHtml(view('appointments.pdf-summary',compact('appointment','history')));//loadFile('http://consulta.dev/medic/appointments/12/pdf')->save('/temp/my_stored_file.pdf')->stream('download.pdf');//loadHtml(view('appointments.pdf-summary',compact('appointment','history')));
-        // return $this->pdf->stream();
+        return view('appointments.pdf-summary',compact('appointment','history'));
+         
+     }
+     /**
+     * imprime resumen de la consulta
+     */
+     public function pdf($id)
+     {
+            $appointment =  $this->appointmentRepo->findById($id);
         
-         //return $pdf->download('invoice.pdf');
+
+            $html = request('htmltopdf');
+            $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = false, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
+
+            $pdf::SetFont('helvetica', '', 9);
+           
+            $pdf::SetTitle('Expediente Clínico');
+            $pdf::AddPage('L', 'A4');
+            $pdf::writeHTML($html, true, false, true, false, '');
+           
+            $pdf::Output('expediente-'.str_slug($appointment->patient->first_name).'-'. str_slug($appointment->patient->id).'.pdf'); 
+       
          
-        // return view('appointments.pdf-summary',compact('appointment','history'));
+       
          
      }
  

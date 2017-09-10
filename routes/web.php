@@ -137,6 +137,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::get('/appointments/{id}/print', 'Medic\AppointmentController@printSummary');
 	Route::get('/appointments/{id}/treatment/print', 'Medic\AppointmentController@printTreatment');
 	Route::get('/appointments/{id}/pdf', 'Medic\AppointmentController@pdfSummary');
+	Route::post('/appointments/{id}/pdf', 'Medic\AppointmentController@pdf');
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');

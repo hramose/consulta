@@ -18,24 +18,24 @@
       </dd>
       <dt class="text-aqua"><h4>Notas de padecimiento</h4></dt>
       <dd>
-        <div><strong v-show="summary.notes.reason">Razón de la visita: </strong>{{ summary.notes.reason }} </div>
-        <div><strong v-show="summary.notes.symptoms">Síntomas subjetivos: </strong>{{ summary.notes.symptoms }} </div>
-        <div><strong v-show="summary.notes.phisical_review">Exploración Física: </strong>{{ summary.notes.phisical_review }}</div>
+        <div v-show="summary.notes.reason"><strong >Razón de la visita: </strong>{{ summary.notes.reason }} </div>
+        <div v-show="summary.notes.symptoms"><strong >Síntomas subjetivos: </strong>{{ summary.notes.symptoms }} </div>
+        <div v-show="summary.notes.phisical_review"><strong >Exploración Física: </strong>{{ summary.notes.phisical_review }}</div>
        
       </dd>
       <dt class="text-aqua"><h4>Examen Físico</h4></dt>
       <dd>
-        <div><strong v-show="summary.exams.cardio">Cardiaco y Vascular: </strong>{{ summary.exams.cardio }} </div>
-        <div><strong v-show="summary.exams.linfatico">Sistema Linfático: </strong>{{ summary.exams.linfatico }} </div>
-        <div><strong v-show="summary.exams.osteoarticular">Osteoarticular: </strong>{{ summary.exams.osteoarticular }}</div>
-        <div><strong v-show="summary.exams.psiquiatrico">Psiquiátrico y Psicológico: </strong>{{ summary.exams.psiquiatrico }} </div>
-        <div><strong v-show="summary.exams.digestivo">Aparato Digestivo: </strong>{{ summary.exams.digestivo }} </div>
-        <div><strong v-show="summary.exams.dermatologico">Dermatológico: </strong>{{ summary.exams.dermatologico }} </div>
-        <div><strong v-show="summary.exams.otorrinolaringologico">Otorrinolaringológico: </strong>{{ summary.exams.otorrinolaringologico }} </div>
-        <div><strong v-show="summary.exams.reproductor">Aparato Reproductor: </strong>{{ summary.exams.reproductor }} </div>
-        <div><strong v-show="summary.exams.urinario">Aparato Urinario: </strong>{{ summary.exams.urinario }} </div>
-        <div><strong v-show="summary.exams.neurologico">Neurológico: </strong>{{ summary.exams.neurologico }}</div>
-        <div><strong v-show="summary.exams.pulmonar">Pulmonar o Respiratorio: </strong>{{ summary.exams.pulmonar }}</div>
+        <div v-show="summary.exams.cardio"><strong>Cardiaco y Vascular: </strong>{{ summary.exams.cardio }} </div>
+        <div v-show="summary.exams.linfatico"><strong >Sistema Linfático: </strong>{{ summary.exams.linfatico }} </div>
+        <div v-show="summary.exams.osteoarticular"><strong>Osteoarticular: </strong>{{ summary.exams.osteoarticular }}</div>
+        <div v-show="summary.exams.psiquiatrico"><strong>Psiquiátrico y Psicológico: </strong>{{ summary.exams.psiquiatrico }} </div>
+        <div v-show="summary.exams.digestivo"><strong>Aparato Digestivo: </strong>{{ summary.exams.digestivo }} </div>
+        <div v-show="summary.exams.dermatologico"><strong>Dermatológico: </strong>{{ summary.exams.dermatologico }} </div>
+        <div v-show="summary.exams.otorrinolaringologico"><strong>Otorrinolaringológico: </strong>{{ summary.exams.otorrinolaringologico }} </div>
+        <div v-show="summary.exams.reproductor"><strong>Aparato Reproductor: </strong>{{ summary.exams.reproductor }} </div>
+        <div v-show="summary.exams.urinario"><strong>Aparato Urinario: </strong>{{ summary.exams.urinario }} </div>
+        <div v-show="summary.exams.neurologico"><strong>Neurológico: </strong>{{ summary.exams.neurologico }}</div>
+        <div v-show="summary.exams.pulmonar"><strong>Pulmonar o Respiratorio: </strong>{{ summary.exams.pulmonar }}</div>
         
       </dd>
       <dt class="text-aqua"><h4>Diagnóstico</h4></dt>
@@ -55,11 +55,11 @@
     <dl class="summary-dl">
 	    <dt class="text-aqua"><h4>Historial</h4></dt>
 	    <dd>
-        <div><strong v-show="summary.history.allergies.length">Alergias: </strong><div v-for="item in summary.history.allergies">- {{ item.name }}</div></div>
-	      <div><strong v-show="summary.history.pathologicals.length">Ant. Patológicos: </strong><div v-for="item in summary.history.pathologicals">- {{ item.name }} </div> </div>
-	      <div><strong v-show="summary.history.no_pathologicals.length">Ant. No Patológicos: </strong><div v-for="item in summary.history.no_pathologicals">- {{ item.name }} </div> </div>
-	      <div><strong v-show="summary.history.heredos.length">Ant. Heredofamiliares: </strong><div v-for="item in summary.history.heredos">- {{ item.name }} </div></div>
-	      <div><strong v-show="summary.history.ginecos.length">Ant. Gineco-obstetricios: </strong><div v-for="item in summary.history.ginecos">- {{ item.name }} </div> </div>
+        <div v-show="summary.history.allergies.length"><strong>Alergias: </strong><div v-for="item in summary.history.allergies">- {{ item.name }}</div></div>
+	      <div v-show="summary.history.pathologicals.length"><strong>Ant. Patológicos: </strong><div v-for="item in summary.history.pathologicals">- {{ item.name }} </div> </div>
+	      <div v-show="summary.history.no_pathologicals.length"><strong>Ant. No Patológicos: </strong><div v-for="item in summary.history.no_pathologicals">- {{ item.name }} </div> </div>
+	      <div v-show="summary.history.heredos.length"><strong>Ant. Heredofamiliares: </strong><div v-for="item in summary.history.heredos">- {{ item.name }} </div></div>
+	      <div v-show="summary.history.ginecos.length"><strong>Ant. Gineco-obstetricios: </strong><div v-for="item in summary.history.ginecos">- {{ item.name }} </div> </div>
 		   
          
 	    </dd>

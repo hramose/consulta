@@ -180,7 +180,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Edujugon\PushNotification\Providers\PushNotificationServiceProvider::class,
         
-        //Vsmoraes\Pdf\PdfServiceProvider::class
+       // Vsmoraes\Pdf\PdfServiceProvider::class
 
     ],
 
