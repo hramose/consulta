@@ -33,7 +33,7 @@ class AuthController extends ApiController
             $user = \Auth::user();
 
             if($user->hasRole('paciente')){
-                
+
                 $data = [
                     'access_token' => $user->api_token,
                     'user' => $user,
@@ -68,6 +68,11 @@ class AuthController extends ApiController
        
         if(!$user)
         {
+            $this->validate($request,[
+                'name' => 'required',
+                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ],
+                
+            ]);
            
             $data['name'] = $request->input('name');
             $data['email'] = $request->input('email');
