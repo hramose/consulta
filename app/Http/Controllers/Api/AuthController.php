@@ -24,26 +24,30 @@ class AuthController extends ApiController
 
     public function token(Request $request)
     {
+        $error = [
+            'error' => 'Unauthenticated'
+        ];
        
        if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             // Authentication passed...
             $user = \Auth::user();
 
-            $data = [
-                'access_token' => $user->api_token,
-                'user' => $user,
-                'patients' => $user->patients->count()
-            ];
+            if($user->hasRole('paciente')){
+                
+                $data = [
+                    'access_token' => $user->api_token,
+                    'user' => $user,
+                    'patients' => $user->patients->count()
+                ];
 
-            \Auth::logout();
+                \Auth::logout();
 
-             return json_encode($data);
+                 return json_encode($data);
+             }
         }
 
+
         
-        $error = [
-            'error' => 'Unauthenticated'
-        ];
    
         
         return  json_encode($error);
