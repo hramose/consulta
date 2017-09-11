@@ -129,6 +129,19 @@ class AuthController extends ApiController
         return $patients;
         
     }
+      /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+     public function getFirstPatient($user_id)
+     {
+         
+         $user = User::find($user_id);
+ 
+         $patient = $user->patients->first();
+         
+         return $patient;
+         
+     }
 
     
 
