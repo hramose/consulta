@@ -24,26 +24,30 @@ class AuthController extends ApiController
 
     public function token(Request $request)
     {
+        $error = [
+            'error' => 'Unauthenticated'
+        ];
        
        if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             // Authentication passed...
             $user = \Auth::user();
 
-            $data = [
-                'access_token' => $user->api_token,
-                'user' => $user,
-                'patients' => $user->patients->count()
-            ];
+            if($user->hasRole('paciente')){
 
-            \Auth::logout();
+                $data = [
+                    'access_token' => $user->api_token,
+                    'user' => $user,
+                    'patients' => $user->patients->count()
+                ];
 
-             return json_encode($data);
+                \Auth::logout();
+
+                 return json_encode($data);
+             }
         }
 
+
         
-        $error = [
-            'error' => 'Unauthenticated'
-        ];
    
         
         return  json_encode($error);
@@ -64,6 +68,11 @@ class AuthController extends ApiController
        
         if(!$user)
         {
+            $this->validate($request,[
+                'name' => 'required',
+                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ],
+                
+            ]);
            
             $data['name'] = $request->input('name');
             $data['email'] = $request->input('email');
@@ -129,6 +138,19 @@ class AuthController extends ApiController
         return $patients;
         
     }
+      /**
+     * Lista de todas las citas de un doctor sin paginar
+     */
+     public function getFirstPatient($user_id)
+     {
+         
+         $user = User::find($user_id);
+ 
+         $patient = $user->patients->first();
+         
+         return $patient;
+         
+     }
 
     
 
