@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.app', function ($view)
         {
-             $appointments = \App\Appointment::where('user_id', auth()->id())->where('status', 0)->where('patient_id','<>',0)->whereDate('date', \Carbon\Carbon::today()->toDateTimeString());
+             $appointments = \App\Appointment::where('user_id', auth()->id())->where('status', 0)->where('patient_id','<>',0);
                
             
 
