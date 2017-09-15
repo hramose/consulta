@@ -117,7 +117,7 @@
           file:'',
           name:'',
           dataExams:[],
-          dataresults:[],
+          dataResults:[],
           loader:false
 
 
@@ -199,7 +199,7 @@
              
             
               this.$http.post(this.url +'/'+ this.patient_id +'/labexams', form).then((response) => {
-    
+                  debugger
                   if(response.status == 200)
                   {
                     this.dataExams.push(response.data);

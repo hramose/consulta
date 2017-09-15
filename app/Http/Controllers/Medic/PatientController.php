@@ -297,7 +297,7 @@ class PatientController extends Controller
 
        
         $labexam = Labexam::create($data);
-       
+        $labexam->load('results');
        
 
         return $labexam;
