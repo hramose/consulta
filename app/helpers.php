@@ -149,4 +149,23 @@ function getLogo($clinic)
         $amount = Configuration::first()->amount_specialist;
        
         return $amount;
-    }    
+    }   
+
+     /**
+     * obtiene el monto que se cobra por cita atendita de los medicos especialistas
+     *
+     * @param $monto El monto a convertir
+     * @return float El monto convertido
+     */
+     function totalInvoices($invoices)
+     {
+        $total = 0;
+
+        foreach($invoices as $inv){
+            $total += $inv->total;
+        }
+        
+                   
+                      
+      return $total;
+     } 

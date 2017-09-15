@@ -39,7 +39,7 @@
                             <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
                             <div class="input-group-btn">
 
-                              <button type="submit" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                              <button type="submit" class="btn btn-default">Buscar</button>
                             </div>
                           
                           
@@ -56,9 +56,9 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
-                        <th>Clinica</th>
+                        <th>Paciente</th>
                         <th>Total</th>
-                        <th>Estado</th>
+                        
                         <th></th>
                       </tr>
                       </thead>
@@ -70,19 +70,19 @@
                              {{ $invoice->created_at }}
                             </td>
                              <td>
-                             {{ $invoice->clinic->name }}
+                             {{ $invoice->appointment->patient->first_name }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
-                            <td>
+                            <!-- <td>
                                 @if($invoice->status)
                                   <span class="label label-success">Facturada</span>
                                 @endif
-                            </td>
+                            </td> -->
                             <td>
                             
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
-                                  <i class="fa fa-eye"></i> Detalle
+                                  <i class="fa fa-eye"></i> @if($invoice->status) Detalle @else Facturar @endif
                                 </button>
                             </td>
                           </tr>

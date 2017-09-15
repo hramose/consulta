@@ -15,7 +15,7 @@
                 <span class="info-box-icon bg-green"><i class="fa fa-user-md"></i></span>
 
                 <div class="info-box-content">
-                  <span class="info-box-text">Medicos</span>
+                  <span class="info-box-text">Medicos <span data-toggle="tooltip" title="" class="badge bg-light-blue" data-original-title="{{ $medics }} Médicos">{{ $medics }}</span></span> 
                   <span class="info-box-number"><small>Activos, inactivos, consultas</small></span>
                 </div>
                 <!-- /.info-box-content -->
@@ -27,7 +27,7 @@
                 <span class="info-box-icon bg-yellow"><i class="fa fa-building"></i></span>
 
                 <div class="info-box-content">
-                  <span class="info-box-text">Clinicas</span>
+                  <span class="info-box-text">Clinicas <span data-toggle="tooltip" title="" class="badge bg-light-blue" data-original-title="{{ $medics }} Clinicas">{{ $clinics }}</span></span> 
                   <span class="info-box-number"><small>Registradas, consultas</small></span>
                 </div>
                 <!-- /.info-box-content -->
@@ -39,7 +39,7 @@
                 <span class="info-box-icon bg-red"><i class="fa fa-user"></i></span>
 
                 <div class="info-box-content">
-                  <span class="info-box-text">Pacientes</span>
+                  <span class="info-box-text">Pacientes <span data-toggle="tooltip" title="" class="badge bg-light-blue" data-original-title="{{ $patients }} Pacientes">{{ $patients }}</span></span> 
                   <span class="info-box-number"><small>Por regiones</small></span>
                 </div>
                 <!-- /.info-box-content -->

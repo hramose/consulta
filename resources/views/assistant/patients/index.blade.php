@@ -62,7 +62,9 @@
                       <td data-title="" style="padding-left: 5px;">
                         
                         <div class="btn-group">
-                          <a href="{{ url('/assistant/patients/'.$patient->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a>
+                        <a href="{{ url('/assistant/patients/'.$patient->id.'/edit') }}" class="btn btn-success" title="Ver Facturado"><i class="fa fa-eye"></i> Información básica</a>
+                        
+                          <a href="{{ url('/assistant/patients/'.$patient->id.'/invoices') }}" class="btn btn-info" title="Ver Facturado"><i class="fa fa-money"></i> Facturado</a>
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                            @if(!$patient->appointments->count() && $patient->isPatientOf(auth()->user()))
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/assistant/patients/'.$patient->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>

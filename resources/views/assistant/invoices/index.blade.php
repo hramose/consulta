@@ -23,7 +23,9 @@
         <div class="col-md-4">
           
           
-         
+       
+                  <a href="/assistant/invoices/balance" class="btn btn-danger">Ver Cierre del Dia
+                          </a>
        
           <div class="box box-solid box-medics">
             <div class="box-header with-border">
@@ -87,10 +89,10 @@
                       <tr>
                         <th>#</th>
                         <th>Médico</th>
-                        <th>Clínica</th>
+                        <th>Paciente</th>
                         <th>Fecha</th>
                         <th>Total</th>
-                        <th>Estado</th>
+                        
                         <th></th>
                       </tr>
                       </thead>
@@ -99,21 +101,21 @@
                           <tr>
                             <td>{{ $invoice->id }}</td>
                              <td>{{ $invoice->medic->name }}</td>
-                             <td>{{ $invoice->clinic->name }}</td>
+                             <td>{{ $invoice->appointment->patient->first_name }}</td>
                             <td>
                              {{ $invoice->created_at }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
-                            <td>
+                            <!-- <td>
                                 @if($invoice->status)
                                   <span class="label label-success">Facturada</span>
                                 @endif
-                            </td>
+                            </td> -->
                             <td>
                             
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}">
-                                  <i class="fa fa-eye"></i> Detalle
+                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $invoice->user_id }}">
+                                  <i class="fa fa-eye"></i> Facturar
                                 </button>
                             </td>
                           </tr>
@@ -159,6 +161,8 @@
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
 
 @endsection

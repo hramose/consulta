@@ -8,6 +8,9 @@ use App\Repositories\ClinicRepository;
 use App\Repositories\IncomeRepository;
 use App\Repositories\MedicRepository;
 use App\Repositories\PatientRepository;
+use App\User;
+use App\Patient;
+
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -27,7 +30,17 @@ class ReportsController extends Controller
      */
     public function index()
     {
-        return view('admin.reports.index');
+        $medics =  User::whereHas('roles', function($q){
+                    $q->where('name', 'medico');
+                })->count();
+
+        $clinics = User::whereHas('roles', function($q){
+                    $q->where('name', 'clinica');
+                })->count();
+                
+        $patients = Patient::count();
+
+        return view('admin.reports.index', compact('medics','clinics','patients'));
     }
 
 

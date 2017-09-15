@@ -69,6 +69,8 @@ Route::post('/appointments/{appointment}/reminder', 'AppointmentController@remin
 Route::get('/appointments/reminder', 'AppointmentController@sendReminder');
 Route::get('/appointments/{appointment}/poll', 'AppointmentController@poll');
 Route::get('/appointments/{appointment}/show', 'AppointmentController@show');
+Route::get('/appointments/{id}/print', 'AppointmentController@printSummary');
+Route::get('/appointments/{id}/treatment/print', 'AppointmentController@printTreatment');
 Route::resource('appointments', 'AppointmentController');
 
 Route::post('/patients', 'PatientController@store');
@@ -272,6 +274,8 @@ Route::prefix('assistant')->middleware('authByRole:asistente')->group(function (
 	Route::get('/invoices/{id}/ticket', 'Assistant\InvoiceController@ticket');
 	Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
 	Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
+	Route::get('/invoices/balance', 'Assistant\InvoiceController@generalBalance');
+	Route::get('/patients/{patient}/invoices', 'Assistant\InvoiceController@patientInvoices');
 	Route::resource('invoices', 'Assistant\InvoiceController');
 
 

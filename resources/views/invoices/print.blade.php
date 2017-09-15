@@ -112,6 +112,14 @@
                 <th>Total:</th>
                 <td>{{ money($invoice->total) }}</td>
               </tr>
+              <tr>
+                <th>Pago con:</th>
+                <td>{{ money($invoice->pay_with) }}</td>
+              </tr>
+              <tr>
+                <th>Vuelto:</th>
+                <td>{{ money($invoice->change) }}</td>
+              </tr>
             </table>
           </div>
         </div>

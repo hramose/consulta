@@ -13,11 +13,11 @@
     <!-- /.box-header -->
     <div class="box-body">
       
-    @if(! isset($read))
-      <lab-results :results="{{ $patient->labresults }}" :patient_id="{{ $patient->id }}"></lab-results>	
+    <!-- @if(! isset($read))
+      <lab-results :results="{{ $patient->labrexams }}" :patient_id="{{ $patient->id }}"></lab-results>	
     @else 
-      <lab-results :results="{{ $patient->labresults }}" :patient_id="{{ $patient->id }}" :read="true"></lab-results>	
-    @endif
+      <lab-results :results="{{ $patient->labrexams }}" :patient_id="{{ $patient->id }}" :read="true"></lab-results>	
+    @endif -->
     </div>
     <!-- /.box-body -->
 </div>

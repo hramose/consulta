@@ -18,7 +18,7 @@
               <p class="text-muted">
                 {{ age($patient->birth_date) }} - {{ trans('utils.gender.'.$patient->gender) }} - {{ $patient->phone }}
               </p>
-
+							<a href="/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Imprimir</a>
             </div>
           </div>
           <div class="row">
@@ -142,7 +142,7 @@
 			              		</div>
 			              		<div class="row">
 									<div class="col-md-12">
-									  
+													<a href="/appointments/{{ $appointment->id }}/treatment/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 6px; z-index: 99"><i class="fa fa-print"></i> Imprimir Receta</a>
 			              				<treatments :treatments="{{ $appointment->treatments }}" :appointment_id="{{ $appointment->id }}" :read="true"></treatments>
 			              			</div>
 			              		</div>

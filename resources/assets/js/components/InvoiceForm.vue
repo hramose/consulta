@@ -65,6 +65,28 @@
                 <div class="box-footer clearfix">
                     Total de Factura: ₡{{  money(getTotalInvoice()) }}
                 </div>
+                 <div class="box-footer clearfix">
+                  <div class="col-md-8">
+                      <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
+                        <div class="input-group pay_with-field">
+                        
+                          <span class="input-group-addon">₡</span>
+                          <input type="text" name="pay_with" class="form-control" placeholder="0" v-model="pay_with" @keyup="calculateChange()">
+                        
+                        
+                      </div>
+                  </div>
+                  <div class="col-md-8">
+                      <label for="">Vuelto</label> ₡<span class="change_label"></span>
+                        <div class="input-group change-field">
+                          
+                            <span class="input-group-addon">₡</span>
+                            <input type="text" name="change" class="form-control" placeholder="0" readonly  v-model="change">
+                          
+                          
+                        </div>
+                  </div>
+                </div>
                 <!-- /.box-footer -->
               </div>
 
@@ -121,7 +143,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['appointment_id', 'office_id'],
+        props:['appointment_id', 'office_id','patient_id'],
         data () {
 	        return {
 	 
@@ -130,6 +152,8 @@
 	          loader:false,
 	          new_service: "",
             amount: 0,
+            pay_with:0,
+            change:0,
 	          errors: [],
             newService:false,
             updateService:false,
@@ -146,6 +170,13 @@
 	       
 	      },
         methods: {
+          calculateChange(){
+              let payWith = parseFloat((this.pay_with) ? this.pay_with : 0);
+            let total =  this.getTotalInvoice()
+            let change = 0;
+            change = ((payWith - total) < 0) ? 0 : payWith - total;
+            this.change = change
+          },
             money(n, currency) {
                 return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
             },
@@ -326,10 +357,18 @@
 	          invoice(here){
 
                 let status = 0;
+                let pay_with = 0;
+                let change = 0;
+                
+                if(here) {
 
-                if(here) status = 1;
+                  status = 1;
+                  change = this.change
+                  pay_with = this.pay_with
+                }
+
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, services: this.servicesToInvoice, status: status}).then((response) => {
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change}).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {

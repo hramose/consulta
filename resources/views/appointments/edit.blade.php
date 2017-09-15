@@ -38,7 +38,7 @@
 		                 <div class="row">
 							<div class="col-md-6">
 												 <history :history="{{ $history }}" :appointments="{{ $appointments }}"></history>
-												 @include('patients/partials/labResults', ['patient' => $appointment->patient])
+												 
 		                	</div>
 		                	<div class="col-md-6">
 		          				 @include('patients/partials/medicines', ['patient' => $appointment->patient]) 
@@ -117,7 +117,7 @@
 								@else
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form :appointment_id="{{ $appointment->id }}" :office_id="{{ $appointment->office->id }}" ></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient->id }}" :office_id="{{ $appointment->office->id }}" ></invoice-form>
 			              			</div>
 			              		</div>
 			              		<div class="row">

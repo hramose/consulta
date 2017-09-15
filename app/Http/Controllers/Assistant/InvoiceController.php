@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Assistant;
 
 use App\Balance;
+use App\Office;
 use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\MedicRepository;
+use App\Repositories\PatientRepository;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,12 +18,13 @@ use Illuminate\Support\Facades\Storage;
 class InvoiceController extends Controller
 {
     
-    function __construct(InvoiceRepository $invoiceRepo, MedicRepository $medicRepo)
+    function __construct(InvoiceRepository $invoiceRepo, MedicRepository $medicRepo, PatientRepository $patientRepo)
     {
     	
         $this->middleware('auth');
     	$this->medicRepo = $medicRepo;
         $this->invoiceRepo = $invoiceRepo;
+        $this->patientRepo = $patientRepo;
        
 
     }
@@ -53,7 +56,7 @@ class InvoiceController extends Controller
         else
             $medic = null;
 
-        $invoices = Invoice::where('office_id', $office->id)->orderBy('created_at','DESC')->limit(10)->get();
+        $invoices = Invoice::where('office_id', $office->id)->where('status', 0)->orderBy('created_at','DESC')->limit(10)->get();
     
         
     	
@@ -91,6 +94,29 @@ class InvoiceController extends Controller
 
     }
 
+      /**
+     * Mostrar vista de todas las consulta(citas) de un doctor
+     */
+     public function patientInvoices($patient_id)
+     {
+         $patient = $this->patientRepo->findById($patient_id);
+         $searchDate = Carbon::now()->toDateString();
+         
+         if(request('q'))
+             $searchDate = request('q');
+ 
+    
+         $office =  auth()->user()->clinicsAssistants->first();
+ 
+         $invoices = $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
+         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->sum('total');
+         
+       
+ 
+         return view('assistant.patients.invoices',compact('patient','invoices','totalInvoicesAmount','searchDate'));
+ 
+     }
+
     /**
      * Guardar consulta(cita)
      */
@@ -120,6 +146,10 @@ class InvoiceController extends Controller
         
         if(request('client_name'))
             $invoice->client_name = request('client_name');
+        if(request('pay_with'))
+            $invoice->pay_with = request('pay_with');
+        if(request('change'))
+            $invoice->change = request('change');
 
         $invoice->save();
         
@@ -235,6 +265,41 @@ class InvoiceController extends Controller
         
         
     }
+
+    public function generalBalance()
+    {
+        $office =  auth()->user()->clinicsAssistants->first();
+
+        $medics = Office::find($office->id)->medicsWithInvoices(Carbon::now(),Carbon::now());
+
+        $totalAppointments = 0;
+        $totalInvoices = 0;
+        $totalCommission = 0;
+       
+
+        foreach ($medics as $medic) {
+            $invoicesTotalMedic = $medic->invoices->sum('total');
+            $totalAppointments += $medic->invoices->count();
+            $totalInvoices += $invoicesTotalMedic;
+           
+
+        }
+
+          $statisticsInvoices = [
+            'medics' => $medics,
+            'totalAppointments' => $totalAppointments,
+            'totalInvoices' => $totalInvoices
+
+           
+
+        ];
+        
+      
+        return view('assistant.invoices.balance',compact('statisticsInvoices')); 
+        
+        
+    }
+
 
    
 

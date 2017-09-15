@@ -14,6 +14,23 @@ $(function () {
       locale: 'es',
       
    });
+   $('input[name="pay_with"]').keypress(function (e) {
+    //if the letter is not digit then display error and don't type anything
+    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+       //display error message
+      // $("#errmsg").html("Digits Only").show().fadeOut("slow");
+              return false;
+   }
+  });
+   $('input[name="pay_with"]').keyup(function( event ) {
+    var payWith = parseFloat(($(this).val()) ? $(this).val() : 0);
+    var total =  parseFloat($('input[name="total"]').val());
+    var change = 0;
+    change = ((payWith - total) < 0) ? 0 : payWith - total;
+    $('input[name="change"]').val(change);
+
+    console.log(change)
+  })
 
     $('.btn-facturar').on('click',function (e) {
         e.preventDefault();
@@ -23,7 +40,7 @@ $(function () {
         $.ajax({
             type: 'PUT',
             url: '/assistant/invoices/'+invoice_id,
-            data: {client_name: $('input[name="client_name"]').val()},
+            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
              
 
@@ -101,6 +118,8 @@ $(function () {
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                $('input[name="client_name"]').val(resp.appointment.patient.fullname);
+               $('input[name="pay_with"]').val(resp.pay_with);
+               $('input[name="change"]').val(resp.change);
 
                $.each(resp.lines, function( index, item ) {
                    
@@ -112,7 +131,15 @@ $(function () {
                
                $("#modalInvoiceLabel").html('Factura #'+ invoice_id + '  <span class="label label-warning pull-right">'+resp.created_at+'</span>');
                $("#modal-label-total").html('Total: ₡<span>'+ money(resp.total)+'</span>');
-                
+               $('input[name="total"]').val(resp.total);
+
+               if(resp.status){
+                modal.find('.btn-facturar').hide();
+                $('.pay_with_label').html( money(resp.pay_with));
+                $('.change_label').html( money(resp.change));
+                $('.pay_with-field').remove();
+                $('.change-field').remove();
+               }
             },
             error: function () {
               console.log('error get details');

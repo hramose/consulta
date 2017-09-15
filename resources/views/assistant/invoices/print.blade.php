@@ -112,6 +112,14 @@
                 <th>Total:</th>
                 <td>{{ money($invoice->total) }}</td>
               </tr>
+              <tr>
+                <th>Pago con:</th>
+                <td>{{ money($invoice->pay_with) }}</td>
+              </tr>
+              <tr>
+                <th>Vuelto:</th>
+                <td>{{ money($invoice->change) }}</td>
+              </tr>
             </table>
           </div>
         </div>
@@ -123,7 +131,11 @@
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Imprimir</a>
-          <a href="/assistant/medics/{{$invoice->medic->id }}/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas
+
+          <a href="/assistant/invoices" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas general
+          </a>
+
+          <a href="/assistant/medics/{{$invoice->medic->id }}/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas del médico
           </a>
          
         </div>

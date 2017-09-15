@@ -30,7 +30,33 @@
                       <tfoot>
                         <tr>
                           
-                          <td colspan="5"><h2 id="modal-label-total" class="pull-right">Total: 0</h2></td>
+                          <td colspan="5"><h2 id="modal-label-total" class="pull-right">Total: 0</h2>
+                          <input type="hidden"  name="total" /></td>
+                          </td>
+                          
+                        </tr>
+                        <tr>
+                          
+                          <td colspan="3">
+                          <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
+                            <div class="input-group pay_with-field">
+                            
+                              <span class="input-group-addon">₡</span>
+                              <input type="text" name="pay_with" class="form-control" placeholder="0">
+                            
+                            
+                          </div>
+                          </td>
+                          <td colspan="3">
+                          <label for="">Vuelto</label> ₡<span class="change_label"></span>
+                            <div class="input-group change-field">
+                              
+                                <span class="input-group-addon">₡</span>
+                                <input type="text" name="change" class="form-control" placeholder="0" readonly>
+                              
+                              
+                            </div>
+                         </td>
                         </tr>
                       </tfoot>
                     </table>

@@ -254,6 +254,32 @@ class AppointmentController extends Controller
 
     }
 
+    /**
+     * imprime resumen de la consulta
+     */
+     public function printSummary($id)
+     {
+ 
+         $appointment =  $this->appointmentRepo->findById($id);
+         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+         
+         return view('appointments.patient-print-summary',compact('appointment','history'));
+         
+     }
+ 
+     /**
+      * imprime resumen de la consulta
+      */
+     public function printTreatment($id)
+     {
+ 
+         $appointment =  $this->appointmentRepo->findById($id);
+ 
+         
+         return view('appointments.patient-print-treatment',compact('appointment'));
+         
+     }
+
 
    
 }

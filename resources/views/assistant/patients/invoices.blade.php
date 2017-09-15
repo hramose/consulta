@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-assistant')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
@@ -9,32 +9,32 @@
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
-     
-   
     
+    
+ 
+    @include('layouts/partials/header-pages',['page'=>'Facturas del paciente: '. $patient->fullname ])
+       
     <section class="content">
        
         <div class="row">
         
-        <div class="col-md-6">
+        <div class="col-md-12">
          
-           <!-- <form method="POST" action="{{ url('/medic/balance') }}" class="form-horizontal">
-                       {{ csrf_field() }}
-                       <button type="submit" class="btn btn-danger">Ejecutar cierre de ventas</button>
-                  </form> -->
        
-          <h2>Facturas</h2>
+         <h2>Facturas</h2>
+         
+        
           <div class="box box-default box-calendar">
-          <div class="box-header">
+            <div class="box-header">
               <div class="pull-left">
-                  <form action="/medic/invoices" method="GET">
+                  <form action="/assistant/patients/{{ $patient->id }}/invoices" method="GET">
                         <div class="input-group input-group-sm" style="width: 150px;">
                           
                             
                             <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
                             <div class="input-group-btn">
 
-                              <button type="submit" class="btn btn-primary">Buscar</button>
+                              <button type="submit" class="btn btn-default">Buscar</button>
                             </div>
                           
                           
@@ -51,7 +51,7 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
-                        <th>Paciente</th>
+                        <th>Médico</th>
                         <th>Total</th>
                         
                         <th></th>
@@ -65,7 +65,7 @@
                              {{ $invoice->created_at }}
                             </td>
                              <td>
-                             {{ $invoice->appointment->patient->first_name }}
+                             {{ $invoice->medic->name }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
@@ -76,8 +76,8 @@
                             </td> -->
                             <td>
                             
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
-                                  <i class="fa fa-eye"></i>  @if($invoice->status) Detalle @else Facturar @endif
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $invoice->medic_id }}">
+                                  <i class="fa fa-eye"></i> Detalle 
                                 </button>
                             </td>
                           </tr>
@@ -102,72 +102,13 @@
           <!-- /. box -->
           
         </div>
-        <div class="col-md-6">
-         
-           <!-- <form method="POST" action="{{ url('/medic/balance') }}" class="form-horizontal">
-                       {{ csrf_field() }}
-                       <button type="submit" class="btn btn-danger">Ejecutar cierre de ventas</button>
-                  </form> -->
-       
-          <h2>Consultas No Facturadas</h2>
-          <div class="box box-default box-calendar">
-            <div class="box-body no-padding">
-              <!-- THE CALENDAR -->
-                 <div class="table-responsive">
-                    <table class="table no-margin">
-                      <thead>
-                      <tr>
-                        <th>#</th>
-                        
-                        <th>Paciente</th>
-                        <th>Consulta</th>
-                        <th>Fecha</th>
-                        <th>De</th>
-                        <th>a</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($noInvoices as $appointment)
-                          <tr>
-                            <td>{{ $appointment->id }}</td>
-                      
-                             <td>
-                             {{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}
-                            </td>
-                           
-                            <td data-title="Motivo">{{ $appointment->title }}</td>
-                            <td data-title="Fecha">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
-                            <td data-title="De">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
-                            <td data-title="a">{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
-                          </tr>
-                      @endforeach
-                      
-                      </tbody>
-                     
-                      @if ($noInvoices)
-                        <tfoot>
-                            <tr>
-                              <td  colspan="5" class="pagination-container">{!!$noInvoices->appends(['q' => $searchDate])->render()!!}</td>
-                            </tr>
-                            
-                        </tfoot>
-                      @endif
-                    </table>
-                  </div>
-               
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
-          
-        </div>
-        <!-- /.col -->
+        
       </div>
       <!-- /.row -->
 
     </section>
 
-    @include('invoices/partials/modal')
+    @include('assistant/invoices/partials/modal')
   
 
 
@@ -178,6 +119,6 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
-<script src="{{ elixir('/js/invoices.min.js') }}"></script>
-
+<script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
+ 
 @endsection
