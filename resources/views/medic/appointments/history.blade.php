@@ -7,7 +7,7 @@
 
     <section class="content">
         <div class="row" style="text-align:  center;">
-          @include('patients/partials/appointments',['fromPatient'=> '1'])
+          @include('medic/patients/partials/appointments',['fromPatient'=> '1'])
         </div>
 
     </section>

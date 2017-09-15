@@ -10,6 +10,7 @@ use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Role;
 use App\Labresult;
+use App\Labexam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -42,7 +43,7 @@ class PatientController extends Controller
         
 
 
-    	return view('patients.index',compact('patients','search','inita'));
+    	return view('medic.patients.index',compact('patients','search','inita'));
 
     }
 
@@ -52,7 +53,7 @@ class PatientController extends Controller
     public function create()
     {
         
-        return view('patients.create');
+        return view('medic.patients.create');
 
     }
 
@@ -127,7 +128,7 @@ class PatientController extends Controller
 
         $files = Storage::disk('public')->files("patients/". $id ."/files");
         
-        return view('patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments'));
+        return view('medic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments'));
 
     }
 
@@ -265,6 +266,57 @@ class PatientController extends Controller
         return '';
 
     }
+
+    /**
+     * Agregar medicamentos a pacientes
+     */
+     public function getLabExams($id)
+     {
+       
+       
+        $labexams = Labexam::with('results')->where('appointment_id',request('appointment_id'))->where('patient_id',$id)->get();
+       
+       
+
+        return $labexams;
+ 
+     }
+     /**
+     * Agregar medicamentos a pacientes
+     */
+     public function labExams($id)
+     {
+        $this->validate(request(),[
+                'date' => 'required',
+                'name' => 'required',
+                'appointment_id' => 'required',
+                
+        ]);
+        $data = request()->all();
+        $data['patient_id'] = $id;
+
+       
+        $labexam = Labexam::create($data);
+       
+       
+
+        return $labexam;
+ 
+     }
+
+      /**
+      * Eliminar medicamentos a pacientes
+      */
+      public function deleteLabExams($id)
+      {
+        
+          $result = Labexam::find($id);
+          $result->delete();
+ 
+          
+          return '';
+  
+      }
 
      /**
      * Agregar medicamentos a pacientes

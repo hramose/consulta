@@ -32,7 +32,7 @@ class UserController extends Controller
 
         $specialities = Speciality::all();
 
-    	return view('users.edit',compact('user','specialities','assistants','tab'));
+    	return view('medic.account',compact('user','specialities','assistants','tab'));
 
     }
 

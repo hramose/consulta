@@ -16,18 +16,15 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo', ['patient' => $patient, 'read' =>'true'])
-          @include('patients/partials/signs', ['patient' => $patient])
-          @include('patients/partials/files', ['files' => $files, 'read' =>'true'])
-          @include('patients/partials/labResults', ['patient' => $patient, 'read' =>'true'])
-         
+          @include('medic/patients/partials/photo', ['patient' => $patient, 'read' =>'true'])
+          
         </div>
 		 
 		<div class="col-md-8">
 			<div class="nav-tabs-custom">
 	            <ul class="nav nav-tabs">
 	              <li class="active"><a href="#basic" data-toggle="tab">Información Básica</a></li>
-	              <li><a href="#history" data-toggle="tab">Historial Médico</a></li>
+	        
 	              <li><a href="#appointments" data-toggle="tab">Consultas</a></li>
 	             
 	              
@@ -36,18 +33,15 @@
 	              	<div class="active tab-pane" id="basic">
 						<form method="POST" action="{{ url('/clinic/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente', 'read'=>'true'])
+					         @include('medic/patients/partials/form',['buttonText' => 'Actualizar Paciente', 'read'=>'true'])
 					    </form>
 
 				    </div>
-				    <!-- /.tab-pane -->
-				    <div class="tab-pane" id="history">
-					    <history :history="{{ $patient->history }}" :read="true"></history>	
-				    </div>
+				   
 				    <!-- /.tab-pane -->
 				    <div class="tab-pane" id="appointments">
 						
-					      @include('patients/partials/appointments', ['read' => 'true'])
+					      @include('medic/patients/partials/appointments', ['read' => 'true'])
 					    
 				    </div>
 				    <!-- /.tab-pane -->
@@ -59,13 +53,13 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
-			 @include('patients/partials/medicines', ['patient' => $patient, 'read' =>'true'])	
+			
 		</div>
 
 	  </div>
 	</section>
 
-	@include('patients/partials/initAppointment')
+	@include('medic/patients/partials/initAppointment')
 
 @endsection
 @section('scripts')

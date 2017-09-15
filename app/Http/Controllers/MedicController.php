@@ -43,7 +43,7 @@ class MedicController extends Controller
        $specialist = request('specialist');
        $general = request('general');
        
-        return view('search.medics.index',compact('medics','specialist','general'));
+        return view('user.search.medics.index',compact('medics','specialist','general'));
 
     }
     /**
@@ -79,23 +79,23 @@ class MedicController extends Controller
                 if(request('speciality'))
                 {
                     $specialist = 1;
-                    return view('search.medics.index',compact('medics','search','selectedSpeciality','specialist'));   
+                    return view('user.search.medics.index',compact('medics','search','selectedSpeciality','specialist'));   
                 }
                 if(request('general'))
                 {
                     $general = 1;
-                    return view('search.medics.index',compact('medics','search','selectedSpeciality','general'));   
+                    return view('user.search.medics.index',compact('medics','search','selectedSpeciality','general'));   
                 }
                 
                
                     
                 
 
-                 return view('search.medics.index',compact('medics','search','selectedSpeciality'));
+                 return view('user.search.medics.index',compact('medics','search','selectedSpeciality'));
             }
         }
 
-        return view('search.medics.index',compact('medics','specialist'));
+        return view('user.search.medics.index',compact('medics','specialist'));
 
     }
 
@@ -112,7 +112,7 @@ class MedicController extends Controller
         if(!$medic->hasrole('medico')) return redirect('/');
         if(!$medic->verifyOffice($office_id)) return redirect('/');
         
-        return view('search.medics.schedule',compact('medic','office'));
+        return view('user.search.medics.schedule',compact('medic','office'));
     }
 
     /**

@@ -35,7 +35,7 @@ class AppointmentController extends Controller
       
     	$appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
 
-    	return view('appointments.index',compact('appointments','search'));
+    	return view('medic.appointments.index',compact('appointments','search'));
 
     }
 
@@ -81,7 +81,7 @@ class AppointmentController extends Controller
        // dd($selectWeeks);
 
        
-    	return view('appointments.create',compact('appointments', 'p','wizard','selectWeeks'));
+    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks'));
 
     }
 
@@ -118,7 +118,7 @@ class AppointmentController extends Controller
         
         $tab = request('tab');
 
-        return view('appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
+        return view('medic.appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
 
     }
 
@@ -214,7 +214,7 @@ class AppointmentController extends Controller
          $history =  $this->patientRepo->findById($appointment->patient->id)->history;
 
          
-        return view('appointments.pdf-summary',compact('appointment','history'));
+        return view('medic.appointments.pdf-summary',compact('appointment','history'));
          
      }
      /**
@@ -251,7 +251,7 @@ class AppointmentController extends Controller
         $appointment =  $this->appointmentRepo->findById($id);
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
         
-        return view('appointments.print-summary',compact('appointment','history'));
+        return view('medic.appointments.print-summary',compact('appointment','history'));
         
     }
 
@@ -264,7 +264,7 @@ class AppointmentController extends Controller
         $appointment =  $this->appointmentRepo->findById($id);
 
         
-        return view('appointments.print-treatment',compact('appointment'));
+        return view('medic.appointments.print-treatment',compact('appointment'));
         
     }
 

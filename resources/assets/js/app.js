@@ -57,6 +57,7 @@ Vue.component('reports-incomes', require('./components/ReportsIncomes.vue'));
 Vue.component('notes', require('./components/Notes.vue'));
 Vue.component('photo-upload', require('./components/PhotoUpload.vue'));
 Vue.component('lab-results', require('./components/LabResults.vue'));
+Vue.component('lab-exams', require('./components/LabExams.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

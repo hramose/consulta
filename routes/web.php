@@ -126,6 +126,9 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::delete('/patients/medicines/{id}', 'Medic\PatientController@deleteMedicines');
 	Route::post('/patients/{id}/labresults', 'Medic\PatientController@labResults');
 	Route::delete('/patients/labresults/{id}', 'Medic\PatientController@deleteLabResults');
+	Route::post('/patients/{id}/labexams', 'Medic\PatientController@labExams');
+	Route::get('/patients/{id}/labexams', 'Medic\PatientController@getLabExams');
+	Route::delete('/patients/labexams/{id}', 'Medic\PatientController@deleteLabExams');
 	Route::post('/patients/{id}/add', 'Medic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Medic\PatientController@list');
 	Route::resource('patients', 'Medic\PatientController');

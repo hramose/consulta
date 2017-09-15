@@ -18,10 +18,10 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo', ['patient' => $patient])
-          @include('patients/partials/signs', ['patient' => $patient])
-		  @include('patients/partials/files', ['files' => $files])
-		  @include('patients/partials/labResults', ['patient' => $patient])
+          @include('medic/patients/partials/photo', ['patient' => $patient])
+          @include('medic/patients/partials/signs', ['patient' => $patient])
+		  @include('medic/patients/partials/files', ['files' => $files])
+		  @include('medic/patients/partials/labResults', ['patient' => $patient])
           
          
         </div>
@@ -39,7 +39,7 @@
 	              	<div class="{{ isset($tab) ? ($tab =='basic') ? 'active' : '' : 'active' }} tab-pane" id="basic">
 						<form method="POST" action="{{ url('/medic/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente'])
+					         @include('medic/patients/partials/form',['buttonText' => 'Actualizar Paciente'])
 					    </form>
 
 				    </div>
@@ -50,7 +50,7 @@
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
 						
-					      @include('patients/partials/appointments')
+					      @include('medic/patients/partials/appointments')
 					    
 				    </div>
 				    <!-- /.tab-pane -->
@@ -62,14 +62,14 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
-			 @include('patients/partials/medicines', ['patient' => $patient])	
+			 @include('medic/patients/partials/medicines', ['patient' => $patient])	
 			
 		</div>
 
 	  </div>
 	</section>
 
-	@include('patients/partials/initAppointment')
+	@include('medic/patients/partials/initAppointment')
 
 @endsection
 @section('scripts')

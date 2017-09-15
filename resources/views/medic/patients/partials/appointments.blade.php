@@ -36,7 +36,7 @@
 								
 		            <!-- /.info-box-content -->
 							</a>
-							@if(!isset($read))
+							@if(!isset($read) && !isset($fromPatient))
 								<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
 							@else 
 								<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" :read="true"></notes>

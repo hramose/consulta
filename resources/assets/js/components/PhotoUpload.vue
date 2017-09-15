@@ -2,11 +2,7 @@
   <div class="photo-upload" :class="disabled ? 'disabled' : 'enabled'">
     <div class="uploader" :class="{hovering: hovering}" :style="{backgroundImage: backgroundImage}" ref="uploader">
       <span v-show="!(value || preview)" class="upload-instructions" style="color: black;">
-        Click o arrastra
-        <br>
-        una imagen aqui
-        <br>
-        para subir...
+       {{ message }}
       </span>
       <input class="file-photo" type="file" @change="handleImage" @dragenter="hovering = true"
              @dragleave="hovering = false" :disabled="disabled"/>
@@ -69,7 +65,21 @@
 
 <script>
     export default {
-        props: ['value', 'disabled'],
+        //props: ['value', 'disabled'],
+          props: {
+            value: {
+              type: String
+              
+            },
+             message: {
+              type: String,
+              default: "Click o arrastra una imagen aqui para subir..."
+            },
+            disabled: {
+              type: Boolean
+              
+            }
+          },
         methods: {
             handleImage(event) {
                 if (this.disabled) {

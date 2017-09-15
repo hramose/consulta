@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo', ['patient' => $patient, 'read' => true])
+          @include('medic/patients/partials/photo', ['patient' => $patient, 'read' => true])
           
 		 
           
@@ -36,14 +36,14 @@
 	              	<div class="active tab-pane" id="basic">
 						<form method="POST" action="{{ url('/assistant/patients/'.$patient->id) }}" class="form-horizontal">
 					         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-					         @include('patients/partials/form',['buttonText' => 'Actualizar Paciente','read' => true])
+					         @include('medic/patients/partials/form',['buttonText' => 'Actualizar Paciente','read' => true])
 					    </form>
 
 				    </div>
 				  
 				    <div class="tab-pane" id="appointments">
 						
-					      @include('patients/partials/appointments',['read' => true])
+					      @include('medic/patients/partials/appointments',['read' => true])
 					    
 				    </div>
 				    <!-- /.tab-pane -->
@@ -62,7 +62,7 @@
 	  </div>
 	</section>
 
-	@include('patients/partials/initAppointment')
+	@include('medic/patients/partials/initAppointment')
 
 @endsection
 @section('scripts')

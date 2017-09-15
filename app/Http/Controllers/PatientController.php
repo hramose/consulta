@@ -102,7 +102,7 @@ class PatientController extends Controller
             return redirect('/');
         
 
-        return view('patients.expedient', compact('patient'));
+        return view('user.expedient', compact('patient'));
 
     }
 

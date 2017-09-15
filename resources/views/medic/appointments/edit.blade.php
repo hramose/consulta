@@ -29,6 +29,7 @@
 		              <li><a href="#history" data-toggle="tab">Historial</a></li>
 		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
+					   <li><a href="#labexam" data-toggle="tab">Examen Laboratorio</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
 		                
@@ -41,8 +42,8 @@
 												 
 		                	</div>
 		                	<div class="col-md-6">
-		          				 @include('patients/partials/medicines', ['patient' => $appointment->patient]) 
-												 @include('patients/partials/files', ['files' => $files]) 
+		          				 @include('medic/patients/partials/medicines', ['patient' => $appointment->patient]) 
+												 @include('medic/patients/partials/files', ['files' => $files]) 
 												 
 		                 	</div>
 		                 </div>
@@ -81,6 +82,11 @@
 		              <!-- /.tab-pane -->
 					  <div class="tab-pane" id="physical">
 		              		<physicalexam :physical="{{ $appointment->physicalExams }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></physicalexam>
+		              </div>
+					   <!-- /.tab-pane -->
+					   <div class="tab-pane" id="labexam">
+						   
+		              		<lab-exams :exams="{{ $appointment->labexams->load('results') }}" :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">

@@ -110,7 +110,7 @@
 
     </section>
 
-@include('patients/partials/initAppointment')
+@include('medic/patients/partials/initAppointment')
 
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}

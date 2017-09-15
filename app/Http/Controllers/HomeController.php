@@ -29,27 +29,27 @@ class HomeController extends Controller
         //dd(Carbon::now()->toDateTimeString());
 
         if(auth()->user()->hasRole('administrador'))
-            return view('home-admin');
+            return view('admin.home');
         
         if(auth()->user()->hasRole('paciente'))
-            return view('home-patient');
+            return view('user.home');
 
          if(auth()->user()->hasRole('clinica')){
             
             if(!auth()->user()->offices->count()) return Redirect('/clinic/register/office');
             
-            return view('home-clinic');
+            return view('clinic.home');
         }
 
         if(auth()->user()->hasRole('asistente'))
-            return view('home-assistant');
+            return view('assistant.home');
 
 
         $search['date'] = Carbon::today()->toDateTimeString();
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);
        
        
-        return view('home',compact('appointments'));
+        return view('medic.home',compact('appointments'));
 
        
     }

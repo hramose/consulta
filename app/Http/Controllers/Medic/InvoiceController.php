@@ -33,7 +33,7 @@ class InvoiceController extends Controller
       
     	$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
-        return view('invoices.index',compact('invoices','search'));*/
+        return view('medic.invoices.index',compact('invoices','search'));*/
         $searchDate = Carbon::now()->toDateString();
         
         if(request('q'))
@@ -55,7 +55,7 @@ class InvoiceController extends Controller
       
       
 
-        return view('invoices.index',compact('medic','invoices', 'noInvoices','totalInvoicesAmount','searchDate'));
+        return view('medic.invoices.index',compact('medic','invoices', 'noInvoices','totalInvoicesAmount','searchDate'));
 
     }
 
@@ -175,7 +175,7 @@ class InvoiceController extends Controller
         $invoice->load('appointment.patient');
 
         
-        return view('invoices.print',compact('invoice'));
+        return view('medic.invoices.print',compact('invoice'));
         
     }
 
@@ -192,7 +192,7 @@ class InvoiceController extends Controller
         $invoice->load('appointment.patient');
 
         
-        return view('invoices.ticket',compact('invoice'));
+        return view('medic.invoices.ticket',compact('invoice'));
         
     }
 

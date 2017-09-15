@@ -28,7 +28,7 @@ class UserController extends Controller
     	$tab = request('tab');
         $user = auth()->user();
 
-    	return view('users.edit-patient',compact('user','tab'));
+    	return view('user.account',compact('user','tab'));
 
     }
 

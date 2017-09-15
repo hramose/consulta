@@ -27,7 +27,8 @@
 		            <ul class="nav nav-tabs">
 		              <li><a href="#history" data-toggle="tab">Historial</a></li>
 		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
-		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
+									 <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
+									 <li><a href="#labexam" data-toggle="tab">Examen Laboratorio</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		              
 		            </ul>
@@ -131,6 +132,11 @@
 		              <!-- /.tab-pane -->
 					  <div class="tab-pane" id="physical">
 		              		<physicalexam :physical="{{ $appointment->physicalExams }}" :read="true"></physicalexam>
+									</div>
+									 <!-- /.tab-pane -->
+					   <div class="tab-pane" id="labexam">
+						   
+		              		<lab-exams :exams="{{ $appointment->labexams->load('results') }}" :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="true"></lab-exams>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">

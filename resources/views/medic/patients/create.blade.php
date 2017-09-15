@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo')
+          @include('medic/patients/partials/photo')
          
           
          
@@ -25,7 +25,7 @@
 	                <form method="POST" action="{{ url('/medic/patients') }}" class="form-horizontal">
       				          
                             {{ csrf_field() }}
-          				            @include('patients/partials/form')
+          				            @include('medic/patients/partials/form')
                            
                            
                        

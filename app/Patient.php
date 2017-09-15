@@ -60,6 +60,10 @@ class Patient extends Model
     {
         return $this->hasMany(Medicine::class);
     }
+    public function labexams()
+    {
+        return $this->hasMany(Labexam::class);
+    }
     public function labresults()
     {
         return $this->hasMany(Labresult::class);

@@ -50,7 +50,7 @@ class AppointmentController extends Controller
       
         
 
-        return view('appointments.history',compact('initAppointments','scheduledAppointments'));
+        return view('medic.appointments.history',compact('initAppointments','scheduledAppointments'));
 
     }
 
@@ -71,7 +71,7 @@ class AppointmentController extends Controller
         
         $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
        
-        return view('appointments.show',compact('appointment', 'files', 'history','appointments','patient'));
+        return view('medic.appointments.show',compact('appointment', 'files', 'history','appointments','patient'));
 
     }
 
@@ -263,7 +263,7 @@ class AppointmentController extends Controller
          $appointment =  $this->appointmentRepo->findById($id);
          $history =  $this->patientRepo->findById($appointment->patient->id)->history;
          
-         return view('appointments.patient-print-summary',compact('appointment','history'));
+         return view('medic.appointments.patient-print-summary',compact('appointment','history'));
          
      }
  
@@ -276,7 +276,7 @@ class AppointmentController extends Controller
          $appointment =  $this->appointmentRepo->findById($id);
  
          
-         return view('appointments.patient-print-treatment',compact('appointment'));
+         return view('medic.appointments.patient-print-treatment',compact('appointment'));
          
      }
 

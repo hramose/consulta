@@ -71,6 +71,10 @@ class Appointment extends Model
     {
         return $this->hasOne(PhysicalExam::class);
     }
+    public function labexams()
+    {
+        return $this->hasMany(Labexam::class);
+    }
     
      public function diagnostics()
     {

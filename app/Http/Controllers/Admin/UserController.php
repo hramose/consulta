@@ -30,7 +30,7 @@ class UserController extends Controller
         
 
 
-        return view('users.index',compact('users','search', 'roles'));
+        return view('admin.users.index',compact('users','search', 'roles'));
     }
     
     /**
