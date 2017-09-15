@@ -9,6 +9,7 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Role;
+use App\Appointment;
 use App\Labresult;
 use App\Labexam;
 use Illuminate\Http\Request;
@@ -272,9 +273,10 @@ class PatientController extends Controller
      */
      public function getLabExams($id)
      {
-       
-       
-        $labexams = Labexam::with('results')->where('appointment_id',request('appointment_id'))->where('patient_id',$id)->get();
+        
+        $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
+        
+        $labexams = $appointment->labexams()->with('results')->where('patient_id',$id)->get();
        
        
 
@@ -289,16 +291,19 @@ class PatientController extends Controller
         $this->validate(request(),[
                 'date' => 'required',
                 'name' => 'required',
-                'appointment_id' => 'required',
+               
                 
         ]);
-        $data = request()->all();
+        $data['date'] =request('date');
+        $data['name'] =request('name');
         $data['patient_id'] = $id;
 
        
         $labexam = Labexam::create($data);
         $labexam->load('results');
-       
+
+
+        $labexam->appointments()->attach(request('appointment_id')); // asociar la cita con el paciente
 
         return $labexam;
  
@@ -310,9 +315,23 @@ class PatientController extends Controller
       public function deleteLabExams($id)
       {
         
-          $result = Labexam::find($id);
-          $result->delete();
- 
+          $exam = Labexam::find($id);
+          $appointment = Appointment::find(request('appointment_id'));
+          //dd($exam->appointments()->where('appointments.id','<>', request('appointment_id'))->count());
+          if(!$exam->appointments()->where('appointments.id','<>', request('appointment_id'))->count())
+          {
+              
+              $exam->delete();
+  
+              
+  
+              return '';
+
+          }
+        
+          $patient = $appointment->labexams()->detach($id); 
+          
+
           
           return '';
   

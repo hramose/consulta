@@ -742,7 +742,7 @@ $(function () {
               }else{
                       $.ajax({
                         type: 'GET',
-                        url: '/medic/appointments/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                        url: '/medic/appointments/list?calendar=1&date1='+view.start.format()+'&date2='+ view.end.format(),
                         data: {},
                         success: function (resp) {
 

@@ -195,7 +195,7 @@ class AppointmentRepository extends DbRepository{
      * @param null $search
      * @return mixed
      */
-    public function findAllByDoctor($id, $search = null, $limit = 5)
+    public function findAllByDoctor($id, $search = null, $limit = 10)
     {
         $order = 'date';
         $dir = 'desc';
@@ -209,6 +209,11 @@ class AppointmentRepository extends DbRepository{
             
             $appointments = $appointments->Search($search['q']);
         }
+
+        if (isset($search['calendar']) && $search['calendar'] != "")
+        {
+            $appointments = $appointments->where('visible_at_calendar', $search['calendar']);
+        } 
 
         if (isset($search['date']) && $search['date'] != "")
         {
@@ -253,6 +258,11 @@ class AppointmentRepository extends DbRepository{
          if (isset($search['office']) && $search['office'] != "")
         {
             $appointments = $appointments->where('office_id', $search['office']);
+        } 
+
+        if (isset($search['calendar']) && $search['calendar'] != "")
+        {
+            $appointments = $appointments->where('visible_at_calendar', $search['calendar']);
         } 
 
          if (isset($search['date1']) && $search['date1'] != "")
@@ -312,6 +322,10 @@ class AppointmentRepository extends DbRepository{
         if (isset($search['status']) && $search['status'] == 0)
         {
             $appointments = $appointments->where('status', 0);
+        } 
+        if (isset($search['calendar']) && $search['calendar'] != "")
+        {
+            $appointments = $appointments->where('visible_at_calendar', $search['calendar']);
         }  
 
 

@@ -407,7 +407,7 @@ $(function () {
           
             $.ajax({
               type: 'GET',
-              url: '/medics/'+ medic +'/appointments/list?office='+ calendar.data('office') +'&date1='+ view.start.format() +'&date2='+view.end.format(),
+              url: '/medics/'+ medic +'/appointments/list?calendar=1&office='+ calendar.data('office') +'&date1='+ view.start.format() +'&date2='+view.end.format(),
               data: {},
               success: function (resp) {
                 

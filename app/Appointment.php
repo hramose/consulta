@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions','office_info','office_id'
+        'created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions','office_info','office_id','tracing'
     ];
      protected $dates = [
         'created_at',
@@ -73,7 +73,7 @@ class Appointment extends Model
     }
     public function labexams()
     {
-        return $this->hasMany(Labexam::class);
+        return $this->belongsToMany(Labexam::class);
     }
     
      public function diagnostics()

@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Labexam extends Model
 {
     protected $fillable = [
-        'date','name','patient_id', 'appointment_id', 'description'
+        'date','name','patient_id', 'description'
     ];
 
      public function results()
     {
         return $this->hasMany(Labresult::class);
     }
-    public function appointment()
+    public function appointments()
     {
-        return $this->belongsTo(Appointment::class);
+        return $this->belongsToMany(Appointment::class);
     }
     public function patient()
     {

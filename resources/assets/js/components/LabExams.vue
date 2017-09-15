@@ -1,14 +1,10 @@
 <template>
 	
-<div class="box box-danger">
+<div class="box box-danger " >
 
           <div class="box-header with-border">
             <h3 class="box-title">Examenes de Laboratorio</h3>
 
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
             <!-- /.box-tools -->
           </div>
           <!-- /.box-header -->
@@ -35,6 +31,7 @@
                 <div class="form-group">
                             <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
                 </div>
+               <div class="box-group" id="accordion">
                 <div class="panel box box-info" v-for="item in dataExams">
                     <div class="box-header with-border">
                     <h4 class="box-title">
@@ -77,6 +74,7 @@
                     </div>
                     </div>
                 </div>
+            </div>
                 
           </div>
     </div>
@@ -242,7 +240,7 @@
             
 
             this.loader = true;
-            this.$http.delete(this.url +'/labexams/'+item.id).then((response) => {
+            this.$http.delete(this.url +'/labexams/'+item.id, { body: { appointment_id: this.appointment_id }}).then((response) => {
 
                   if(response.status == 200)
                   {

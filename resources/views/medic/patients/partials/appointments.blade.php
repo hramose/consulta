@@ -25,17 +25,19 @@
 		<h2>Historial de consultas</h2>
 		@forelse($initAppointments as $appointment)
 			
-				<a class="info-box cita-item" href="{{ (isset($fromPatient) || auth()->id() != $appointment->user->id) ? '/appointments/'.$appointment->id.'/show': '/medic/appointments/'.$appointment->id.'/edit'}}" style="text-align: left;margin-bottom: -3px;">
+				<div class="info-box cita-item" style="text-align: left;margin-bottom: -3px;">
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
-		              <span class="info-box-text">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></span>
+		              <a class="info-box-text" href="{{ (isset($fromPatient) || auth()->id() != $appointment->user->id) ? '/appointments/'.$appointment->id.'/show': '/medic/appointments/'.$appointment->id.'/edit'}}">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
 		              <span class="info-box-number">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}<small></small></span>
-		              
+					  @if(!isset($read) && !isset($fromPatient)) 
+					  	<a class="btn btn-info" href="/medic/appointments/{{ $appointment->id }}/create">Crear seguimiento</a>
+					  @endif	
 		            </div>
 								
 		            <!-- /.info-box-content -->
-							</a>
+					</div>
 							@if(!isset($read) && !isset($fromPatient))
 								<notes :notes="{{ $appointment->notes }}" :appointment_id="{{ $appointment->id }}" ></notes>
 							@else 

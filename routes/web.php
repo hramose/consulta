@@ -146,6 +146,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');
+	Route::get('/appointments/{id}/create', 'Medic\AppointmentController@createFrom');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
 	Route::get('/invoices/services/list', 'Medic\InvoiceController@getServices');

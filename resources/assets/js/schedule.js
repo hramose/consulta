@@ -444,7 +444,7 @@ $(function () {
 
           $.ajax({
               type: 'GET',
-              url: '/medics/'+ externalEvent.data('doctor') +'/appointments/list?office='+ externalEvent.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
+              url: '/medics/'+ externalEvent.data('doctor') +'/appointments/list?calendar=1&office='+ externalEvent.data('office')+'&date1='+ view.start.format() +'&date2='+view.end.format(),
               data: {},
               success: function (resp) {
                  

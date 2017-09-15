@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
 use App\Patient;
+use App\Treatment;
+use App\Diagnostic;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\findAllByDoctor;
@@ -121,6 +123,66 @@ class AppointmentController extends Controller
         return view('medic.appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
 
     }
+
+     /**
+     * Guardar consulta(cita)
+     */
+     public function createFrom($id)
+     {
+ 
+         $appointment = $this->appointmentRepo->findById($id);
+         
+        
+         $data = [
+
+            'patient_id' => $appointment->patient_id,
+            'office_id' => $appointment->office_id,
+            'date' => $appointment->date,
+            'start' => $appointment->start,
+            'end' => $appointment->end,
+            'allDay' => $appointment->allDay,
+            'title' => 'Seguimiento de la cita '.$appointment->id,
+            'backgroundColor' => $appointment->backgroundColor,
+            'borderColor' => $appointment->borderColor,
+            'medical_instructions' => $appointment->medical_instructions,
+            'visible_at_calendar' => 0,
+            'tracing' => $appointment->id
+            
+            
+        ];
+
+        $newAppointment = $this->appointmentRepo->store($data);
+        $newAppointment->diseaseNotes->fill($appointment->diseaseNotes->toArray());
+        $newAppointment->diseaseNotes->save();
+        
+        $newAppointment->physicalExams->fill($appointment->physicalExams->toArray());
+        $newAppointment->physicalExams->save();
+
+        foreach($appointment->labexams as $exam){
+            $newAppointment->labexams()->attach($exam);
+        }
+        foreach($appointment->diagnostics as $diag){
+            Diagnostic::create([
+                'appointment_id' =>  $newAppointment->id,
+                'name' =>  $diag->name,
+                'comments' =>  $diag->comments
+            ]);
+            
+        }
+        foreach($appointment->treatments as $treat){
+            Treatment::create([
+                'appointment_id' =>  $newAppointment->id,
+                'name' =>  $treat->name,
+                'comments' =>  $treat->comments
+            ]);
+        }
+
+
+
+        return Redirect('/medic/appointments/'.$newAppointment->id.'/edit');
+ 
+     }
+ 
 
     /**
      * Actualizar consulta(cita)

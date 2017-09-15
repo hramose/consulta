@@ -91,7 +91,7 @@ $(function () {
 
         $.ajax({
             type: 'GET',
-            url: '/medic/appointments/list?date1='+moment().format('YYYY-MM-DD')+'&date2='+moment().add(3,'months').format('YYYY-MM-DD'),
+            url: '/medic/appointments/list?calendar=1&date1='+moment().format('YYYY-MM-DD')+'&date2='+moment().add(3,'months').format('YYYY-MM-DD'),
             data: {},
             success: function (resp) {
                 console.log(resp);
