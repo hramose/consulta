@@ -11,7 +11,7 @@
           <div class="box-body">
                 <div class="form-group" v-show="!read">
                     <div class="input-group">
-                            <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime" placeholder="Fecha">
+                            <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime" placeholder="Fecha" tabindex="1">
 
                             <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
@@ -21,7 +21,7 @@
                 </div>
                     <div class="form-group" v-show="!read">
                     
-                            <input type="text" class="form-control" v-model="name" placeholder="Examen a realizar">
+                            <input type="text" class="form-control" v-model="name" placeholder="Examen a realizar" @keyup.enter="hit" tabindex="2">
 
                         
                     
@@ -29,7 +29,7 @@
                 </div>
                 
                 <div class="form-group">
-                            <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+                            <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader" tabindex="3"> 
                 </div>
                <div class="box-group" id="accordion">
                 <div class="panel box box-info" v-for="item in dataExams">
@@ -176,7 +176,6 @@
                    
                   }
                   this.loader = false;
-                  this.date = "";
                   this.file = "";
               }, (response) => {
                  
@@ -205,7 +204,6 @@
                    
                   }
                   this.loader = false;
-                  this.date = "";
                   this.name = "";
               }, (response) => {
                  
@@ -284,6 +282,7 @@
             
                 this.dataExams = this.exams;
             }
+            this.date = moment().format("YYYY-MM-DD");
            
       }
       

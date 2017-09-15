@@ -42,7 +42,7 @@
                             <div class="input-group pay_with-field">
                             
                               <span class="input-group-addon">₡</span>
-                              <input type="text" name="pay_with" class="form-control" placeholder="0">
+                              <input type="text" name="pay_with" class="form-control" placeholder="0" tabindex="1">
                             
                             
                           </div>
@@ -86,9 +86,9 @@
            
              
               
-               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-               <button type="button" class="btn btn-secondary btn-print" data-invoice data-medic>Imprimir</button>
-              <button type="button" class="btn btn-primary btn-facturar" data-invoice data-medic>Facturar</button>
+               <!-- <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Cerrar</button> -->
+               <button type="button" class="btn btn-success btn-print" data-invoice data-medic tabindex="2">Imprimir</button>
+              <button type="button" class="btn btn-primary btn-facturar" data-invoice data-medic tabindex="3">Guardar</button>
              
             </div>
           </div>

@@ -50,16 +50,9 @@ $(function () {
                 infoBox.removeClass('alert-success').hide();
               },3000);
               
-             /* if(medic_id)
-                 window.location.href = "/assistant/medics/"+ medic_id +"/invoices";
-             else
-                window.location.href = "/assistant/invoices";*/
-              if($("#rd_ticket").is(":checked"))
-                window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
-              else
-                window.location.href = "/assistant/invoices/"+invoice_id+'/print';
               
-              
+             
+              window.location.href = "/assistant/medics/"+medic_id+'/invoices'
                 
             },
             error: function () {
@@ -76,11 +69,46 @@ $(function () {
     
       var invoice_id = $(this).attr('data-invoice');
       var medic_id = $(this).attr('data-medic');
-      
-       if($("#rd_ticket").is(":checked"))
+     var show =  $(this).attr('data-show');
+       if(show != '1'){
+
+          $.ajax({
+            type: 'PUT',
+            url: '/assistant/invoices/'+invoice_id,
+            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+            success: function (resp) {
+            
+
+              infoBox.addClass('alert-success').html('Factura procesada!!!').show();
+              setTimeout(function()
+              { 
+                infoBox.removeClass('alert-success').hide();
+              },3000);
+              
+          
+              if($("#rd_ticket").is(":checked"))
+                window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
+              else
+                window.location.href = "/assistant/invoices/"+invoice_id+'/print';
+              
+              
+                
+            },
+            error: function () {
+              console.log('error get details');
+
+            }
+        });
+    }else{
+      if($("#rd_ticket").is(":checked"))
         window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
       else
         window.location.href = "/assistant/invoices/"+invoice_id+'/print';
+    }
+      /* if($("#rd_ticket").is(":checked"))
+        window.location.href = "/assistant/invoices/"+invoice_id+'/ticket';
+      else
+        window.location.href = "/assistant/invoices/"+invoice_id+'/print';*/
 
   });
 
@@ -102,6 +130,8 @@ $(function () {
       modal.find('.btn-facturar').attr('data-medic', medic_id);
       modal.find('.btn-print').attr('data-invoice', invoice_id);
       modal.find('.btn-print').attr('data-medic', medic_id);
+  
+     
 
 
      
@@ -120,6 +150,7 @@ $(function () {
                $('input[name="client_name"]').val(resp.appointment.patient.fullname);
                $('input[name="pay_with"]').val(resp.pay_with);
                $('input[name="change"]').val(resp.change);
+            
 
                $.each(resp.lines, function( index, item ) {
                    
@@ -134,11 +165,15 @@ $(function () {
                $('input[name="total"]').val(resp.total);
 
                if(resp.status){
+                modal.find('.btn-print').focus();
                 modal.find('.btn-facturar').hide();
                 $('.pay_with_label').html( money(resp.pay_with));
                 $('.change_label').html( money(resp.change));
                 $('.pay_with-field').remove();
                 $('.change-field').remove();
+                modal.find('.btn-print').attr('data-show','1');
+               }else{
+                $('input[name="pay_with"]').focus();
                }
             },
             error: function () {
