@@ -137,9 +137,9 @@ class AppointmentController extends Controller
 
             'patient_id' => $appointment->patient_id,
             'office_id' => $appointment->office_id,
-            'date' => $appointment->date,
-            'start' => $appointment->start,
-            'end' => $appointment->end,
+            'date' => Carbon::now()->toDateString(),
+            'start' =>Carbon::now()->toDateString().'T'.Carbon::now()->toTimeString(),
+            'end' =>Carbon::now()->addMinutes(30)->toDateString().'T'.Carbon::now()->addMinutes(30)->toTimeString(),
             'allDay' => $appointment->allDay,
             'title' => 'Seguimiento de la cita '.$appointment->id,
             'backgroundColor' => $appointment->backgroundColor,
