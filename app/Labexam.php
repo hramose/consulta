@@ -12,7 +12,7 @@ class Labexam extends Model
 
      public function results()
     {
-        return $this->hasMany(LabResult::class);
+        return $this->hasMany(Labresult::class);
     }
     public function appointment()
     {
