@@ -97,9 +97,7 @@
         <!-- accepted payments column -->
         <div class="col-xs-6">
           
-          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-             Fecha Consulta: {{ $invoice->appointment->date }}
-          </p>
+          
         </div>
         <!-- /.col -->
         <div class="col-xs-6">

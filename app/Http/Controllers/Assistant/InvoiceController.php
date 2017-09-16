@@ -276,7 +276,7 @@ class InvoiceController extends Controller
         $totalInvoices = 0;
         $totalCommission = 0;
        
-
+         
         foreach ($medics as $medic) {
             $invoicesTotalMedic = $medic->invoices->sum('total');
             $totalAppointments += $medic->invoices->count();

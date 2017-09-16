@@ -39,7 +39,7 @@
                             <div class="input-group pay_with-field">
                             
                               <span class="input-group-addon">₡</span>
-                              <input type="text" name="pay_with" class="form-control" placeholder="0" tabindex="1">
+                              <input type="text" name="pay_with" class="form-control"  tabindex="1">
                             
                             
                           </div>

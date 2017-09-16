@@ -24,8 +24,7 @@
           
           
        
-                  <a href="/assistant/invoices/balance" class="btn btn-danger">Ver Cierre del Dia
-                          </a>
+                
        
           <div class="box box-solid box-medics">
             <div class="box-header with-border">

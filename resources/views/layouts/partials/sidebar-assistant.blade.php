@@ -35,6 +35,8 @@
          <li><a href="{{ url('/assistant/medics')}}"><i class="fa fa-user-md"></i> <span>Médicos</span></a></li>
         <li><a href="{{ url('/assistant/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
         <li><a href="{{ url('/assistant/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
+        <li><a href="{{ url('/assistant/invoices/balance')}}"><i class="fa fa-dollar"></i> <span>Cierre del Dia</span></a></li>
+       
         
         
       </ul>

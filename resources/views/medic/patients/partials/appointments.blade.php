@@ -29,7 +29,11 @@
 		            <span class="info-box-icon bg-green"><i class="fa fa-calendar"></i></span>
 
 		            <div class="info-box-content">
+					@if(!isset($read)) 
 		              <a class="info-box-text" href="{{ (isset($fromPatient) || auth()->id() != $appointment->user->id) ? '/appointments/'.$appointment->id.'/show': '/medic/appointments/'.$appointment->id.'/edit'}}">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
+					  @else 
+					  <a class="info-box-text" href="#">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
+					  @endif
 		              <span class="info-box-number">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}<small></small></span>
 					  @if(!isset($read) && !isset($fromPatient)) 
 					  	<a class="btn btn-info" href="/medic/appointments/{{ $appointment->id }}/create">Crear seguimiento</a>

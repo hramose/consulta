@@ -148,7 +148,7 @@ $(function () {
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                $('input[name="client_name"]').val(resp.appointment.patient.fullname);
-               $('input[name="pay_with"]').val(resp.pay_with);
+               $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
                $('input[name="change"]').val(resp.change);
             
 

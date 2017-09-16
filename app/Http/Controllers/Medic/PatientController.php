@@ -273,14 +273,32 @@ class PatientController extends Controller
      */
      public function getLabExams($id)
      {
+        if(request('appointment_id')){
+            $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
         
-        $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
-        
-        $labexams = $appointment->labexams()->with('results')->where('patient_id',$id)->get();
-       
-       
+            $labexams = $appointment->labexams()->with('results')->where('patient_id',$id)->get();
+            
+        }else{
+            $patient =  $this->patientRepo->findById($id);
+            $labexams = $patient->labexams()->with('results')->get();
+        }
 
-        return $labexams;
+        $labexams = $labexams->groupBy(function($exam) {
+            return $exam->date;
+        })->toArray();
+
+        $data = [];
+        $exam = [];
+
+        foreach ($labexams as $key => $value) {
+        
+            $exam['date'] = $key;
+            $exam['exams'] = $value;
+            $data[]= $exam;
+        }
+
+
+        return  $data;
  
      }
      /**

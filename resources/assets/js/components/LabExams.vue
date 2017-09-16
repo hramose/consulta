@@ -31,50 +31,68 @@
                 <div class="form-group">
                             <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader" tabindex="3"> 
                 </div>
-               <div class="box-group" id="accordion">
-                <div class="panel box box-info" v-for="item in dataExams">
-                    <div class="box-header with-border">
-                    <h4 class="box-title">
-                        <a data-toggle="collapse" data-parent="#accordion" :href="'#exam-'+ item.id" aria-expanded="false" class="collapsed">
-                       {{ formatDate(item.date) }} - {{ item.name}}  
-                        </a>
-                    </h4>
-                    <div class="box-tools pull-right">
-                        
-                        <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read" v-bind:disabled="loader"></i>
-                    </div>
-                    </div>
-                    <div :id="'exam-'+ item.id" class="panel-collapse collapse" aria-expanded="false">
-                    <div class="box-body">
-                        
-                      <div class="content">
-                       <div class="col-sm-12 col-md-6"  v-show="!read">
-                          
-                            <div class="form-group" v-show="!read">
-                                <photo-upload @input="handleFileUpload" :value="value" message="Subir resultado"></photo-upload>
-                                <button @click="uploadResult(item)" class="btn btn-info" v-show="!read" v-bind:disabled="loader">Subir</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
-                            </div>
-                        </div>
-                        <div class="col-sm-12" :class="(!read) ? 'col-md-6' : ''">
-                              <b>Resultados:</b>
-                              <ul id="medicines-list" class="todo-list ui-sortable" v-show="item.results.length">
-                
-                                <li v-for="item in item.results"><span class="text"> {{ formatDate(item.date) }}</span> - <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a>  
-                                    <div class="tools">
-                                        
-                                        <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read" v-bind:disabled="loader"></i>
-                                    </div>
-                                 </li>
 
-                               </ul>
-                        </div>
+                <div class="box box-solid" v-for="itemDate in dataExams">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"> {{ formatDate(itemDate.date) }}</h3>
                     </div>
-                    
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                              <div class="box-group" id="accordion">
+                                    <div class="panel box box-info" v-for="exam in itemDate.exams">
+                                        <div class="box-header with-border">
+                                        <h4 class="box-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" :href="'#exam-'+ exam.id" aria-expanded="false" class="collapsed">
+                                                {{ exam.name }}
+                                            </a>
+                                        </h4>
+                                        <div class="box-tools pull-right">
+                        
+                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read" v-bind:disabled="loader"></i>
+                                        </div>
+                                        </div>
+                                        <div :id="'exam-'+ exam.id" class="panel-collapse collapse" aria-expanded="false">
+                                            <div class="box-body">
+                                                
+                                                <div class="content">
+
+                                                        <div class="col-sm-12 col-md-6"  v-show="!read">
+                        
+                                                        <div class="form-group" v-show="!read">
+                                                            <photo-upload @input="handleFileUpload" :value="value" message="Subir resultado"></photo-upload>
+                                                            <button @click="uploadResult(exam)" class="btn btn-info" v-show="!read" v-bind:disabled="loader">Subir</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12" :class="(!read) ? 'col-md-6' : ''">
+                                                        <b>Resultados:</b>
+                                                        <ul id="medicines-list" class="todo-list ui-sortable" v-show="exam.results.length">
+                                            
+                                                            <li v-for="item in exam.results"> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a>  
+                                                                <div class="tools">
+                                                                    
+                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read" v-bind:disabled="loader"></i>
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                                                
+                                                </div>
+                                            
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
                         
                     </div>
-                    </div>
+                    <!-- /.box-body -->
                 </div>
-            </div>
+
+
+
+             
                 
           </div>
     </div>
@@ -98,6 +116,7 @@
         },
         exams: {
           type: Array
+          
           
         },
         url:{
@@ -199,7 +218,7 @@
                  
                   if(response.status == 200)
                   {
-                    this.dataExams.push(response.data);
+                   this.loadResults()
                     bus.$emit('alert', 'Examen Agregado','success');
                    
                   }
@@ -242,8 +261,7 @@
 
                   if(response.status == 200)
                   {
-                     var index = this.dataExams.indexOf(item)
-                    this.dataExams.splice(index, 1);
+                    this.loadResults();
                     bus.$emit('alert', 'Examen Eliminado','success');
                   }
                   this.loader = false;
@@ -277,11 +295,8 @@
       created () {
            console.log('Component ready. Lab Results.')
           
-           if(this.exams.length)
-           {
-            
-                this.dataExams = this.exams;
-            }
+            this.loadResults();
+          
             this.date = moment().format("YYYY-MM-DD");
            
       }

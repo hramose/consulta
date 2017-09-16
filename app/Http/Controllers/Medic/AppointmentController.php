@@ -120,6 +120,10 @@ class AppointmentController extends Controller
         
         $tab = request('tab');
 
+       
+       
+      
+
         return view('medic.appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
 
     }

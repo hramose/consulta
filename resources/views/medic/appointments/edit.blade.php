@@ -86,7 +86,7 @@
 					   <!-- /.tab-pane -->
 					   <div class="tab-pane" id="labexam">
 						   
-		              		<lab-exams :exams="{{ $appointment->labexams->load('results') }}" :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
+		              		<lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">
