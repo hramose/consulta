@@ -16,8 +16,9 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown notifications-menu">
+          <notifications :appointments="{{ $newAppointments }}" :total="{{ $newAppointments->count() }}"></notifications>
+          
+          <!-- <li class="dropdown notifications-menu">
             <a href="/medic/appointments" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <span class="label label-warning">  @if($count = $newAppointments->count() > 0)
@@ -28,7 +29,7 @@
             <ul class="dropdown-menu">
               <li class="header">Tienes {{ $count }} nueva(s) cita(s) reservada(s)</li>
               <li>
-                <!-- inner menu: contains the actual data -->
+               
                 <ul class="menu">
                   @foreach($newAppointments as $appointment)
                   <li>
@@ -43,7 +44,7 @@
             
               <li class="footer"><a href="/medic/appointments">Ver todas</a></li>
             </ul>
-          </li>
+          </li> -->
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->

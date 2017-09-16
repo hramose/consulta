@@ -58,6 +58,7 @@ Vue.component('notes', require('./components/Notes.vue'));
 Vue.component('photo-upload', require('./components/PhotoUpload.vue'));
 Vue.component('lab-results', require('./components/LabResults.vue'));
 Vue.component('lab-exams', require('./components/LabExams.vue'));
+Vue.component('notifications', require('./components/Notifications.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 
@@ -119,6 +120,11 @@ $(window).scroll(function () {
           
       });
 
+  $('.notifications-menu .dropdown-menu').on({
+    "click":function(e){
+        e.stopPropagation();
+      }
+  });
 $('.form-update-location').on('submit', function (e) {
    e.preventDefault();
    var form = $(this);

@@ -16,7 +16,7 @@ class Patient extends Model
 
     public function getPhotoAttribute()
     {
-        return getAvatar($this);
+        return getPhoto($this);
     }
 
     public function getFullnameAttribute()

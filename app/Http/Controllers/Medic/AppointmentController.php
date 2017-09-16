@@ -254,6 +254,18 @@ class AppointmentController extends Controller
 
     }
 
+    public function viewed($id)
+    {
+
+        $reservation = \DB::table('appointments')
+            ->where('id', $id)
+            ->update(['viewed' => 1]); //vista desde el panel de notificacion  
+
+         return 'viewed';
+
+    }
+
+
 
     /**
      * Lista de todas las citas de un doctor sin paginar

@@ -75,6 +75,21 @@ function dayName($day)
 
     return $dayName;
 }
+function getPhoto($user)
+{
+   
+
+    $url = '';
+    
+    if(Storage::disk('public')->exists('patients/'. $user->id.'/photo.jpg'))
+        $url = Storage::url('patients/'.$user->id.'/photo.jpg');
+    else
+        $url = "/img/default-avatar.jpg";
+
+    return $url;
+        
+     
+}
 function getAvatar($user)
 {
    

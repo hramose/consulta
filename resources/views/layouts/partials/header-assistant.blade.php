@@ -16,35 +16,7 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          
-          <li class="dropdown notifications-menu">
-            <a href="/assistant/appointments" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">  @if($count = $newAppointments->count() > 0)
-                            {{ $count}} 
-                   @endif
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Tienes {{ $count }} nueva(s) cita(s) reservada(s)</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  @foreach($newAppointments as $appointment)
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-calendar text-aqua"></i> {{ $appointment->title }} -  {{ \Carbon\Carbon::parse($appointment->start)->toDateTimeString() }}
-                    </a>
-                  </li>
-                  @endforeach
-                 
-                </ul>
-              </li>
-              
-              <li class="footer"><a href="/assistant/appointments">Ver todas</a></li>
-            </ul>
-          </li>
+          <notifications :appointments="{{ $newAppointments }}" url="/assistant/appointments" :read="true" :view_assistant="true"></notifications>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->

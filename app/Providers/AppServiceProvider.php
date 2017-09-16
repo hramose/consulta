@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.app', function ($view)
         {
-             $appointments = \App\Appointment::where('user_id', auth()->id())->where('status', 0)->where('patient_id','<>',0);
+             $appointments = \App\Appointment::with('user','patient')->where('user_id', auth()->id())->where('status', 0)->where('patient_id','<>',0)->where('viewed', 0);
                
             
 
@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
                $office = auth()->user()->clinicsAssistants->first();
 
             
-                $appointments = \App\Appointment::where('office_id', $office->id)->where('status', 0)->where('patient_id','<>',0)->whereDate('date', \Carbon\Carbon::today()->toDateTimeString());
+                $appointments = \App\Appointment::with('user','patient')->where('office_id', $office->id)->where('status', 0)->where('patient_id','<>',0)->where('viewed', 0);
                
             
 

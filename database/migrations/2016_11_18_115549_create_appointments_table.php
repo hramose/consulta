@@ -32,8 +32,9 @@ class CreateAppointmentsTable extends Migration
             $table->text('office_info')->nullable();
             $table->tinyInteger('status')->default(0); //1 iniciada //2 no asistio
             $table->tinyInteger('finished')->default(0); //1 finalizada
-            $table->tinyInteger('visible_at_calendar')->default(1); //1 finalizada
+            $table->tinyInteger('visible_at_calendar')->default(1); //1 visible desde el calendario
             $table->integer('tracing')->default(0);
+            $table->tinyInteger('viewed')->default(0); //0 no vista desde el panel de notificaciones
             $table->timestamps();
         });
     }

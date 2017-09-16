@@ -97,7 +97,7 @@ Route::resource('polls', 'PollController');
 
 
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
-Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(function ()
+Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 {
 
 	Route::get('/account/edit', 'Medic\UserController@edit');
@@ -147,6 +147,7 @@ Route::prefix('medic')->middleware('authByRole:medico,asistente')->group(functio
 	Route::delete('/appointments/{id}/delete', 'Medic\AppointmentController@delete');
 	Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
 	Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');
+	Route::put('/appointments/{id}/viewed', 'Medic\AppointmentController@viewed');
 	Route::get('/appointments/{id}/create', 'Medic\AppointmentController@createFrom');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
