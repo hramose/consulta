@@ -136,7 +136,7 @@
 									 <!-- /.tab-pane -->
 					   <div class="tab-pane" id="labexam">
 						   
-		              		<!-- <lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="true"></lab-exams> -->
+		              		<lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="true" url="/patients"></lab-exams>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">

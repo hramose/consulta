@@ -6,6 +6,7 @@ use App\Allergy;
 use App\Http\Requests\PatientRequest;
 use App\Pressure;
 use App\Repositories\PatientRepository;
+use App\Repositories\AppointmentRepository;
 use App\Sugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -18,10 +19,11 @@ class PatientController extends Controller
      *
      * @return void
      */
-    public function __construct(PatientRepository $patientRepo)
+    public function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo )
     {
         $this->middleware('auth');
         $this->patientRepo = $patientRepo;
+        $this->appointmentRepo = $appointmentRepo;
 
         
     }
@@ -244,4 +246,37 @@ class PatientController extends Controller
         return '';
 
     }
+     /**
+     * Agregar medicamentos a pacientes
+     */
+     public function getLabExams($id)
+     {
+        if(request('appointment_id')){
+            $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
+        
+            $labexams = $appointment->labexams()->with('results')->where('patient_id',$id)->get();
+            
+        }else{
+            $patient =  $this->patientRepo->findById($id);
+            $labexams = $patient->labexams()->with('results')->get();
+        }
+
+        $labexams = $labexams->groupBy(function($exam) {
+            return $exam->date;
+        })->toArray();
+
+        $data = [];
+        $exam = [];
+
+        foreach ($labexams as $key => $value) {
+        
+            $exam['date'] = $key;
+            $exam['exams'] = $value;
+            $data[]= $exam;
+        }
+
+
+        return  $data;
+ 
+     }
 }

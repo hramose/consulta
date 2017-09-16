@@ -75,6 +75,7 @@ Route::resource('appointments', 'AppointmentController');
 
 Route::post('/patients', 'PatientController@store');
 Route::put('/patients/{patient}', 'PatientController@update');
+Route::get('/patients/{id}/labexams', 'PatientController@getLabExams');
 
 Route::get('/expedients/{patient}/show', 'PatientController@expedient');
 
