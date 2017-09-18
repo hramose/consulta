@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Allergy;
 use App\Http\Requests\PatientRequest;
 use App\Pressure;
+use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
+use App\Repositories\UserRepository;
 use App\Sugar;
+use App\Appointment;
+use App\Labresult;
+use App\Labexam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
@@ -296,7 +301,7 @@ class PatientController extends ApiController
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
        $appointments = $patient->appointments()->with('user','diagnostics')->where('status', 1)->limit(5)->get();//$patient->appointments->load('user','diagnostics');
-       $labexams =  $patient->labrexams()->with('results')->limit(10)->get();
+       $labexams =  $patient->labexams()->with('results')->limit(10)->get();
 
         $labexams = $labexams->groupBy(function($exam) {
             return $exam->date;
