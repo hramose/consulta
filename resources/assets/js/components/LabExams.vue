@@ -167,6 +167,8 @@
           },
           uploadResult(item){
 
+            if(!this.file)
+               return 
               
               const config = {
                 headers: {
@@ -185,7 +187,7 @@
 
                 form.append(key, resultObj[key]);
             });*/
-            
+              this.loader = true;
               this.$http.post(this.url +'/'+ this.patient_id +'/labresults', form, config).then((response) => {
     
                   if(response.status == 200)
