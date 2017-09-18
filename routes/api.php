@@ -42,6 +42,7 @@ Route::delete('/account/patients/pressures/{id}', 'Api\PatientController@deleteP
 Route::post('/account/patients/{id}/sugars', 'Api\PatientController@sugars')->middleware('auth:api');
 Route::get('/account/patients/{id}/sugars', 'Api\PatientController@getSugars')->middleware('auth:api');
 Route::get('/account/patients/{id}/history', 'Api\PatientController@getHistory')->middleware('auth:api');
+Route::get('/account/patients/{id}/labexams', 'Api\PatientController@getLabExams')->middleware('auth:api');
 Route::delete('/account/patients/sugars/{id}', 'Api\PatientController@deleteSugars')->middleware('auth:api');
 Route::post('/patient/register', 'Api\PatientController@store')->middleware('auth:api');
 Route::get('/medics', 'Api\MedicController@search')->middleware('auth:api');
@@ -55,6 +56,7 @@ Route::post('/appointments/{appointment}/reminder', 'Api\AppointmentController@r
 Route::delete('/appointments/{appointment}/delete', 'Api\AppointmentController@delete')->middleware('auth:api');
 Route::get('/clinics', 'Api\ClinicController@index')->middleware('auth:api');
 Route::get('/clinics/{clinic}', 'Api\ClinicController@show')->middleware('auth:api');
+
 /*Route::post('/token', function (Request $request) {
 	   
 	    
