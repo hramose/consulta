@@ -42,13 +42,29 @@ class AppointmentController extends ApiController
         $patient = $appointment->patient;
         $medicines = $patient->medicines;
         $vitalSigns = $patient->vitalSigns;
+        $labexams =  $patient->labexams()->with('results')->limit(10)->get();
+
+        $labexams = $labexams->groupBy(function($exam) {
+            return $exam->date;
+        })->toArray();
+
+        $dataExams = [];
+        $exam = [];
+
+        foreach ($labexams as $key => $value) {
+        
+            $exam['date'] = $key;
+            $exam['exams'] = $value;
+            $dataExams[]= $exam;
+        }
         
         $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
         $data = [
            'appointment' => $appointment,
            'files' => $files,
            'medicines' => $medicines,
-           'vitalSigns' => $vitalSigns
+           'vitalSigns' => $vitalSigns,
+           'labexams' => $dataExams
         ];
 
         return $data;

@@ -301,27 +301,27 @@ class PatientController extends ApiController
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
        $appointments = $patient->appointments()->with('user','diagnostics')->where('status', 1)->limit(5)->get();//$patient->appointments->load('user','diagnostics');
-       $labexams =  $patient->labexams()->with('results')->limit(10)->get();
+       // $labexams =  $patient->labexams()->with('results')->limit(10)->get();
 
-        $labexams = $labexams->groupBy(function($exam) {
-            return $exam->date;
-        })->toArray();
+       //  $labexams = $labexams->groupBy(function($exam) {
+       //      return $exam->date;
+       //  })->toArray();
 
-        $dataExams = [];
-        $exam = [];
+       //  $dataExams = [];
+       //  $exam = [];
 
-        foreach ($labexams as $key => $value) {
+       //  foreach ($labexams as $key => $value) {
         
-            $exam['date'] = $key;
-            $exam['exams'] = $value;
-            $dataExams[]= $exam;
-        }
+       //      $exam['date'] = $key;
+       //      $exam['exams'] = $value;
+       //      $dataExams[]= $exam;
+       //  }
 
 
         $data = [
             'history' => $history,
-            'appointments'=> $appointments,
-            'labexams'=> $dataExams
+            'appointments'=> $appointments
+            
         ];
 
        return $data;
