@@ -49,7 +49,7 @@
                                         </h4>
                                         <div class="box-tools pull-right">
                         
-                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read && !loader" v-bind:disabled="loader"></i>
+                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read" v-bind:disabled="loader"></i>
                                         </div>
                                         </div>
                                         <div :id="'exam-'+ exam.id" class="panel-collapse collapse" aria-expanded="false">
@@ -71,7 +71,7 @@
                                                             <li v-for="item in exam.results"> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a>  
                                                                 <div class="tools">
                                                                     
-                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read && !loader" v-bind:disabled="loader"></i>
+                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read" v-bind:disabled="loader"></i>
                                                                 </div>
                                                             </li>
 
@@ -196,12 +196,12 @@
                     bus.$emit('alert', 'Resultado Agregado','success');
                    
                   }
-                  this.loader = false;
+                  
                   this.file = "";
               }, (response) => {
                  
                    bus.$emit('alert', 'Error al guardar el Resultado', 'danger');
-                  this.loader = false;
+                   this.loader = false;
               });
              bus.$emit('clearImage');
             
@@ -220,16 +220,16 @@
                  
                   if(response.status == 200)
                   {
-                   this.loadResults()
+                    this.loadResults()
                     bus.$emit('alert', 'Examen Agregado','success');
                    
                   }
-                  this.loader = false;
+                  
                   this.name = "";
               }, (response) => {
                  
                    bus.$emit('alert', 'Error al guardar el Examen', 'danger');
-                  this.loader = false;
+                   this.loader = false;
               });
              
             
@@ -240,7 +240,7 @@
             
             if(this.loader) return
 
-            this.loader = true;
+             this.loader = true;
             this.$http.delete(this.url +'/labresults/'+item.id,{ body: { file: fileToDelete }}).then((response) => {
 
                   if(response.status == 200)
@@ -248,11 +248,11 @@
                      this.loadResults();
                     bus.$emit('alert', 'Resultado Eliminado','success');
                   }
-                  this.loader = false;
+                 
               }, (response) => {
                   
                    bus.$emit('alert', 'Error al eliminar el Resultado', 'danger');
-                  this.loader = false;
+                   this.loader = false;
               });
 
 
@@ -269,11 +269,11 @@
                     this.loadResults();
                     bus.$emit('alert', 'Examen Eliminado','success');
                   }
-                  this.loader = false;
+                 
               }, (response) => {
                   
                    bus.$emit('alert', 'Error al eliminar el Examen', 'danger');
-                  this.loader = false;
+                   this.loader = false;
               });
 
 
@@ -282,13 +282,20 @@
               let queryParam = {
                 ['appointment_id']: this.appointment_id
               }
+               
                this.$http.get(this.url +'/'+ this.patient_id +'/labexams', {params: Object.assign(queryParam, this.data)})
                 .then(resp => {
-                
-                this.dataExams = resp.data
+                 
+
+                 this.dataExams = resp.data
+                 this.loader = false;
 
                 
-                })
+                }, (response) => {
+                  
+                   bus.$emit('alert', 'Error al cargar el exams', 'danger');
+                   this.loader = false;
+              });
           },
            handleFileUpload(file){
                 console.log(file)
