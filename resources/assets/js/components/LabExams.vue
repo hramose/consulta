@@ -237,6 +237,8 @@
           },
           removeResult(item){
             let fileToDelete = "/patients/"+ this.patient_id +"/labresults/"+ item.id +"/"+ item.name; 
+            
+            if(this.loader) return
 
             this.loader = true;
             this.$http.delete(this.url +'/labresults/'+item.id,{ body: { file: fileToDelete }}).then((response) => {
@@ -257,6 +259,7 @@
           },
           remove(item){
             
+            if(this.loader) return
 
             this.loader = true;
             this.$http.delete(this.url +'/labexams/'+item.id, { body: { appointment_id: this.appointment_id }}).then((response) => {
