@@ -42,7 +42,7 @@ class AppointmentController extends ApiController
         $patient = $appointment->patient;
         $medicines = $patient->medicines;
         $vitalSigns = $patient->vitalSigns;
-        $labexams =  $patient->labexams()->with('results')->limit(10)->get();
+        $labexams = $appointment->labexams()->with('results')->where('patient_id',$patient->id)->limit(10)->get();
 
         $labexams = $labexams->groupBy(function($exam) {
             return $exam->date;
