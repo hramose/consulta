@@ -49,7 +49,7 @@
                                         </h4>
                                         <div class="box-tools pull-right">
                         
-                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read" v-bind:disabled="loader"></i>
+                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read && !loader" v-bind:disabled="loader"></i>
                                         </div>
                                         </div>
                                         <div :id="'exam-'+ exam.id" class="panel-collapse collapse" aria-expanded="false">
@@ -71,7 +71,7 @@
                                                             <li v-for="item in exam.results"> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a>  
                                                                 <div class="tools">
                                                                     
-                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read" v-bind:disabled="loader"></i>
+                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read && !loader" v-bind:disabled="loader"></i>
                                                                 </div>
                                                             </li>
 
