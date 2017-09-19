@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
+use App\Events\AppointmentCreated;
+use App\Events\AppointmentDeleted;
 
 class AppointmentController extends Controller
 {
@@ -121,6 +123,10 @@ class AppointmentController extends Controller
                     Log::info('Mensaje Push code: '.$response->success);
            }
         
+       // $appointmentToPusher = Appointment::with('patient','user')->find($appointment->id);
+
+        event(new AppointmentCreated($appointment));
+        
         try {
                         
             \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
@@ -180,7 +186,8 @@ class AppointmentController extends Controller
      */
     public function delete($id)
     {
-
+        $appointmentDeletedToPusher = $this->appointmentRepo->findById($id);
+        
         $appointment = $this->appointmentRepo->delete($id);
         $appointmentsToday = auth()->user()->appointmentsToday();
         
@@ -198,6 +205,8 @@ class AppointmentController extends Controller
             'resp' => 'ok',
             'appointmentsToday' => $appointmentsToday
         ];
+
+        event(new AppointmentDeleted($appointmentDeletedToPusher));
 
         return $data;
 

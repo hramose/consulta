@@ -16,7 +16,7 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <notifications :appointments="{{ $newAppointments }}" :total="{{ $newAppointments->count() }}"></notifications>
+          <notifications :appointments="{{ $newAppointments }}" :total="{{ $newAppointments->count() }}" :user-id="{{ auth()->id() }}"></notifications>
           
           <!-- <li class="dropdown notifications-menu">
             <a href="/medic/appointments" class="dropdown-toggle" data-toggle="dropdown">

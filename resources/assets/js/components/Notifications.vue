@@ -71,6 +71,7 @@
  export default {
         //props: ['patients','fromModal'],
          props: {
+             userId: Number,
              appointments: Array,
              url:{
                 type:String,
@@ -144,6 +145,24 @@
                 });
 
                
+            },
+            listen(){
+               
+              Echo.private(`users.${this.userId}.notifications`)
+                .listen('AppointmentCreated', (e) => {
+
+                    this.citas.push(JSON.parse(e.appointment));
+                   
+                })
+                .listen('AppointmentDeleted', (e) => {
+
+                   
+                    var index = this.citas.indexOf(JSON.parse(e.appointment))
+                        this.citas.splice(index, 1);
+                   
+                })
+                
+                
             }
     
 
@@ -151,6 +170,7 @@
         },//methods
         created() {
           
+          this.listen()
          
 	      this.citas = this.appointments
 	     

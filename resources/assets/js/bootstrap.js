@@ -39,9 +39,14 @@ window.moment = require('moment');
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+import Echo from "laravel-echo"
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '774ff143bd6afa8f115a',
+    cluster: 'us2',
+    encrypted: true,
+    
+});
