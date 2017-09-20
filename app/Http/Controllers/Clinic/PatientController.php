@@ -9,6 +9,7 @@ use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -296,5 +297,28 @@ class PatientController extends Controller
         return Redirect()->back();
 
     }
+
+     /**
+     * Mostrar vista de todas las consulta(citas) de un doctor
+     */
+     public function invoices($patient_id)
+     {
+         $patient = $this->patientRepo->findById($patient_id);
+         $searchDate = Carbon::now()->toDateString();
+         
+         if(request('q'))
+             $searchDate = request('q');
+ 
+    
+         $office =  auth()->user()->offices->first();
+ 
+         $invoices = $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
+         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->sum('total');
+         
+       
+ 
+         return view('clinic.patients.invoices',compact('patient','invoices','totalInvoicesAmount','searchDate'));
+ 
+     }
 
 }

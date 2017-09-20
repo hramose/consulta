@@ -216,6 +216,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::post('/patients/{id}/add', 'Clinic\PatientController@addToYourPatients');
 	Route::get('/patients/list', 'Clinic\PatientController@list');
 	Route::get('/patients/verify', 'Clinic\PatientController@verifyIsPatient');
+	Route::get('/patients/{patient}/invoices', 'Clinic\PatientController@invoices');
 	Route::resource('patients', 'Clinic\PatientController');
 
 	Route::get('/appointments/list', 'Clinic\AppointmentController@getAppointments');
@@ -238,7 +239,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 
 });
 
-Route::prefix('assistant')->middleware('authByRole:asistente')->group(function ()
+Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(function ()
 {
 
 	Route::get('/account/edit', 'Assistant\UserController@edit');

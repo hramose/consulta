@@ -143,7 +143,7 @@ $(function () {
                modal.find('#modal-label-medic').text('')
                table_details.find('tbody').html('');
               
-
+             
                modal.find('#modal-label-medic').text(resp.medic.name);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);

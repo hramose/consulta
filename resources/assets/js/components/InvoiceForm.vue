@@ -65,29 +65,7 @@
                 <div class="box-footer clearfix">
                     Total de Factura: ₡{{  money(getTotalInvoice()) }}
                 </div>
-                 <div class="box-footer clearfix">
-                  <div class="col-md-8">
-                      <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
-                        <div class="input-group pay_with-field">
-                        
-                          <span class="input-group-addon">₡</span>
-                          <input type="text" name="pay_with" class="form-control" placeholder="0" v-model="pay_with" @keyup="calculateChange()">
-                        
-                        
-                      </div>
-                  </div>
-                  <div class="col-md-8">
-                      <label for="">Vuelto</label> ₡<span class="change_label"></span>
-                        <div class="input-group change-field">
-                          
-                            <span class="input-group-addon">₡</span>
-                            <input type="text" name="change" class="form-control" placeholder="0" readonly  v-model="change">
-                          
-                          
-                        </div>
-                  </div>
-                </div>
-                <!-- /.box-footer -->
+                 
               </div>
 
 
@@ -95,9 +73,45 @@
            <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
-              <button type="submit" class="btn btn-success" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+              <button type="submit" class="btn btn-success" @click="invoiceHere = true">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
             </div>
           </div>
+          <div v-show="invoiceHere">
+              <div class="box-footer clearfix" >
+                  <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
+                          <div class="input-group pay_with-field">
+                          
+                            <span class="input-group-addon">₡</span>
+                            <input type="text" name="pay_with" class="form-control" placeholder="0" v-model="pay_with" @keyup="calculateChange()">
+                          
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Vuelto</label> ₡<span class="change_label"></span>
+                          <div class="input-group change-field">
+                            
+                              <span class="input-group-addon">₡</span>
+                              <input type="text" name="change" class="form-control" placeholder="0" readonly  v-model="change">
+                            
+                            
+                          </div>
+                    </div>
+                  </div>
+                 
+                   
+                  
+                </div>
+                <!-- /.box-footer -->
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                  </div>
+                </div>
+          </div>
+          
               
           </div>
             
@@ -157,7 +171,8 @@
 	          errors: [],
             newService:false,
             updateService:false,
-            service:null
+            service:null,
+            invoiceHere: false
            
 	         
 	        
@@ -378,6 +393,7 @@
                           this.service = null;
                           this.servicesToInvoice = [];
                           this.errors = [];
+                          this.invoiceHere = false;
 
                           if(here){
                             window.location.href = "/medic/invoices/"+response.data.id+"/print";
@@ -391,6 +407,7 @@
                       console.log('error al facturar servicio')
                       this.loader = false;
                        this.errors = response.data;
+                       this.invoiceHere = false;
                   });
 
             }// facturar
