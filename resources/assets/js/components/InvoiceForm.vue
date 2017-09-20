@@ -7,7 +7,7 @@
             <label for="service" class="col-sm-2 control-label">Servicio</label>
 
             <div class="col-sm-5">
-               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el consultorio para la cita..." label="name_price" :on-change="selectService" :value.sync="service"></v-select>
+               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el servicio a facturar..." label="name_price" :on-change="selectService" :value.sync="service"></v-select>
               <form-error v-if="errors.service" :errors="errors" style="float:right;">
                   {{ errors.service[0] }}
               </form-error>

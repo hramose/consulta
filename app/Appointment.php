@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions','office_info','office_id','tracing'
+        'created_by','date','start','end','allDay','title','backgroundColor','borderColor','medical_instructions','office_info','office_id','tracing','visible_at_calendar'
     ];
      protected $dates = [
         'created_at',
