@@ -76,7 +76,7 @@
                             </td> -->
                             <td>
                             
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $invoice->medic_id }}">
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-patient="{{ $invoice->patient_id }}">
                                   <i class="fa fa-eye"></i> Detalle 
                                 </button>
                             </td>
@@ -108,7 +108,7 @@
 
     </section>
 
-    @include('assistant/invoices/partials/modal')
+    @include('clinic/invoices/partials/modal')
   
 
 
@@ -119,6 +119,6 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
-<script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
+<script src="{{ elixir('/js/clinic.invoices.min.js') }}"></script>
  
 @endsection

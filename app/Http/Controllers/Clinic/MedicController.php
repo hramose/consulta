@@ -22,7 +22,7 @@ class MedicController extends Controller
      */
     public function __construct(MedicRepository $medicRepo, AppointmentRepository $appointmentRepo, ScheduleRepository $scheduleRepo, OfficeRepository $officeRepo)
     {
-        $this->middleware('auth');
+        $this->middleware('authByRole:clinica');
         $this->medicRepo = $medicRepo;
         $this->appointmentRepo = $appointmentRepo;
          $this->scheduleRepo = $scheduleRepo;

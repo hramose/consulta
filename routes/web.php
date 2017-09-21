@@ -218,6 +218,10 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	Route::get('/patients/verify', 'Clinic\PatientController@verifyIsPatient');
 	Route::get('/patients/{patient}/invoices', 'Clinic\PatientController@invoices');
 	Route::resource('patients', 'Clinic\PatientController');
+	Route::put('/invoices/{id}', 'Clinic\InvoiceController@update');
+	Route::get('/invoices/{id}/details', 'Clinic\InvoiceController@getDetails');
+	Route::get('/invoices/{id}/print', 'Clinic\InvoiceController@print');
+	Route::get('/invoices/{id}/ticket', 'Clinic\InvoiceController@ticket');
 
 	Route::get('/appointments/list', 'Clinic\AppointmentController@getAppointments');
 	Route::get('/appointments/{id}/print', 'Clinic\AppointmentController@printSummary');

@@ -11,7 +11,7 @@ class ReportsController extends Controller
 {
      function __construct(AppointmentRepository $appointmentRepo, ClinicRepository $clinicRepo)
     {
-        $this->middleware('auth');
+        $this->middleware('authByRole:asistente');
         $this->appointmentRepo = $appointmentRepo;
         $this->clinicRepo = $clinicRepo;
     }

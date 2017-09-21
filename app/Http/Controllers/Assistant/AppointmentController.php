@@ -18,7 +18,7 @@ class AppointmentController extends Controller
     function __construct(AppointmentRepository $appointmentRepo, OfficeRepository $officeRepo, MedicRepository $medicRepo)
     {
     	
-        $this->middleware('auth');
+        $this->middleware('authByRole:asistente');
     	$this->appointmentRepo = $appointmentRepo;
         $this->officeRepo = $officeRepo;
         $this->medicRepo = $medicRepo;

@@ -78,6 +78,8 @@
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
-
+<script>
+   $(".dropdown-toggle").dropdown();
+</script>
 
 @endsection

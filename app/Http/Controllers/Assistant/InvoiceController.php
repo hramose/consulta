@@ -21,7 +21,7 @@ class InvoiceController extends Controller
     function __construct(InvoiceRepository $invoiceRepo, MedicRepository $medicRepo, PatientRepository $patientRepo)
     {
     	
-        $this->middleware('auth');
+        $this->middleware('authByRole:asistente');
     	$this->medicRepo = $medicRepo;
         $this->invoiceRepo = $invoiceRepo;
         $this->patientRepo = $patientRepo;

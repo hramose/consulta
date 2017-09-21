@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     function __construct(UserRepository $userRepo, PatientRepository $patientRepo, OfficeRepository $officeRepo, MedicRepository $medicRepo)
     {
-    	$this->middleware('auth')->except('profile');
+    	$this->middleware('authByRole:clinica')->except('profile');
     	$this->userRepo = $userRepo;
         $this->patientRepo = $patientRepo;
         $this->officeRepo = $officeRepo;

@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-md-4">
 			
-          @include('patients/partials/photo')
+          @include('medic/patients/partials/photo')
          
           
          
@@ -24,7 +24,7 @@
               <div class="active tab-pane" id="basic">
 	                <form method="POST" action="{{ url('/clinic/patients') }}" class="form-horizontal">
       				         {{ csrf_field() }}
-      				         @include('patients/partials/form')
+      				         @include('medic/patients/partials/form')
       			    	</form>
               </div>
               <!-- /.tab-pane -->

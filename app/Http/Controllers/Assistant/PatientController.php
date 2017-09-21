@@ -18,7 +18,7 @@ class PatientController extends Controller
 {
     function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
     {
-    	$this->middleware('auth');
+    	$this->middleware('authByRole:asistente');
         $this->patientRepo = $patientRepo;
         $this->appointmentRepo = $appointmentRepo;
         $this->userRepo = $userRepo;
