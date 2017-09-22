@@ -300,7 +300,7 @@ class PatientController extends ApiController
     {
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
-       $appointments = $patient->appointments()->with('user','diagnostics')->where('status', 1)->limit(5)->get();//$patient->appointments->load('user','diagnostics');
+       $appointments = $patient->appointments()->with('user','diagnostics')->where('status', 1)->orderBy('start','DESC')->limit(5)->->get();//$patient->appointments->load('user','diagnostics');
        // $labexams =  $patient->labexams()->with('results')->limit(10)->get();
 
        //  $labexams = $labexams->groupBy(function($exam) {
