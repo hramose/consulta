@@ -106,7 +106,7 @@
 
 </p> 
 
- <p>Nótese que durante el uso de esta versión GPS MEDICA 1.0, no nos comprometemos a  realizar MERCADEO que pretenda atraerle pacientes o agendar citas en línea más sin embargo, dicha plataforma está habilitada para permitirlo.</p> 
+ <p>Nótese que durante el uso de esta versión GPS MEDICA 1.0, no nos comprometemos a  realizar MERCADEO que pretenda atraerle pacientes o agendar citas en línea sin embargo, dicha plataforma está habilitada para permitirlo.</p> 
 
  <p>Lo invitamos a leer y visitar nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>
  <p class="text-center"><a href="#" class="btn btn-success" id="btn-aceptar-terms">Aceptar</a> <a href="#" class="btn btn-danger" id="btn-cancel-terms">Cancelar</a></p>
