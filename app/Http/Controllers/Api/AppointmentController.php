@@ -42,7 +42,8 @@ class AppointmentController extends ApiController
         $patient = $appointment->patient;
         $medicines = $patient->medicines;
         $vitalSigns = $patient->vitalSigns;
-        $labexams = $appointment->labexams()->with('results')->where('patient_id',$patient->id)->limit(10)->get();
+        $labexams = $appointment->labexams()->where('patient_id',$patient->id)->limit(10)->get();
+        $labresults = $patient->results()->limit(10)->get();
 
         $labexams = $labexams->groupBy(function($exam) {
             return $exam->date;
@@ -64,7 +65,8 @@ class AppointmentController extends ApiController
            'files' => $files,
            'medicines' => $medicines,
            'vitalSigns' => $vitalSigns,
-           'labexams' => $dataExams
+           'labexams' => $dataExams,
+           'labresults' => $labresults
         ];
 
         return $data;
