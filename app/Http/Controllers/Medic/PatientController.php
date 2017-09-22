@@ -377,16 +377,19 @@ class PatientController extends Controller
         {
         
             $file = request()->file('file');
-            $name =  str_slug($file->getClientOriginalName(), '-');
+            $name = $file->getClientOriginalName();
             $ext = $file->guessClientExtension();
+            $onlyName = str_slug(pathinfo($name)['filename'], '-');
+            
+           
            
             if(in_array($ext, $mimes)){
                 
                 $labresult = Labresult::create($data);
 
-                $fileUploaded = $file->storeAs("patients/". $id."/labresults/". $labresult->id, $name,'public');
+                $fileUploaded = $file->storeAs("patients/". $id."/labresults/". $labresult->id, $onlyName.'.'.$ext,'public');
 
-                $labresult->name = $name;
+                $labresult->name = $onlyName.'.'.$ext;
                 $labresult->save();
                 
                 return $labresult;
