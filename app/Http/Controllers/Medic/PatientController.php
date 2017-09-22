@@ -377,9 +377,9 @@ class PatientController extends Controller
         {
         
             $file = request()->file('file');
-            $name = $file->getClientOriginalName();
+            $name =  str_slug($file->getClientOriginalName(), '-');
             $ext = $file->guessClientExtension();
-
+           
             if(in_array($ext, $mimes)){
                 
                 $labresult = Labresult::create($data);
