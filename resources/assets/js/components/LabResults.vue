@@ -20,6 +20,9 @@
                 </div>
                 <div class="form-group" v-show="!read">
                     <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+                    <form-error v-if="errors.file" :errors="errors" style="float:right;">
+                        {{ errors.file[0] }}
+                    </form-error>
                 </div>
                 <div class="form-group">
                           <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
@@ -46,6 +49,7 @@
 </template>
 
 <script>
+ import FormError from './FormError.vue';
     export default {
       //props: ['medicines','patient_id'],
        props: {
@@ -71,13 +75,16 @@
           date : "",
           file:'',
           dataResults:[],
-          loader:false
-
+          loader:false,
+          errors:[]
 
         }
           
       },
-      
+      components:{
+        FormError
+       
+      },
       methods: {
          formatDate(date){
                return moment(date).format("YYYY-MM-DD");
@@ -131,10 +138,17 @@
                   }
                   this.loader = false
                   this.file = "";
+                  this.errors = [];
               }, (response) => {
-                 
-                   bus.$emit('alert', 'Error al guardar el Resultado', 'danger');
+                  // let message = 'Error al guardar el Resultado'
+               
+                  // if(response.status == 422)
+                  //   message = response.body.errors.file[0]
+
+                  //bus.$emit('alert',message , 'danger');
                   this.loader = false;
+                  this.errors = response.data.errors;
+                  this.file = ''
               });
              bus.$emit('clearImage');
             

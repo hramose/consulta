@@ -73,7 +73,7 @@
             },
              message: {
               type: String,
-              default: "Click o arrastra una imagen aqui para subir..."
+              default: "Click o arrastra una archivo aqui para subir..."
             },
             disabled: {
               type: Boolean
@@ -109,10 +109,17 @@
         },
         computed: {
             backgroundImage() {
+                debugger
                 let image = this.preview || this.value;
+               
                 if (!image) {
                     return null;
                 }
+                let typeFile = image.split(',')[0];
+              
+                if(typeFile == 'data:application/pdf;base64')
+                  image = '/img/pdf.jpg'
+
                 return `url('${image}')`;
             }
         },

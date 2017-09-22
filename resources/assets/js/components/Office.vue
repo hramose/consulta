@@ -285,6 +285,9 @@
                </div>
                 <div class="col-sm-4" v-show="office.type == 'Consultorio Independiente'">
                     <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+                     <form-error v-if="errors.file" :errors="errors" style="float:right;">
+                        {{ errors.file[0] }}
+                    </form-error>
                 </div>
           </div>
           <div class="form-group">
@@ -911,10 +914,12 @@
                      this.selectedValue = null;
                      this.allOffices = [];
             }, response => {
+                    
                     console.log(response.data)
                     this.loader = false;
                     this.loader_message ="Error al guardar cambios";
-                    this.errors = response.data;
+                    this.errors = response.data.errors;
+                    this.office.file = ''
             });
 
            }else{
@@ -941,7 +946,8 @@
               }, (response) => {
                   console.log('error al guardar consultorio')
                   this.loader = false;
-                   this.errors = response.data;
+                   this.errors = response.data.errors;
+                   this.office.file = ''
               });
         
             }
@@ -986,6 +992,7 @@
 
                     bus.$emit('alert', 'Consultorio Eliminado','success');
                     bus.$emit('deleteConsultorioIndependiente');
+                    this.office = {};
                   }
                   $vm.loader = false;
 

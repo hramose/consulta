@@ -362,7 +362,7 @@ class PatientController extends Controller
      {
         $this->validate(request(),[
                 'date' => 'required',
-                'file' => 'required',
+                'file' => 'required|mimes:jpeg,bmp,png,pdf',
                 
         ]);
         $data = request()->all();
@@ -371,7 +371,7 @@ class PatientController extends Controller
         $mimes = ['jpg','jpeg','bmp','png','pdf'];
         $fileUploaded = "error";
 
-        $labresult = Labresult::create($data);
+        
        
         if(request()->file('file'))
         {
@@ -380,17 +380,24 @@ class PatientController extends Controller
             $name = $file->getClientOriginalName();
             $ext = $file->guessClientExtension();
 
-            if(in_array($ext, $mimes))
+            if(in_array($ext, $mimes)){
+                
+                $labresult = Labresult::create($data);
+
                 $fileUploaded = $file->storeAs("patients/". $id."/labresults/". $labresult->id, $name,'public');
 
-            $labresult->name = $name;
-            $labresult->save();
+                $labresult->name = $name;
+                $labresult->save();
+                
+                return $labresult;
+            }
+            
         }
 
-        //return $fileUploaded;
+        return $fileUploaded;
        
 
-        return $labresult;
+        
  
      }
  

@@ -49,7 +49,8 @@ class OfficeController extends Controller
                 'province' => 'required',
                 'canton' => 'required', 
                 'district' => 'required', 
-                'phone' => 'required',      
+                'phone' => 'required',
+                'file' => 'mimes:jpeg,bmp,png',         
         ]);
 
         $data = request()->all();
@@ -172,7 +173,8 @@ class OfficeController extends Controller
                 'province' => 'required',  
                 'canton' => 'required', 
                 'district' => 'required',  
-                'phone' => 'required',      
+                'phone' => 'required', 
+                'file' => 'mimes:jpeg,bmp,png',     
         ]);
          
          $data = request()->all();
