@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Labresult extends Model
 {
     protected $fillable = [
-        'date','name','labexam_id','url', 'description'
+        'date','name','patient_id','url', 'description'
     ];
 
-    public function labexam()
+    public function patient()
     {
-        return $this->belongsTo(Labexam::class);
+        return $this->belongsTo(Patient::class);
        
     }
 

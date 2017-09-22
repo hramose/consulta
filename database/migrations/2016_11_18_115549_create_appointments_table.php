@@ -35,6 +35,8 @@ class CreateAppointmentsTable extends Migration
             $table->tinyInteger('visible_at_calendar')->default(1); //1 visible desde el calendario
             $table->integer('tracing')->default(0);
             $table->tinyInteger('viewed')->default(0); //0 no vista desde el panel de notificaciones
+            $table->tinyInteger('viewed_assistant')->default(0); //0 no vista desde el panel de notificaciones del asistente
+            
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
   <div class="box-group" id="accordion">
                 <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
           
-          <div class="panel box box-info">
+          <div class="panel box box-info" v-show="appointments">
             <div class="box-header with-border">
               <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#diagnosticos" aria-expanded="false" class="collapsed">

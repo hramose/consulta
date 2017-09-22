@@ -69,7 +69,7 @@
 		    <div class="row">
 		      <div class="col-xs-12">
 		        <div class="print-summary-page">
-			      	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}">
+			      	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" is-current="true" :labexams="{{ $appointment->labexams }}">
 			      		Historia Clínica del Paciente
 			      	</summary-appointment>
 		      	</div>

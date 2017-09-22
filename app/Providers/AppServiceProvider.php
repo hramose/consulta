@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
                $office = auth()->user()->clinicsAssistants->first();
 
             
-                $appointments = \App\Appointment::with('user','patient')->where('office_id', $office->id)->where('status', 0)->where('patient_id','<>',0)->where('viewed', 0)->limit(10);
+                $appointments = \App\Appointment::with('user','patient')->where('office_id', $office->id)->where('status', 0)->where('patient_id','<>',0)->where('viewed_assistant', 0)->limit(10);
                
             
 

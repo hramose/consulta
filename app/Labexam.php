@@ -10,10 +10,7 @@ class Labexam extends Model
         'date','name','patient_id', 'description'
     ];
 
-     public function results()
-    {
-        return $this->hasMany(Labresult::class);
-    }
+    
     public function appointments()
     {
         return $this->belongsToMany(Appointment::class);

@@ -11,8 +11,8 @@
 	<!-- /.box-header -->
 	<div class="box-body summary-flex">
 	  <dl class="summary-dl">
-      <dt class="text-aqua"><h4>Medicamentos Activos</h4></dt>
-      <dd>
+      <dt class="text-aqua" v-show="isCurrent"><h4>Medicamentos Activos</h4></dt>
+      <dd v-show="isCurrent">
          <div v-for="item in summary.medicines"><span>{{ item.name }}</span></div>
         
       </dd>
@@ -38,6 +38,11 @@
         <div v-show="summary.exams.pulmonar"><strong>Pulmonar o Respiratorio: </strong>{{ summary.exams.pulmonar }}</div>
         
       </dd>
+      <dt class="text-aqua"><h4>Examen Laboratorio</h4></dt>
+      <dd>
+         <div v-for="item in summary.labexams"><span>{{ item.name }}</span></div>
+        
+      </dd>
       <dt class="text-aqua"><h4>Diagnóstico</h4></dt>
       <dd>
          <div v-for="item in summary.diagnostics"><span>{{ item.name }}</span></div>
@@ -52,7 +57,7 @@
          <div><strong v-show="summary.medical_instructions">Recomendaciones  Médicas: </strong>{{ summary.medical_instructions }} </div>
       </dd>
     </dl>
-    <dl class="summary-dl">
+    <dl class="summary-dl" v-show="isCurrent">
 	    <dt class="text-aqua"><h4>Historial</h4></dt>
 	    <dd>
         <div v-show="summary.history.allergies.length"><strong>Alergias: </strong><div v-for="item in summary.history.allergies">- {{ item.name }}</div></div>
@@ -76,7 +81,7 @@
 
 <script>
     export default {
-      props: ['history','medicines','notes','exams','diagnostics','treatments','instructions'],
+      props: ['history','medicines','notes','exams','diagnostics','treatments','instructions','labexams','isCurrent'],
       data () {
         return {
           summary: {
@@ -91,6 +96,7 @@
             },
           	medicines: {},
             exams: {},
+            labexams: [],
             diagnostics: [],
             treatments: [],
             medical_instructions:""
@@ -127,6 +133,10 @@
           updateSummaryExams(data){
           this.summary.exams = data;
          },
+          updateSummaryLabexams(data){
+            if(this.isCurrent)
+              this.summary.labexams.push(data);
+         },
           updateSummaryMedicines(data){
           this.summary.medicines = data;
          },
@@ -153,6 +163,7 @@
            bus.$on('actSummaryGinecos', this.updateSummaryGinecos);
            bus.$on('actSummaryNotes', this.updateSummaryNotes);
            bus.$on('actSummaryExams', this.updateSummaryExams);
+           bus.$on('actSummaryLabexams', this.updateSummaryLabexams);
            bus.$on('actSummaryMedicines', this.updateSummaryMedicines);
            bus.$on('actSummaryDiagnostics', this.updateSummaryDiagnostics);
            bus.$on('actSummaryTreatments', this.updateSummaryTreatments);
@@ -192,6 +203,7 @@
            this.summary.notes = this.notes;
            this.summary.medicines = this.medicines;
            this.summary.exams = this.exams;
+           this.summary.labexams = this.labexams;
            this.summary.diagnostics = this.diagnostics;
            this.summary.treatments = this.treatments;
            this.summary.medical_instructions = this.instructions;

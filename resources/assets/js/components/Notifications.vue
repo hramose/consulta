@@ -15,7 +15,7 @@
                   
                   <li v-for="appointment in citas" class="appointment-li">
                     <a href="#">
-                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ appointment.patient.first_name }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right"><i class="fa fa-eye"></i> visto</span>   </h5>
+                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ appointment.patient.first_name }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right"> <input type="checkbox" name="viewed"  />   </span>   </h5>
                       
                     </a>
                     
@@ -71,7 +71,14 @@
  export default {
         //props: ['patients','fromModal'],
          props: {
-             userId: Number,
+             userId: {
+                type:Number,
+                default: 0
+             },
+             officeId: {
+                type:Number,
+                default: 0
+             },
              appointments: Array,
              url:{
                 type:String,
@@ -123,6 +130,7 @@
                 this.appointmentSelected = item
             },
 	        viewed(item){
+               
 
                 var resource = this.$resource(this.url +'/'+ item.id +'/viewed');
 
@@ -147,20 +155,46 @@
                
             },
             listen(){
-               
-              Echo.private(`users.${this.userId}.notifications`)
-                .listen('AppointmentCreated', (e) => {
+              var audio = new Audio('/img/notification.mp3');
+           
+              if(this.userId){
 
-                    this.citas.push(JSON.parse(e.appointment));
-                   
-                })
-                .listen('AppointmentDeleted', (e) => {
+                Echo.private(`users.${this.userId}.notifications`)
+                    .listen('AppointmentCreated', (e) => {
 
-                   
-                    var index = this.citas.indexOf(JSON.parse(e.appointment))
-                        this.citas.splice(index, 1);
-                   
-                })
+                        this.citas.push(JSON.parse(e.appointment));
+                         
+                         audio.play()
+                    
+                    })
+                    .listen('AppointmentDeleted', (e) => {
+
+                    
+                        var index = this.citas.indexOf(JSON.parse(e.appointment))
+                            this.citas.splice(index, 1);
+                    
+                    })
+              }
+               if(this.officeId){
+                  
+                Echo.private(`offices.${this.officeId}.notifications`)
+                    .listen('AppointmentCreatedToAssistant', (e) => {
+
+                        this.citas.push(JSON.parse(e.appointment));
+                         audio.play()
+                    
+                    })
+
+                    .listen('AppointmentDeletedToAssistant', (e) => {
+
+                    
+                        var index = this.citas.indexOf(JSON.parse(e.appointment))
+                            this.citas.splice(index, 1);
+                    
+                    })
+              }
+             
+             
                 
                 
             }

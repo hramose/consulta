@@ -79,7 +79,7 @@
 		    <div class="row">
 		      <div class="col-xs-12">
 		        <div class="print-summary-page">
-			      	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}">
+			      	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" showhistory="true" :labexams="{{ $appointment->labexams }}" :is-current="true">
 			      		Historia Clínica del Paciente
 			      	</summary-appointment>
 		      	</div>
@@ -247,7 +247,10 @@
 											@if($appointment->physicalExams->pulmonar)
 											<span><strong>Pulmonar o Respiratorio: </strong>{{ $appointment->physicalExams->pulmonar }}</span>
 											@endif
-										
+											<h4><strong >Examenes Laboratorio</strong></h4><br>
+											@foreach($appointment->labexams as $item)
+													<span>{{ $item->name }}</span><br>
+											@endforeach
 											<h4><strong >Diagnóstico</strong></h4><br>
 										
 											@foreach($appointment->diagnostics as $item)

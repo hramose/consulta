@@ -271,6 +271,7 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
 	Route::get('/appointments/list', 'Assistant\AppointmentController@getAppointments');
 	Route::get('/appointments/{id}/print', 'Assistant\AppointmentController@printSummary');
 	Route::delete('/appointments/{id}/delete', 'Assistant\AppointmentController@delete');
+	Route::put('/appointments/{id}/viewed', 'Assistant\AppointmentController@viewed');
 	Route::resource('appointments', 'Assistant\AppointmentController');
 	
 	Route::post('/medics/{medic}/offices/{office}/assign', 'Assistant\MedicController@assignOffice');

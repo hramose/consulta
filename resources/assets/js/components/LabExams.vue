@@ -31,67 +31,28 @@
                 <div class="form-group">
                             <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader" tabindex="3"> 
                 </div>
-
                 <div class="box box-solid" v-for="itemDate in dataExams">
                     <div class="box-header with-border">
                         <h3 class="box-title"> {{ formatDate(itemDate.date) }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-
-                              <div class="box-group" id="accordion">
-                                    <div class="panel box box-info" v-for="exam in itemDate.exams">
-                                        <div class="box-header with-border">
-                                        <h4 class="box-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" :href="'#exam-'+ exam.id" aria-expanded="false" class="collapsed">
-                                                {{ exam.name }}
-                                            </a>
-                                        </h4>
-                                        <div class="box-tools pull-right">
-                        
-                                            <i class="fa fa-trash-o delete" @click="remove(exam)" v-show="!read" v-bind:disabled="loader"></i>
-                                        </div>
-                                        </div>
-                                        <div :id="'exam-'+ exam.id" class="panel-collapse collapse" aria-expanded="false">
-                                            <div class="box-body">
-                                                
-                                                <div class="content">
-
-                                                        <div class="col-sm-12 col-md-6"  v-show="!read">
-                        
-                                                        <div class="form-group" v-show="!read">
-                                                            <photo-upload @input="handleFileUpload" :value="value" message="Subir resultado"></photo-upload>
-                                                            <button @click="uploadResult(exam)" class="btn btn-info" v-show="!read" v-bind:disabled="loader">Subir</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12" :class="(!read) ? 'col-md-6' : ''">
-                                                        <b>Resultados:</b>
-                                                        <ul id="medicines-list" class="todo-list ui-sortable" v-show="exam.results.length">
-                                            
-                                                            <li v-for="item in exam.results"> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a>  
-                                                                <div class="tools">
-                                                                    
-                                                                    <i class="fa fa-trash-o delete" @click="removeResult(item)" v-show="!read" v-bind:disabled="loader"></i>
-                                                                </div>
-                                                            </li>
-
-                                                        </ul>
-                                                    </div>
-                                                                                
-                                                </div>
-                                            
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
+                        <ul id="medicines-list" class="todo-list ui-sortable" v-show="itemDate.exams.length">
+       
+                            <li v-for="item in itemDate.exams">
+                            <!-- todo text -->
+                            <span><span class="text"> {{ item.name }}</span></span>
+                            <!-- General tools such as edit or delete-->
+                            <div class="tools">
+                                
+                                <i class="fa fa-trash-o delete"  @click="remove(item)" v-show="!read" v-bind:disabled="loader"></i>
                             </div>
+                            </li>
                         
+                        </ul>
                     </div>
-                    <!-- /.box-body -->
                 </div>
-
-
-
+                
              
                 
           </div>
@@ -134,7 +95,6 @@
           file:'',
           name:'',
           dataExams:[],
-          dataResults:[],
           loader:false
 
 
@@ -165,48 +125,7 @@
             this.add();
             
           },
-          uploadResult(item){
-
-            if(!this.file)
-               return 
-              
-              const config = {
-                headers: {
-                'content-type': 'multipart/form-data'
-                }
-            };
-            let form = new FormData();
-            // let resultObj = {
-            //     date = this.date,
-            //     file = this.file
-            // }
-            form.append('date', item.date);
-            form.append('file', this.file);
-            form.append('labexam_id', item.id);
-            /*Object.keys(resultObj).forEach(function(key) {
-
-                form.append(key, resultObj[key]);
-            });*/
-              this.loader = true;
-              this.$http.post(this.url +'/'+ this.patient_id +'/labresults', form, config).then((response) => {
-    
-                  if(response.status == 200)
-                  {
-                    this.loadResults();
-                    bus.$emit('alert', 'Resultado Agregado','success');
-                   
-                  }
-                  
-                  this.file = "";
-              }, (response) => {
-                 
-                   bus.$emit('alert', 'Error al guardar el Resultado', 'danger');
-                   this.loader = false;
-              });
-             bus.$emit('clearImage');
-            
-
-          },
+          
           add() {
 
             let form = new FormData();
@@ -220,8 +139,11 @@
                  
                   if(response.status == 200)
                   {
-                    this.loadResults()
+                   
                     bus.$emit('alert', 'Examen Agregado','success');
+                    bus.$emit('actSummaryLabexams', response.data);
+                    console.log(response.data)
+                     this.loadResults()
                    
                   }
                   
@@ -235,28 +157,7 @@
             
 
           },
-          removeResult(item){
-            let fileToDelete = "/patients/"+ this.patient_id +"/labresults/"+ item.id +"/"+ item.name; 
-            
-            if(this.loader) return
-
-             this.loader = true;
-            this.$http.delete(this.url +'/labresults/'+item.id,{ body: { file: fileToDelete }}).then((response) => {
-
-                  if(response.status == 200)
-                  {
-                     this.loadResults();
-                    bus.$emit('alert', 'Resultado Eliminado','success');
-                  }
-                 
-              }, (response) => {
-                  
-                   bus.$emit('alert', 'Error al eliminar el Resultado', 'danger');
-                   this.loader = false;
-              });
-
-
-          },
+          
           remove(item){
             
             if(this.loader) return
@@ -297,15 +198,11 @@
                    this.loader = false;
               });
           },
-           handleFileUpload(file){
-                console.log(file)
-                this.file = file
-                
-            }
+         
 
       },
       created () {
-           console.log('Component ready. Lab Results.')
+           console.log('Component ready. Lab exams.')
           
             this.loadResults();
           

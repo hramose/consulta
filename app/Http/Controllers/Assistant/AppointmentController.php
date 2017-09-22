@@ -160,6 +160,21 @@ class AppointmentController extends Controller
         
     }
 
+    public function viewed($id)
+    {
+        
+            $reservation = \DB::table('appointments')
+            ->where('id', $id)
+            ->update(['viewed_assistant' => 1]); //vista desde el panel de notificacion  
+       
+
+       
+
+         return 'viewed';
+
+    }
+    
+
     
 
 }

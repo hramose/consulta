@@ -1,36 +1,45 @@
 <template>
 	
-<div>
-      <div class="form-group" v-show="!read">
-          <div class="input-group">
-                <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime">
+<div class="box box-success ">
+          <div class="box-header with-border">
+            <h3 class="box-title">Resultados de Laboratorio</h3>
 
-                <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-                </div>
-            </div>
-          
-       </div>
-       <div class="form-group" v-show="!read">
-           <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
-       </div>
-       <div class="form-group">
-                <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
-        </div>
-      <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataResults.length">
-       
-        <li v-for="item in dataResults">
-          <!-- todo text -->
-          <span><span class="text"> {{ item.date }}</span> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a></span>
-          <!-- General tools such as edit or delete-->
-          <div class="tools">
-            
-            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read" v-bind:disabled="loader"></i>
+            <!-- /.box-tools -->
           </div>
-        </li>
-       
-      </ul>
+          <!-- /.box-header -->
+          <div class="box-body">
+                <div class="form-group" v-show="!read">
+                    <div class="input-group">
+                          <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime">
+
+                          <div class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                          </div>
+                      </div>
+                    
+                </div>
+                <div class="form-group" v-show="!read">
+                    <photo-upload @input="handleFileUpload" :value="value"></photo-upload>
+                </div>
+                <div class="form-group">
+                          <button @click="hit" class="btn btn-success" v-show="!read" v-bind:disabled="loader">Agregar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader"> 
+                  </div>
+                <ul id="medicines-list" class="todo-list ui-sortable" v-show="dataResults.length">
+                
+                  <li v-for="item in dataResults">
+                    <!-- todo text -->
+                    <span><span class="text"> {{ formatDate(item.date) }}</span> <a v-bind:href="'/storage/patients/'+ patient_id +'/labresults/'+ item.id +'/'+ item.name " target="_blank">{{ item.name}}</a></span>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      
+                      <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read" v-bind:disabled="loader"></i>
+                    </div>
+                  </li>
+                
+                </ul>
+        </div>
       
+                
     
 </div>
   
@@ -70,6 +79,9 @@
       },
       
       methods: {
+         formatDate(date){
+               return moment(date).format("YYYY-MM-DD");
+           },
            onBlurDatetime(e){
             const value = e.target.value;
             console.log('onInput fired', value)
@@ -117,8 +129,7 @@
                     bus.$emit('alert', 'Resultado Agregado','success');
                    
                   }
-                  this.loader = false;
-                  this.date = "";
+                  this.loader = false
                   this.file = "";
               }, (response) => {
                  
@@ -165,6 +176,8 @@
             
                 this.dataResults = this.results;
             }
+
+             this.date = moment().format("YYYY-MM-DD");
            
       }
       

@@ -135,9 +135,18 @@
 									</div>
 									 <!-- /.tab-pane -->
 					   <div class="tab-pane" id="labexam">
+										<div class="row">
+											<div class="col-md-6">
+													<lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="true" url="/patients"></lab-exams>
+											</div>
+											<div class="col-md-6">
+											<lab-results :patient_id="{{ $appointment->patient->id }}" :read="true" :results="{{$appointment->patient->labresults }}"  url="/patients"></lab-results>
+
+											</div>
+										</div>
 						   
-		              		<lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="true" url="/patients"></lab-exams>
-		              </div>
+		              	
+		            </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">
 

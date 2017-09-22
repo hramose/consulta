@@ -24,7 +24,8 @@ class Appointment extends Model
         
         return $query->where(function ($query) use ($search)
         {
-            $query->where('title', 'like', '%' . $search . '%');
+            $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('id', 'like', '%' . $search . '%');
                   
         });
     }

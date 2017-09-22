@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 use App\Events\AppointmentCreated;
 use App\Events\AppointmentDeleted;
-
+use App\Events\AppointmentCreatedToAssistant;
+use App\Events\AppointmentDeletedToAssistant;
 class AppointmentController extends Controller
 {
     /**
@@ -126,6 +127,7 @@ class AppointmentController extends Controller
        // $appointmentToPusher = Appointment::with('patient','user')->find($appointment->id);
 
         event(new AppointmentCreated($appointment));
+        event(new AppointmentCreatedToAssistant($appointment));
         
         try {
                         
@@ -207,6 +209,7 @@ class AppointmentController extends Controller
         ];
 
         event(new AppointmentDeleted($appointmentDeletedToPusher));
+        event(new AppointmentDeletedToAssistant($appointmentDeletedToPusher));
 
         return $data;
 

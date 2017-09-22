@@ -276,11 +276,11 @@ class PatientController extends Controller
         if(request('appointment_id')){
             $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
         
-            $labexams = $appointment->labexams()->with('results')->where('patient_id',$id)->get();
+            $labexams = $appointment->labexams()->where('patient_id',$id)->get();
             
         }else{
             $patient =  $this->patientRepo->findById($id);
-            $labexams = $patient->labexams()->with('results')->get();
+            $labexams = $patient->labexams()->get();
         }
 
         $labexams = $labexams->groupBy(function($exam) {
@@ -318,7 +318,7 @@ class PatientController extends Controller
 
        
         $labexam = Labexam::create($data);
-        $labexam->load('results');
+      
 
 
         $labexam->appointments()->attach(request('appointment_id')); // asociar la cita con el paciente

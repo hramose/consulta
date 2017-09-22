@@ -25,8 +25,8 @@ class CreateLabresultsTable extends Migration
 
         Schema::create('labresults', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('labexam_id')->unsigned()->index();
-            $table->foreign('labexam_id')->references('id')->on('labexams')->onDelete('cascade');
+            $table->integer('patient_id')->unsigned()->index();
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->dateTime('date');
             $table->string('name');
             $table->string('url');

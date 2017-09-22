@@ -26,8 +26,8 @@
 			<div class="col-md-9">
 		        <div class="nav-tabs-custom">
 		            <ul class="nav nav-tabs">
-		              <li><a href="#history" data-toggle="tab">Historial</a></li>
-		              <li class="active"><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
+		              <li class="active"><a href="#history" data-toggle="tab">Historial</a></li>
+		              <li ><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 					   <li><a href="#labexam" data-toggle="tab">Examen Laboratorio</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
@@ -35,10 +35,22 @@
 		                
 		            </ul>
 		            <div class="tab-content">
-		              <div class="tab-pane" id="history">
+		              <div class="active tab-pane" id="history">
+					  <div class="row">
+						  @foreach($appointments as $lastAppointment)
+							<div class="col-md-4">
+
+							<summary-appointment history="" :medicines="{{ $lastAppointment->patient->medicines }}" :notes="{{ $lastAppointment->diseaseNotes }}" :exams="{{ $lastAppointment->physicalExams }}" :diagnostics="{{ $lastAppointment->diagnostics }}" :treatments="{{ $lastAppointment->treatments }}" instructions="{{ $lastAppointment->medical_instructions }}" :labexams="{{ $lastAppointment->labexams }}">
+									Resumen cita  {{ $lastAppointment->id }} - {{ \Carbon\Carbon::parse($lastAppointment->start)->format('Y-m-d H:i') }}						</summary-appointment>
+												 
+		                	</div>
+		                  @endforeach
+		                 </div> 
+					  
 		                 <div class="row">
 							<div class="col-md-6">
-												 <history :history="{{ $history }}" :appointments="{{ $appointments }}"></history>
+
+								<history :history="{{ $history }}" ></history>
 												 
 		                	</div>
 		                	<div class="col-md-6">
@@ -49,7 +61,7 @@
 		                 </div>
 		              </div>
 		              <!-- /.tab-pane -->
-		              <div class="active tab-pane" id="notes">
+		              <div class="tab-pane" id="notes">
 		              		<div class="row">
 								<div class="col-md-6">
 									<div class="box box-info">
@@ -85,8 +97,15 @@
 		              </div>
 					   <!-- /.tab-pane -->
 					   <div class="tab-pane" id="labexam">
-						   
-		              		<lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
+					   <div class="row">
+							<div class="col-md-6">
+							  <lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
+							</div>
+							<div class="col-md-6">
+							<lab-results :patient_id="{{ $appointment->patient->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}" :results="{{$appointment->patient->labresults }}"></lab-results>
+
+							</div>
+						</div>
 		              </div>
 		              <!-- /.tab-pane -->
 		               <div class="tab-pane" id="diagnostic">
@@ -145,7 +164,7 @@
 		    <div class="col-md-3" style="position: relative;">
 				<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Imprimir</a>
 				<a href="/medic/appointments/{{ $appointment->id }}/pdf" class="btn btn-default" style="position: absolute; right: 113px; top: 3px; z-index: 99"  target="_blank">PDF</a>
-		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" ></summary-appointment>
+		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" :labexams="{{ $appointment->labexams }}" :is-current="true"></summary-appointment>
 		      
 		    </div>
 		</div>

@@ -114,7 +114,7 @@ class AppointmentController extends Controller
         $appointment =  $this->appointmentRepo->update_status($id, 1);
 
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
-        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments->load('user','diagnostics');
+        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments()->with('user','patient.medicines','diagnostics', 'diseaseNotes', 'physicalExams','treatments','labexams')->where('appointments.id','!=',$appointment->id)->orderBy('start','DESC')->limit(3)->get();
         
         $files = Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
         
@@ -156,30 +156,31 @@ class AppointmentController extends Controller
         ];
 
         $newAppointment = $this->appointmentRepo->store($data);
-        $newAppointment->diseaseNotes->fill($appointment->diseaseNotes->toArray());
-        $newAppointment->diseaseNotes->save();
-        
-        $newAppointment->physicalExams->fill($appointment->physicalExams->toArray());
-        $newAppointment->physicalExams->save();
 
-        foreach($appointment->labexams as $exam){
-            $newAppointment->labexams()->attach($exam);
-        }
-        foreach($appointment->diagnostics as $diag){
-            Diagnostic::create([
-                'appointment_id' =>  $newAppointment->id,
-                'name' =>  $diag->name,
-                'comments' =>  $diag->comments
-            ]);
+        // $newAppointment->diseaseNotes->fill($appointment->diseaseNotes->toArray());
+        // $newAppointment->diseaseNotes->save();
+        
+        // $newAppointment->physicalExams->fill($appointment->physicalExams->toArray());
+        // $newAppointment->physicalExams->save();
+
+        // foreach($appointment->labexams as $exam){
+        //     $newAppointment->labexams()->attach($exam);
+        // }
+        // foreach($appointment->diagnostics as $diag){
+        //     Diagnostic::create([
+        //         'appointment_id' =>  $newAppointment->id,
+        //         'name' =>  $diag->name,
+        //         'comments' =>  $diag->comments
+        //     ]);
             
-        }
-        foreach($appointment->treatments as $treat){
-            Treatment::create([
-                'appointment_id' =>  $newAppointment->id,
-                'name' =>  $treat->name,
-                'comments' =>  $treat->comments
-            ]);
-        }
+        // }
+        // foreach($appointment->treatments as $treat){
+        //     Treatment::create([
+        //         'appointment_id' =>  $newAppointment->id,
+        //         'name' =>  $treat->name,
+        //         'comments' =>  $treat->comments
+        //     ]);
+        // }
 
 
 
@@ -256,15 +257,19 @@ class AppointmentController extends Controller
 
     public function viewed($id)
     {
-
-        $reservation = \DB::table('appointments')
+       
+            $reservation = \DB::table('appointments')
             ->where('id', $id)
             ->update(['viewed' => 1]); //vista desde el panel de notificacion  
+
+       
+
+       
 
          return 'viewed';
 
     }
-
+    
 
 
     /**
