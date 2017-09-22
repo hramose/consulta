@@ -14,6 +14,19 @@ $(function () {
       locale: 'es',
       
    });
+   
+  $('#datepicker1').datetimepicker({
+    format:'YYYY-MM-DD',
+    locale: 'es',
+    
+  });
+  
+  $('#datepicker2').datetimepicker({
+    format:'YYYY-MM-DD',
+    locale: 'es',
+    
+  });
+   
    $('input[name="pay_with"]').keypress(function (e) {
     //if the letter is not digit then display error and don't type anything
     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {

@@ -28,17 +28,33 @@
             <div class="box-header">
               <div class="pull-left">
                   <form action="/clinic/patients/{{ $patient->id }}/invoices" method="GET">
-                        <div class="input-group input-group-sm" style="width: 150px;">
+                        
                           
-                            
-                            <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
-                            <div class="input-group-btn">
+                  <div class="col-xs-12 col-sm-2">
+                          <div class="input-group">
+                            <input type="text" class="form-control"  name="date1"  id="datepicker1" value="{{ isset($searchDate['date1']) ? $searchDate['date1'] : '' }}">
 
-                              <button type="submit" class="btn btn-default">Buscar</button>
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
                             </div>
+                          </div>
+                      </div>
+                       <div class="col-xs-12 col-sm-2" >
+                          <div class="input-group">
+                            <input type="text" class="form-control"  name="date2" id="datepicker2"  value="{{ isset($searchDate['date2']) ? $searchDate['date2'] : '' }}">
+
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                            </div>
+                          </div>
+                      </div>
+                           
+
+                            <button type="submit" class="btn btn-default">Buscar</button>
+                           
                           
                           
-                        </div>
+                        
                       </form>
               </div>
             <div class="pull-right"><span class="label label-success label-lg">Total: {{ money($totalInvoicesAmount) }}</span>    </div> 
@@ -88,7 +104,7 @@
                       @if ($invoices)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['q' => $searchDate])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date1' => $searchDate['date1'], 'date2' => $searchDate['date2']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>

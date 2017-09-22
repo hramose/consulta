@@ -7,7 +7,7 @@
   "js/assistant.invoices.min.js": "js/assistant-7bd31c0cdb.invoices.min.js",
   "js/clinic.appointments.min.js": "js/clinic-665417b470.appointments.min.js",
   "js/clinic.dailyagenda.min.js": "js/clinic-d8b00e7c8e.dailyagenda.min.js",
-  "js/clinic.invoices.min.js": "js/clinic-f8c1319e00.invoices.min.js",
+  "js/clinic.invoices.min.js": "js/clinic-cb0eea55bb.invoices.min.js",
   "js/clinic.patients.min.js": "js/clinic-ca69cfa13c.patients.min.js",
   "js/invoices.min.js": "js/invoices-e122ac015d.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",

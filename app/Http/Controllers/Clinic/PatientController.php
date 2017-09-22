@@ -318,16 +318,22 @@ class PatientController extends Controller
      public function invoices($patient_id)
      {
          $patient = $this->patientRepo->findById($patient_id);
-         $searchDate = Carbon::now()->toDateString();
+         $searchDate['date1'] = Carbon::now()->subMonths(3); 
+         $searchDate['date2'] = Carbon::now();
          
-         if(request('q'))
-             $searchDate = request('q');
+         if(request('date1'))
+            $searchDate['date1'] = new Carbon(request('date1'));
+         
+             
+         if(request('date2'))
+             $searchDate['date2'] = new Carbon(request('date2'));
  
     
          $office =  auth()->user()->offices->first();
  
-         $invoices = $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
-         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->sum('total');
+         $invoices = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->orderBy('created_at','DESC')->paginate(20);
+         
+         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->sum('total');
          
        
  
