@@ -112,7 +112,7 @@
 					<h3>Control Médico</h3>
 					<div class="nav-tabs-custom">
 			            <ul class="nav nav-tabs">
-									@foreach($appointments = $patient->appointments()->where('status', 1)->limit(3)->get() as $index => $lastAppointment)
+									@foreach($appointments = $patient->appointments()->where('status', 1)->orderBy('start','DESC')->limit(3)->get() as $index => $lastAppointment)
 									   
 										<li class="{{ $index == 0 ? 'active' : '' }}"><a href="#history-{{ $index }}" data-toggle="tab">Resumen cita  {{ $lastAppointment->id }}</a></li>
 			              
@@ -120,7 +120,7 @@
 			              
 			            </ul>
 			            <div class="tab-content">
-										@foreach($appointments = $patient->appointments()->where('status', 1)->limit(3)->get() as $index => $lastAppointment)
+										@foreach($appointments = $patient->appointments()->with('user','patient.medicines','diagnostics', 'diseaseNotes', 'physicalExams','treatments','labexams')->where('status', 1)->orderBy('start','DESC')->limit(3)->get() as $index => $lastAppointment)
 											<div class="{{ $index == 0 ? 'active' : '' }} tab-pane" id="history-{{ $index }}">
 								
 										
