@@ -112,46 +112,30 @@
 					<h3>Control Médico</h3>
 					<div class="nav-tabs-custom">
 			            <ul class="nav nav-tabs">
-			              <li class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : 'active' }}"><a href="#history" data-toggle="tab">Historial Médico</a></li>
-			              <li class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }}"><a href="#appointments" data-toggle="tab">Historial Consultas</a></li>
+									@foreach($appointments = $patient->appointments()->where('status', 1)->limit(3)->get() as $index => $lastAppointment)
+									   
+										<li class="{{ $index == 0 ? 'active' : '' }}"><a href="#history-{{ $index }}" data-toggle="tab">Resumen cita  {{ $lastAppointment->id }}</a></li>
 			              
-		 				  
+										@endforeach
 			              
 			            </ul>
 			            <div class="tab-content">
-			              	<div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : 'active' }} tab-pane" id="history">
+										@foreach($appointments = $patient->appointments()->where('status', 1)->limit(3)->get() as $index => $lastAppointment)
+											<div class="{{ $index == 0 ? 'active' : '' }} tab-pane" id="history-{{ $index }}">
 								
-								 <history :history="{{ $patient->history }}" :appointments="{{ $patient->appointments()->with('user','diagnostics')->where('status', 1)->limit(5)->get() }}" :read="true"></history>
+										
+											<div >
 
-						    </div>
-						    <!-- /.tab-pane -->
-						    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
-							   	<ul class="products-list product-list-in-box">
-			                       @foreach($appointments = $patient->appointments()->where('status', 1)->limit(5)->get() as $appointment)
-			                          <li class="item">
-			                            <div class="product-img">
-			                              
-			                                 <img class="profile-user-img img-responsive img-circle" src="{{ getAvatar($appointment->patient) }}" alt="User profile picture">
-			                            </div>
-			                            <div class="product-info">
-			                              <a href="{{ url('/appointments/'.$appointment->id.'/show') }}" class="product-title"> {{ $appointment->title }}
-			                                <span class="label label-warning pull-right">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</span></a>
-			                                  <span class="product-description">
-			                                   {{ $appointment->patient->first_name }} <span class="label label-success">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }} a {{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</span>
-			                                  </span>
-			                            </div>
-			                          </li>
-			                       @endforeach
-			                    </ul>
-			                    @if($appointments->count() > 5)
-			                    <div>
+											<summary-appointment history="" :medicines="{{ $lastAppointment->patient->medicines }}" :notes="{{ $lastAppointment->diseaseNotes }}" :exams="{{ $lastAppointment->physicalExams }}" :diagnostics="{{ $lastAppointment->diagnostics }}" :treatments="{{ $lastAppointment->treatments }}" instructions="{{ $lastAppointment->medical_instructions }}" :labexams="{{ $lastAppointment->labexams }}">
+													Resumen cita  {{ $lastAppointment->id }} - {{ \Carbon\Carbon::parse($lastAppointment->start)->format('Y-m-d H:i') }}						</summary-appointment>
+																
+											</div>
+										
 
-			                    	 <p><a href="/appointments">Ver más consultas</a></p>
-			                    </div>
-			                    @endif
-			                   
-						    </div>
+						    			</div>
+									@endforeach
 						    <!-- /.tab-pane -->
+						    
 						    
 						    
 						    
