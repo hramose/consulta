@@ -301,6 +301,7 @@ class PatientController extends ApiController
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
        $appointments = $patient->appointments()->with('user','diagnostics','diseaseNotes','labexams','treatments','physicalExams')->where('status', 1)->orderBy('start','DESC')->limit(3)->get();//$patient->appointments->load('user','diagnostics');
+       $labresults = $patient->labresults()->limit(10)->get();
        // $labexams =  $patient->labexams()->with('results')->limit(10)->get();
 
        //  $labexams = $labexams->groupBy(function($exam) {
@@ -320,7 +321,8 @@ class PatientController extends ApiController
 
         $data = [
             'history' => $history,
-            'appointments'=> $appointments
+            'appointments'=> $appointments,
+            'labresults'=> $labresults
             
         ];
 
