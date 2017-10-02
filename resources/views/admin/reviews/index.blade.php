@@ -22,7 +22,7 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>App</th>
+                      <th>Tipo App</th>
                       <th>Comentario</th>
                       <th>Creado</th>
                     
@@ -35,7 +35,7 @@
                       <td data-title="ID">{{ $review->id }}</td>
                      
                     
-                      <td data-title="App">{{ $review->app }} </td>
+                      <td data-title="Tipo App">{{ $review->app }} </td>
         
                       <td data-title="Comentario">{{ $review->comment }}</td>
                       
