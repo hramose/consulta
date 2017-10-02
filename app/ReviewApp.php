@@ -8,7 +8,7 @@ class ReviewApp extends Model
 {
     protected $table = 'review_apps';
     protected $fillable = [
-        'app','comment'
+        'user_id','app','comment'
     ];
 
       public function user()
