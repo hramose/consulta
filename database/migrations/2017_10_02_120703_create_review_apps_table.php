@@ -15,6 +15,7 @@ class CreateReviewAppsTable extends Migration
     {
         Schema::create('review_apps', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned()->index();
             $table->string('app');
             $table->text('comment');
             $table->timestamps();

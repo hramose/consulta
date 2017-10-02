@@ -10,4 +10,9 @@ class ReviewApp extends Model
     protected $fillable = [
         'app','comment'
     ];
+
+      public function user()
+    {
+        return $this->belongsTo('App\User','user_id');
+    }
 }

@@ -38,8 +38,11 @@ class ReviewController extends ApiController
                 
             ]);
 
+        $user = $request->user();
+        $data =request()->all();
+        $data['user_id'] = $user->id;
         
-        $review = ReviewApp::create(request()->all());
+        $review = ReviewApp::create($data);
 
 
 
