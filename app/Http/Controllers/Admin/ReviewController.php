@@ -35,7 +35,7 @@ class ReviewController extends Controller
     {
         
         
-        $reviews = ReviewApp::paginate(10);
+        $reviews = ReviewApp::orderBy('created_at','DESC')->paginate(10);
 
 
 
