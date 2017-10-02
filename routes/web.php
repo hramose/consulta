@@ -317,6 +317,9 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::get('/reports/incomes/generate', 'Admin\ReportsController@generateIncomes');
     Route::get('/offices/list', 'ClinicController@getAllOffices');
 
+    Route::get('/reviews', 'Admin\ReviewController@index');
+    Route::delete('/reviews/{id}', 'Admin\ReviewController@delete');
+
     Route::resource('reports', 'Admin\ReportsController');
 	Route::resource('users', 'Admin\UserController');
 
