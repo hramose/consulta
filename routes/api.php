@@ -56,7 +56,7 @@ Route::post('/appointments/{appointment}/reminder', 'Api\AppointmentController@r
 Route::delete('/appointments/{appointment}/delete', 'Api\AppointmentController@delete')->middleware('auth:api');
 Route::get('/clinics', 'Api\ClinicController@index')->middleware('auth:api');
 Route::get('/clinics/{clinic}', 'Api\ClinicController@show')->middleware('auth:api');
-
+Route::post('/reviews', 'Api\ReviewController@store')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
