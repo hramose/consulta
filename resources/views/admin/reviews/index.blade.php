@@ -23,7 +23,8 @@
                     <tr>
                       <th>ID</th>
                       <th>App</th>
-                      <th>Comment</th>
+                      <th>Comentario</th>
+                      <th>Creado</th>
                     
                       <th></th>
                     </tr>
@@ -38,7 +39,7 @@
         
                       <td data-title="Comentario">{{ $review->comment }}</td>
                       
-                     
+                      <td data-title="Creado">{{ $review->created_at }}</td>
                       <td data-title="" style="padding-left: 5px;">
                        
                        
@@ -55,7 +56,7 @@
                   <tr>
 
                     @if ($reviews)
-                        <td  colspan="4" class="pagination-container">{!!$reviews->render()!!}</td>
+                        <td  colspan="5" class="pagination-container">{!!$reviews->render()!!}</td>
                     @endif
 
 
