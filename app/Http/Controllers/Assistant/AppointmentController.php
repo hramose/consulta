@@ -11,6 +11,7 @@ use App\Repositories\findAllByDoctor;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Events\AppointmentCreated;
 
 class AppointmentController extends Controller
 {
@@ -81,6 +82,8 @@ class AppointmentController extends Controller
 
         if(!$user->hasPatient($appointment->patient->id))
             $patient = $user->patients()->attach($appointment->patient->id);
+
+         event(new AppointmentCreated($appointment));
 
         return $appointment;
 
