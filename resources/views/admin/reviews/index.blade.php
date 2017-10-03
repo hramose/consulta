@@ -24,7 +24,7 @@
                       <th>ID</th>
                       <!-- <th>Tipo App</th> -->
                       <th>Comentario</th>
-                      <th>Rating</th>
+                      <th>Rating (1-5)</th>
                       <th>Creado</th>
                     
                       <th></th>
