@@ -142,7 +142,7 @@ $(function () {
       eventDurationMinHours = 'minutes'; //(slotDuration.split(':')[1] == "00" ? 'hours' : 'minutes');
       freeDays = calendar.attr('data-freeDays') ? JSON.parse(calendar.attr('data-freeDays')) : [];
       
-
+      
       calendar.fullCalendar({
           locale: 'es',
           defaultView: 'agendaDay',
@@ -541,6 +541,9 @@ $(function () {
 
     function saveAppointment(calendar, event, idRemove)
     {
+      slotDuration = calendar.attr('data-slotDuration');
+      eventDurationNumber = moment.duration(slotDuration).asMinutes();
+      eventDurationMinHours = 'minutes'; 
       
       var appointment = {
         title : event.title,
@@ -568,6 +571,9 @@ $(function () {
 
       function updateAppointment(calendar,event, revertFunc)
     {
+      slotDuration = calendar.attr('data-slotDuration');
+      eventDurationNumber = moment.duration(slotDuration).asMinutes();
+      eventDurationMinHours = 'minutes'; 
       
       var appointment = {
         

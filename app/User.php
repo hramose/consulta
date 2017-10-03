@@ -299,6 +299,11 @@ class User extends Authenticatable
         return $this->hasMany(ReviewMedic::class);
     }
 
+    public function reviewsApp()
+    {
+        return $this->hasMany(ReviewApp::class);
+    }
+
     // The way average rating is calculated (and stored) is by getting an average of all ratings,
     // storing the calculated value in the rating_cache column (so that we don't have to do calculations later)
     // and incrementing the rating_count column by 1
@@ -320,6 +325,16 @@ class User extends Authenticatable
         $avgRating = $reviews->avg('rating');
         $this->rating_medic_cache = round($avgRating,1);
         $this->rating_medic_count = $reviews->count();
+
+        $this->save();
+    }
+    public function recalculateRatingApp()
+    {
+     
+        $reviews = $this->reviewsApp()->notSpam()->approved();
+        $avgRating = $reviews->avg('rating');
+        $this->rating_app_cache = round($avgRating,1);
+        $this->rating_app_count = $reviews->count();
 
         $this->save();
     }

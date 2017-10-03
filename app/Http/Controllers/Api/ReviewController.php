@@ -35,18 +35,27 @@ class ReviewController extends ApiController
         $this->validate($request,[
                 'app' => 'required',
                 'comment' => ['required'],
+                'rating' => 'required',
                 
             ]);
 
         $user = $request->user();
-        $data =request()->all();
+        
+
+        if(!$user) return $this->respondNotFound('Error al enviar calificación');
+        
+
+        $review = New ReviewApp;
+        $review->storeReview($user->id, request('comment'), request('rating'));
+
+
+
+        return $this->respondCreated('Calificación Enviada correctamente')
+
+         /*$data =request()->all();
         $data['user_id'] = $user->id;
         
-        $review = ReviewApp::create($data);
-
-
-
-        return $review;
+        $review = ReviewApp::create($data);*/
 
         
         

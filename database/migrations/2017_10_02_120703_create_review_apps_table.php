@@ -17,7 +17,10 @@ class CreateReviewAppsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('app');
-            $table->text('comment');
+            $table->text('comment')->nullable();
+            $table->integer('rating')->unsigned();
+            $table->tinyInteger('approved')->unsigned()->default(1);
+            $table->tinyInteger('spam')->unsigned()->default(0);
             $table->timestamps();
         });
     }
