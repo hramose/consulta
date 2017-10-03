@@ -36,10 +36,12 @@ class ReviewController extends Controller
         
         
         $reviews = ReviewApp::orderBy('created_at','DESC')->paginate(10);
+        $avgRating = $reviews->avg('rating');
+
+        $rating_app_cache = round($avgRating,1);
 
 
-
-      return view('admin.reviews.index', compact('reviews'));
+      return view('admin.reviews.index', compact('reviews','rating_app_cache'));
 
         
         

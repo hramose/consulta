@@ -13,10 +13,16 @@
                 <!-- <a href="{{ url('/admin/users/create') }}" class="btn btn-success">Nuevo Usuario</a> -->
                       
                 <div class="box-toolsdd filters">
-                  <!--  -->
+                  <div class="reviewFinal" >
+                      <b>Calificación General: </b>
+                     @for ($i=1; $i <= 5 ; $i++)
+                        <span class="fa fa-star{!! ($i <= $rating_app_cache) ? '' : '-o'!!}" style="color: #00a65a;"></span>
+                    @endfor 
+                  </div>
                 </div>
               </div>
               <!-- /.box-header -->
+             
               <div class="box-body table-responsive no-padding" id="no-more-tables">
                 <table class="table table-hover">
                   <thead>
@@ -39,7 +45,12 @@
                      <!--  <td data-title="Tipo App">{{ $review->app }} </td> -->
         
                       <td data-title="Comentario">{{ $review->comment }}</td>
-                        <td data-title="Rating">{{ $review->rating }}</td>
+                        <td data-title="Rating" style="color: #f39c12;">
+                         
+                          @for ($i=1; $i <= 5; $i++)
+                            <span class="fa fa-star{!! ($i <= $review->rating) ? '' : '-o'!!}"></span>
+                          @endfor 
+                        </td>
                       
                       <td data-title="Creado">{{ $review->created_at }}</td>
                       <td data-title="" style="padding-left: 5px;">
