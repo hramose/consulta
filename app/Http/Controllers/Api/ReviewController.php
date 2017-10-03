@@ -46,7 +46,7 @@ class ReviewController extends ApiController
         
 
         $review = New ReviewApp;
-        $review->storeReview($user->id, request('comment'), request('rating'));
+        $review->storeReview($user->id, request('comment'), request('rating'), request('app'));
 
 
 

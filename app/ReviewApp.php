@@ -38,7 +38,7 @@ class ReviewApp extends Model
     }
 
     // this function takes in user ID, comment and the rating and attaches the review to the user by its ID, then the average rating for the user is recalculated
-    public function storeReview($userId, $comment, $rating)
+    public function storeReview($userId, $comment, $rating, $app)
     {
         $user = User::find($userId);
 
@@ -46,6 +46,7 @@ class ReviewApp extends Model
         //$this->user_id = Auth::user()->id;
         $this->comment = $comment;
         $this->rating = $rating;
+        $this->app = $app;
         $user->reviewsApp()->save($this);
 
         // recalculate ratings for the specified product
