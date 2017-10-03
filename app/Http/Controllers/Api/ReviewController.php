@@ -50,7 +50,7 @@ class ReviewController extends ApiController
 
 
 
-        return $this->respondCreated('Calificación Enviada correctamente')
+        return $this->respondCreated('Calificación Enviada correctamente');
 
          /*$data =request()->all();
         $data['user_id'] = $user->id;
