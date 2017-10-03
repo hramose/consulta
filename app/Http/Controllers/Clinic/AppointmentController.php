@@ -12,6 +12,10 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Events\AppointmentCreated;
+use App\Events\AppointmentDeleted;
+use App\Events\AppointmentCreatedToAssistant;
+use App\Events\AppointmentDeletedToAssistant;
 
 class AppointmentController extends Controller
 {
@@ -71,6 +75,9 @@ class AppointmentController extends Controller
         if(!$user->hasPatient($appointment->patient->id))
             $patient = $user->patients()->attach($appointment->patient->id);
 
+            event(new AppointmentCreated($appointment));
+            event(new AppointmentCreatedToAssistant($appointment));
+
         return $appointment;
 
     }
@@ -111,10 +118,15 @@ class AppointmentController extends Controller
      */
     public function destroy($id)
     {
-
+        $appointmentDeletedToPusher = $this->appointmentRepo->findById($id);
+        
         $appointment = $this->appointmentRepo->delete($id);
 
         ($appointment === true) ? flash('Consulta eliminada correctamente!','success') : flash('No se puede eliminar consulta ya que se encuentra iniciada','error');
+
+
+        event(new AppointmentDeleted($appointmentDeletedToPusher));
+        event(new AppointmentDeletedToAssistant($appointmentDeletedToPusher));
 
         return back();
 
@@ -124,12 +136,16 @@ class AppointmentController extends Controller
      */
     public function delete($id)
     {
-
+        $appointmentDeletedToPusher = $this->appointmentRepo->findById($id);
         $appointment = $this->appointmentRepo->delete($id);
         
         if($appointment !== true)  return $appointment; //no se elimino correctamente
 
+        event(new AppointmentDeleted($appointmentDeletedToPusher));
+        event(new AppointmentDeletedToAssistant($appointmentDeletedToPusher));
+
         return '';
+
 
     }
 
