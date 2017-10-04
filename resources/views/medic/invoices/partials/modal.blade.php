@@ -30,7 +30,9 @@
                       <tfoot>
                         <tr>
                           
-                          <td colspan="5"><h2 id="modal-label-total" class="pull-right">Total: 0</h2></td>
+                          <td colspan="5"><h2 id="modal-label-total" class="pull-right">Total: 0</h2>
+                          <input type="hidden"  name="total" />
+                          </td>
                         </tr>
                         <tr>
                           

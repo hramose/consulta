@@ -24,6 +24,7 @@ $(function () {
    }
   });
    $('input[name="pay_with"]').keyup(function( event ) {
+     
     var payWith = parseFloat(($(this).val()) ? $(this).val() : 0);
     var total =  parseFloat($('input[name="total"]').val());
     var change = 0;
@@ -78,7 +79,7 @@ $(function () {
           $.ajax({
             type: 'PUT',
             url: '/medic/invoices/'+invoice_id,
-            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val()},
+            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
             
 
@@ -168,6 +169,7 @@ $(function () {
                
                $("#modalInvoiceLabel").html('Factura #'+ invoice_id + '  <span class="label label-warning pull-right">'+resp.created_at+'</span>');
                $("#modal-label-total").html('Total: ₡<span>'+ money(resp.total)+'</span>');
+               $('input[name="total"]').val(resp.total);
 
                if(resp.status){
                 modal.find('.btn-print').focus();

@@ -89,6 +89,10 @@ class InvoiceController extends Controller
         
         if(request('client_name'))
             $invoice->client_name = request('client_name');
+        if(request('pay_with'))
+            $invoice->pay_with = request('pay_with');
+        if(request('change'))
+            $invoice->change = request('change');
 
         $invoice->save();
         
