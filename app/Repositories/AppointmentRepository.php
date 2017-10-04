@@ -313,7 +313,10 @@ class AppointmentRepository extends DbRepository{
         {
             $appointments = $appointments->Search($search['q']);
         }
-
+        if (isset($search['office']) && $search['office'] !="")
+        {
+            $appointments = $appointments->where('office_id', $search['office']);
+        }
         if (isset($search['status']) && $search['status'] == 1)
         {
             $appointments = $appointments->where('status','>=', 1);

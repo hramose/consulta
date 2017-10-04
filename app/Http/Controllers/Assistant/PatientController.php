@@ -110,8 +110,10 @@ class PatientController extends Controller
     {
         
         $patient = $this->patientRepo->findById($id);
-
-        $appointments = $this->appointmentRepo->findAllByPatient($id);
+        $office = auth()->user()->clinicsAssistants->first();
+        $search['office'] = $office->id;
+        
+        $appointments = $this->appointmentRepo->findAllByPatient($id,$search);
 
         $initAppointments = $appointments->filter(function ($item, $key) {
                 return $item->status > 0;
