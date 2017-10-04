@@ -112,16 +112,22 @@ class PatientController extends Controller
         $patient = $this->patientRepo->findById($id);
         $office = auth()->user()->clinicsAssistants->first();
         $search['office'] = $office->id;
+        $search['status'] = 1;
+        $initAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
         
-        $appointments = $this->appointmentRepo->findAllByPatient($id,$search);
+        $search['status'] = 0;
+        $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
 
-        $initAppointments = $appointments->filter(function ($item, $key) {
-                return $item->status > 0;
-            });
+        //$appointments = $this->appointmentRepo->findAllByPatient($id,$search);
+        
 
-        $scheduledAppointments = $appointments->filter(function ($item, $key) {
-                return $item->status == 0;
-            });
+        // $initAppointments = $appointments->filter(function ($item, $key) {
+        //         return $item->status > 0;
+        //     });
+
+        // $scheduledAppointments = $appointments->filter(function ($item, $key) {
+        //         return $item->status == 0;
+        //     });
 
         
         $files = Storage::disk('public')->files("patients/". $id ."/files");
