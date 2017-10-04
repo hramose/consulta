@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewOffice;
+use App\Mail\NewRequestOffice;
 use App\Office;
 use App\Repositories\OfficeRepository;
 use App\User;
+use App\RequestOffice;
 use Illuminate\Http\Request;
 
 class OfficeController extends Controller
@@ -131,6 +133,34 @@ class OfficeController extends Controller
         return $office;
 
     }
+
+    /**
+     * guardar datos de consultorio
+     */
+     public function requestOffice()
+     {
+        
+         $this->validate(request(),[
+                 'name' => 'required',
+                   
+         ]);
+         
+         $requestOffice = auth()->user()->requestOffices()->create(request()->all());
+
+         try {
+            
+            \Mail::to($this->administrators)->send(new NewRequestOffice($requestOffice));
+
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+
+
+ 
+         return $requestOffice;
+ 
+     }
     public function assignOffice($id)
     {
         $office = Office::findOrFail($id);

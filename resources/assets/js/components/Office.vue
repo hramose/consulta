@@ -35,8 +35,45 @@
       <div class="form-group">
         <div class="col-xs-12 col-sm-12">
            <a href="#" class="btn btn-default " @click="nuevo('Consultorio Independiente')" title="Selecciona esta opción si usted va a ser el único médico que trabajará en su consultorio">Crear Consultorio Independiente</a>
-           <a href="#" class="btn btn-default " @click="nuevo('Clínica Privada')" title="Selecciona esta opción si va a trabajar con otros médicos en sus instalaciones">Crear Clínica Privada</a>
+           <a href="#" class="btn btn-default " @click="integrar()" title="Selecciona esta opción si va a trabajar con otros médicos en sus instalaciones">Integrar Clínica Privada</a>
           </div>
+      </div>
+      <div class="inteform" v-show="integraOffice">
+           <div class="form-group">
+              <label for="inte_office_name" class="col-sm-2 control-label">Nombre</label>
+              <div class="col-sm-10">
+
+                 <input type="text" class="form-control" name="name" placeholder="Nombre de la clínica u hospital" v-model="inteOffice.name">
+                <form-error v-if="errors.name" :errors="errors" style="float:right;">
+                    {{ errors.name[0] }}
+                </form-error> 
+              </div>
+            </div>
+             <div class="form-group">
+                <label for="inte_office_phone" class="col-sm-2 control-label">Teléfono</label>
+
+                <div class="col-sm-10">
+                <input type="text" class="form-control" name="phone" placeholder="Teléfono" v-model="inteOffice.phone">
+                <form-error v-if="errors.phone" :errors="errors" style="float:right;">
+                    {{ errors.phone[0] }}
+                </form-error>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inte_office_address" class="col-sm-2 control-label">Dirección</label>
+
+                <div class="col-sm-10">
+                <input type="text" class="form-control" name="address" placeholder="Dirección"  v-model="inteOffice.address">
+                <form-error v-if="errors.address" :errors="errors" style="float:right;">
+                    {{ errors.address[0] }}
+                </form-error>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-danger" @click="sendrequest()" :disabled="loader">Enviar Solicitud</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                </div>
+            </div>
       </div>
       <div class="newform" v-show="newOffice">
 
@@ -50,7 +87,7 @@
                 </form-error> 
               </div>
             </div>
-           <div class="form-group">
+           <!-- <div class="form-group">
             <label for="office_type" class="col-sm-2 control-label">Tipo</label>
 
             <div class="col-sm-10">
@@ -63,7 +100,7 @@
                   {{ errors.type[0] }}
               </form-error>
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label for="office_address" class="col-sm-2 control-label">Dirección</label>
 
@@ -703,14 +740,20 @@
           distritos: [],
           loader:false,
           newOffice:false,
+          integraOffice:false,
         
           office: {
             lat : '',
             lon: '',
             notification_datetime: '',
             notification_hour: '',
-            type:'',
+            type:'Consultorio Independiente',
             file:''
+          },
+          inteOffice: {
+            name:'',
+            phone:'',
+            address:''
           },
           selectedValue:null,
           allOffices: [],
@@ -726,7 +769,36 @@
         vSelect
       },
       methods: {
-        nuevo(type){
+           integrar(){
+            if(this.integraOffice && this.integraOffice.id) {
+            
+
+
+            }else{
+                this.integraOffice = !this.integraOffice;
+            
+            }
+            this.newOffice = false;
+            this.selectedValue = null;
+            this.office = {
+                    lat : '',
+                    lon: '',
+                    notification_datetime: '',
+                    notification_hour: '',
+                    type: 'Consultorio Independiente',
+                    file:''
+                };
+             this.inteOffice = {
+                    name:'',
+                    phone:'',
+                    address:''
+                };
+
+            this.allOffices = [];
+            
+            },
+         nuevo(type){
+              
           if(this.newOffice && this.office.id) {
            
 
@@ -746,6 +818,12 @@
                 file:''
               };
           this.allOffices = [];
+          this.integraOffice = false
+            this.inteOffice = {
+                name:'',
+                phone:'',
+                address:''
+            };
           
         },
         onBlurDatetime(e){
@@ -953,6 +1031,41 @@
             }
             $(window).scrollTop(580);
             bus.$emit('clearImage');
+
+      },
+      sendrequest() {
+
+          //var resource = this.$resource('/medic/account/offices');
+           this.loader = true;
+           
+         
+          
+           
+              this.$http.post('/medic/account/offices/requests', this.inteOffice).then((response) => {
+                    console.log(response.status);
+                    console.log(response.data);
+                    if(response.status == 200 && response.data)
+                    {
+                      
+                      
+                        bus.$emit('alert', 'Su solicitud de integracion de clinic fue enviado correctamente','success');
+                      
+                        this.inteoffice = {};
+                        this.integraOffice = false;
+                        this.errors = [];
+                       
+                    }
+                   this.loader = false;
+              }, (response) => {
+                  console.log('error al guardar consultorio')
+                   this.loader = false;
+                   this.errors = response.data.errors;
+                   
+              });
+        
+            
+            $(window).scrollTop(580);
+           
 
       },
       handleFileUpload(file){

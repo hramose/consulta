@@ -228,7 +228,7 @@
                   <div class="callout callout-info">
                     <h4>Informacion importante!</h4>
 
-                    <p>Agrega los consultorios donde brindarás consulta privada. Recuerda que en caso de ser de tipo <b>"Clínica privada"</b> tu agenda no se hará visible hasta tanto el administrador de la clínica confirme que laboras para dicho centro médico.</p>
+                    <p>Agrega los consultorios donde brindarás consulta privada. Si el nombre de la <b>"Clínica privada"</b> no aparece, puedes solicitar integrarla al sistema. Nos pondremos en contacto con el administrador para crear la clínica lo antes posible.</p>
                   </div>
                   
                    <office :offices="{{ $user->offices }}"></office>

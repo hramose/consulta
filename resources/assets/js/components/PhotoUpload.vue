@@ -109,7 +109,7 @@
         },
         computed: {
             backgroundImage() {
-                debugger
+               
                 let image = this.preview || this.value;
                
                 if (!image) {

@@ -41,6 +41,7 @@ $(function () {
 
 
     $('select[name=role]').change(submitForm);
+    $('select[name=status]').change(submitForm);
     
     
    

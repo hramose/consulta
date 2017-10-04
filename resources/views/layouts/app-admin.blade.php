@@ -73,6 +73,8 @@
           <div class="menu-fixed-container">
             <a href="/admin/users" class="btn btn-sm btn-info {{ set_active('admin/users') }}">Usuarios</a>
             <a href="/admin/reports" class="btn btn-sm btn-warning {{ set_active('admin/reports') }}">Reportes</a>
+            <a href="/admin/reviews" class="btn btn-sm btn-success {{ set_active('admin/reviews') }}">Calificaciónes</a>
+            <a href="/admin/offices/requests" class="btn btn-sm btn-default {{ set_active('admin/offices/requests') }}">Solicitudes</a>
            
           </div>
        </div>

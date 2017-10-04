@@ -304,6 +304,15 @@ class User extends Authenticatable
         return $this->hasMany(ReviewApp::class);
     }
 
+     /**
+     * Relationship with the Review model
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+     public function requestOffices()
+     {
+         return $this->hasMany(RequestOffice::class);
+     }
+
     // The way average rating is calculated (and stored) is by getting an average of all ratings,
     // storing the calculated value in the rating_cache column (so that we don't have to do calculations later)
     // and incrementing the rating_count column by 1

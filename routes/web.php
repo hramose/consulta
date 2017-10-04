@@ -112,6 +112,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	
 	Route::post('/account/avatars', 'Medic\UserController@avatars');
 	Route::post('/account/offices', 'Medic\OfficeController@store');
+	Route::post('/account/offices/requests', 'Medic\OfficeController@requestOffice');
 	Route::post('/account/offices/{office}/assign', 'Medic\OfficeController@assignOffice');
 	Route::delete('/account/offices/{id}', 'Medic\OfficeController@destroy');
 	Route::get('/account/offices/list', 'Medic\OfficeController@getOffices');
@@ -318,7 +319,17 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::get('/offices/list', 'ClinicController@getAllOffices');
 
     Route::get('/reviews', 'Admin\ReviewController@index');
-    Route::delete('/reviews/{id}', 'Admin\ReviewController@delete');
+	Route::delete('/reviews/{id}', 'Admin\ReviewController@delete');
+	
+	Route::get('/offices/requests', 'Admin\OfficeController@index');
+	Route::delete('/offices/requests/{id}', 'Admin\OfficeController@delete');
+	foreach (['active', 'inactive','trial','notrial'] as $key)
+    {
+        Route::post('/offices/requests/{request}/' . $key, array(
+            'as'   => 'requestOffices.' . $key,
+            'uses' => 'Admin\OfficeController@' . $key,
+        ));
+    }
 
     Route::resource('reports', 'Admin\ReportsController');
 	Route::resource('users', 'Admin\UserController');
