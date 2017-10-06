@@ -302,7 +302,7 @@ class AppointmentRepository extends DbRepository{
      */
     public function findAllByPatient($id, $search = null)
     {
-        $order = 'created_at';
+        $order = 'date';
         $dir = 'desc';
 
         $appointments = $this->model->where('patient_id', $id);
