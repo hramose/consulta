@@ -91,7 +91,7 @@
 																	@if( \Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1 )
 																		@include('medic/patients/partials/files', ['files' => $files,'read' => true])
 																	@else
-																		@include('medic/patients/partials/files', ['files' => $files)
+																		@include('medic/patients/partials/files', ['files' => $files])
 																	@endif
 
 												</div>
