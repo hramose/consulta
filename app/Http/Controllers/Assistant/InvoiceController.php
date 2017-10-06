@@ -69,10 +69,12 @@ class InvoiceController extends Controller
     public function show($medic_id)
     {
         $medic = $this->medicRepo->findById($medic_id);
-        $searchDate = Carbon::now()->toDateString();
+        $searchDate = Carbon::now();
         
-        if(request('q'))
+        if(request('q')){
             $searchDate = request('q');
+            $searchDate = Carbon::parse($searchDate);
+        }
 
         /*$assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
         
@@ -83,11 +85,14 @@ class InvoiceController extends Controller
 
         $office =  auth()->user()->clinicsAssistants->first();
 
-        $invoices = $medic->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
-        $totalInvoicesAmount =  $medic->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->sum('total');
-        $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->whereDate('date',$searchDate)->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
+        $invoices = $medic->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
+        ['created_at', '<=', $searchDate->endOfDay()]])->orderBy('created_at','DESC')->paginate(20);
+        $totalInvoicesAmount =  $medic->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
+        ['created_at', '<=', $searchDate->endOfDay()]])->sum('total');
+        $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->where([['created_at', '>=', $searchDate->startOfDay()],
+        ['created_at', '<=', $searchDate->endOfDay()]])->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
 
-      
+        $searchDate = $searchDate->endOfDay()->toDateString();
         //$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
         return view('assistant.invoices.show',compact('medic','invoices','noInvoices','totalInvoicesAmount','searchDate'));
