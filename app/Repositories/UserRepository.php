@@ -117,7 +117,7 @@ class UserRepository extends DbRepository{
     {
         $order = 'created_at';
         $dir = 'desc';
-
+       
         if (! count($search) > 0) return $this->model->paginate($this->limit);
 
         if (isset($search['q']) && trim($search['q']))
@@ -130,6 +130,7 @@ class UserRepository extends DbRepository{
 
         if (isset($search['active']) && $search['active'] != "")
         {
+           
             $users = $users->where('active', '=', $search['active']);
         }
         if (isset($search['role']) && $search['role'] != "")
@@ -182,7 +183,7 @@ class UserRepository extends DbRepository{
         $user = $this->model->findOrFail($id);
 
 
-        if($user->hasRole('clinica') && $user->active)
+        if($user->hasRole('clinica'))
         {
            
 

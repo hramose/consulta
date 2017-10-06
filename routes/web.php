@@ -329,6 +329,22 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
             'as'   => 'requestOffices.' . $key,
             'uses' => 'Admin\OfficeController@' . $key,
         ));
+	}
+	Route::get('/clinics/requests', 'Admin\UserController@adminClinicRequests');
+	foreach (['active', 'inactive','trial','notrial'] as $key)
+    {
+        Route::post('/clinics/requests/{request}/' . $key, array(
+            'as'   => 'requestAdminClinic.' . $key,
+            'uses' => 'Admin\UserController@' . $key,
+        ));
+	}
+	Route::get('/medics/requests', 'Admin\UserController@medicRequests');
+	foreach (['active', 'inactive','trial','notrial'] as $key)
+    {
+        Route::post('/clinics/requests/{request}/' . $key, array(
+            'as'   => 'requestMedic.' . $key,
+            'uses' => 'Admin\UserController@' . $key,
+        ));
     }
 
     Route::resource('reports', 'Admin\ReportsController');

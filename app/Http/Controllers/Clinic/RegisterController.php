@@ -85,7 +85,7 @@ class RegisterController extends Controller
 
         $data = request()->all();
         $data['type'] = 'Clínica Privada';
-        $data['active'] = 1;
+        $data['active'] = 0;
         $data['notification'] = 1;
         $data['notification_date'] = Carbon::now()->toDateTimeString();
         

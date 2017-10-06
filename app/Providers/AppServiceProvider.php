@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\User;
+use App\RequestOffice;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -51,6 +52,23 @@ class AppServiceProvider extends ServiceProvider
            
             $view->with('newAppointments', $newAppointments);
         });
+
+        view()->composer('layouts.partials.home-boxes-admin', function ($view)
+        {
+            $medics =  User::whereHas('roles', function($q){
+                $q->where('name', 'medico');
+            })->where('active', 0)->count();
+    
+            $admins = User::whereHas('roles', function($q){
+                        $q->where('name', 'clinica');
+                    })->where('active', 0)->count();
+                    
+            $requests = RequestOffice::where('status', 0)->count();
+           
+            $view->with(compact('medics','admins','requests'));
+        });
+
+       
         /* \DB::listen(function ($query) {
             var_dump($query->sql);
             // $query->bindings

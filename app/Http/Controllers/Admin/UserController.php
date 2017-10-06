@@ -25,12 +25,38 @@ class UserController extends Controller
         $search['q'] = request('q');
         $search['role'] = request('role');
         $roles = Role::all();
-       
+      
         $users = $this->userRepo->findAll($search);
         
 
 
         return view('admin.users.index',compact('users','search', 'roles'));
+    }
+
+    public function medicRequests()
+    {
+        $search['q'] = request('q');
+        $search['role'] = 'medico';
+        $search['active'] = '0';
+      
+       
+        $users = $this->userRepo->findAll($search);
+        
+
+
+        return view('admin.users.medic-requests',compact('users','search'));
+    }
+    public function adminClinicRequests()
+    {
+        $search['q'] = request('q');
+        $search['role'] = 'clinica';
+        $search['active'] = '0';
+      
+        $users = $this->userRepo->findAll($search);
+        
+
+
+        return view('admin.users.adminclinic-requests',compact('users','search'));
     }
     
     /**
@@ -62,7 +88,7 @@ class UserController extends Controller
     {
         $this->userRepo->update_active($id, 1);
 
-        return Redirect('/admin/users');
+        return back();
     }
 
     /**
@@ -76,7 +102,7 @@ class UserController extends Controller
     {
         $this->userRepo->update_active($id, 0);
 
-         return Redirect('/admin/users');
+        return back();
     }
 
     /**
@@ -90,7 +116,7 @@ class UserController extends Controller
     {
         $this->userRepo->update_trial($id, 1);
 
-        return Redirect('/admin/users');
+        return back();
     }
 
     /**
@@ -104,7 +130,7 @@ class UserController extends Controller
     {
         $this->userRepo->update_trial($id, 0);
 
-         return Redirect('/admin/users');
+        return back();
     }
 
      /**

@@ -2,7 +2,7 @@
 
 @section('content')
      
-     @include('layouts/partials/header-pages',['page'=>'Usuarios'])
+     @include('layouts/partials/header-pages',['page'=>'Solicitudes Administradores Clínicas'])
 
 
     <section class="content">
@@ -13,20 +13,10 @@
                 <!-- <a href="{{ url('/admin/users/create') }}" class="btn btn-success">Nuevo Usuario</a> -->
                       
                 <div class="box-toolsdd filters">
-                  <form action="/admin/users" method="GET">
+                  <form action="/admin/medics/requests" method="GET">
                       
                       <div class="row">
-                      <div class="col-xs-12 col-sm-2">
-                        <div class="form-group">
-                          <select class="form-control select2" style="width: 100%;" id="role" name="role" placeholder="-- Selecciona Tipo --">
-                             <option value=""></option>
-                            @foreach($roles as $role)
-                                <option value="{{$role->name}}" @if(isset($search['role']) && $search['role'] == $role->name) {{ 'selected' }} @endif > {{ $role->name }}</option>
-                            @endforeach
-                           
-                          </select>
-                        </div>
-                      </div>
+                      
                       <div class="col-xs-12 col-sm-3">
                         <div class="input-group input-group-sm" >
                       
@@ -56,9 +46,9 @@
                       <th>ID</th>
                       <th>Nombre</th>
                       <th>Email</th>
-                      <th>Rol(tipo)</th>
+                      <th>Clínica</th>
                       <th>Estatus</th>
-                      <!-- <th>Periodo de Prueba</th> -->
+                      
                       <th></th>
                     </tr>
                   </thead>
@@ -71,12 +61,13 @@
                       <td data-title="Nombre">{{ $user->name }} </td>
         
                       <td data-title="Email">{{ $user->email }}</td>
-                      <td data-title="Email">
-                      {{ $user->roles->first()->name }} <br>
+                      <td data-title="Clínica">
                       @foreach($user->offices as $office)
                         <span class="label label-warning">{{ $office->name }}</span>
                       @endforeach
+                    
                       </td>
+                     
                       <td data-title="Estatus">
                           
                          @if ($user->active)
@@ -91,22 +82,7 @@
                           @endif
     
                       </td>
-                      <!-- <td data-title="Prueba">
-                          
-                         @if($user->settings)
-                           @if ($user->settings->trial)
-                               
-                                    <button type="submit"  class="btn btn-success btn-xs" form="form-trial-notrial" formaction="{!! URL::route('users.notrial', [$user->id]) !!}">Active</button>
-                               
-
-                            @else
-                                
-                                <button type="submit"  class="btn btn-danger btn-xs " form="form-trial-notrial" formaction="{!! URL::route('users.trial', [$user->id]) !!}" >Inactive</button>
-
-                            @endif
-                        @endif
-    
-                      </td> -->
+                     
                       <td data-title="" style="padding-left: 5px;">
                        
                        
@@ -123,7 +99,7 @@
                   <tr>
 
                     @if ($users)
-                        <td  colspan="6" class="pagination-container">{!!$users->appends(['q' => $search['q'],'role'=> $search['role'] ])->render()!!}</td>
+                        <td  colspan="6" class="pagination-container">{!!$users->appends(['q' => $search['q'] ])->render()!!}</td>
                     @endif
 
 
@@ -144,13 +120,8 @@
 <form method="post" id="form-active-inactive">
  {{ csrf_field() }}
 </form>
-<form method="post" id="form-trial-notrial">
- {{ csrf_field() }}
-</form>
 
-<!-- <form method="post" id="form-addToYourPatients" data-confirm="Estas Seguro?">
-  {{ csrf_field() }}
-</form> -->
+
 @endsection
 @section('scripts')
 

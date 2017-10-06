@@ -33,6 +33,10 @@
         <li><a href="{{ url('/')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li><a href="{{ url('/admin/users')}}"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
          <li><a href="{{ url('/admin/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
+         <li><a href="{{ url('/admin/reviews')}}"><i class="fa fa-star"></i> <span>Calificaciones App</span></a></li>
+         <li><a href="{{ url('/admin/offices/requests')}}"><i class="fa fa-home"></i> <span>Solicitudes Clínicas</span></a></li>
+         <li><a href="{{ url('/admin/medics/requests')}}"><i class="fa fa-user-md"></i> <span>Solicitudes Médicos</span></a></li>
+         <li><a href="{{ url('/admin/clinics/requests')}}"><i class="fa fa-users"></i> <span>Solicitudes Admin de Clínicas</span></a></li>
       
         
       </ul>

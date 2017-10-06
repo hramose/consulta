@@ -20,37 +20,37 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>Reportes</h3>
+                  <h3>Solicitudes Admins <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $admins }} Solicitudes Nuevas">{{ $admins }}</span></span> </h3>
 
-                  <p>Medicos, Pacientes, Clinicas</p>
+                  <p>Clínicas</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
                 </div>
-                <a href="/admin/reports/" class="small-box-footer">Ir a reportes <i class="fa fa-arrow-circle-right"></i></a>
-                <a href="/admin/reports/" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                <a href="/admin/clinics/requests" class="small-box-footer">Ir a Solicitudes <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/admin/clinics/requests" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
              <div class="col-xs-12 col-sm-3 col-lg-3 ">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>Calificaciones App</h3>
+                  <h3>Solicitudes Médicos <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $medics }} Solicitudes Nuevas">{{ $medics }}</span></span></h3>
 
-                  <p>App Movil</p>
+                  <p>Doctores</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-app"></i>
                 </div>
-                <a href="/admin/reviews/" class="small-box-footer">Ir a calificaciones <i class="fa fa-arrow-circle-right"></i></a>
-                <a href="/admin/reviews/" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
+                <a href="/admin/medics/requests" class="small-box-footer">Ir a Solicitudes <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/admin/medics/requests" style="position: absolute;left:0;right: 0;top:0; bottom: 0;"></a>
               </div>
             </div>
             <div class="col-xs-12 col-sm-3 col-lg-3 ">
               <!-- small box -->
               <div class="small-box bg-purple">
                 <div class="inner">
-                  <h3>Solicitudes clinicas</h3>
+                  <h3>Solicitudes clínicas <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $requests }} Solicitudes Nuevas">{{ $requests }}</span></span></h3>
 
                   <p>Solicitudes de integración de clínicas</p>
                 </div>

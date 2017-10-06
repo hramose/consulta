@@ -17,7 +17,7 @@
     <form  role="form" method="POST" action="{{ url('/medic/register') }}">
         {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="Nombre">
+        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="Nombre y Apellidos">
          @if ($errors->has('name'))
             <span class="help-block">
                 <strong>{{ $errors->first('name') }}</strong>

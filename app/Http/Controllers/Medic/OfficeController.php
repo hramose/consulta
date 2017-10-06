@@ -277,16 +277,20 @@ class OfficeController extends Controller
      */
     public function getOffices()
     {
+        $search = request()->all();
+        $search['active'] = 1;
         
-        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->user(),request()->all());
+        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->user(),$search['active']);
 
         return $offices;
         
     }
     public function getAllOffices()
     {
+        $search = request()->all();
+        $search['active'] = 1;
         
-        $offices = $this->officeRepo->findAllWithoutPagination(auth()->id(),request()->all());
+        $offices = $this->officeRepo->findAllWithoutPagination(auth()->id(),$search);
 
         return $offices;
         

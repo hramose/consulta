@@ -131,6 +131,10 @@ class OfficeRepository extends DbRepository{
         {
             $offices = $offices->where('type', $search['type']);
         } 
+        if (isset($search['active']) && trim($search['active']))
+        {
+            $offices = $offices->where('active', $search['active']);
+        } 
 
         if (isset($search['order']) && $search['order'] != "")
         {
