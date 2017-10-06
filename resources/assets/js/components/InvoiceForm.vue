@@ -293,6 +293,9 @@
           },*/
           
 		        save() {
+              
+                if(this.loader)
+                    return
 
 		              this.loader = true;
 		              this.$http.post('/medic/invoices/services', {name: this.new_service, amount: this.amount}).then((response) => {
@@ -319,7 +322,10 @@
 
 		      	},//save service
              update() {
-                  this.loader = true;
+                if(this.loader)
+                  return
+
+                this.loader = true;
                  var resource = this.$resource('/medic/invoices/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
@@ -341,7 +347,9 @@
 
             },//update service
             remove(){
-             
+              if(this.loader)
+                return
+
               this.loader = true;
               this.$http.delete('/medic/invoices/services/'+this.service.id).then((response) => {
                     
@@ -371,6 +379,9 @@
             },
 	          invoice(here){
 
+                if(this.loader)
+                   return
+
                 let status = 0;
                 let pay_with = 0;
                 let change = 0;
@@ -394,6 +405,7 @@
                           this.servicesToInvoice = [];
                           this.errors = [];
                           this.invoiceHere = false;
+                          this.loader = false;
 
                           if(here){
                             window.location.href = "/medic/invoices/"+response.data.id+"/print";
@@ -405,7 +417,7 @@
                        this.loader = false;
                   }, (response) => {
                       console.log('error al facturar servicio')
-                      this.loader = false;
+                       this.loader = false;
                        this.errors = response.data;
                        this.invoiceHere = false;
                   });

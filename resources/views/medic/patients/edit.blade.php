@@ -136,7 +136,7 @@
 
       },
       onComplete: function(result) {
-
+		  var result = JSON.parse(result);
           if(result ==='error'){
 
           	$('#infoBox').addClass('alert-danger').html('Error al subir archivo. Tipo no permitido!!').show();
@@ -156,9 +156,9 @@
 	          },3000);
 			
 		
-          var li = "<li><a href='/storage/"+ result +"'' title='"+ result.split("/")[3]+ "' target='_blank'><span class='text'>"+ result.split("/")[3] +"</span></a>"+
+          var li = "<li><a href='/storage/"+ result.file +"' title='"+ result.file.split("/")[3]+ "' target='_blank'><span class='text'>"+ result.file.split("/")[3] +"</span></a>"+
           "<div class='tools'>"+
-            "<i class='fa fa-trash-o delete' data-file='"+result+"'></i>"+
+            "<i class='fa fa-trash-o delete' data-file='"+result.file+"' data-id='"+result.id+"'></i>"+
           "</div></li>";
 
           $('#files-list').append(li);
@@ -177,7 +177,7 @@
         var btn_delete = $(this),
             url = "/medic/patients/files/delete";
 
-        $.post(url,{file: btn_delete.attr("data-file") }, function(data){
+        $.post(url,{file: btn_delete.attr("data-file"), id: btn_delete.attr("data-id")  }, function(data){
             btn_delete.parents('li').fadeOut("slow");
         });
     }

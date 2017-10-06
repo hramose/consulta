@@ -946,7 +946,8 @@
 
         },
         save() {
-
+             if(this.loader)
+                return
           //var resource = this.$resource('/medic/account/offices');
            this.loader = true;
            
@@ -1036,6 +1037,9 @@
       sendrequest() {
 
           //var resource = this.$resource('/medic/account/offices');
+           if(this.loader)
+                return
+
            this.loader = true;
            
          

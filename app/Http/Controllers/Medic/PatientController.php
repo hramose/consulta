@@ -12,6 +12,7 @@ use App\Role;
 use App\Appointment;
 use App\Labresult;
 use App\Labexam;
+use App\Archivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -127,7 +128,7 @@ class PatientController extends Controller
 
         //dd($appointments);
 
-        $files = Storage::disk('public')->files("patients/". $id ."/files");
+        $files =  $patient->archivos; //Storage::disk('public')->files("patients/". $id ."/files");
         
         return view('medic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments'));
 
@@ -200,23 +201,70 @@ class PatientController extends Controller
      */
     public function files()
     {
-    
-        $mimes = ['jpg','jpeg','bmp','png','pdf','doc','docx'];
+
+        $this->validate(request(),[
+            
+            'file' => 'required|mimes:jpeg,bmp,png,pdf',
+            
+        ]);
+        
+        $data = request()->all();
+   
+
+        $mimes = ['jpg','jpeg','bmp','png','pdf'];
         $fileUploaded = "error";
 
-        if(request('patient_id') && request()->file('file'))
-        {     
+    
+   
+        if(request()->file('file'))
+        {
+        
             $file = request()->file('file');
-            
             $name = $file->getClientOriginalName();
-           
             $ext = $file->guessClientExtension();
+            $onlyName = str_slug(pathinfo($name)['filename'], '-');
+            
+        
+        
+            if(in_array($ext, $mimes)){
+                
+                $archivo = Archivo::create($data);
 
-            if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("patients/". request('patient_id')."/files", $name,'public');        
-        } 
+                $fileUploaded = $file->storeAs("patients/". request('patient_id')."/files", $archivo->id.'-'.$onlyName.'.'.$ext,'public');
+
+                $archivo->name = $archivo->id.'-'.$onlyName.'.'.$ext;
+                $archivo->save();
+
+                $result = [
+                    "id" => $archivo->id,
+                    "file" => $fileUploaded
+                ];
+                
+                return $result;
+            }
+            
+        }
+
+         return $fileUploaded;
+   
+
+    
+        // $mimes = ['jpg','jpeg','bmp','png','pdf','doc','docx'];
+        // $fileUploaded = "error";
+
+        // if(request('patient_id') && request()->file('file'))
+        // {     
+        //     $file = request()->file('file');
+            
+        //     $name = $file->getClientOriginalName();
+           
+        //     $ext = $file->guessClientExtension();
+
+        //     if(in_array($ext, $mimes))
+        //         $fileUploaded = $file->storeAs("patients/". request('patient_id')."/files", $name,'public');        
+        // } 
        
-        return $fileUploaded;
+        // return $fileUploaded;
 
     }
 
@@ -225,10 +273,17 @@ class PatientController extends Controller
      */
     public function deleteFiles()
     {
-        
+       
         Storage::disk('public')->delete(request('file'));
         
+       
+
+        $archivo = Archivo::find(request('id'));
+        $archivo->delete();
+
+      
         return '';
+
 
     }
 

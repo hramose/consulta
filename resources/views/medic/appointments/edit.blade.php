@@ -55,7 +55,7 @@
 		                	</div>
 		                	<div class="col-md-6">
 		          				 @include('medic/patients/partials/medicines', ['patient' => $appointment->patient]) 
-												 @include('medic/patients/partials/files', ['files' => $files]) 
+											 
 												 
 		                 	</div>
 		                 </div>
@@ -63,33 +63,35 @@
 		              <!-- /.tab-pane -->
 		              <div class="tab-pane" id="notes">
 		              		<div class="row">
-								<div class="col-md-6">
-									<div class="box box-info">
-									    <div class="box-header with-border">
-									      <h3 class="box-title">Signos vitales actuales</h3>
+												<div class="col-md-6">
+													<div class="box box-info">
+															<div class="box-header with-border">
+																<h3 class="box-title">Signos vitales actuales</h3>
 
-									      <div class="box-tools pull-right">
-									        
-									      </div>
-									      <!-- /.box-tools -->
-									    </div>
-									    <!-- /.box-header -->
-									    <div class="box-body">
-									     
-									       
-											<signs :signs="{{ $appointment->patient->vitalSigns }}"></signs>
-									      
-									        
-									    </div>
-									    <!-- /.box-body -->
-									</div>
-									
-								</div>
-								<div class="col-md-6">
-								
-		              				<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></diseasenotes>
-			              		</div>
-			              	</div>
+																<div class="box-tools pull-right">
+																	
+																</div>
+																<!-- /.box-tools -->
+															</div>
+															<!-- /.box-header -->
+															<div class="box-body">
+															
+																
+															<signs :signs="{{ $appointment->patient->vitalSigns }}"></signs>
+																
+																	
+															</div>
+															<!-- /.box-body -->
+													</div>
+													
+												</div>
+												<div class="col-md-6">
+												
+																	<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></diseasenotes>
+																	@include('medic/patients/partials/files', ['files' => $files])
+
+												</div>
+											</div>
 		              </div>
 		              <!-- /.tab-pane -->
 					  <div class="tab-pane" id="physical">
@@ -189,13 +191,13 @@
   	$("#UploadFile").ajaxUpload({
       url : "/medic/patients/files",
       name: "file",
-      data: {patient_id: {{ $appointment->patient->id }} },
+      data: {patient_id: {{ $appointment->patient->id }}, appointment_id: {{ $appointment->id }} },
       onSubmit: function() {
           $('#infoBox').html('Uploading ... ');
 
       },
       onComplete: function(result) {
-
+					var result = JSON.parse(result);
           if(result ==='error'){
 
           	$('#infoBox').addClass('alert-danger').html('Error al subir archivo. Tipo no permitido!!').show();
@@ -214,10 +216,10 @@
 	          	$('#infoBox').removeClass('alert-success').hide();
 	          },3000);
 			
-		
-          var li = "<li><a href='/storage/"+ result +"'' title='"+ result.split("/")[3]+ "' target='_blank'><span class='text'>"+ result.split("/")[3] +"</span></a>"+
+		       
+          var li = "<li><a href='/storage/"+ result.file +"'' title='"+ result.file.split("/")[3]+ "' target='_blank'><span class='text'>"+ result.file.split("/")[3] +"</span></a>"+
           "<div class='tools'>"+
-            "<i class='fa fa-trash-o delete' data-file='"+result+"'></i>"+
+            "<i class='fa fa-trash-o delete' data-file='"+result.file+"' data-id='"+result.id+"'></i>"+
           "</div></li>";
 
           $('#files-list').append(li);
@@ -236,7 +238,7 @@
         var btn_delete = $(this),
             url = "/medic/patients/files/delete";
 
-        $.post(url,{file: btn_delete.attr("data-file") }, function(data){
+        $.post(url,{file: btn_delete.attr("data-file"), id: btn_delete.attr("data-id") }, function(data){
             btn_delete.parents('li').fadeOut("slow");
         });
     }

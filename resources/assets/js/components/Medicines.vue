@@ -62,8 +62,9 @@
           
           hit(){
             console.log('hit');
-            if(!this.query || this.read)
+            if(!this.query || this.read || this.loader)
               return
+            
 
             this.loader = true;
             this.add(this.query);
@@ -93,7 +94,10 @@
 
           },
           remove(item){
-           
+            
+            if(this.loader)
+                return
+
             this.loader = true;
             this.$http.delete(this.url +'/medicines/'+item.id).then((response) => {
 

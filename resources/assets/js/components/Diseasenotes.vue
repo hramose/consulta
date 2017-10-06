@@ -1,18 +1,15 @@
 <template>
   <div>
-      <div class="box box-default">
+      <!-- <div class="box box-default">
             <div class="box-header with-border">
               <h3 class="box-title">RAZÓN DE LA VISITA</h3> <small class="pull-right">{{ loader_message }}</small>
             </div>
-            <!-- /.box-header -->
+          
             <div class="box-body">
                 <textarea name="reason" cols="30" rows="4" class="form-control" v-model="disease_notes.reason" @keydown="keydown()" :readonly="read"></textarea>
             </div>
-            <!-- /.box-body -->
-            <!-- <div class="overlay" v-show="loader">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div> -->
-      </div>
+          
+      </div> -->
       <div class="box box-default">
             <div class="box-header with-border">
               <h3 class="box-title">SÍNTOMAS SUBJETIVOS</h3>  <small class="pull-right">{{ loader_message }}</small>

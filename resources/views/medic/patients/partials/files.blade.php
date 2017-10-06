@@ -1,5 +1,5 @@
 
-<div class="box box-warning">
+<div class="box box-default">
 
     <div class="box-header with-border">
       <h3 class="box-title">Archivos</h3>
@@ -15,16 +15,28 @@
       <ul id="files-list" class="todo-list ui-sortable">
         @foreach($files as $file)
         <li>
-          <!-- todo text -->
-          <a href="{{ Storage::url($file) }}" title="{{ $file }}" target="_blank"><span class="text">{{  explode("/",$file)[3]  }}</span></a>
-          <!-- General tools such as edit or delete-->
+         
+          <a href="/storage/patients/{{ $file->patient_id }}/files/{{ $file->name }}" title="{{ $file->name }}" target="_blank"><span class="text">{{ $file->name }}</span></a>
+          
           <div class="tools">
           @if(! isset($read))
-            <i class="fa fa-trash-o delete" data-file="{{ $file }}"></i>
+            <i class="fa fa-trash-o delete" data-file="/patients/{{ $file->patient_id }}/files/{{ $file->name }}" data-id="{{ $file->id }}"></i>
             @endif
           </div>
         </li>
-        @endforeach
+        @endforeach 
+        <!-- {{--@foreach($files as $file)--}}
+        <li>
+         
+          <a href="{{-- Storage::url($file) --}}" title="{{-- $file --}}" target="_blank"><span class="text">{{--  explode("/",$file)[3]  --}}</span></a>
+          
+          <div class="tools">
+          @if(! isset($read))
+            <i class="fa fa-trash-o delete" data-file="{{-- $file --}}"></i>
+            @endif
+          </div>
+        </li>
+       {{--  @endforeach --}} -->
       </ul>
         @if(! isset($read))
           <a class="UploadButton btn btn-primary btn-block" id="UploadFile">Subir Archivo</a> 
