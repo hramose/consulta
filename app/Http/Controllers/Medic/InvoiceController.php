@@ -35,6 +35,13 @@ class InvoiceController extends Controller
 
         return view('medic.invoices.index',compact('invoices','search'));*/
         $searchDate = Carbon::now()->toDateString();
+       /* $date1 = new Carbon($search['date1']);
+        $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+        $date2 = new Carbon($date2);
+        
+        if($appointments->count())
+            $appointments = $appointments->where([['appointments.date', '>=', $date1],
+                ['appointments.date', '<=', $date2->endOfDay()]]);*/
         
         if(request('q'))
             $searchDate = request('q');
@@ -48,8 +55,8 @@ class InvoiceController extends Controller
 
       
 
-        $invoices = $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
-        $totalInvoicesAmount =  $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at',$searchDate)->sum('total');
+        $invoices = $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at','<=',$searchDate)->orderBy('created_at','DESC')->paginate(20);
+        $totalInvoicesAmount =  $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at','<=',$searchDate)->sum('total');
         $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date',$searchDate)->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
 
       
