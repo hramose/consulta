@@ -89,7 +89,7 @@
 												
 																	<diseasenotes :notes="{{ $appointment->diseaseNotes }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></diseasenotes>
 																	@if( \Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1 )
-																		@include('medic/patients/partials/files', ['files' => $files,'read', true])
+																		@include('medic/patients/partials/files', ['files' => $files,'read' => true])
 																	@else
 																		@include('medic/patients/partials/files', ['files' => $files)
 																	@endif
