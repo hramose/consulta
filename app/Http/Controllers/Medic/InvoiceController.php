@@ -59,7 +59,7 @@ class InvoiceController extends Controller
         $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->where([['date', '>=', $searchDate->startOfDay()],
         ['date', '<=', $searchDate->endOfDay()]])->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
 
-        $searchDate = $searchDate->endOfDay()->endOfDay();
+        $searchDate = $searchDate->endOfDay()->toDateString();
       
 
         return view('medic.invoices.index',compact('medic','invoices', 'noInvoices','totalInvoicesAmount','searchDate'));

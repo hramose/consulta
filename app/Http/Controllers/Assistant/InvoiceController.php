@@ -100,18 +100,26 @@ class InvoiceController extends Controller
      public function patientInvoices($patient_id)
      {
          $patient = $this->patientRepo->findById($patient_id);
-         $searchDate = Carbon::now()->toDateString();
+
+
+         $searchDate = Carbon::now();
          
-         if(request('q'))
-             $searchDate = request('q');
- 
+         if(request('q')){
+            
+            $searchDate = request('q');
+            $searchDate = Carbon::parse($searchDate);
+        }
     
          $office =  auth()->user()->clinicsAssistants->first();
+
+
  
-         $invoices = $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->orderBy('created_at','DESC')->paginate(20);
-         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereDate('created_at',$searchDate)->sum('total');
+         $invoices = $patient->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
+         ['created_at', '<=', $searchDate->endOfDay()]])->orderBy('created_at','DESC')->paginate(20);
+         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
+         ['created_at', '<=', $searchDate->endOfDay()]])->sum('total');
          
-       
+         $searchDate = $searchDate->endOfDay()->toDateString();
  
          return view('assistant.patients.invoices',compact('patient','invoices','totalInvoicesAmount','searchDate'));
  
