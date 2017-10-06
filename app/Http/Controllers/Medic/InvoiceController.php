@@ -35,13 +35,7 @@ class InvoiceController extends Controller
 
         return view('medic.invoices.index',compact('invoices','search'));*/
         $searchDate = Carbon::now();
-       /* $date1 = new Carbon($search['date1']);
-        $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
-        $date2 = new Carbon($date2);
-        
-        if($appointments->count())
-            $appointments = $appointments->where([['appointments.date', '>=', $date1],
-                ['appointments.date', '<=', $date2->endOfDay()]]);*/
+      
         
         if(request('q')){
 
