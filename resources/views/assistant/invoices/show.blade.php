@@ -80,10 +80,17 @@
                                 @endif
                             </td> -->
                             <td>
-                            
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
-                                  <i class="fa fa-eye"></i> @if($invoice->status) Detalle @else Facturar @endif
-                                </button>
+                                @if($invoice->status)
+                                  
+                                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
+                                    <i class="fa fa-eye"></i> Detalle  
+                                  </button>
+                                @else
+                                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
+                                    <i class="fa fa-eye"></i> Facturar
+                                  </button>
+                                @endif
+                               
                             </td>
                           </tr>
                       @endforeach
