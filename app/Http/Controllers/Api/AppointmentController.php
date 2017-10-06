@@ -31,7 +31,32 @@ class AppointmentController extends ApiController
 
     }
 
-    
+    public function index(){
+
+        $user = $request->user();
+
+        $appointments = Appointment::where('created_by',$user->id)->get();
+        
+
+        $initAppointments = $appointments->filter(function ($item, $key) {
+                return $item->status > 0;
+            });
+
+        $scheduledAppointments = $appointments->filter(function ($item, $key) {
+                return $item->status == 0;
+            });
+      
+            $data = [
+                'scheduledAppointments' => $scheduledAppointments,
+                'initAppointments' => $initAppointments,
+             
+             ];
+             
+     
+        return $data;
+     
+
+    }
      /**
      * Mostrar vista de actualizar consulta(cita)
      */
