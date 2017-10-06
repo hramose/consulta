@@ -85,12 +85,9 @@ class InvoiceController extends Controller
 
         $office =  auth()->user()->clinicsAssistants->first();
 
-        $invoices = $medic->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
-        ['created_at', '<=', $searchDate->endOfDay()]])->orderBy('created_at','DESC')->paginate(20);
-        $totalInvoicesAmount =  $medic->invoices()->where('office_id', $office->id)->where([['created_at', '>=', $searchDate->startOfDay()],
-        ['created_at', '<=', $searchDate->endOfDay()]])->sum('total');
-        $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->where([['created_at', '>=', $searchDate->startOfDay()],
-        ['created_at', '<=', $searchDate->endOfDay()]])->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
+        $invoices = $medic->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate->startOfDay(), $searchDate->endOfDay()])->orderBy('created_at','DESC')->paginate(20);
+        $totalInvoicesAmount =  $medic->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate->startOfDay(), $searchDate->endOfDay()])->sum('total');
+        $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->whereBetween('created_at', [$searchDate->startOfDay(), $searchDate->endOfDay()])->doesntHave('invoices')->orderBy('created_at','DESC')->paginate(20);
 
         $searchDate = $searchDate->endOfDay()->toDateString();
         //$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
