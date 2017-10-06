@@ -75,6 +75,7 @@ class InvoiceController extends Controller
             $searchDate = request('q');
             $searchDate = Carbon::parse($searchDate);
         }
+        dd($searchDate);
 
         /*$assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
         
