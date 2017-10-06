@@ -37,7 +37,7 @@ class PatientController extends Controller
         
         $user = auth()->user();
         
-        return view('patients.register')->with('user');
+        return view('user.register')->with('user');
 
     }
 
