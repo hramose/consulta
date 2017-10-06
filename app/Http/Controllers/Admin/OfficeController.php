@@ -60,7 +60,7 @@ class OfficeController extends Controller
      */
      public function active($id)
      {
-        $requestOffice = \DB::table('request_Offices')
+        $requestOffice = \DB::table('request_offices')
         ->where('id', $id)
         ->update(['status' => 1]); 
 
@@ -79,7 +79,7 @@ class OfficeController extends Controller
       */
      public function inactive($id)
      {
-        $requestOffice = \DB::table('request_Offices')
+        $requestOffice = \DB::table('request_offices')
         ->where('id', $id)
         ->update(['status' => 0]); 
 
