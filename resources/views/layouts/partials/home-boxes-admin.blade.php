@@ -20,7 +20,7 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>Solicitudes Admins <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $admins }} Solicitudes Nuevas">{{ $admins }}</span></span> </h3>
+                  <h3>Administraciones <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $admins }} Solicitudes Nuevas">{{ $admins }}</span></span> </h3>
 
                   <p>Clínicas</p>
                 </div>
@@ -35,9 +35,9 @@
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>Solicitudes Médicos <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $medics }} Solicitudes Nuevas">{{ $medics }}</span></span></h3>
+                  <h3>Médicos <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $medics }} Solicitudes Nuevas">{{ $medics }}</span></span></h3>
 
-                  <p>Doctores</p>
+                  <p>Solicitudes</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-app"></i>
@@ -50,9 +50,9 @@
               <!-- small box -->
               <div class="small-box bg-purple">
                 <div class="inner">
-                  <h3>Solicitudes clínicas <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $requests }} Solicitudes Nuevas">{{ $requests }}</span></span></h3>
+                  <h3>Clínicas <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $requests }} Solicitudes Nuevas">{{ $requests }}</span></span></h3>
 
-                  <p>Solicitudes de integración de clínicas</p>
+                  <p>Solicitudes</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-home"></i>
