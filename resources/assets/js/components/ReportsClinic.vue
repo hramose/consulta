@@ -190,7 +190,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabels"  :datasets="dataSets"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabels"  :datasets="dataSets" :option="myOption"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
@@ -359,6 +359,7 @@
             date2:''
           },
           options:[],
+          myOption:{}, //fix pie chart
           urlOptions:'/clinic/medics/list',
           selectedItem:null,
           data:[],

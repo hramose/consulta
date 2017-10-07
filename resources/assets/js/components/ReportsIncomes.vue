@@ -135,7 +135,7 @@
                           <div class="box-body">
                             <!-- <appointments-chart></appointments-chart> -->
                            
-                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsGeneral"  :datasets="dataSetsGeneral"></chartjs-pie>
+                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsGeneral"  :datasets="dataSetsGeneral"  :option="myoption"></chartjs-pie>
                           </div>
                           <!-- /.box-body -->
                     </div>
@@ -148,7 +148,7 @@
                           <div class="box-body">
                             <!-- <appointments-chart></appointments-chart> -->
                            
-                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsSpecialist"  :datasets="dataSetsSpecialist"></chartjs-pie>
+                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsSpecialist"  :datasets="dataSetsSpecialist" :option="myoption"></chartjs-pie>
                           </div>
                           <!-- /.box-body -->
                     </div>
@@ -196,7 +196,8 @@
           dataLabelsGeneral:[],
           dataLabelsSpecialist:[],
           loader: false,
-          message: ""
+          message: "",
+          myOption:{} //fix pie chart
           
         }
       },
@@ -215,7 +216,7 @@
                 return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
             },
          getDataForChart(){
-            let valuesGeneral = [];
+             let valuesGeneral = [];
              let valuesSpecialist = [];
 
             this.dataLabelsGeneral[0] = 'Ingresos Recibidos';

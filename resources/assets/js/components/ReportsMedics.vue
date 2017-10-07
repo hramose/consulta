@@ -115,7 +115,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsMedics"  :datasets="dataSetsMedics"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsMedics"  :datasets="dataSetsMedics" :option="myOption"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
@@ -161,7 +161,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsAppointments"  :datasets="dataSetsAppointments"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsAppointments"  :datasets="dataSetsAppointments" :option="myOption"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
@@ -209,6 +209,7 @@
             date2:''
           },
           options:[],
+          myOption:{}, //fix pie chart
           urlOptions:'/medics/list',
           selectedItem:null,
           data:[],

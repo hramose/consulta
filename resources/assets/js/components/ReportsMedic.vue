@@ -153,7 +153,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabels"  :datasets="dataSets"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabels"  :datasets="dataSets" :option="myOption"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
@@ -348,7 +348,8 @@
           dataSets:[],
           dataValues:[],
           loader: false,
-          message:""
+          message:"",
+          myOption:{} //fix pie chart
         }
       },
       components:{
