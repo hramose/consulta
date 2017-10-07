@@ -7,7 +7,7 @@
                 <div class="inner">
                   <h3>Usuarios</h3>
 
-                  <p>Medicos o pacientes registrados</p>
+                  <p>Medicos o pacientes</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
