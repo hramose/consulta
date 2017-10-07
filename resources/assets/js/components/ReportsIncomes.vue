@@ -135,7 +135,7 @@
                           <div class="box-body">
                             <!-- <appointments-chart></appointments-chart> -->
                            
-                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsGeneral"  :datasets="dataSetsGeneral"  :option="myoption"></chartjs-pie>
+                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsGeneral"  :datasets="dataSetsGeneral"  :option="myOption"></chartjs-pie>
                           </div>
                           <!-- /.box-body -->
                     </div>
@@ -148,7 +148,7 @@
                           <div class="box-body">
                             <!-- <appointments-chart></appointments-chart> -->
                            
-                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsSpecialist"  :datasets="dataSetsSpecialist" :option="myoption"></chartjs-pie>
+                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsSpecialist"  :datasets="dataSetsSpecialist" :option="myOption"></chartjs-pie>
                           </div>
                           <!-- /.box-body -->
                     </div>

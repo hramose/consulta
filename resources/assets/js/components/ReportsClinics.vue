@@ -114,7 +114,7 @@
                                 <div class="box-body">
                                   <!-- <appointments-chart></appointments-chart> -->
                                  
-                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsAppointments"  :datasets="dataSetsAppointments" :option="myoption"></chartjs-pie>
+                                  <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsAppointments"  :datasets="dataSetsAppointments" :option="myOption"></chartjs-pie>
                                 </div>
                                 <!-- /.box-body -->
                           </div>
