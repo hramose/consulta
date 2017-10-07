@@ -20,7 +20,7 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>Administraciones <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $admins }} Solicitudes Nuevas">{{ $admins }}</span></span> </h3>
+                  <h3>Administradores <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $admins }} Solicitudes Nuevas">{{ $admins }}</span></span> </h3>
 
                   <p>Clínicas</p>
                 </div>
