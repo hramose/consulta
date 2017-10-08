@@ -17,6 +17,7 @@ class CreateMedicinesTable extends Migration
             $table->increments('id');
             $table->integer('patient_id')->unsigned()->index();
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->integer('medic_id')->unsigned()->index();
             $table->string('name');
             $table->timestamps();
         });

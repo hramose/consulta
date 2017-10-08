@@ -304,8 +304,12 @@ class PatientController extends Controller
      */
     public function medicines($id)
     {
-    
-       $medicine = $this->patientRepo->addMedicine($id, request()->all());
+        $data = request()->all();
+
+        if(auth()->user()->hasRole('medico'))
+            $data['medic_id'] = auth()->id();
+
+       $medicine = $this->patientRepo->addMedicine($id, $data);
         
        return  $medicine;
 

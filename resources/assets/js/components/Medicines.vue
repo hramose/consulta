@@ -15,7 +15,7 @@
           <!-- General tools such as edit or delete-->
           <div class="tools">
             
-            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read"></i>
+            <i class="fa fa-trash-o delete" @click="remove(item)" v-show="!read && item.medic_id == medic_id"></i>
           </div>
         </li>
        
@@ -32,6 +32,11 @@
        props: {
          patient_id: {
           type: Number
+          
+        },
+         medic_id: {
+          type: Number,
+          default:0
           
         },
         medicines: {

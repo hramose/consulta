@@ -54,7 +54,8 @@
 												 
 		                	</div>
 		                	<div class="col-md-6">
-		          				 @include('medic/patients/partials/medicines', ['patient' => $appointment->patient]) 
+								 @include('medic/patients/partials/summary-control', ['patient' => $appointment->patient,'history'=> $history])
+		          				 @include('medic/patients/partials/medicines-medic', ['patient' => $appointment->patient]) 
 											 
 												 
 		                 	</div>

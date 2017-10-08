@@ -121,7 +121,7 @@
                     <label for="speciality_id" class="col-sm-2 control-label">Especialidad</label>
 
                     <div class="col-sm-10">
-                      <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple>
+                      <select class="form-control select2" style="width: 100%;" name="speciality[]" placeholder="-- Selecciona Especialidad --" multiple disabled>
                         
                         @foreach($specialities as $speciality)
                             <option value="{{$speciality->id}}" @foreach($user->specialities as $s) @if($speciality->id == $s->id)selected="selected"@endif @endforeach>{{$speciality->name}}</option>
