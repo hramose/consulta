@@ -208,17 +208,17 @@ class AppointmentController extends ApiController
 
         //if($user->hasRole('paciente')){
 
-           // if( !$appointment->isStarted() && $appointment->isOwner($user) )
-           // {
+            if(!$appointment->isStarted() && $appointment->created_by == $user->id)//if( !$appointment->isStarted() && $appointment->isOwner($user) )
+            {
                
-                $appointment->reminders()->delete();
+               $appointment->reminders()->delete();
 
                $appointment = $appointment->delete();
 
                 $result = 1;
-           /* }else{
+            }else{
                 $result = 2;
-            }*/
+            }
         /* }else{
 
             if( !$appointment->isStarted() )
