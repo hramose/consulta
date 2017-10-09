@@ -164,7 +164,7 @@
     
                   if(response.status == 200)
                   {
-                    this.dataSugars.push(response.data);
+                    this.dataSugars.unshift(response.data);
                     bus.$emit('alert', 'Control de Azúcar Agregado','success');
                     this.errors = [];
                   }

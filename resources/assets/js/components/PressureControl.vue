@@ -176,7 +176,7 @@
     
                   if(response.status == 200)
                   {
-                    this.dataPressures.push(response.data);
+                    this.dataPressures.unshift(response.data);
                     bus.$emit('alert', 'Control de Presion Agregado','success');
                     this.errors = [];
                   }
