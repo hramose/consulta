@@ -203,13 +203,14 @@ class AppointmentController extends ApiController
        
         $appointment = $this->appointmentRepo->findById($id);
         $result = 0;
-        return $appointment;
+
         if(!$appointment) return $result;
 
        // if($request->user()->hasRole('paciente')){
 
             if( !$appointment->isStarted() && $appointment->isOwner($request->user()) )
             {
+                 return $appointment;
                 $appointment->reminders()->delete();
 
                $appointment = $appointment->delete();
