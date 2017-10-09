@@ -198,9 +198,9 @@ class AppointmentController extends ApiController
      /**
      * Eliminar consulta(cita) ajax desde calendar
      */
-    public function delete($id)
+    public function delete($id, Request $request)
     {
-        return $id;
+        return $request->user();
         $appointment = $this->appointmentRepo->findById($id);
         $result = 0;
 
