@@ -31,7 +31,7 @@ class AppointmentController extends ApiController
 
     }
 
-    public function index(){
+    public function index(Request $request){
 
         $user = $request->user();
 
