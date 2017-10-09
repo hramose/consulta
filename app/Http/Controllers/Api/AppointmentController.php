@@ -201,49 +201,49 @@ class AppointmentController extends ApiController
     public function delete($id)
     {
 
-        $appointment = $this->appointmentRepo->findById($id);
-        $result = 0;
+        // $appointment = $this->appointmentRepo->findById($id);
+        // $result = 0;
 
-        if(!$appointment) return $result;
+        // if(!$appointment) return $result;
 
-        if(request()->user()->hasRole('paciente')){
+        // if(request()->user()->hasRole('paciente')){
 
-            if( !$appointment->isStarted() && $appointment->isOwner(request()->user()) )
-            {
-                $appointment->reminders()->delete();
+        //     if( !$appointment->isStarted() && $appointment->isOwner(request()->user()) )
+        //     {
+        //         $appointment->reminders()->delete();
 
-               $appointment = $appointment->delete();
+        //        $appointment = $appointment->delete();
 
-                $result = 1;
-            }else{
-                $result = 2;
-            }
-        }else{
+        //         $result = 1;
+        //     }else{
+        //         $result = 2;
+        //     }
+        // }else{
 
-            if( !$appointment->isStarted() )
-            {
-                $appointment->reminders()->delete();
+        //     if( !$appointment->isStarted() )
+        //     {
+        //         $appointment->reminders()->delete();
                 
-                $appointment = $appointment->delete();
+        //         $appointment = $appointment->delete();
 
-                 $result = 1;
-            }else{
-                $result = 2;
-            }
-        }
+        //          $result = 1;
+        //     }else{
+        //         $result = 2;
+        //     }
+        // }
 
 
         
-         if($result == 0)
-         {
-             return $this->respondNotFound('Error al eliminar la cita');
+        //  if($result == 0)
+        //  {
+        //      return $this->respondNotFound('Error al eliminar la cita');
  
-         }
-         if($result == 2)
-         {
-             return $this->respondForbidden('No se puede eliminar la cita por que ya esta iniciada');
+        //  }
+        //  if($result == 2)
+        //  {
+        //      return $this->respondForbidden('No se puede eliminar la cita por que ya esta iniciada');
  
-         }
+        //  }
 
          
          return $this->respondDeleted('Cita Eliminada Correctamente');
