@@ -67,7 +67,7 @@
 
           	addToList(invoice){
 
-          		this.facturas.push(invoice);
+          		this.facturas.unshift(invoice);
           	}//addToList
 
        	

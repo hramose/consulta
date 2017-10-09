@@ -74,7 +74,7 @@
     
                   if(response.status == 200)
                   {
-                    this.dataAllergies.push(response.data);
+                    this.dataAllergies.unshift(response.data);
                     bus.$emit('alert', 'Alergia Agregado','success');
                     
                   }

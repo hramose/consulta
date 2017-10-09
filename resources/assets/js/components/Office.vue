@@ -926,7 +926,7 @@
                       {
                       
                         if(response.data.id)
-                          this.consultorios.push(response.data);
+                          this.consultorios.unshift(response.data);
 
                         bus.$emit('alert', 'Consultorio Agregado','success');
                         this.office = {};

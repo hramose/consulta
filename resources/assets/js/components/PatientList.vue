@@ -74,7 +74,7 @@
 
           	addToList(patient){
 
-          		this.pacientes.push(patient);
+          		this.pacientes.unshift(patient);
           	}//addToList
 
        	

@@ -149,7 +149,7 @@
     
                   if(response.status == 200)
                   {
-                    this.dataResults.push(response.data);
+                    this.dataResults.unshift(response.data);
                     bus.$emit('alert', 'Resultado Agregado','success');
                    
                   }
