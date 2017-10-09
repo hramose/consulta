@@ -201,7 +201,7 @@ class PatientController extends ApiController
     
 
         $patient = $this->patientRepo->findById($id);
-        $pressures = $patient->pressures;
+        $pressures = $patient->pressures()->limit(10)-get();
 
        
      
@@ -264,7 +264,7 @@ class PatientController extends ApiController
     
 
         $patient = $this->patientRepo->findById($id);
-        $sugars = $patient->sugars;
+        $sugars = $patient->sugars()->limit(10)-get();
 
        
      
