@@ -200,13 +200,13 @@ class AppointmentController extends ApiController
      */
     public function delete($id, Request $request)
     {
-       return $request->user()->hasRole('paciente');
+       
         $appointment = $this->appointmentRepo->findById($id);
         $result = 0;
 
         if(!$appointment) return $result;
 
-        if($request->user()->hasRole('paciente')){
+       // if($request->user()->hasRole('paciente')){
 
             if( !$appointment->isStarted() && $appointment->isOwner($request->user()) )
             {
@@ -218,7 +218,7 @@ class AppointmentController extends ApiController
             }else{
                 $result = 2;
             }
-        }else{
+        /* }else{
 
             if( !$appointment->isStarted() )
             {
@@ -230,7 +230,7 @@ class AppointmentController extends ApiController
             }else{
                 $result = 2;
             }
-        }
+        }*/
 
 
         
