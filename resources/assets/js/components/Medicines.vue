@@ -83,7 +83,7 @@
     
                   if(response.status == 200)
                   {
-                    this.dataMedicines.push(response.data);
+                    this.dataMedicines.unshift(response.data);
                     bus.$emit('alert', 'Medicamento Agregado','success');
                     bus.$emit('actSummaryMedicines', this.dataMedicines);
                   }
