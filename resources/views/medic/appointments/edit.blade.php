@@ -171,7 +171,7 @@
 		    <div class="col-md-3" style="position: relative;">
 				<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Imprimir</a>
 				<a href="/medic/appointments/{{ $appointment->id }}/pdf" class="btn btn-default" style="position: absolute; right: 113px; top: 3px; z-index: 99"  target="_blank">PDF</a>
-		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" :labexams="{{ $appointment->labexams }}" :is-current="true"></summary-appointment>
+		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines()->where('medic_id', auth()->id())->get() }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" :labexams="{{ $appointment->labexams }}" :is-current="true"></summary-appointment>
 		      
 		    </div>
 		</div>
