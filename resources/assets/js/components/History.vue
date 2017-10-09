@@ -54,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="panel box box-primary">
+          <!-- <div class="panel box box-primary">
             <div class="box-header with-border">
               <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#alergias" aria-expanded="false" class="collapsed">
@@ -68,9 +68,9 @@
                  <ul id="medicines-list" class="todo-list ui-sortable" v-show="allergies.length">
        
                   <li v-for="item in allergies">
-                    <!-- todo text -->
+                    
                     <span><span class="text"> {{ item.name }}</span></span>
-                    <!-- General tools such as edit or delete-->
+                    
                     <div class="tools">
                       <span>Agregado por: {{ item.user.name }} - </span>
                       <span>{{ item.created_at }}</span>
@@ -91,7 +91,7 @@
                 
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="panel box box-danger">
             <div class="box-header with-border">
               <h4 class="box-title">

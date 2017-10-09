@@ -25,8 +25,8 @@
             <div class="box-body">
               <!-- the events -->
               @if($medic->phone)
-                 <p> Reserve su cita en la hora deseada y llame para confirmar su espacio</p>
-                  <p>Tel: <a href="tel:{{ $medic->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $medic->phone }}"></i> Llamar ({{ $medic->phone }})</a></p>
+                 <p> Reserve su cita en la hora deseada</p>
+                  
               @endif
               <div id="external-events">
                 <div class="external-event bg-primary" data-patient="{{ (auth()->user()->patients->first()) ? auth()->user()->patients->first()->id : auth()->id() }}" data-doctor="{{ $medic->id }}" data-createdby="{{ auth()->id() }}" data-office="{{ $office->id }}">Cita</div>
@@ -55,7 +55,7 @@
 
           
               <!-- Modal -->
-              <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></modal-schedule>
+              <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}" :phone="{{ $medic->phone }}"></modal-schedule>
 
                <modal-reminder></modal-reminder>
               
@@ -81,7 +81,7 @@
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/plugins/select2/select2.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/js/plugins/moment/moment.min.js"></script>
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>

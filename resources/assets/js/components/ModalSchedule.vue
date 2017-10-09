@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body" data-modaldate>
             
-            
+             <p> Si lo desea puede confirmar su cita al teléfono: <a :href="'tel:'+ phone" class="btn btn-success btn-xs"><i class="fa fa-phone" :title="phone"></i> {{ phone }}</a></p>
            <div class="box box-widget widget-user-2"  v-show="!newPatient" v-bind:data-patient="paciente.id " v-bind:data-title=" paciente.first_name ">
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-green" >
@@ -37,8 +37,7 @@
                 
                 <a href="#" @click="nuevo()" class="">Es un paciente distinto?</a>
               </div>
-              
-              
+             
              
           </div>  
           <div v-show="newPatient">
@@ -75,7 +74,7 @@
     
     export default {
 
-      props:['patient','patients'],
+      props:['patient','patients','phone'],
       
       data () {
         return {

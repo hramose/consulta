@@ -180,8 +180,8 @@
 	
 @endsection
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/locale/es.js"></script>
+<script src="/js/plugins/moment/moment.min.js"></script>
+<script src="/js/plugins/moment/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="/js/plugins/iCheck/icheck.min.js"></script>
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
@@ -250,63 +250,51 @@
 
 
     $('.btn-finish-appointment').on('click', function (e) {
+        $.ajax({
+				type: 'PUT',
+				url: '/medic/appointments/{{ $appointment->id }}/finished',
+				data: {},
+				success: function (resp) {
+					
+					console.log('cita finalizada');
+					swal({
+						title: 'Terminando Consulta!',
+						text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
+						//type: 'info',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Agendar seguimiento',
+						cancelButtonText: 'Volver a agenda',
+						//confirmButtonClass: 'btn btn-success',
+						//cancelButtonClass: 'btn btn-danger',
+						//buttonsStyling: false
+					}).then(function () {
+						
+						window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
+								
+								
+					}, function (dismiss) {
+						// dismiss can be 'cancel', 'overlay',
+						// 'close', and 'timer'
+						if (dismiss === 'cancel') {
+	
+						 window.location = '/medic/appointments';
+								
+						}else{
+							window.location = '/medic/appointments/{{ $appointment->id }}/edit';
+						}
+					})
+					
+				},
+				error: function () {
+					console.log('error finalizando citan');
+
+				}
+
+			});
+				
         
-        swal({
-            title: 'Terminando Consulta!',
-            text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
-            //type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Agendar seguimiento',
-            cancelButtonText: 'Volver a agenda',
-            //confirmButtonClass: 'btn btn-success',
-            //cancelButtonClass: 'btn btn-danger',
-            //buttonsStyling: false
-          }).then(function () {
-          	  $.ajax({
-		            type: 'PUT',
-		            url: '/medic/appointments/{{ $appointment->id }}/finished',
-		            data: {},
-		            success: function (resp) {
-		              
-		             console.log('cita finalizada');
-		             window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
-		             
-		            },
-		            error: function () {
-		              console.log('error finalizando citan');
-
-		            }
-
-		        });
-
-            
-          }, function (dismiss) {
-            // dismiss can be 'cancel', 'overlay',
-            // 'close', and 'timer'
-            if (dismiss === 'cancel') {
-
-               $.ajax({
-		            type: 'PUT',
-		            url: '/medic/appointments/{{ $appointment->id }}/finished',
-		            data: {},
-		            success: function (resp) {
-		              
-		             console.log('cita finalizada');
-		            window.location = '/medic/appointments';
-		             
-		            },
-		            error: function () {
-		              console.log('error finalizando citan');
-
-		            }
-
-		        });
-
-               
-            }
-          })
     });
   
   });

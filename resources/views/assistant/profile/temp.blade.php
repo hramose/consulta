@@ -149,7 +149,7 @@
 @section('scripts')
 <!-- <script src="https://unpkg.com/vue-select@1.3.3"></script>cv -->
 <script src="/js/plugins/select2/select2.full.min.js"></script>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/js/plugins/moment/moment.min.js"></script>
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>

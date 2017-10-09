@@ -28,10 +28,9 @@
             <div class="box-body">
               <!-- the events -->
                 @if($office->phone)
-                  <p> Reserve su cita en la hora deseada y llame para confirmar su espacio</p>
-                  <p>Tel: <a href="tel:{{ $office->phone }}" class="btn btn-success btn-xs"><i class="fa fa-phone" title="{{ $office->phone }}"></i> Llamar ({{ $office->phone }})</a></p>
-                                
-                   @endif
+                  <p> Reserve su cita en la hora deseada </p>
+                  
+                @endif
               <div id="external-medics">
                <ul class="medic-list medic-list-in-box">
                 @foreach($medics as $doctor)
@@ -132,7 +131,7 @@
 
           
               <!-- Modal -->
-              <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}"></modal-schedule>
+              <modal-schedule :patient="{{ auth()->user()->patients->first() }}" :patients="{{ auth()->user()->patients }}" :phone="{{ $office->phone ? $office->phone : $medic->phone }}"></modal-schedule>
 
                <modal-reminder></modal-reminder>
               
@@ -169,7 +168,7 @@
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/plugins/select2/select2.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/js/plugins/moment/moment.min.js"></script>
 <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>

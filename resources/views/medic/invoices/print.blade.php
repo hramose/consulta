@@ -157,29 +157,51 @@
         window.onload = printSummary;
 
      $('.btn-finish-appointment').on('click', function (e) {
-        
-        swal({
-            title: 'Terminando Consulta!',
-            text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
-            //type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Agendar seguimiento',
-            cancelButtonText: 'Volver a agenda',
-            //confirmButtonClass: 'btn btn-success',
-            //cancelButtonClass: 'btn btn-danger',
-            //buttonsStyling: false
-          }).then(function () {
-             window.location = '/medic/appointments/create?p={{ $invoice->appointment->patient->id }}';
-          }, function (dismiss) {
-            // dismiss can be 'cancel', 'overlay',
-            // 'close', and 'timer'
-            if (dismiss === 'cancel') {
+        $.ajax({
+          type: 'PUT',
+          url: '/medic/appointments/{{ $invoice->appointment->id }}/finished',
+          data: {},
+          success: function (resp) {
+            
+            console.log('cita finalizada');
+            swal({
+              title: 'Terminando Consulta!',
+              text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
+              //type: 'info',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Agendar seguimiento',
+              cancelButtonText: 'Volver a agenda',
+              //confirmButtonClass: 'btn btn-success',
+              //cancelButtonClass: 'btn btn-danger',
+              //buttonsStyling: false
+            }).then(function () {
+              
+              window.location = '/medic/appointments/create?p={{ $invoice->appointment->patient->id }}';
+                  
+                  
+            }, function (dismiss) {
+              // dismiss can be 'cancel', 'overlay',
+              // 'close', and 'timer'
+              if (dismiss === 'cancel') {
+    
+              window.location = '/medic/appointments';
+                  
+              }else{
+                window.location = '/medic/appointments/{{ $invoice->appointment->id }}/edit';
+              }
+            })
+            
+          },
+          error: function () {
+            console.log('error finalizando citan');
 
-               window.location = '/medic/appointments';
-            }
-          })
+          }
+
+        });
+				
+        
     });
  </script>
  @endsection
