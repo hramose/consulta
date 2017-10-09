@@ -36,16 +36,11 @@ class AppointmentController extends ApiController
         $user = $request->user();
 
         $appointments = Appointment::where('created_by',$user->id)->get();
+       
+        $scheduledAppointments = Appointment::where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
+         $initAppointments = Appointment::where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();
+
         
-
-        $initAppointments = $appointments->filter(function ($item, $key) {
-                return $item->status > 0;
-            });
-
-        $scheduledAppointments = $appointments->filter(function ($item, $key) {
-                return $item->status == 0;
-            });
-      
             $data = [
                 'scheduledAppointments' => $scheduledAppointments,
                 'initAppointments' => $initAppointments,
