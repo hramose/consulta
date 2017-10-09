@@ -206,7 +206,7 @@ class AppointmentController extends ApiController
 
         if(!$appointment) return $result;
 
-        //if($user->hasRole('paciente')){
+        if($user->hasRole('paciente')){
 
             if(!$appointment->isStarted() && $appointment->created_by == $user->id)//if( !$appointment->isStarted() && $appointment->isOwner($user) )
             {
@@ -219,7 +219,7 @@ class AppointmentController extends ApiController
             }else{
                 $result = 2;
             }
-        /* }else{
+         }else{
 
             if( !$appointment->isStarted() )
             {
@@ -231,7 +231,7 @@ class AppointmentController extends ApiController
             }else{
                 $result = 2;
             }
-        }*/
+        }
 
 
         
