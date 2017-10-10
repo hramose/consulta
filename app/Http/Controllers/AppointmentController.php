@@ -131,7 +131,7 @@ class AppointmentController extends Controller
         
         try {
                         
-            \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
+            \Mail::to([$appointment->patient->email,$appointment->user->email])->queue(new NewAppointment($appointment));
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
