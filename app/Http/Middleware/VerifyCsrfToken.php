@@ -25,6 +25,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/medic/invoices/*',
         '/clinic/appointments',
         '/clinic/appointments/*',
+        '/clinic/account/offices/*',
         '/appointments',
         '/appointments/*',
         '/account/avatars',
