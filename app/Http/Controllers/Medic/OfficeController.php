@@ -281,8 +281,8 @@ class OfficeController extends Controller
     {
         $search = request()->all();
         $search['active'] = 1;
-        
-        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->user(),$search['active']);
+        $search['dir'] = 'ASC';
+        $offices = $this->officeRepo->findAllByDoctorWithoutPagination(auth()->user(),$search);
 
         return $offices;
         

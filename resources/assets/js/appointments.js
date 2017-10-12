@@ -319,7 +319,7 @@ $(function () {
                 //var currColor = colors[Math.floor((Math.random()*colors.length))];//"#00a65a";
 
                 $.each(resp, function( index, item ) {
-                    
+                    console.log(index)
                     var currColor = colors[index];
                     
                     if(!currColor) currColor = '#00c0ef';
