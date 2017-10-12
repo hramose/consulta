@@ -93,7 +93,7 @@
      @foreach(auth()->user()->offices as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
-          <form method="POST" action="{{ url('/clinic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
+          <form method="POST" action="{{ url('/clinic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location" data-role="clinic">
                 {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                 <input type="hidden" name="notification" value="0">
                 <input type="hidden" name="id" value="{{ $office->id }}">

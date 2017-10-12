@@ -128,7 +128,7 @@ $(window).scroll(function () {
 $('.form-update-location').on('submit', function (e) {
    e.preventDefault();
    var form = $(this);
-
+   var role = (form.data('role')) ? form.data('role'): 'medic';
    window.navigator.geolocation.getCurrentPosition(function (geo) {
       
 
@@ -140,7 +140,7 @@ $('.form-update-location').on('submit', function (e) {
       {
         $.ajax({
               type: 'PUT',
-              url: '/medic/account/offices/'+ office_id + '/notification',
+              url: '/'+role +'/account/offices/'+ office_id + '/notification',
               data: { notification: 0, lat: lat, lon: lon },
               success: function (resp) {
                 
