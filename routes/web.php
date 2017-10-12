@@ -200,6 +200,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 	
 	Route::post('/account/avatars', 'Clinic\UserController@avatars');
 	Route::post('/account/offices', 'Clinic\UserController@updateClinic');
+	Route::put('/account/offices/{id}/notification', 'Medic\OfficeController@updateOfficeNotification');
 	//Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
 	Route::get('/specialities/list', 'Clinic\UserController@getSpecialities');
 	//Route::post('/account/patients', 'UserController@storePatient');

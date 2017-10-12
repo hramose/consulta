@@ -57,10 +57,11 @@ class OfficeController extends Controller
 
         $data = request()->all();
        
-         /*if($data['notification_date'])
-         {
-             $data['notification'] = 1;
-         }*/
+        if(isset($data['notification_date']) && $data['notification_date'] != '0000-00-00 00:00:00' && $data['notification_date'] != '')
+        {
+            $data['notification'] = 1;
+        }
+
 
          if(isset($data['id']) && $data['id']){ // update
 
@@ -85,7 +86,8 @@ class OfficeController extends Controller
          }
         
         if($data['type'] == 'Consultorio Independiente') $data['active'] = 1;
-
+        
+        
         $office = $this->officeRepo->store($data);
 
         $mimes = ['jpg','jpeg','bmp','png'];
@@ -245,7 +247,7 @@ class OfficeController extends Controller
         ]);*/
 
         $data = request()->all();
-        //$data['notification'] = 1;
+        $data['notification_date'] = '0000-00-00 00:00:00';
 
         $office = $this->officeRepo->update($id,  $data);
 

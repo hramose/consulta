@@ -108,7 +108,7 @@
         @endforeach
     
     
-     @foreach(auth()->user()->offices as $office)
+     @foreach(auth()->user()->offices()->where('type','Consultorio Independiente')->get() as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
           <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">

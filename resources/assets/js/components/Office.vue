@@ -912,6 +912,12 @@
 
 
           this.office = office;
+          
+          if(this.office.notification_date == '0000-00-00 00:00:00'){
+             this.office.notification_date = ''
+             this.office.notification_datetime = ''
+          }
+
           this.newOffice = true;
         
         
