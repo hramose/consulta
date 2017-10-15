@@ -160,6 +160,62 @@ $('.form-update-location').on('submit', function (e) {
     
 });
 
+var modalForm = $('#contact-modal')
+
+modalForm.on('shown.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var user = button.attr('data-user');
+        $('.fa-spin').hide();
+    
+        var modal = $(this);
+
+          
+            modal.find('#modal-contact-user').val(user)
+
+});
+
+
+
+modalForm.find('.modal-contact-btn-send').on('click', function (e) {
+    e.preventDefault();
+    var button = $(this);
+    var form = modalForm.find('#modal-contact-form');
+    var formData = form.serializeArray();
+    
+    formData.push({ name: '_token', value:$('meta[name="csrf-token"]').attr('content')});
+    
+    $('.fa-spin').show();
+
+    button.attr('disabled','disabled')
+    $.ajax({
+        type: 'POST',
+        url: '/support',
+        data: formData,
+        success: function (resp) {
+
+            $('.fa-spin').hide();
+            button.attr('disabled',false)
+
+            if(resp == 'ok'){
+                modalForm.find('#modal-contact-msg').val('');
+
+                alert('Mensaje Enviado');
+            }
+        },
+        error: function () {
+            
+            $('.fa-spin').hide();
+            button.attr('disabled',false)
+
+            console.log('error  reminder');
+            
+
+        }
+    });
+
+});
+
 
 
 

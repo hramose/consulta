@@ -32,7 +32,7 @@ class PatientRepository extends DbRepository{
         $patient = $this->model->create($data);
         
         $patient->createHistory();
-        $patient->createVitalSigns();
+        //$patient->createVitalSigns(); ya no se ocupa por que se hizo como un historial en citas y pacientes
         
         $patient = ($user) ? $user->patients()->save($patient) : auth()->user()->patients()->save($patient);
       

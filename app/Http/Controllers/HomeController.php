@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Repositories\AppointmentRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\User;
+use App\Mail\NewContact;
 
 class HomeController extends Controller
 {
@@ -17,6 +19,9 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
         $this->appointmentRepo = $appointmentRepo;
+        $this->administrators = User::whereHas('roles', function ($query){
+            $query->where('name',  'administrador');
+        })->get();
     }
 
     /**
@@ -52,6 +57,29 @@ class HomeController extends Controller
         return view('medic.home',compact('appointments'));
 
        
+    }
+
+    public function support(){
+
+        $dataMessage = request()->all();
+
+        $dataMessage['user'] = auth()->user(); 
+
+        try {
+            
+            \Mail::to($this->administrators)->send(new NewContact($dataMessage));
+            
+          
+
+          return 'ok';
+
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+
+       
+
     }
 
     

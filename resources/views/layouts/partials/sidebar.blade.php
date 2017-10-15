@@ -37,6 +37,8 @@
         <li><a href="{{ url('/medic/appointments')}}"><i class="fa fa-calendar"></i> <span>Consultas</span></a></li>
         <li><a href="{{ url('/medic/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
         <li><a href="{{ url('/medic/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
+        <li><a href="#" data-toggle="modal" data-target="#contact-modal" data-user="{{ auth()->user()->email }}"><i class="fa fa-phone"></i> <span>Contácto / Soporte</span></a></li>
+       
         
       </ul>
       <!-- /.sidebar-menu -->

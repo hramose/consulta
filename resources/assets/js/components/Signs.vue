@@ -7,7 +7,7 @@
           Altura 
           <div class="pull-right" :class="errors.body ? ' has-error' : ''">
             <span style="margin-right: 5px;">Mts</span>
-            <input type="text" name="height" v-model="vital_signs.height" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" />
+            <input type="text" name="height" v-model="vital_signs.height" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="1" />
              
               <form-error v-if="errors.height" :errors="errors" style="float:right;">
                   {{ errors.height[0] }}
@@ -19,7 +19,7 @@
           Peso
           <div class="pull-right">
             <span style="margin-right: 5px;">Kg</span>
-            <input type="text" v-model="vital_signs.weight" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" /> <form-error v-if="errors.weight" :errors="errors" style="float:right;">
+            <input type="text" v-model="vital_signs.weight" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="2" /> <form-error v-if="errors.weight" :errors="errors" style="float:right;">
                   {{ errors.weight[0] }}
               </form-error>
           </div>
@@ -29,7 +29,7 @@
           Masa Corporal 
           <div class="pull-right">
             <span style="margin-right: 5px;">Imc</span>
-            <input type="text" v-model="vital_signs.mass" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" /> 
+            <input type="text" v-model="vital_signs.mass" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="3" /> 
             <form-error v-if="errors.mass" :errors="errors" style="float:right;">
                   {{ errors.mass[0] }}
               </form-error>
@@ -40,7 +40,7 @@
           Temperatura 
           <div class="pull-right">
             <span style="margin-right: 5px;">C</span>
-            <input type="text" v-model="vital_signs.temp" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" /> 
+            <input type="text" v-model="vital_signs.temp" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="4" /> 
              <form-error v-if="errors.temp" :errors="errors" style="float:right;">
                   {{ errors.temp[0] }}
               </form-error>
@@ -51,7 +51,7 @@
           Frecuencia Respiratoria 
           <div class="pull-right">
             <span style="margin-right: 5px;">r/m</span> 
-            <input type="text" v-model="vital_signs.respiratory_rate" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" />
+            <input type="text" v-model="vital_signs.respiratory_rate" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="5" />
             <form-error v-if="errors.respiratory_rate" :errors="errors" style="float:right;">
                   {{ errors.respiratory_rate[0] }}
               </form-error>
@@ -63,9 +63,9 @@
           <div class="pull-right">
             <!-- <span style="margin-right: 5px;">mm/hg</span> -->
             <span style="margin-right: 5px; float:right;">P.D</span>
-            <input type="text" v-model="vital_signs.blood_pd" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.D" /> 
+            <input type="text" v-model="vital_signs.blood_pd" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.D" tabindex="7" /> 
             <span style="margin-right: 5px; float:right;">P.S</span>
-            <input type="text" v-model="vital_signs.blood_ps" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.S" /> 
+            <input type="text" v-model="vital_signs.blood_ps" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" placeholder="P.S" tabindex="6" /> 
             <form-error v-if="errors.blood" :errors="errors" style="float:right;">
                   {{ errors.blood[0] }}
               </form-error>
@@ -76,7 +76,7 @@
           Frecuencia Cardiaca 
           <div class="pull-right">
             <span style="margin-right: 5px;">l/m</span>
-            <input type="text" v-model="vital_signs.heart_rate" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" />
+            <input type="text" v-model="vital_signs.heart_rate" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="8" />
             <form-error v-if="errors.heart_rate" :errors="errors" style="float:right;">
                   {{ errors.heart_rate[0] }}
               </form-error>
@@ -146,7 +146,27 @@
             },
         500
         ),
-         
+        /* save(){
+           this.loader_message = "Guardando..."
+
+           this.$http.post('/medic/patients/'+ this.patient_id +'/appointments/'+this.appointment_id+ '/signs', this.vital_signs).then((response) => {
+                  console.log(response.status);
+                  console.log(response.data);
+                  if(response.status == 200 && response.data)
+                  {
+                    this.loader_message ="Cambios Guardados";
+                    this.loader = false;
+                    this.errors = [];
+                  }
+                 
+            }, (response) => {
+                console.log('error al guardar cambios')
+                  this.loader = false;
+                  this.loader_message ="Error al guardar cambios";
+                  this.errors = response.data;
+            });
+		        
+         }*/
          update () {
             //this.loader = true;
             this.loader_message = "Guardando..."

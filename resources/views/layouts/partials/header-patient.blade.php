@@ -12,6 +12,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url('/appointments') }}" style="font-weight:bold;">Ver Consultas Programadas</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#contact-modal" data-user="{{ auth()->user()->email }}">Soporte</a></li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -60,6 +61,7 @@
               </ul>
             </li>
           </ul>
+          
         </div>
         <!-- /.navbar-custom-menu -->
       </div>

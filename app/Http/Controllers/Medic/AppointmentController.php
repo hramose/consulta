@@ -116,7 +116,7 @@ class AppointmentController extends Controller
         $appointment =  $this->appointmentRepo->update_status($id, 1);
 
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
-        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments()->with('user','patient.medicines','diagnostics', 'diseaseNotes', 'physicalExams','treatments','labexams')->where('appointments.id','!=',$appointment->id)->where('appointments.date','<=',$appointment->date)->where('appointments.user_id',auth()->id())->orderBy('start','DESC')->limit(3)->get();
+        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments()->with('user','patient.medicines','diagnostics', 'diseaseNotes', 'physicalExams','treatments','labexams')->where('appointments.id','!=',$appointment->id)->where('appointments.date','<=',$appointment->date)->orderBy('start','DESC')->limit(3)->get();
         
         $files = $this->patientRepo->findById($appointment->patient->id)->archivos()->where('appointment_id',$id)->get(); //Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
        

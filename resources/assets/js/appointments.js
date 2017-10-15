@@ -768,6 +768,42 @@ $(function () {
                     
                     }); //ajax appoitnments
 
+                    $.ajax({
+                      type: 'GET',
+                      url: '/medic/schedules/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                      data: {},
+                      success: function (resp) {
+                         
+
+                          var schedulesForAppointmentPage = [];
+                          var ulSchedule = $('.schedule-list');
+                          var currentWeek = $('#currentWeek');
+                          currentWeek.html('<b>'+ view.start.format() +' | '+ view.end.format()+'</b>');
+
+                          ulSchedule.html('');
+                          $.each(resp, function( index, item ) {
+                             
+                              item.allDay = parseInt(item.allDay); // = false;
+                              
+                              /*if(item.patient_id == 0) item.rendering = 'background';*/
+                          
+                              //schedulesForAppointmentPage.push(item);
+                              var liSchedule = '<li><span class="label label-warning">'+ moment(item.date).format('dddd') +' '+ moment(item.start).format('HH:mm') + '-' + moment(item.end).format('HH:mm') +'</span> '+ item.office.name+'</li>';
+
+                              ulSchedule.append(liSchedule)
+
+                          });
+
+                         
+                        console.log(schedulesForAppointmentPage)
+
+                      },
+                      error: function (resp) {
+                          console.log('Error - '+ resp);
+
+                      }
+                  }); //ajax schedules
+
               } //else
 
 
@@ -1161,7 +1197,7 @@ $(function () {
 
 
     searchOffices.select2({
-            placeholder: "Buscar Consultorios o selecciona no disponible",
+            placeholder: "Buscar Consultorios o Clínicas privadas",
            
             ajax: {
               url: "/medic/account/offices/list",

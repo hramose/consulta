@@ -19,7 +19,6 @@
         <div class="col-md-4">
 			
           @include('medic/patients/partials/photo', ['patient' => $patient])
-          @include('medic/patients/partials/signs', ['patient' => $patient])
 		  @include('medic/patients/partials/files', ['files' => $files])
 		 
           

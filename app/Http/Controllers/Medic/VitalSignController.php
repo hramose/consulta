@@ -13,6 +13,28 @@ class VitalSignController extends Controller
     	 $this->middleware('auth');
     	
     }
+    public function store($patient_id, $appointment_id)
+    {
+       
+        $this->validate(request(), [
+            'height' => 'numeric',
+            'weight' => 'numeric',
+            'mass' => 'numeric',
+            'temp' => 'numeric',
+            'respiratory_rate' => 'numeric',
+            'blood' => 'numeric',
+            'heart_rate' => 'numeric'
+           
+        ]);
+        $data = request()->all();
+        $data['patient_id'] = $patient_id;
+        $data['appointment_id'] = $appointment_id;
+
+        $vitalSigns = VitalSign::create($data);
+
+        
+       return '';
+    }
     public function update($id)
     {
        

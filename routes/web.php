@@ -15,6 +15,7 @@ use Edujugon\PushNotification\PushNotification;
 Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
+Route::post('/support', 'HomeController@support');
 Route::get('/push', function(Request $request){
 	$push = new PushNotification('fcm');
 	$userToPush = ['fxpcUYLVUhQ:APA91bG6y1xhaKtdaoHf1MuBlMTWS_EG5EIttv_P1_XesMv0HfuJ_DgFRvorSfUhiSfYjGcFZsc1gGgWDyh5R0BNZxy78JRBYYf6P9Zh62z0RxXl1C9e4s5ODGmbhMWxHpdpNTwsgvYB'];
@@ -163,6 +164,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
 	Route::get('/invoices/{id}/print', 'Medic\InvoiceController@print');
 	Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
+
 
 	Route::resource('invoices', 'Medic\InvoiceController');
 

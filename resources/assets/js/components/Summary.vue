@@ -38,7 +38,7 @@
         <div v-show="summary.exams.pulmonar"><strong>Pulmonar o Respiratorio: </strong>{{ summary.exams.pulmonar }}</div>
         
       </dd>
-      <dt class="text-aqua"><h4>Examen Laboratorio</h4></dt>
+      <dt class="text-aqua"><h4>Pruebas Diagnósticas</h4></dt>
       <dd>
          <div v-for="item in summary.labexams"><span>{{ item.name }}</span></div>
         

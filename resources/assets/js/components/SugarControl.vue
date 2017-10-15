@@ -61,7 +61,7 @@
        
         <li v-for="item in dataSugars">
           <!-- todo text -->
-          <span><span class="text"> Glicemia: {{ item.glicemia }} - {{ item.date_control }} {{ item.time_control }}</span></span>
+          <span> Glicemia: <span class="text">{{ item.glicemia }}</span> <span class="date pull-right"> {{ item.date_control }} {{ item.time_control }}</span></span>
           <!-- General tools such as edit or delete-->
           <div class="tools">
             

@@ -16,7 +16,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="symptoms" cols="30" rows="4" class="form-control" v-model="disease_notes.symptoms" @keydown="keydown()" :readonly="read"></textarea>
+                <textarea name="symptoms" cols="30" rows="4" class="form-control" v-model="disease_notes.symptoms" @keydown="keydown()" :readonly="read" tabindex="9"></textarea>
             </div>
             <!-- /.box-body -->
            <!--  <div class="overlay" v-show="loader">
@@ -29,7 +29,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <textarea name="phisical_review" cols="30" rows="4" class="form-control" v-model="disease_notes.phisical_review" @keydown="keydown()" :readonly="read"></textarea>
+                <textarea name="phisical_review" cols="30" rows="4" class="form-control" v-model="disease_notes.phisical_review" @keydown="keydown()" :readonly="read" tabindex="10"></textarea>
             </div>
             <!-- /.box-body -->
            <!--  <div class="overlay" v-show="loader">

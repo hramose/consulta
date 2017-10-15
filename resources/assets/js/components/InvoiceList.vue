@@ -26,6 +26,7 @@
                     <td>
                        
                           <span class="label label-success" v-if="item.status == 1">Facturada</span>
+                          <span class="label label-warning" v-else>Enviada a secretaria</span>
                         
                     </td>
                   

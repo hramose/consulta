@@ -812,7 +812,9 @@ td.fc-day.fc-past{
       }
 
 
-
-
+.nav-tabs-custom>.nav-tabs>li.active:hover>a, .nav-tabs-custom>.nav-tabs>li.active>a{
+	background-color: rgba(#3C8CBB,.45) !important;
+	color:white !important;
+}
 /**** AdminLTE.css *****/
 @import "AdminLTE";

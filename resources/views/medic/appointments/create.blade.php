@@ -181,6 +181,25 @@
 
           @endif
           @if(!$wizard)
+          <div class="box box-solid box-horario-appointment">
+            <div class="box-header with-border">
+              <h3 class="box-title">Horario del:</h3> <small id="currentWeek">Actual</small>
+             
+            </div>
+            <div class="box-body">
+                <ul class="schedule-list">
+                @foreach(auth()->user()->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->orderBy('date','ASC')->get() as $schedule)
+                  @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) <= Carbon\Carbon::now()->endOfWeek())
+                      <li><span class="label label-warning">  {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }} {{ $schedule->office->name }} </span></li>
+                    @endif
+                @endforeach
+
+                </ul>      
+            </div>
+          </div>
+       
+            
+           
           <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
               <h3 class="box-title">Crear Cita</h3>

@@ -64,6 +64,19 @@ class Appointment extends Model
     {
         return $this->belongsTo(Schedule::class);
     }*/
+    public function vitalSigns()
+    {
+        return $this->hasOne(VitalSign::class);
+    }
+     public function createVitalSigns($patient_id, $vitalSigns = null)
+    {
+        
+        $vitalSigns = ($vitalSigns) ? $vitalSigns : new VitalSign();
+        $vitalSigns->patient_id = $patient_id;
+        $vitalSigns->save();
+
+        return $this->vitalSigns()->save($vitalSigns);
+    }
      public function diseaseNotes()
     {
         return $this->hasOne(DiseaseNote::class);

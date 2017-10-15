@@ -7,3 +7,5 @@
     <!-- Default to the left -->
     <strong>Copyright &copy; 2017 <a href="#">{{ config('app.name', 'Laravel') }}</a>.</strong> All rights reserved.
   </footer>
+
+  @include('layouts/partials/contact-modal')

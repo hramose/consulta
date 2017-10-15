@@ -17,6 +17,8 @@ class CreateVitalSignsTable extends Migration
             $table->increments('id');
             $table->integer('patient_id')->unsigned()->index();
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->integer('appointment_id')->unsigned()->index();
+            $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');
             $table->double('height')->default(0);
             $table->double('weight')->default(0);
             $table->double('mass')->default(0);

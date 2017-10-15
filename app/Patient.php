@@ -82,7 +82,7 @@ class Patient extends Model
     }
     public function vitalSigns()
     {
-        return $this->hasOne(VitalSign::class);
+        return $this->hasMany(VitalSign::class);
     }
      public function createHistory($history = null)
     {
@@ -93,13 +93,13 @@ class Patient extends Model
 
         return $this->history()->save($history);
     }
-     public function createVitalSigns($vitalSigns = null)
+    /* public function createVitalSigns($vitalSigns = null)
     {
         
         $vitalSigns = ($vitalSigns) ? $vitalSigns : new VitalSign();
 
         return $this->vitalSigns()->save($vitalSigns);
-    }
+    }*/
     public function isPatientOf($user)
     {
         if (is_string($user) || is_numeric($user)) {

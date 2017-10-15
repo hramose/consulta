@@ -29,7 +29,7 @@
 		              <li class="active"><a href="#history" data-toggle="tab">Historial</a></li>
 		              <li ><a href="#notes" data-toggle="tab">Notas de padecimiento</a></li>
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
-					   <li><a href="#labexam" data-toggle="tab">Examen Laboratorio</a></li>
+					   <li><a href="#labexam" data-toggle="tab">Pruebas Diagnósticas</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
 		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
 		                
@@ -78,7 +78,7 @@
 															<div class="box-body">
 															
 																
-															<signs :signs="{{ $appointment->patient->vitalSigns }}"></signs>
+															<signs :signs="{{ $appointment->vitalSigns }}"></signs>
 																
 																	
 															</div>

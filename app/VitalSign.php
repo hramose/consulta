@@ -14,4 +14,8 @@ class VitalSign extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
+    }
 }

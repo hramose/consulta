@@ -121,6 +121,7 @@
         @endif 
      @endforeach
     @yield('content')
+    
   </div>
   <!-- /.content-wrapper -->
 

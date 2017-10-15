@@ -3,7 +3,7 @@
 <div class="box box-danger " >
 
           <div class="box-header with-border">
-            <h3 class="box-title">Examenes de Laboratorio</h3>
+            <h3 class="box-title">Laboratorios y pruebas complementarias</h3>
 
             <!-- /.box-tools -->
           </div>
