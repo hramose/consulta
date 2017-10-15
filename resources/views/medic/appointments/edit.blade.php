@@ -77,9 +77,9 @@
 															<!-- /.box-header -->
 															<div class="box-body">
 															
-																
+															@if($appointment->vitalSigns)	
 															<signs :signs="{{ $appointment->vitalSigns }}"></signs>
-																
+															@endif
 																	
 															</div>
 															<!-- /.box-body -->
