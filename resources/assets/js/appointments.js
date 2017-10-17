@@ -60,6 +60,11 @@ $(function () {
 
     $(".dropdown-toggle").dropdown();
 
+    function dayNumber(date){
+      
+       return $.fullCalendar.moment(date).day();
+   }
+
     if(slotDurationSchedule)
     {
           var stepping = moment.duration(slotDurationSchedule).asMinutes(); //(slotDurationSchedule.split(':')[1] == "00" ? slotDurationSchedule.split(':')[0] : slotDurationSchedule.split(':')[1]);
@@ -191,7 +196,7 @@ $(function () {
         var array = calendar.fullCalendar('clientEvents');
          
           for(i in array){
-              if(event.idRemove != array[i]._id)
+              if(event.idRemove != array[i]._id && !array[i].rendering)
               {
                 if (event.end > array[i].start._i && event.start < array[i].end._i){
                    return true;
@@ -544,12 +549,16 @@ $(function () {
             
 
             //element.append( "<span class='closeon fa fa-trash'></span>" );
-            element.append( "<span class='appointment-details' ></span>" );
+            var office_id = (event.office) ? event.office.id : '';
+            var office_name = (event.office) ? event.office.name : '';
+
+            element.append( '<span class="appointment-details" data-office="'+ office_id +'" data-officename="'+ office_name +'"></span>');
 
           
             if (event.rendering == 'background') {
-                element.append('<span class="title-bg-event">'+ event.title + '</span>');
-                
+                element.append('<span class="title-bg-event" data-title="'+ event.title + '">'+ event.title + '</span>');
+              
+               
             }
 
 
@@ -597,7 +606,7 @@ $(function () {
 
               });
             
-            }else{
+            }else if(!event.schedule){
         
                 var officeInfoDisplay = '';
                 var titleAlert = event.title;
@@ -651,7 +660,7 @@ $(function () {
         },
       
         dayClick: function(date, jsEvent, view) {
-
+          
               
               if (view.name === "month") {
                   
@@ -676,11 +685,11 @@ $(function () {
                   return false;
               }
 
-             
+            
                if($(jsEvent.target).parent('div').hasClass("fc-bgevent")) { //para prevenir que en eventos de fondo se agregue citas
                   
 
-                  return false;
+                 // return false;
               }
 
 
@@ -692,11 +701,15 @@ $(function () {
                 setupSchedule.modal({backdrop:'static', show:true });
 
               }else{
-
+               
                 modalForm.modal({backdrop:'static', show:true });
                 modalForm.find('#modal-new-event').attr('data-modaldate', date.format());
                 modalForm.find('.modal-body').attr('data-modaldate', date.format());
                 modalForm.find('.modal-body').attr('data-date', date.format("dddd, MMMM Do YYYY")).attr('data-hour', date.format("hh:mm a" ));
+                modalForm.find('.modal-body').attr('data-office', $(jsEvent.target).data('office'));
+                modalForm.find('.modal-body').attr('data-officename', $(jsEvent.target).data('officename'));
+             
+
                 }
 
               
@@ -781,19 +794,46 @@ $(function () {
                           currentWeek.html('<b>'+ view.start.format() +' | '+ view.end.format()+'</b>');
 
                           ulSchedule.html('');
+                          var bh = [];
                           $.each(resp, function( index, item ) {
                              
                               item.allDay = parseInt(item.allDay); // = false;
                               
-                              /*if(item.patient_id == 0) item.rendering = 'background';*/
-                          
-                              //schedulesForAppointmentPage.push(item);
+                              item.rendering = 'background';
+                              item.schedule = 1;
+                              schedulesForAppointmentPage.push(item);
                               var liSchedule = '<li><span class="label label-warning">'+ moment(item.date).format('dddd') +' '+ moment(item.start).format('HH:mm') + '-' + moment(item.end).format('HH:mm') +'</span> '+ item.office.name+'</li>';
 
                               ulSchedule.append(liSchedule)
 
+                              var working_hours = {
+                                // days of week. an array of zero-based day of week integers (0=Sunday)
+                                dow: [dayNumber(item.date)], // Monday - Thursday
+        
+                                start: item.start,//.split('T')[1], // a start time (10am in this example)
+                                end: item.end//.split('T')[1], // an end time (6pm in this example)
+                                
+                               }
+        
+                               bh.push(working_hours);
+
                           });
 
+                         
+                          for (var i = bh.length - 1; i >= 0; i--) {
+                            
+                              if(moment(bh[i].start).isBetween(view.start, view.end))
+                              {
+                                bh[i].start = bh[i].start.split('T')[1];
+                                bh[i].end = bh[i].end.split('T')[1];
+                              }
+        
+                            }
+                            
+                            
+                            calendar.fullCalendar('option', 'businessHours', bh);
+                            calendar.fullCalendar('addEventSource',schedulesForAppointmentPage);
+                         
                          
                         console.log(schedulesForAppointmentPage)
 
@@ -803,6 +843,7 @@ $(function () {
 
                       }
                   }); //ajax schedules
+                  
 
               } //else
 
@@ -979,7 +1020,7 @@ $(function () {
         allDay: 0
         
       };
-     
+    
       if(isOverlapping(appointment)){
         appointment.allDay = 1;
       }
@@ -1089,22 +1130,27 @@ $(function () {
      
       var date = $(this).find('.modal-body').attr('data-date') 
       var hour = $(this).find('.modal-body').attr('data-hour')
+      var officename = $(this).find('.modal-body').attr('data-officename')
      
   
       var modal = $(this)
-      modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span>' )
+      modal.find('.modal-title').html('Crear cita para el  <span class="label bg-yellow">' + date + '</span> a las <span class="label bg-yellow">'+ hour + '</span> en <span class="label bg-yellow">'+ officename + '</span>' )
    
     });
 
     function createEventFromModal()
     {
+      
       var val = modalForm.find("#modal-new-event").val();
       var valSelect = modalForm.find(".modal-body").find('.widget-user-2').attr('data-patient');//val();
       var valName = modalForm.find(".modal-body").find('.widget-user-2').attr('data-title');
       var office_id = modalForm.find(".modal-body").find('.widget-user-2').attr('data-office');
       var date = $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate'));
       var end = (modalForm.find('#modal-new-event').attr('data-modaldate-end')) ? $.fullCalendar.moment(modalForm.find('#modal-new-event').attr('data-modaldate-end')) : '';
-     
+      if(!office_id)
+      {
+        office_id = modalForm.find(".modal-body").attr('data-office');
+      }
       if (valSelect.length == 0 || !office_id) {
         return;
       }

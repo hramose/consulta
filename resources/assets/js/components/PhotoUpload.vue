@@ -119,6 +119,10 @@
               
                 if(typeFile == 'data:application/pdf;base64')
                   image = '/img/pdf.jpg'
+                if(typeFile == 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' || typeFile == 'data:application/vnd.ms-excel;base64')
+                  image = '/img/excel.jpg'
+                if(typeFile == 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64' || typeFile == 'data:application/msword;base64')
+                  image = '/img/word.jpg'
 
                 return `url('${image}')`;
             }

@@ -110,11 +110,13 @@ class PatientController extends Controller
         //$appointments = $this->appointmentRepo->findAllByPatient($id);
 
         $search['status'] = 1;
+        $search['order'] = 'start';
         $initAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
         
         $search['status'] = 0;
         $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
 
+        $summaryAppointments = $initAppointments->take(3);
 
         // $initAppointments = $appointments->filter(function ($item, $key) {
         //         return $item->status > 0;
@@ -130,7 +132,7 @@ class PatientController extends Controller
 
         $files =  $patient->archivos; //Storage::disk('public')->files("patients/". $id ."/files");
         
-        return view('medic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments'));
+        return view('medic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments','tab','appointments','summaryAppointments'));
 
     }
 
@@ -421,13 +423,13 @@ class PatientController extends Controller
      {
         $this->validate(request(),[
                 'date' => 'required',
-                'file' => 'required|mimes:jpeg,bmp,png,pdf',
+                'file' => 'required|mimes:jpeg,bmp,png,pdf,xls,xlsx,doc,docx',
                 
         ]);
         $data = request()->all();
         $data['patient_id'] = $id;
 
-        $mimes = ['jpg','jpeg','bmp','png','pdf'];
+        $mimes = ['jpg','jpeg','bmp','png','pdf','xls','xlsx','doc','docx'];
         $fileUploaded = "error";
 
         

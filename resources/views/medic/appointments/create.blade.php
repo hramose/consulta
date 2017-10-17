@@ -200,7 +200,7 @@
        
             
            
-          <div class="box box-solid box-create-appointment">
+          <!-- <div class="box box-solid box-create-appointment">
             <div class="box-header with-border">
               <h3 class="box-title">Crear Cita</h3>
             </div>
@@ -213,17 +213,15 @@
             
         
             </div>
-          </div>
-       
+          </div> -->
+          @if($wizard)
           <div class="box box-solid box-citas">
             <div class="box-header with-border">
               <h4 class="box-title">Citas </h4>
-              @if($wizard)
+              
                <div><small>(Arrastra los elementos coloreados hacia la hora deseada para programar tu agenda y expande hasta el fin de la jornada o has click sobre la hora para crear una cita)</small></div>
-              @else
-              <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div>
 
-              @endif
+             <!-- <div><small>(Arrastra los elementos en la hora deseada dentro del calendario o haz click en una hora del calendario para crear una cita personalizada)</small></div> -->
             </div>
             <div class="box-body">
               <!-- the events -->
@@ -233,6 +231,7 @@
             </div>
             <!-- /.box-body -->
           </div>
+          @endif
         @endif
         @if($wizard)
           <div class="box box-solid box-offices">
@@ -350,7 +349,7 @@
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="box box-default box-calendar">
+          <div class="box box-default box-calendar medico-calendar">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
 

@@ -44,6 +44,17 @@
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='history') ? 'active' : '' : '' }} tab-pane" id="history">
+
+						<div class="row">
+						  @foreach($summaryAppointments as $lastAppointment)
+							<div class="col-md-4">
+
+							<summary-appointment history="" :medicines="{{ $lastAppointment->patient->medicines }}" :notes="{{ $lastAppointment->diseaseNotes }}" :exams="{{ $lastAppointment->physicalExams }}" :diagnostics="{{ $lastAppointment->diagnostics }}" :treatments="{{ $lastAppointment->treatments }}" instructions="{{ $lastAppointment->medical_instructions }}" :labexams="{{ $lastAppointment->labexams }}">
+									Historia Clinica {{ $lastAppointment->id }} - {{ \Carbon\Carbon::parse($lastAppointment->start)->format('Y-m-d H:i') }}						</summary-appointment>
+												 
+		                	</div>
+		                  @endforeach
+		                 </div> 
 					    <history :history="{{ $patient->history }}" :appointments="{{ $appointments }}"></history>	
 				    </div>
 				    <!-- /.tab-pane -->

@@ -7,13 +7,13 @@
         
           <h4 class="modal-title" id="myModalLabel">Crear cita</h4>
         </div>
-        <div class="modal-body" data-modaldate data-modaldate-end>
+        <div class="modal-body" data-modaldate data-modaldate-end data-office data-officename>
             
             <div class="box box-widget widget-user-2"  v-show="!newPatient" v-bind:data-patient="(paciente) ? paciente.id : '' " v-bind:data-title=" (paciente) ? paciente.first_name : '' " v-bind:data-office="(office) ? office.id : '' ">
                <patient-search :patient="paciente"></patient-search>
-               <div class="form-group">
+               <!-- <div class="form-group">
                   <v-select :debounce="250" :on-search="getOffices"  :options="offices" placeholder="Selecciona el consultorio para la cita..." label="name" :on-change="selectOffice" :value.sync="office"></v-select>
-               </div>
+               </div> -->
                <div class="form-group">
                   <input id="modal-new-event" type="text" class="form-control" placeholder="Motivo de la cita" data-modaldate data-modaldate-end>
               </div>
