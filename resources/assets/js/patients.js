@@ -332,5 +332,88 @@ $(function () {
 
 
 
+    initCalendar([]);
+    
+        function initCalendar(appointments)
+        {
+           var calendar = $('#calendar');
+           
+          calendar.fullCalendar({
+              locale: 'es',
+              defaultView: 'month',
+              timeFormat: 'h(:mm)a',
+              header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month'
+              },
+              events: appointments,
+              nowIndicator: true,
+              timezone: 'local',
+              allDaySlot: false,
+             
+            
+          
+            dayClick: function(date, jsEvent, view) {
+              
+                  
+                  if (view.name === "month") {
+                      
+                      //calendar.fullCalendar('gotoDate', date);
+                      //calendar.fullCalendar('changeView', 'agendaWeek');
+                      dateFrom = date;
+                      dateTo = dateFrom;
+                      $.ajax({
+                        type: 'GET',
+                        url: '/medic/schedules/list?date1='+dateFrom.format()+'&date2='+ dateTo.format(),
+                        data: {},
+                        success: function (resp) {
+                           
+  
+                            var schedulesForAppointmentPage = [];
+                           
+                            $.each(resp, function( index, item ) {
+                               
+                                item.allDay = parseInt(item.allDay); // = false;
+                                
+                                item.schedule = 1;
+                                schedulesForAppointmentPage.push(item);
+                               
+  
+                            });
+  
+                           
+                    
+                    
+                           
+                           
+                          console.log(schedulesForAppointmentPage)
+  
+                        },
+                        error: function (resp) {
+                            console.log('Error - '+ resp);
+  
+                        }
+                    }); //ajax schedules
+    
+                      return false;
+                  }
+    
+                 
+                  
+               
+              }
+              
+    
+    
+    
+             
+            
+          });
+    
+        } // init calendar
+
+
+
 
 });

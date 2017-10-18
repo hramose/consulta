@@ -29,7 +29,13 @@
                 </div>
                 </div>
                 <div class="row">
-                 <div class="col-xs-12 col-sm-4">
+                  <div class="col-xs-12 col-sm-7 calendar-popup" >
+                    <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}" data-schedule="0"></div>
+                  </div>
+                  <div class="col-xs-12 col-sm-5">
+                      Horario Disponible
+                  </div>
+                 <!-- <div class="col-xs-12 col-sm-4">
                     <div class="form-group">
                       <label>Fecha:</label>
                       <div class="input-group date col-sm-10">
@@ -66,7 +72,7 @@
                             </div>
                           </div>
                       </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="form-group">
                   

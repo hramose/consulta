@@ -3,6 +3,8 @@
 @section('css')
  <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
 <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+<link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
+  <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.print.css" media="print">
 @endsection
 @section('content')
      <div id="infoBox" class="alert"></div>
@@ -125,6 +127,9 @@
   <script src="/js/plugins/moment/moment.min.js"></script>
   <script src="/js/plugins/moment/locale/es.js"></script>
   <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-  <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script> 
+  <script src="/js/plugins/fullcalendar/jquery-ui.min.js"></script>
+  <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+  <script src="/js/plugins/fullcalendar/locale/es.js"></script> 
   <script src="{{ elixir('/js/patients.min.js') }}"></script>
+
 @endsection
