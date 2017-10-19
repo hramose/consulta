@@ -72,7 +72,7 @@
        
         <li v-for="item in dataPressures">
           <!-- todo text -->
-          <span> P.S: <span class="text">{{ item.ps }} / P.D: {{ item.pd }}</span> <span class="date pull-right"> {{ item.date_control }} {{ item.time_control }}</span></span>
+          <span> P.S: <span class="text">{{ item.ps }}</span> / P.D: <span class="text">{{ item.pd }}</span> <span class="date pull-right"> {{ item.date_control }} {{ item.time_control }}</span></span>
           <!-- General tools such as edit or delete-->
           <div class="tools">
             

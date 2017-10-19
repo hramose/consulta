@@ -255,6 +255,19 @@ $(function () {
 
              return false;
         }
+        var currentDate = new Date();
+
+        if(moment(date).isBefore(currentDate)) {
+          
+          
+          $('#infoBox').addClass('alert-danger').html('Hora no permitida!. No puedes selecionar horas pasadas o fuera del horario de atención').show();
+              setTimeout(function()
+                { 
+                  $('#infoBox').removeClass('alert-danger').html('').hide();
+                },3000);
+
+          return false;
+      }
 
       
 
@@ -386,7 +399,7 @@ $(function () {
                        schedule = event;
                     
                         var intervals = createIntervalsFromHours(moment(schedule.start).format("YYYY-MM-DD"), moment(schedule.start).format("HH:mm"), moment(schedule.end).format("HH:mm"), eventDurationNumber);
-            
+                       
                         
                         var events = [];
                         var title = 'Disponible';
@@ -423,10 +436,11 @@ $(function () {
 
                            
                         
-
-                            ulSchedules.append('<option value="'+ schedule.office_id +'" data-date="'+ moment(schedule.start).format("YYYY-MM-DD")+'" data-office="'+ schedule.office_id +'" data-start="'+ startEvent +'" data-end="'+ endEvent +'"> '+startTime + ' - '+ endTime +'</option>');
+                            if(!reserved)
+                              ulSchedules.append('<option value="'+ schedule.office_id +'" data-date="'+ moment(schedule.start).format("YYYY-MM-DD")+'" data-office="'+ schedule.office_id +'" data-start="'+ startEvent +'" data-end="'+ endEvent +'"> '+startTime + ' - '+ endTime +'</option>');
             
                         }
+
                         ulSchedules.prepend('<option value="" selected><span style="color:red;">--</span></option>');
 
                        /* if(!ulSchedules.children('div.form-group').length)
