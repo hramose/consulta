@@ -112,7 +112,7 @@
 	      
         methods: {
             formatDate(date){
-               return moment(date).format("YYYY-MM-DD HH:MM");
+               return moment(date).format("YYYY-MM-DD HH:mm");
            },
             total(){
                 return this.citas.length;
