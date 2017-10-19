@@ -5,7 +5,20 @@
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.print.css" media="print">
   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+  <link rel="stylesheet" href="/js/plugins/tooltipster.bundle.min.css"> 
+  <style>
+    .tooltipster-sidetip.tooltipster-noir.tooltipster-gps .tooltipster-box {
+      background: #605ca8;
+      border: 3px solid #605ca8;
+      border-radius: 6px;
+      box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
+    }
 
+    .tooltipster-sidetip.tooltipster-noir.tooltipster-gps .tooltipster-content {
+      color: white;
+      padding: 8px;
+    }
+  </style>
 @endsection
 @section('content')
     
@@ -182,19 +195,14 @@
           @endif
           @if(!$wizard)
           <div class="box box-solid box-horario-appointment">
-            <div class="box-header with-border">
-              <h3 class="box-title">Horario del:</h3> <small id="currentWeek">Actual</small>
+            <div class="box-header with-border bg-green">
+             <h3 class="box-title">Horarios Programados</h3>  <!-- <small id="currentWeek">Actual</small> -->
              
             </div>
             <div class="box-body">
-                <ul class="schedule-list">
-                @foreach(auth()->user()->schedules()->whereDate('date','>=',Carbon\Carbon::now()->toDateString())->limit(7)->orderBy('date','ASC')->get() as $schedule)
-                  @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) >= Carbon\Carbon::now()->startOfWeek() && Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date) <= Carbon\Carbon::now()->endOfWeek())
-                      <li><span class="label label-warning">  {{ dayName(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $schedule->date)->dayOfWeek) }} {{ Carbon\Carbon::parse($schedule->start)->toTimeString() }}  - {{ Carbon\Carbon::parse($schedule->end)->toTimeString() }} {{ $schedule->office->name }} </span></li>
-                    @endif
-                @endforeach
-
-                </ul>      
+             
+              <div id="miniCalendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}"></div>
+                 
             </div>
           </div>
        
@@ -386,7 +394,27 @@
 <script src="/js/plugins/jquery.ui.touch-punch.min.js"></script>
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
-
+ <script src="/js/plugins/tooltipster.bundle.min.js"></script> 
 <script src="{{ elixir('/js/appointments.min.js') }}"></script>
+<script>
+  /*$('body').tooltip({
+    selector: '[data-toggle="tooltip"]',
+    html:true
+});*/
+//$('body').find('.tooltip').tooltipster({ theme: 'tooltipster-noir'});
+$('body').on('mouseenter', '.tooltip:not(.tooltipstered)', function(){
+    $(this)
+        .tooltipster({
+          theme: ['tooltipster-noir','tooltipster-gps']
+        })
+        .tooltipster('open');
+});
+  //$('[data-toggle="tooltip"]').tooltip(); 
+  // var referenceElement = $('.appointment-details');
+  // var onPopper = $('.appointment-details');
+  // var popper = new Popper(referenceElement, onPopper, {
+  //   placement: 'top'
+  // });
+</script>
 
 @endsection

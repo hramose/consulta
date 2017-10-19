@@ -1,5 +1,6 @@
 $(function () {
-
+      var miniCalendar = $('#miniCalendar');
+      var ulSchedules = $('#schedule-list');
       var isMobile = {
         Android: function() {
             return navigator.userAgent.match(/Android/i);
@@ -79,15 +80,15 @@ $(function () {
           $(this).find('.modal-body').find('#patient-name').text(patient);
           $(this).find('.modal-body').attr('data-modalpatient',patient_id);
           
-        
+          miniCalendar.fullCalendar('render');
      
        
       });
 
       /** load events from db **/
       var appointmentsFromCalendar = [];
-      fetch_events();
-      function fetch_events() {
+      //fetch_events();
+     /* function fetch_events() {
 
         $.ajax({
             type: 'GET',
@@ -116,7 +117,7 @@ $(function () {
         });
 
 
-    }
+    }*/
 
       function isOverlapping(event) {
      
@@ -210,13 +211,13 @@ $(function () {
         
         var modal = $("#initAppointment");
         var patient_id = modal.find('.modal-body').attr('data-modalpatient');
-        var office_id = modal.find('#search-offices').val();
+        var office_id = modal.find('input[name="office_id"]').val();//modal.find('#search-offices').val();
         var date = modal.find('input[name="date"]').val();
-        var ini = modal.find('input[name="start"]').val();
-        var fin = modal.find('input[name="end"]').val();
+        var start = modal.find('input[name="start"]').val();
+        var end = modal.find('input[name="end"]').val();
        
-        var start = date + 'T'+ ini + ':00';
-        var end = date + 'T'+ ((fin) ? fin : ini) + ':00';
+        //var start = date + 'T'+ ini + ':00';
+       // var end = date + 'T'+ ((fin) ? fin : ini) + ':00';
       
        if(!office_id)
        {
@@ -224,7 +225,7 @@ $(function () {
          $("#initAppointment").find('#search-offices').select2('focus');
          $("#initAppointment").find('#search-offices').select2('open');
 
-         $('#infoBox').addClass('alert-danger').html('Escribe un consultorio. Por favor revisar!!!').show();
+         $('#infoBox').addClass('alert-danger').html('Selecciona un consultorio dentro del calendario. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
                           $('#infoBox').removeClass('alert-danger').hide();
@@ -233,7 +234,7 @@ $(function () {
           return false;
        }
 
-        if(!date || !ini )
+        if(!date || !start )
         {
           $('#infoBox').addClass('alert-danger').html('Fecha invalida. Por favor revisar!!!').show();
                         setTimeout(function()
@@ -301,9 +302,9 @@ $(function () {
                           $('#infoBox').removeClass('alert-success').hide();
                             modal.find('#patient-name').text('');
                             modal.find('.modal-body').attr('data-modalpatient', '');
-                            modal.find('#datetimepicker1').data("DateTimePicker").clear();
-                            modal.find('#datetimepicker2').data("DateTimePicker").clear();
-                            modal.find('#datetimepicker3').data("DateTimePicker").clear();
+                            //modal.find('#datetimepicker1').data("DateTimePicker").clear();
+                           // modal.find('#datetimepicker2').data("DateTimePicker").clear();
+                           // modal.find('#datetimepicker3').data("DateTimePicker").clear();
 
                             modal.modal('hide');
                             $("#initAppointment").find('.add-cita').removeAttr('disabled');
@@ -330,90 +331,268 @@ $(function () {
 
     });
 
-
-
-    initCalendar([]);
     
-        function initCalendar(appointments)
-        {
-           var calendar = $('#calendar');
-           
-          calendar.fullCalendar({
-              locale: 'es',
-              defaultView: 'month',
-              timeFormat: 'h(:mm)a',
-              header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month'
-              },
-              events: appointments,
-              nowIndicator: true,
-              timezone: 'local',
-              allDaySlot: false,
-             
+    initMiniCalendar([]);
+    function initMiniCalendar(appointments)
+    {
+
+    
+      miniCalendar.fullCalendar({
+          locale: 'es',
+          defaultView: 'month',
+          timeFormat: 'h(:mm)a',
+          header: {
+            left: 'prev,next ',
+            center: 'title',
+            right: ''
+          },
+          //Random default events
+          events: appointments,
+          timezone: 'local',
+          allDaySlot: false,
+        
+          eventRender: function(event, element) {
             
+    
+
+            //element.append( "<span class='closeon fa fa-trash'></span>" );
+            var office_id = (event.office) ? event.office.id : '';
+            var office_name = (event.office) ? event.office.name : '';
+
+      
+            var textTooltip = office_name +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm");
+
+      
+
+            element.append( '<span class="appointment-details tooltip" data-office="'+ office_id +'" data-officename="'+ office_name +'" data-toggle="tooltip" title="'+ textTooltip +'"></span>');
+
           
-            dayClick: function(date, jsEvent, view) {
+            if (event.rendering == 'background') {
+                element.append('<span class="title-bg-event" data-title="'+ event.title + '">'+ event.title + '</span>');
               
-                  
-                  if (view.name === "month") {
-                      
-                      //calendar.fullCalendar('gotoDate', date);
-                      //calendar.fullCalendar('changeView', 'agendaWeek');
-                      dateFrom = date;
-                      dateTo = dateFrom;
-                      $.ajax({
-                        type: 'GET',
-                        url: '/medic/schedules/list?date1='+dateFrom.format()+'&date2='+ dateTo.format(),
-                        data: {},
-                        success: function (resp) {
-                           
-  
-                            var schedulesForAppointmentPage = [];
-                           
-                            $.each(resp, function( index, item ) {
-                               
-                                item.allDay = parseInt(item.allDay); // = false;
-                                
-                                item.schedule = 1;
-                                schedulesForAppointmentPage.push(item);
-                               
-  
-                            });
-  
-                           
-                    
-                    
-                           
-                           
-                          console.log(schedulesForAppointmentPage)
-  
-                        },
-                        error: function (resp) {
-                            console.log('Error - '+ resp);
-  
-                        }
-                    }); //ajax schedules
-    
-                      return false;
-                  }
-    
-                 
-                  
                
-              }
-              
-    
-    
-    
-             
+            }
+
+
+             //element.append('<div data-createdby="'+ event.created_by +'"></div>');
+
+               
+               
+                element.find(".appointment-details").click(function() {
+
+                      //calendar.fullCalendar('gotoDate', event.date);
+                      ulSchedules.empty();
+                      $('.schedule-clinic').text(office_name);
+                       schedule = event;
+                    
+                        var intervals = createIntervalsFromHours(moment(schedule.start).format("YYYY-MM-DD"), moment(schedule.start).format("HH:mm"), moment(schedule.end).format("HH:mm"), eventDurationNumber);
             
-          });
+                        
+                        var events = [];
+                        var title = 'Disponible';
+                        var startEvent;
+                        var endEvent;
+                        var reserved;
+                        var appointmentId;
+                        var reservedType;
+                        for (var i = 0; i < intervals.length - 1; i++) {
+            
+                          startEvent = moment(schedule.start).format("YYYY-MM-DD") + 'T' + intervals[i] + ':00';
+                          endEvent = moment(schedule.start).format("YYYY-MM-DD") + 'T' + intervals[i + 1] + ':00';
+                          reservedType = isReserved(startEvent, endEvent);
+                          if (reservedType.res) {
+                            if (reservedType.res == 1) {
+                              title = 'No Disponible';
+                              reserved = 1;
+                            }
+                            else {
+                              title = 'Reservado';
+                              reserved = 2;
+                              appointmentId = reservedType.id
+                            }
+            
+                          } else {
+                            title = 'Disponible';
+                            reserved = 0;
+                          }
+            
+                          var startTime = intervals[i] + ':00';
+                          var endTime = intervals[i + 1] + ':00';
+                         // if(!reserved)
+                            // ulSchedules.append('<div class="form-group"><div class="radio"><label><input type="radio" name="schedule" data-date="'+ moment(schedule.start).format("YYYY-MM-DD")+'" data-office="'+ schedule.office_id +'" data-start="'+ startEvent +'" data-end="'+ endEvent +'"/> '+startTime + ' - '+ endTime +'</label></div></div>')
+
+                           
+                        
+
+                            ulSchedules.append('<option value="'+ schedule.office_id +'" data-date="'+ moment(schedule.start).format("YYYY-MM-DD")+'" data-office="'+ schedule.office_id +'" data-start="'+ startEvent +'" data-end="'+ endEvent +'"> '+startTime + ' - '+ endTime +'</option>');
+            
+                        }
+                        ulSchedules.prepend('<option value="" selected><span style="color:red;">--</span></option>');
+
+                       /* if(!ulSchedules.children('div.form-group').length)
+                          ulSchedules.html('<p>No hay horarios disponibles</p>');*/
+            
+                       
+                    
+                    
+                             
+                   
+                });
+
+              
+            
+            
+
+        },
+      
+        dayClick: function(date, jsEvent, view) {
+          
+              
+             
+           
+          },
+          viewRender: function(view){
+              console.log(view.start.format() +' - '+view.end.format())
+            
+              miniCalendar.fullCalendar( 'removeEventSources');
+
+                $.ajax({
+                  type: 'GET',
+                  url: '/medic/appointments/list?calendar=1&date1='+view.start.format()+'&date2='+ view.end.format(),
+                  data: {},
+                  success: function (resp) {
+
+                    appointmentsFromCalendar = [];
+
+                      $.each(resp, function( index, item ) {
+                        
+                          item.allDay = parseInt(item.allDay); // = false;
+                          
+                          if(item.patient_id == 0) item.rendering = 'background';
+
+                          appointmentsFromCalendar.push(item);
+                      });
+                    
+                    
+                      
+                  },
+                  error: function (resp) {
+                      console.log('Error - '+ resp);
+
+                  }
+              
+              }); //ajax appoitnments
+          
+                  $.ajax({
+                      type: 'GET',
+                      url: '/medic/schedules/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                      data: {},
+                      success: function (resp) {
+                         
+
+                          var schedules = [];
+
+                          $.each(resp, function( index, item ) {
+                             
+                              item.allDay = parseInt(item.allDay); // = false;
+                              
+                              /*if(item.patient_id == 0) item.rendering = 'background';*/
+                          
+                              schedules.push(item);
+                          });
+
+                         
+                          miniCalendar.fullCalendar('addEventSource', schedules);
+                          //calendar.fullCalendar( 'updateEvents', schedules )
+                      },
+                      error: function (resp) {
+                          console.log('Error - '+ resp);
+
+                      }
+                  }); //ajax schedules
+
+              
+
+
+
+         
+            
+
+           
+            
+          } //view render
+        
+      });
+
+    } // init mini calendar
+
+    function createIntervalsFromHours(date, from, until, slot) {
+      
+          until = Date.parse(date + " " + until);
+          from = Date.parse(date + " " + from);
+      
+          var intervalLength = (slot) ? slot : 30;
+          var intervalsPerHour = 60 / intervalLength;
+          var milisecsPerHour = 60 * 60 * 1000;
+      
+          var max = (Math.abs(until - from) / milisecsPerHour) * intervalsPerHour;
+      
+          var time = new Date(from);
+          var intervals = [];
+          for (var i = 0; i <= max; i++) {
+            //doubleZeros just adds a zero in front of the value if it's smaller than 10.
+            var hour = doubleZeros(time.getHours());
+            var minute = doubleZeros(time.getMinutes());
+            intervals.push(hour + ":" + minute);
+            time.setMinutes(time.getMinutes() + intervalLength);
+          }
+          return intervals;
+        }
+
+        function doubleZeros(item) {
+          
+              return (item < 10) ? '0' + item : item;
+            }
+        
+        function isReserved(startSchedule, endSchedule) {
+              var res = {
+                 res: 0,
+                 id: 0
+              };
+          
+              for (var j = 0; j < appointmentsFromCalendar.length; j++) {
+          
+                if (appointmentsFromCalendar[j].end > startSchedule && appointmentsFromCalendar[j].start < endSchedule) {
+          
+                  
+                    res.res = 1
+                    res.id = appointmentsFromCalendar[j].id
+                  
+                }
+          
+              }
+          
+              return res
+          
+            }
+          
+
+ /*$('body').on('click','input[name="schedule"]', function(e){
+   
+   $('input[name="start"]').val($(this).data('start'))
+   $('input[name="end"]').val($(this).data('end'))
+   $('input[name="date"]').val($(this).data('date'))
+   $('input[name="office_id"]').val($(this).data('office'))
+ });*/
+
+ ulSchedules.change(function(){
+    var selected = $(this).find('option:selected');
+
+    $('input[name="start"]').val(selected.data('start'))
+    $('input[name="end"]').val(selected.data('end'))
+    $('input[name="date"]').val(selected.data('date'))
+    $('input[name="office_id"]').val(selected.data('office')) 
     
-        } // init calendar
-
-
-
+  });
 
 });

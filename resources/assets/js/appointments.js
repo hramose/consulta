@@ -12,6 +12,7 @@ $(function () {
      var setupSchedule = $('#setupSchedule');
      var slotDurationSchedule = setupSchedule.find('#selectSlotDurationModal').val();
      var calendar = $('#calendar');
+     var miniCalendar = $('#miniCalendar');
      var prog_schedule = calendar.attr('data-schedule') ? calendar.attr('data-schedule') : '';
      var infoBox = $("#infoBox");
      var modalForm = $('#myModal');
@@ -376,7 +377,7 @@ $(function () {
     } // fetch offices
     var loadedEvents = false;
     initCalendar([]);
-
+    initMiniCalendar([]);
     function initCalendar(appointments)
     {
 
@@ -859,6 +860,118 @@ $(function () {
       });
 
     } // init calendar
+
+    function initMiniCalendar(appointments)
+    {
+
+    
+      miniCalendar.fullCalendar({
+          locale: 'es',
+          defaultView: 'month',
+          timeFormat: 'h(:mm)a',
+          header: {
+            left: 'prev,next ',
+            center: 'title',
+            right: ''
+          },
+          //Random default events
+          events: appointments,
+          timezone: 'local',
+          allDaySlot: false,
+        
+          eventRender: function(event, element) {
+            
+    
+
+            //element.append( "<span class='closeon fa fa-trash'></span>" );
+            var office_id = (event.office) ? event.office.id : '';
+            var office_name = (event.office) ? event.office.name : '';
+
+      
+            var textTooltip = office_name +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm");
+
+      
+
+            element.append( '<span class="appointment-details tooltip" data-office="'+ office_id +'" data-officename="'+ office_name +'" data-toggle="tooltip" title="'+ textTooltip +'"></span>');
+
+          
+            if (event.rendering == 'background') {
+                element.append('<span class="title-bg-event" data-title="'+ event.title + '">'+ event.title + '</span>');
+              
+               
+            }
+
+
+             //element.append('<div data-createdby="'+ event.created_by +'"></div>');
+
+               
+               
+                element.find(".appointment-details").click(function() {
+
+                  calendar.fullCalendar('gotoDate', event.date);
+                   
+                });
+
+              
+            
+            
+
+        },
+      
+        dayClick: function(date, jsEvent, view) {
+          
+              
+             
+           
+          },
+          viewRender: function(view){
+              console.log(view.start.format() +' - '+view.end.format())
+            
+              miniCalendar.fullCalendar( 'removeEventSources');
+            
+          
+                  $.ajax({
+                      type: 'GET',
+                      url: '/medic/schedules/list?date1='+view.start.format()+'&date2='+ view.end.format(),
+                      data: {},
+                      success: function (resp) {
+                         
+
+                          var schedules = [];
+
+                          $.each(resp, function( index, item ) {
+                             
+                              item.allDay = parseInt(item.allDay); // = false;
+                              
+                              /*if(item.patient_id == 0) item.rendering = 'background';*/
+                          
+                              schedules.push(item);
+                          });
+
+                         
+                          miniCalendar.fullCalendar('addEventSource', schedules);
+                          //calendar.fullCalendar( 'updateEvents', schedules )
+                      },
+                      error: function (resp) {
+                          console.log('Error - '+ resp);
+
+                      }
+                  }); //ajax schedules
+
+              
+
+
+
+         
+            
+
+           
+            
+          } //view render
+        
+      });
+
+    } // init mini calendar
 
     function crud(method, url, data, revertFunc) {
        $('body').addClass('loading');
