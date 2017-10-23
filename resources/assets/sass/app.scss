@@ -456,7 +456,7 @@ td.fc-day.fc-past{
 	}
 	.title-bg-event{
 		display:inline-block;
-		//width: 90px;
+		max-width: 160px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -467,7 +467,7 @@ td.fc-day.fc-past{
 		font-size: 13px;
 		top: 45%;
 		position: absolute;
-		transform: rotate(90deg);
+		transform: rotate(90deg) ;
 		
 		color: #000;
 	}
