@@ -444,10 +444,10 @@ td.fc-day.fc-past{
 .calendar-popup #calendar .fc-center h2{
 	font-size: 12px;
 }
-.title-bg-event{
+/*.title-bg-event{
 	display:none;
 	
-}
+}*/
 @media screen and (min-width:640px){
 	.fc-event{
 	  .fc-title{
@@ -456,7 +456,7 @@ td.fc-day.fc-past{
 	}
 	.title-bg-event{
 		display:inline-block;
-		width: 90px;
+		//width: 90px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -465,9 +465,11 @@ td.fc-day.fc-past{
 	.medico-calendar .fc-bgevent-container .fc-bgevent .title-bg-event{
 		display:inline-block;
 		font-size: 13px;
-		top: 50%;
+		top: 45%;
+		left:40%;
 		position: absolute;
-		transform: translate(0,-50%);
+		transform: rotate(90deg);
+		
 		color: #000;
 	}
 }

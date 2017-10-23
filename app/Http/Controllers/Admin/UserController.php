@@ -33,6 +33,77 @@ class UserController extends Controller
         return view('admin.users.index',compact('users','search', 'roles'));
     }
 
+    /**
+     * Mostrar vista crear paciente
+     */
+    public function create()
+    {
+        
+        return view('admin.users.create');
+
+    }
+
+    /**
+     * Guardar paciente
+     */
+    public function store()
+    {
+        //validamos que en users no hay email que va a registrase como paciente
+        $this->validate(request(),[
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|min:6',
+            ]);
+
+
+        $data = request()->all();
+        $data['active'] = 0; // los medicos estan inactivos por defecto para revision
+        $data['provider'] = 'email';
+        $data['provider_id'] = $data['email'];
+        $data['api_token'] = str_random(50);
+
+        
+        $user = $this->userRepo->store($data);
+
+        flash('Usuario Creado','success');
+
+        return Redirect('/admin/users');
+
+    }
+    /**
+     * Mostrar vista editar paciente
+     */
+    public function edit($id)
+    {
+       
+
+        $user = $this->userRepo->findById($id);
+
+       
+        
+        return view('admin.users.edit', compact('user'));
+
+    }
+
+    /**
+     * Actualizar Paciente
+     */
+    public function update($id)
+    {
+        $this->validate(request(),[
+                'name' => 'required|max:255',
+                'email' => ['required','email', Rule::unique('users')->ignore($id) ]//'required|email|max:255|unique:patients',   
+        ]);
+
+        $user = $this->userRepo->update($id, request()->all());
+    
+        
+        flash('Usuario Actualizado','success');
+
+        return Redirect('/admin/users');
+
+    }
+
     public function medicRequests()
     {
         $search['q'] = request('q');

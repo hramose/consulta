@@ -102,7 +102,7 @@
 <div id="conditions-popup" class="conditions-popup white-popup mfp-hide mfp-with-anim">
   <h3 style="text-align:center">CONDICIONES DE AFILIACIÓN:</h3>
 
- <p>Estimado Dr. , con el objetivo de que usted conozca nuestra plataforma, ponemos a su disposición GPS MEDICA 1.0, sistema que representa una versión demo limitada, en la que usted podrá hacer uso de algunos elementos de nuestra herramienta de manera gratuita y por un periodo mínimo de   3 meses.
+ <p>Estimado Dr. , con el objetivo de que usted conozca nuestra plataforma, ponemos a su disposición GPS MEDICA 1.0, sistema que representa una versión demo limitada, en la que usted podrá hacer uso de algunos elementos de nuestra herramienta de manera gratuita y por un periodo indefinido.
 
 </p> 
 

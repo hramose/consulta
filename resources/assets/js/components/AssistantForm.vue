@@ -137,7 +137,7 @@
 		                    console.log(response.data)
 		                    this.loader = false;
 		                    this.loader_message ="Error al guardar cambios";
-		                    this.errors = response.data;
+		                    this.errors = response.data.errors;
 		                });
 
 		           }else{
@@ -156,13 +156,14 @@
 		              }, (response) => {
 		                  console.log('error al guardar asistente')
 		                  this.loader = false;
-		                   this.errors = response.data;
+		                   this.errors = response.data.errors;
 		              });
 		        
 		            }
 
 		      	},//save
 	         getOffices(){
+             
               this.$http.get('/medic/account/consultorios')
                   .then(resp => {
                     
@@ -172,6 +173,7 @@
                  
 
                   });
+               this.clear();
            }
 
        
@@ -189,6 +191,7 @@
            bus.$on('editAssistant', this.edit);
            bus.$on('newConsultorioIndependiente', this.getOffices);
            bus.$on('deleteConsultorioIndependiente', this.getOffices);
+           bus.$on('deleteAssistant', this.clear);
            
        }
     }

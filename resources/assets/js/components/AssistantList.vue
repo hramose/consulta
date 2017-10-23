@@ -71,6 +71,8 @@
 	                     var index = this.asistentes.indexOf(item)
 	                    this.asistentes.splice(index, 1);
 	                    bus.$emit('alert', 'Asistente Eliminado','success');
+											bus.$emit('deleteAssistant');
+										
 	                  }
 	                  this.loader = false;
 

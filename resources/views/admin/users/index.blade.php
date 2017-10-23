@@ -111,7 +111,7 @@
                        
                        
                          
-                          <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
+                      <a href="{{ url('/admin/users/'.$user->id.'/edit') }}" class="btn btn-info" title="Editar"><i class="fa fa-edit"></i> Editar</a>
                           
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/admin/users/'.$user->id) !!}"><i class="fa fa-remove"></i></button>
                          
