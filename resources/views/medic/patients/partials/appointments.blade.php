@@ -33,7 +33,7 @@
 						@if(isset($fromPatient))
 						 	<a class="info-box-text" href="/appointments/{{ $appointment->id }}/show'">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
 						 @else
-						 	<a class="info-box-text" href="{{ (auth()->id() != $appointment->user->id)) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
+						 	<a class="info-box-text" href="{{ (auth()->id() != $appointment->user->id) ? '#': '/medic/appointments/'.$appointment->id.'/edit'}}">{{ $appointment->title }} con <small>Dr. {{ $appointment->user->name }}</small></a>
 						 @endif
 		              
 					  @else 
