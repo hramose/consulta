@@ -65,6 +65,7 @@ class AppointmentController extends ApiController
         $vitalSigns = ($appointment->vitalSigns) ? $appointment->vitalSigns : [];
         $labexams = $appointment->labexams()->where('patient_id',$patient->id)->limit(10)->get();
         $labresults = $patient->labresults()->limit(10)->get();
+        
 
         $labexams = $labexams->groupBy(function($exam) {
             return $exam->date;
@@ -80,7 +81,8 @@ class AppointmentController extends ApiController
             $dataExams[]= $exam;
         }
         
-        $files = Storage::disk('public')->files("patients/". $patient->id ."/files");
+        //$files = Storage::disk('public')->files("patients/". $patient->id ."/files");
+        $files = $patient->archivos()->where('appointment_id',$id)->get();
         $data = [
            'appointment' => $appointment,
            'files' => $files,
