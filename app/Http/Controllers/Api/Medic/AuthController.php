@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Medic;
 
 
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Role;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 
-class AuthController extends \ApiController
+class AuthController extends ApiController
 {
     function __construct(UserRepository $userRepo)
     {
