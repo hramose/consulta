@@ -19,7 +19,11 @@ Route::get('/user', function (Request $request) {
 
 })->middleware('auth:api');
 
-
+Route::prefix('medic')->middleware('auth:api')->group(function ()
+{
+	Route::post('/token', 'Api\Medic\AuthController@token');
+	
+});
 Route::post('/token', 'Api\AuthController@token');
 Route::post('/user/social/register', 'Api\AuthController@registerSocial');
 Route::post('/user/register', 'Api\AuthController@register');
