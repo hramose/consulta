@@ -61,8 +61,8 @@ class AppointmentController extends ApiController
 
         $appointment =   $this->appointmentRepo->findById($id)->load('diseaseNotes','physicalExams','diagnostics','treatments'); 
         $patient = $appointment->patient;
-        $medicines = $appointment->medicines;
-        $vitalSigns = $appointment->vitalSigns;
+        $medicines = ($appointment->medicines) ? $appointment->medicines : [];
+        $vitalSigns = ($appointment->vitalSigns) ? $appointment->vitalSigns : [];
         $labexams = $appointment->labexams()->where('patient_id',$patient->id)->limit(10)->get();
         $labresults = $patient->labresults()->limit(10)->get();
 
