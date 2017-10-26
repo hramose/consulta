@@ -32,12 +32,12 @@ class OfficeController extends ApiController
         $search = request()->all();
         $search['active'] = 1;
         
-        $offices = $this->officeRepo->findAllWithoutPagination(auth()->id(),$search);
+        $offices = $this->officeRepo->findAllByDoctor(auth()->id(),$search);
 
         return $offices;
         
     }
-    
+
      /**
      * Display the specified resource.
      *
