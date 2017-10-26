@@ -196,7 +196,7 @@ class OfficeController extends ApiController
         
         if($office->type == "Consultorio Independiente") $this->officeRepo->delete($id);
 
-        return 'ok';
+        return $this->respondDeleted('Consultorio Eliminado Correctamente');
 
     }
 
