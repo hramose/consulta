@@ -200,6 +200,35 @@ class OfficeController extends ApiController
 
     }
 
+     /**
+     * guardar datos de consultorio
+     */
+     public function requestOffice()
+     {
+         $user = request()->user();
+         
+         $this->validate(request(),[
+                 'name' => 'required',
+                   
+         ]);
+         
+         $requestOffice = $user->requestOffices()->create(request()->all());
+
+         try {
+            
+            \Mail::to($this->administrators)->send(new NewRequestOffice($requestOffice));
+
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+
+
+ 
+         return $requestOffice;
+ 
+     }
+
     
    
    

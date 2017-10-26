@@ -35,6 +35,7 @@ Route::prefix('medic')->group(function ()
 	Route::get('/offices/{office}', 'Api\Medic\OfficeController@show')->middleware('auth:api');
 	Route::delete('/offices/{office}', 'Api\Medic\OfficeController@destroy')->middleware('auth:api');
 	Route::post('/offices', 'Api\Medic\OfficeController@store')->middleware('auth:api');
+	Route::post('/offices/request', 'Api\Medic\OfficeController@requestOffice')->middleware('auth:api');
 	Route::put('/offices/{office}', 'Api\Medic\OfficeController@update')->middleware('auth:api');
 	
 });
