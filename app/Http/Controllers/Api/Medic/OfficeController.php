@@ -206,7 +206,7 @@ class OfficeController extends ApiController
      public function requestOffice()
      {
          $user = request()->user();
-         
+
          $this->validate(request(),[
                  'name' => 'required',
                    
@@ -214,14 +214,14 @@ class OfficeController extends ApiController
          
          $requestOffice = $user->requestOffices()->create(request()->all());
 
-         try {
+       /*  try {
             
             \Mail::to($this->administrators)->send(new NewRequestOffice($requestOffice));
 
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
             \Log::error($e->getMessage());
-        }
+        }*/
 
 
  
