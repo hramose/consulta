@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Medic;
+namespace App\Http\Controllers\Api\Medic;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
