@@ -30,6 +30,9 @@ Route::prefix('medic')->group(function ()
 	Route::post('/appointments', 'Api\Medic\AppointmentController@store')->middleware('auth:api');
 	Route::get('/appointments/{appointment}', 'Api\Medic\AppointmentController@show')->middleware('auth:api');
 	Route::delete('/appointments/{appointment}/delete', 'Api\Medic\AppointmentController@delete')->middleware('auth:api');
+	Route::get('/offices', 'Api\Medic\OfficeController@index')->middleware('auth:api');
+	Route::get('/offices/{office}', 'Api\Medic\OfficeController@show')->middleware('auth:api');
+	Route::delete('/offices/{office}', 'Api\Medic\OfficeController@delete')->middleware('auth:api');
 	
 });
 
