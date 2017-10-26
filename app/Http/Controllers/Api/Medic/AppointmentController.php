@@ -36,7 +36,8 @@ class AppointmentController extends ApiController
 
         $user = $request->user();
 
-        $appointments = Appointment::where('created_by',$user->id)->with('patient')->orderBy('start','DESC')->paginate(1);
+        $appointments =  $this->appointmentRepo->findAllByDoctor($user->id);
+        //Appointment::where('created_by',$user->id)->with('patient')->orderBy('start','DESC')->paginate(1);
        
        /* $scheduledAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
          $initAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();*/
