@@ -38,8 +38,8 @@ class AppointmentController extends ApiController
 
         $appointments = Appointment::where('created_by',$user->id)->get();
        
-        $scheduledAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
-         $initAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();
+       /* $scheduledAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
+         $initAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();*/
 
         
             $data = [
@@ -49,7 +49,7 @@ class AppointmentController extends ApiController
              ];
              
      
-        return $data;
+        return $appointments;
      
 
     }
