@@ -42,11 +42,11 @@ class AppointmentController extends ApiController
          $initAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();*/
 
         
-            $data = [
+          /*  $data = [
                 'scheduledAppointments' => $scheduledAppointments,
                 'initAppointments' => $initAppointments,
              
-             ];
+             ];*/
              
      
         return $appointments;
