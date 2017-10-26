@@ -29,10 +29,11 @@ class OfficeController extends ApiController
 
      public function index()
     {
+        $user = request()->user();
         $search = request()->all();
         $search['active'] = 1;
         
-        $offices = $this->officeRepo->findAllByDoctor(auth()->id(),$search);
+        $offices = $this->officeRepo->findAllByDoctor($user,$search);
 
         return $offices;
         
