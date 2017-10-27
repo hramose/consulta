@@ -247,7 +247,7 @@ class OfficeController extends ApiController
 
         if($user->hasOffice($office->id))
         {
-            $this->respondCreated('La clinica ya se encuentra agregada');
+            return $this->respondCreated('La clinica ya se encuentra agregada');
         }
 
 
