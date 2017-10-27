@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Api\Medic;
 
 use App\Allergy;
-use App\Mail\NewPatient;
 use App\Appointment;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\PatientRequest;
 use App\Labexam;
 use App\Labresult;
+use App\Mail\NewPatient;
 use App\Pressure;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
+use App\Role;
 use App\Sugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
