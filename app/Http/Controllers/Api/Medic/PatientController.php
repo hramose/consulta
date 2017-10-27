@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Medic;
 
 use App\Allergy;
+use App\Mail\NewPatient;
 use App\Appointment;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\PatientRequest;
@@ -24,11 +25,11 @@ class PatientController extends ApiController
      *
      * @return void
      */
-    public function __construct(PatientRepository $patientRepo)
+    public function __construct(PatientRepository $patientRepo, UserRepository $userRepo)
     {
        
         $this->patientRepo = $patientRepo;
-
+        $this->userRepo = $userRepo;
         
     }
 
@@ -105,7 +106,7 @@ class PatientController extends ApiController
 
         $patient = $this->patientRepo->delete($id);
 
-        ($patient === true) return $this->respondDeleted('Paciente Eliminado Correctamente');
+        if($patient === true) return $this->respondDeleted('Paciente Eliminado Correctamente');
      
  
         return $this->respondforbidden('No se puede eliminar paciente por que tiene citas asignadas','error');
