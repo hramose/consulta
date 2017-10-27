@@ -240,6 +240,37 @@ class OfficeController extends ApiController
         
     }
 
+    public function assignOffice($id)
+    {
+        $office = Office::findOrFail($id);
+        $user = request()->user();
+
+        if($user->hasOffice($office->id))
+        {
+            $this->respondCreated('La clinica ya se encuentra agregada');
+        }
+
+
+        $office = $user->offices()->save($office);
+        $medic = $user;
+        
+       /* try {
+                        
+            \Mail::to($office->administrators())->send(new NewOffice($office,$medic));
+            
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }*/
+
+    
+
+        return $office;
+
+       
+
+    }
+
     
    
    

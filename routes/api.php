@@ -38,6 +38,7 @@ Route::prefix('medic')->group(function ()
 	Route::post('/offices', 'Api\Medic\OfficeController@store')->middleware('auth:api');
 	Route::post('/offices/request', 'Api\Medic\OfficeController@requestOffice')->middleware('auth:api');
 	Route::put('/offices/{office}', 'Api\Medic\OfficeController@update')->middleware('auth:api');
+	Route::post('/offices/{office}/assign', 'Api\Medic\OfficeController@assignOffice');
 	
 });
 
