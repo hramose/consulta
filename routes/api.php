@@ -28,6 +28,7 @@ Route::prefix('medic')->group(function ()
 	Route::get('/patients/{id}/history', 'Api\Medic\PatientController@getHistory')->middleware('auth:api');
 	Route::put('/patients/{id}', 'Api\Medic\PatientController@update')->middleware('auth:api');
 	Route::post('/patients', 'Api\Medic\PatientController@store')->middleware('auth:api');
+	Route::delete('/patients/{id}', 'Api\Medic\PatientController@destroy')->middleware('auth:api');
 	Route::get('/appointments', 'Api\Medic\AppointmentController@index')->middleware('auth:api');
 	Route::post('/appointments', 'Api\Medic\AppointmentController@store')->middleware('auth:api');
 	Route::get('/appointments/{appointment}', 'Api\Medic\AppointmentController@show')->middleware('auth:api');

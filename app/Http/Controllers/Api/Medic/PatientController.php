@@ -97,6 +97,21 @@ class PatientController extends ApiController
         return $patient;
 
     }
+     /**
+     * Eliminar consulta(cita)
+     */
+    public function destroy($id)
+    {
+
+        $patient = $this->patientRepo->delete($id);
+
+        ($patient === true) return $this->respondDeleted('Paciente Eliminado Correctamente');
+     
+ 
+        return $this->respondforbidden('No se puede eliminar paciente por que tiene citas asignadas','error');
+        
+
+    }
 
      /**
      * Agregar medicamentos a pacientes
