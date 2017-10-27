@@ -228,6 +228,17 @@ class OfficeController extends ApiController
          return $requestOffice;
  
      }
+      public function getAllOffices()
+    {
+        $search = request()->all();
+        $user = request()->user();
+        $search['active'] = 1;
+        
+        $offices = $this->officeRepo->findAllWithoutPagination($user->id,$search);
+
+        return $offices;
+        
+    }
 
     
    

@@ -32,6 +32,7 @@ Route::prefix('medic')->group(function ()
 	Route::get('/appointments/{appointment}', 'Api\Medic\AppointmentController@show')->middleware('auth:api');
 	Route::delete('/appointments/{appointment}/delete', 'Api\Medic\AppointmentController@delete')->middleware('auth:api');
 	Route::get('/offices', 'Api\Medic\OfficeController@index')->middleware('auth:api');
+	Route::get('/offices/list', 'Api\Medic\OfficeController@getAllOffices')->middleware('auth:api');
 	Route::get('/offices/{office}', 'Api\Medic\OfficeController@show')->middleware('auth:api');
 	Route::delete('/offices/{office}', 'Api\Medic\OfficeController@destroy')->middleware('auth:api');
 	Route::post('/offices', 'Api\Medic\OfficeController@store')->middleware('auth:api');
