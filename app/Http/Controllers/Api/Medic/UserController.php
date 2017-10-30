@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Medic;
 
 
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Controller;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
@@ -20,16 +21,18 @@ class UserController extends ApiController
         $this->patientRepo = $patientRepo;
     }
 
-    /**
+
+     /**
      * Actualizar informacion basica del medico
      */
     public function edit()
     {  
         $user = request()->user();
        
-        return $user;
+        return $user->load('settings');
 
     }
+
     /**
      * Actualizar informacion basica del medico
      */
@@ -39,14 +42,15 @@ class UserController extends ApiController
 
         $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore($user->id) ]
+                'email' => ['required','email', Rule::unique('users')->ignore($user->id) ],
+                'medic_code' => 'required'
             ]);
 
     	$user = $this->userRepo->update($user->id, request()->all());
 
        
 
-    	return $user;
+    	return $user->load('settings');
 
     }
     /**
@@ -90,66 +94,5 @@ class UserController extends ApiController
 
     
 
-     /**
-     * Actualizar datos de paciente
-     */
-    public function updatePatient($id)
-    {
-       
-         $this->validate(request(),[
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
-                'phone' => 'required',
-                'email' => ['required','email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',    
-        ]);
-
-        $patient = $this->patientRepo->update($id, request()->all());
-
-       
-
-        return $patient;
-
-    }
-    /**
-     * Actualizar datos de paciente
-     */
-    public function destroyPatient($id)
-    {
-        $patient = $this->patientRepo->findById($id);
-        $result = 0;
-        if(!$patient->appointments->count())
-        {
-            if($patient->created_by == request()->user()->id)
-            {
-                $result = $patient->delete();
-            }
-
-            $patient = request()->user()->patients()->detach($id); 
-
-            $result =  1;
-        }else{
-            $result =  2;
-        }
-
-         if($result == 0)
-         {
-             return $this->respondNotFound('Error al eliminar el paciente');
- 
-         }
-         if($result == 2)
-         {
-             return $this->respondForbidden('No se puede eliminar paciente por que tiene citas iniciadas');
- 
-         }
-
-         
-         return $this->respondDeleted('Paciente Eliminado Correctamente');
-      
-
-
-    }
 
 }

@@ -23,6 +23,9 @@ Route::get('/user', function (Request $request) {
 Route::prefix('medic')->group(function ()
 {
 	Route::post('/token', 'Api\Medic\AuthController@token');
+	Route::get('/account', 'Api\Medic\UserController@edit')->middleware('auth:api');
+	Route::put('/account', 'Api\Medic\UserController@update')->middleware('auth:api');
+	Route::put('/account/updatepush', 'Api\Medic\UserController@updatePushToken')->middleware('auth:api');
 	Route::get('/{user}/patients', 'Api\Medic\AuthController@getPatients')->middleware('auth:api');
 	Route::get('/{user}/patients/first', 'Api\Medic\AuthController@getFirstPatient')->middleware('auth:api');
 	Route::get('/patients/{id}/history', 'Api\Medic\PatientController@getHistory')->middleware('auth:api');
