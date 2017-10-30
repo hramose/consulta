@@ -29,7 +29,7 @@ class UserController extends ApiController
     {  
         $user = request()->user();
        
-        return $user->load('settings');
+        return $user->load('settings','specialities');
 
     }
 
@@ -50,7 +50,7 @@ class UserController extends ApiController
 
        
 
-    	return $user->load('settings');
+    	return $user->load('settings','specialities');
 
     }
     /**
