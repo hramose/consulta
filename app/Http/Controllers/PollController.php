@@ -32,7 +32,7 @@ class PollController extends Controller
        // if($poll->completed) return redirect('/');
     
 
-    	return view('polls.show')->with(compact('medic_id'));
+    	return view('user.polls.show')->with(compact('medic_id'));
     }
 
     public function store($user_id, PollRequest $request)
