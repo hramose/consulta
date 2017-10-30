@@ -37,7 +37,7 @@ class AuthController extends ApiController
 
                 $data = [
                     'access_token' => $user->api_token,
-                    'user' => $user,
+                    'user' => $user->load('settings'),
                    
                 ];
 
