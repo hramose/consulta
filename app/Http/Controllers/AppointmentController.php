@@ -110,8 +110,8 @@ class AppointmentController extends Controller
                 $push = new PushNotification('fcm');
                 $response = $push->setMessage([
                     'notification' => [
-                            'title'=>'Notificación',
-                            'body'=>'Se ha reservado una cita para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
+                            'title'=>'Nueva Cita Reservada',
+                            'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
                             'sound' => 'default'
                             ]
                     
