@@ -37,7 +37,7 @@ class AuthController extends ApiController
                 
                 if(!$user->push_token && $request->input('push_token'))
                 {
-                    $user->push_token =  $request->input('push_token');
+                    $user->push_token = $request->input('push_token');
                     $user = $user->save();
                 }
 
