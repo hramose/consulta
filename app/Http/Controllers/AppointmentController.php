@@ -111,7 +111,7 @@ class AppointmentController extends Controller
                 $response = $push->setMessage([
                     'notification' => [
                             'title'=>'Nueva Cita Reservada',
-                            'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
+                            'body'=>'Cita para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
                             'sound' => 'default'
                             ]
                     
