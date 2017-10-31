@@ -34,6 +34,12 @@ class AuthController extends ApiController
             $user = \Auth::user();
 
             if($user->hasRole('medico')){
+                
+                if(!$user->push_token && $request->input('push_token'))
+                {
+                    $user->push_token =  $request->input('push_token');
+                    $user = $user->save();
+                }
 
                 $data = [
                     'access_token' => $user->api_token,
