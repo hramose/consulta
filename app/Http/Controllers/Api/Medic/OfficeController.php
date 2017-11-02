@@ -116,7 +116,7 @@ class OfficeController extends ApiController
             return $office;
         }
 
-        /*$medic = request()->user();
+        $medic = request()->user();
 
         try {
                         
@@ -125,7 +125,7 @@ class OfficeController extends ApiController
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
             \Log::error($e->getMessage());
-        }*/
+        }
 
         
 
@@ -214,14 +214,14 @@ class OfficeController extends ApiController
          
          $requestOffice = $user->requestOffices()->create(request()->all());
 
-       /*  try {
+         try {
             
             \Mail::to($this->administrators)->send(new NewRequestOffice($requestOffice));
 
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
             \Log::error($e->getMessage());
-        }*/
+        }
 
 
  
@@ -254,14 +254,14 @@ class OfficeController extends ApiController
         $office = $user->offices()->save($office);
         $medic = $user;
         
-       /* try {
+        try {
                         
             \Mail::to($office->administrators())->send(new NewOffice($office,$medic));
             
         }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
         {
             \Log::error($e->getMessage());
-        }*/
+        }
 
     
 
