@@ -302,27 +302,29 @@ class PatientController extends ApiController
        $history = $patient->history;
        $appointments = $patient->appointments()->with('user','diagnostics','diseaseNotes','labexams','treatments','physicalExams')->where('status', 1)->orderBy('start','DESC')->limit(3)->get();//$patient->appointments->load('user','diagnostics');
        $labresults = $patient->labresults()->limit(10)->get();
-       // $labexams =  $patient->labexams()->with('results')->limit(10)->get();
+       $labexams =  $patient->labexams()->limit(10)->get();
 
-       //  $labexams = $labexams->groupBy(function($exam) {
-       //      return $exam->date;
-       //  })->toArray();
+       $labexams = $labexams->groupBy(function($exam) {
+            return $exam->date;
+        })->toArray();
 
-       //  $dataExams = [];
-       //  $exam = [];
+        $dataExams = [];
+        $exam = [];
 
-       //  foreach ($labexams as $key => $value) {
+        foreach ($labexams as $key => $value) {
         
-       //      $exam['date'] = $key;
-       //      $exam['exams'] = $value;
-       //      $dataExams[]= $exam;
-       //  }
+            $exam['date'] = $key;
+            $exam['exams'] = $value;
+            $dataExams[]= $exam;
+        }
+       
 
 
         $data = [
             'history' => $history,
             'appointments'=> $appointments,
-            'labresults'=> $labresults
+            'labresults'=> $labresults,
+            'labexams'=> $dataExams
             
         ];
 
