@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clinic;
 
 
 use App\Http\Controllers\Controller;
+use Edujugon\PushNotification\PushNotification;
 use App\Office;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\MedicRepository;
@@ -156,6 +157,25 @@ class MedicController extends Controller
         if(!$medic->verifyOffice($office->id))
         {
              $office = $medic->verifiedOffices()->save($office);
+
+              if($medic->push_token){
+                $push = new PushNotification('fcm');
+                $response = $push->setMessage([
+                    'notification' => [
+                            'title'=>'Asignado a Clínica',
+                            'body'=>'Haz sido aprobado como médico de '.  $office->name),
+                            'sound' => 'default'
+                            ]
+                    
+                    ])
+                    ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                    ->setDevicesToken($medic->push_token)
+                    ->send()
+                    ->getFeedback();
+                    
+                    Log::info('Mensaje Push code: '.$response->success);
+           }
+
         }
 
 

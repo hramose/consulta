@@ -29,7 +29,7 @@ class AuthController extends ApiController
             'error' => 'Unauthenticated'
         ];
        
-       if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+       if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password'), 'active' => 1])) {
             // Authentication passed...
             $user = \Auth::user();
 
