@@ -54,7 +54,7 @@
         Google+</a>
     </div>
     <!-- /.social-auth-links -->
-     <p>Si aun no tiene cuenta puedes crear una presionando en <a href="{{ url('/register') }}" class=" text-center " >Crear cuenta nueva </a></p>
+     <p>Si aun no tiene cuenta puedes crear una presionando en <a href="{{ url('/register') }}" class=" text-center " ><b>Crear cuenta nueva</b>   </a></p>
     <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>
     
     
