@@ -306,7 +306,7 @@
             
            
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
               <div v-show="office.lat">
                  <label for="lat" class="col-sm-2 control-label">Prueba</label>
                   <a v-bind:href="'waze://?ll='+ office.lat +','+ office.lon +'&amp;navigate=yes'"  target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abrir en Waze</strong></a>
@@ -314,7 +314,7 @@
                   <a v-bind:href="'http://maps.google.com/?saddr=Current+Location&daddr='+ office.lat +',' + office.lon" target="_blank" class="btn btn btn-app"><i class="fa fa-map-marker"></i> <strong>Abir en Google Maps</strong></a>
               </div>            
                               
-          </div>
+          </div> -->
           <div class="form-group" v-show="office.id || office.type == 'Consultorio Independiente'">
               <label for="file" class="col-sm-2 control-label">Logo</label>
                <div class="col-sm-4" v-show="office.id">
