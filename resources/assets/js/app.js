@@ -13,6 +13,10 @@ require('chart.js');
 require('hchs-vue-charts');
 Vue.use(VueCharts);
 
+const VueInputMask = require('vue-inputmask').default
+
+Vue.use(VueInputMask)
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

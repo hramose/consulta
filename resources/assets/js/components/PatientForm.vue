@@ -31,7 +31,7 @@
         <label for="paciente_birth_date" class="col-sm-2 control-label">Fecha de Nacimiento</label>
 
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="birth_date" placeholder="dd/mm/yyyy"  v-model="paciente.birth_date">
+          <input type="text" class="form-control" name="birth_date" placeholder="dd/mm/yyyy"  v-model="paciente.birth_date" v-mask="'dd/mm/yyyy'">
           <form-error v-if="errors.birth_date" :errors="errors" style="float:right;">
               {{ errors.birth_date[0] }}
           </form-error>
