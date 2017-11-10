@@ -867,9 +867,10 @@
         onChangeProvince: function (event) {
           
           var cant = [];
-
+          
           this.provincias.forEach(function(prov, index) {
-              if(event.srcElement.value === prov.title) {
+              
+              if(event.currentTarget.value === prov.title) {
                    cant = prov.cantones;
               }
           });
@@ -881,7 +882,7 @@
           var dist = [];
 
           this.cantones.forEach(function(cant, index) {
-              if(event.srcElement.value === cant.title) {
+              if(event.currentTarget.value === cant.title) {
                    dist = cant.distritos;
               }
           });
