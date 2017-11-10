@@ -197,7 +197,7 @@
 		                    console.log(response.data)
 		                    this.loader = false;
 		                    this.loader_message ="Error al guardar cambios";
-		                    this.errors = response.data;
+		                    this.errors = response.data.errors;
 		                });
 
 		           }else{
@@ -217,9 +217,10 @@
 		                    }
 		                   this.loader = false;
 		              }, (response) => {
+                    
 		                  console.log('error al guardar paciente')
 		                  this.loader = false;
-		                   this.errors = response.data;
+		                   this.errors = response.data.errors;
 		              });
 		        
 		            }
