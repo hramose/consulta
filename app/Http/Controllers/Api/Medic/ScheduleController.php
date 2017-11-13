@@ -28,7 +28,7 @@ class ScheduleController extends ApiController
      */
     public function store()
     {
-
+        dd(request()->all());
         $schedule = $this->scheduleRepo->store(request()->all());
         
         if(!$schedule) return '';
