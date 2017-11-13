@@ -399,7 +399,10 @@
 
        methods: {
          money(n, currency) {
-                return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                if(n)
+                    return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                
+                return 0;
             },
         totalInvoices(invoices){
               let total = 0;

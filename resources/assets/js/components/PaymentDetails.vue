@@ -24,7 +24,7 @@
                     <td>{{ data.attented }}</td>
                     <td>${{ money(data.attented_amount) }}</td>
                     <td>${{ money(data.monthly_payment) }}</td>
-                    <td>${{ money( parseFloat(data.monthly_payment) +  parseFloat(data.attented_amount)) }}</td>
+                    <td>${{ money(parseFloat(data.monthly_payment) + parseFloat(data.attented_amount)) }}</td>
                   
                     
                 </tr>
@@ -52,9 +52,13 @@
       data () {
         return {
         
-    
 
-          data:[],
+          data:{
+              attented:0,
+              attented_amount: 0,
+              monthly_payment: 0,
+              attented_amount: 0,
+          },
           loader: false,
          
           
@@ -64,7 +68,11 @@
 
        methods: {
          money(n, currency) {
-                return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                
+                if(n)
+                    return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                
+                return 0;
             },
          
          
