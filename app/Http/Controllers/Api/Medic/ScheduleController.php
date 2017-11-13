@@ -28,8 +28,14 @@ class ScheduleController extends ApiController
      */
     public function store()
     {
-        
-        $schedule = $this->scheduleRepo->store(request()->all());
+
+        $data = request()->all();
+        $user = request()->user();
+        $data['user_id'] = $user->id;
+
+        $schedule = Schedule::create($data);
+
+        $schedule = $user->schedules()->save($schedule);
         
         if(!$schedule) return '';
 
