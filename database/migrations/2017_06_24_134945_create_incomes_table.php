@@ -17,6 +17,7 @@ class CreateIncomesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index(); // medico
             $table->integer('appointment_id')->unsigned()->index(); // consulta
+            $table->integer('office_id')->unsigned()->index(); // clinica
             $table->double('amount')->default(0);
             $table->double('pending')->default(0);
             $table->dateTime('date');
