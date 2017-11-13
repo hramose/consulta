@@ -32,7 +32,7 @@ class OfficeController extends ApiController
         $user = request()->user();
         $search = request()->all();
         $search['active'] = 1;
-        
+        $search['dir'] = 'ASC';
         $offices = $this->officeRepo->findAllByDoctor($user,$search);
 
         return $offices;
