@@ -34,7 +34,7 @@ class ScheduleController extends ApiController
         $data['user_id'] = $user->id;
 
         $schedule = Schedule::create($data);
-
+        dd($schedule);
         $schedule = $user->schedules()->save($schedule);
         
         if(!$schedule) return '';
