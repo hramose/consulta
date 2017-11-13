@@ -28,7 +28,7 @@ class ScheduleController extends ApiController
      */
     public function store()
     {
-        
+
         $schedule = $this->scheduleRepo->store(request()->all());
         
         if(!$schedule) return '';
@@ -67,10 +67,13 @@ class ScheduleController extends ApiController
 
         $schedule = $this->scheduleRepo->delete($id);
         
-        if($schedule !== true)  return $schedule; //no se elimino correctamente
+         //if($schedule !== true)  return $schedule; //no se elimino correctamente
+         if($schedule === true) return $this->respondDeleted('Horario Eliminado Correctamente');
+     
+ 
+        return $this->respondforbidden('No se ha podido eliminar el horario','error');
 
-        return '';
-
+    
     }
 
     /**

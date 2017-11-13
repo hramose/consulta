@@ -48,6 +48,7 @@ Route::prefix('medic')->group(function ()
 	Route::get('/{medic}/schedules/list', 'Api\Medic\MedicController@getSchedules')->middleware('auth:api');
 	Route::get('/{medic}/appointments/list', 'Api\Medic\MedicController@getAppointments')->middleware('auth:api');
 	Route::post('/schedules', 'Api\Medic\ScheduleController@store')->middleware('auth:api');
+	Route::delete('/schedules/{schedule}', 'Api\Medic\ScheduleController@delete')->middleware('auth:api');
 	
 });
 
