@@ -63,6 +63,7 @@ Vue.component('photo-upload', require('./components/PhotoUpload.vue'));
 Vue.component('lab-results', require('./components/LabResults.vue'));
 Vue.component('lab-exams', require('./components/LabExams.vue'));
 Vue.component('notifications', require('./components/Notifications.vue'));
+Vue.component('payment-details', require('./components/PaymentDetails.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

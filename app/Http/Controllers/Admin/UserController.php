@@ -6,6 +6,7 @@ use App\Configuration;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Role;
+use App\Mail\UserActive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
@@ -157,7 +158,17 @@ class UserController extends Controller
      */
     public function active($id)
     {
-        $this->userRepo->update_active($id, 1);
+        $user = $this->userRepo->update_active($id, 1);
+
+        try {
+            
+             \Mail::to($user)->send(new UserActive($user));
+
+        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+        {
+            \Log::error($e->getMessage());
+        }
+
 
         return back();
     }
@@ -171,7 +182,7 @@ class UserController extends Controller
      */
     public function inactive($id)
     {
-        $this->userRepo->update_active($id, 0);
+        $user = $this->userRepo->update_active($id, 0);
 
         return back();
     }

@@ -129,9 +129,13 @@ class AppointmentRepository extends DbRepository{
 
         if($appointment->status == 0){
           
-            $dataIncome['type'] = 'I';
+            if($appointment->isCreatedByPatient())
+                $dataIncome['type'] = 'I'; // cobro por cita generada de paciente
+            else 
+                $dataIncome['type'] = 'P'; // pendiente
+
             $dataIncome['medic_type'] = auth()->user()->specialities->count() > 0 ? 'S' :  'G';
-            $dataIncome['amount'] = auth()->user()->specialities->count() > 0 ? getAmountSpecialistPerAppointment() :getAmountGeneralPerAppointment(); 
+            $dataIncome['amount'] = getAmountPerAppointmentAttended(); 
             $dataIncome['appointment_id'] = $appointment->id;
             $dataIncome['date'] = $appointment->date;
             $dataIncome['month'] = $appointment->date->month;

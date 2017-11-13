@@ -163,7 +163,7 @@ class MedicController extends Controller
                 $response = $push->setMessage([
                     'notification' => [
                             'title'=>'Asignado a Clínica',
-                            'body'=>'Haz sido aprobado como médico de '.  $office->name),
+                            'body'=>'Haz sido aprobado como médico de '.  $office->name,
                             'sound' => 'default'
                             ]
                     

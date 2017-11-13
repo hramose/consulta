@@ -126,45 +126,33 @@ function getLogo($clinic)
      * @param $monto El monto a convertir
      * @return float El monto convertido
      */
-    function getAmountGeneralPerAppointment()
+    function getAmountPerAppointmentAttended()
     {
          $amount = 0;
         
-        /*if(Session::has('amount_general'))
-        {
-            $amount =  Session::get('amount_general');
 
-        }else{
-            $amount = Configuration::first()->amount_general;
-            Session::put('amount_general', $amount);
-        }*/
-        $amount = Configuration::first()->amount_general;
+        $amount = Configuration::first()->amount_attended;
        
         return $amount;
     }  
 
     /**
-     * obtiene el monto que se cobra por cita atendita de los medicos especialistas
+     * obtiene el monto que se cobra por cita atendita de los medicos generales
      *
      * @param $monto El monto a convertir
      * @return float El monto convertido
      */
-    function getAmountSpecialistPerAppointment()
+    function getAmountPerExpedientUse()
     {
-        $amount = 0;
+         $amount = 0;
+        
 
-        /*if(Session::has('amount_specialist'))
-        {
-            $amount =  Session::get('amount_specialist');
-
-        }else{
-            $amount = Configuration::first()->amount_specialist;
-            Session::put('amount_specialist', $amount);
-        }*/
-        $amount = Configuration::first()->amount_specialist;
+        $amount = Configuration::first()->amount_expedient;
        
         return $amount;
-    }   
+    }  
+
+   
 
      /**
      * obtiene el monto que se cobra por cita atendita de los medicos especialistas

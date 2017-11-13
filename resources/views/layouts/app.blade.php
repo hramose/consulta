@@ -100,11 +100,37 @@
 
      
         @foreach(auth()->user()->monthlyCharge() as $charge)
-          <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount) }}</b> a pagar del mes {{ $charge->month }} del {{ $charge->year }} ! <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
+          <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount) }}</b> a pagar del mes {{ $charge->month }} del {{ $charge->year }} ! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
                 {{ csrf_field() }}
                
             <button type="submit" class="btn btn-success btn-sm">Pagar</button>
-          </form></div>
+          </form>
+          </div>
+          <div class="modal fade" id="modalPaymentDetail" role="dialog" aria-labelledby="modalPaymentDetail">
+                  <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                      
+                      <h4 class="modal-title" id="modalPaymentDetailLabel">Detalle de Pago</h4>
+                      </div>
+                      <div class="modal-body" >
+                         
+
+                     <payment-details income_id="{{ $charge->id }}" ></payment-detials>
+                         
+                         
+                           
+                      </div>
+                       <div class="modal-footer" >
+                       
+                       
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
         @endforeach
     
     

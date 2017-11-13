@@ -106,6 +106,16 @@
           </form-error>
         </div>
       </div>
+      
+        <div class="form-group" v-if="fromModal">
+          <label for="password" class="col-sm-2 control-label">Contraseña (Accesso a la plataforma): </label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="password" placeholder="Contraseña" v-model="paciente.password">
+            <span class="label label-warning">Recordar al usuario que su perfil queda creado y que esta es su clave genérica.</span>
+          </div>
+
+        </div>
+     
       <!--<div class="form-group">
         <label for="paciente_conditions" class="col-sm-2 control-label">Padecimientos</label>
 
@@ -155,7 +165,9 @@
 	          ],
 	          loader:false,
 	          //fromModal: false,
-	          paciente: {},
+	          paciente: {
+              password:'123456'
+            },
 	          errors: []
 	         
 	        
@@ -192,7 +204,9 @@
 		                     //bus.$emit('updateList', 'Paciente Actualizado','success');
 		                     this.loader = false;
 		                     this.errors = [];
-		                     this.paciente = {};
+		                     this.paciente = {
+                            password:'123456'
+                          };
 		                }, (response) => {
 		                    console.log(response.data)
 		                    this.loader = false;
@@ -208,12 +222,16 @@
 		                    {
 		                      if(this.fromModal)
 		                      {
-		                      	bus.$emit('selectedPatient', response.data); 
+		                      	bus.$emit('patientCreated', response.data); 
 		                      }
 		                      bus.$emit('addToList', response.data); //this.pacientes.push(response.data);
-		                      bus.$emit('alert', 'Paciente Agregado','success');
-		                      this.paciente = {};
-		                      this.errors = [];
+                          bus.$emit('alert', 'Paciente Agregado','success');
+                          
+		                      this.paciente = {
+                              password:'123456'
+                           };
+                          
+                          this.errors = [];
 		                    }
 		                   this.loader = false;
 		              }, (response) => {

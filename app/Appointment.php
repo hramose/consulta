@@ -47,6 +47,14 @@ class Appointment extends Model
     {
         return $this->created_by == ($user) ? $user->id : auth()->id();
     }
+    public function isCreatedByPatient() 
+    {
+        $user = User::find($this->created_by);
+    
+
+        return $user->roles()->where('name', 'paciente')->count();
+    }
+    
 
      public function user()
     {

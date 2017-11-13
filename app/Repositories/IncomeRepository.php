@@ -39,6 +39,10 @@ class IncomeRepository extends DbRepository{
         $income->year = $data['year'];
         $income->amount = $data['amount'];
 
+        if(isset($data['pending']))
+            $income->pending = $data['pending'];
+            
+
 
         $income = $medic->incomes()->save($income);
         
@@ -116,10 +120,10 @@ class IncomeRepository extends DbRepository{
     
        
        // $incomes = $this->model->where('type', 'I');
-        $incomesGeneral =  $this->model->where('type', 'I')->where('medic_type',"G");
-        $incomesSpecialist =  $this->model->where('type', 'I')->where('medic_type','S');
+        //$incomesGeneral =  $this->model->where('type', 'I')->where('medic_type',"G");
+       // $incomesSpecialist =  $this->model->where('type', 'I')->where('medic_type','S');
        
-        if (isset($search['date1']) && $search['date1'] != "")
+       /* if (isset($search['date1']) && $search['date1'] != "")
         {
            
             
@@ -135,39 +139,87 @@ class IncomeRepository extends DbRepository{
              $incomesSpecialist = $incomesSpecialist->where([['incomes.date', '>=', $date1],
                     ['incomes.date', '<=', $date2->endOfDay()]]);
            
-        }
+        }*/
          
        
       
-        $countSpecialist = $incomesSpecialist->count();
-        $countGeneral = $incomesGeneral->count();
-        $incomesG = $incomesGeneral->sum('amount');
-        $paidGeneral = ($countGeneral) ? $incomesGeneral->where('paid', 1)->sum('amount') : 0;
-        $pendingGeneral =  ($countGeneral) ? ($incomesG - $paidGeneral) : 0;
+        // $countSpecialist = $incomesSpecialist->count();
+        // $countGeneral = $incomesGeneral->count();
+        // $incomesG = $incomesGeneral->sum('amount');
+        // $paidGeneral = ($countGeneral) ? $incomesGeneral->where('paid', 1)->sum('amount') : 0;
+        // $pendingGeneral =  ($countGeneral) ? ($incomesG - $paidGeneral) : 0;
 
-        $incomesS= $incomesSpecialist->sum('amount');
-        $paidSpecialist = ($countSpecialist) ? $incomesSpecialist->where('paid', 1)->sum('amount') : 0;
-        $pendingSpecialist = ($countSpecialist) ? ($incomesS - $paidSpecialist) : 0;
+        // $incomesS= $incomesSpecialist->sum('amount');
+        // $paidSpecialist = ($countSpecialist) ? $incomesSpecialist->where('paid', 1)->sum('amount') : 0;
+        // $pendingSpecialist = ($countSpecialist) ? ($incomesS - $paidSpecialist) : 0;
+        
+        $medics = User::with('incomes')->whereHas('roles', function($q){
+            $q->where('name', 'medico');
+        })->where('active',1)->get();
 
-        $specialist = [
-            'appointments' => $countSpecialist,
-            'incomes' => $incomesS,
-            'pending' => $pendingSpecialist,
-            'paid' => $paidSpecialist
+        $expedient = [
+            'medics' => $medics->count(),
+            'monthly_payment' => getAmountPerExpedientUse(),
+            'total' => $medics->count() * getAmountPerExpedientUse(),
+        
         ];
+        
+        $medicsArray = [];
+        $totalAttended = 0;
+        $totalPending = 0;
+        foreach($medics as $medic){
 
-        $general = [
-            'appointments' =>  $countGeneral,
-            'incomes' =>   $incomesG,
-            'pending' => $pendingGeneral,
-            'paid' => $paidGeneral
+            if (isset($search['date1']) && $search['date1'] != "")
+            {
+               
+                
+                
+                $date1 = new Carbon($search['date1']);
+                $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+                $date2 = new Carbon($date2);
+                
+             
+                $incomesAttented = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                        ['incomes.date', '<=', $date2->endOfDay()]])->where('type','I');
+    
+                 $incomesPending = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                 ['incomes.date', '<=', $date2->endOfDay()]])->where('type','P');
+               
+            }
+
+            $totalMedicAttended = $incomesAttented->sum('amount');
+            $totalMedicPending = $incomesPending->sum('amount');
+
+            $medicData = [
+                'id' =>  $medic->id,
+                'name' =>  $medic->name,
+                'attented'=> $incomesAttented->count(),
+                'attented_amount' =>   $totalMedicAttended,
+                'pending' => $incomesPending->count(),
+                'pending_amount' => $totalMedicAttended,
+                
+            ];
+
+
+            $medicsArray[] = $medicData;
+
+            $totalAttended +=  $totalMedicAttended;
+            $totalPending +=  $totalMedicPending;
+    
+        }
+
+        $attended = [
+            'medics' =>  $medicsArray,
+            'totalAttended' =>  $totalAttended,
+            'totalPending' =>  $totalPending,
+            
         ];
 
  
 
         $statistics = [
-            'specialist' => $specialist,
-            'general' => $general
+            'generalByExpedientUse' => $expedient,
+            'individualByAppointmentAttended' => $attended
         ];
       
 

@@ -15,8 +15,8 @@ class CreateConfigurationsTable extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->increments('id');
-            $table->double('amount_general')->default('1000');
-            $table->double('amount_specialist')->default('1500');
+            $table->double('amount_attended')->default('1');
+            $table->double('amount_expedient')->default('10');
            
            
         });

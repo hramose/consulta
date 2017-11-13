@@ -22,7 +22,7 @@
            
           <div v-show="newPatient">
               <div class="callout callout-info"><h4>Información !</h4> <p>Agrega un paciente nuevo</p></div>
-              <patient-form :fromModal="true"></patient-form>
+              <patient-form :fromModal="true" url="/medic/account/patients"></patient-form>
      
           </div>
                
@@ -82,7 +82,7 @@
         },
     
         select(patient) {
-  
+          debugger
           if(patient){
             this.paciente = patient;
             this.selectedPatient = patient.id;

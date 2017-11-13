@@ -220,7 +220,7 @@ $(function () {
                 {
                      var officeInfo = event.office;//JSON.parse(event.office_info);
 
-                      officeInfoDisplay = 'en la '+ officeInfo.type +' '+ officeInfo.name+ ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
+                      officeInfoDisplay = 'en '+ officeInfo.type +' '+ officeInfo.name+ ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
                       
                    
                 }
@@ -265,7 +265,7 @@ $(function () {
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>'
                       
-                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ officeInfo.name
+                      titleAlert = 'Este horario está reservado para atención en '+ officeInfo.type +' '+ officeInfo.name
                       
                       textAlert = 'Favor llamar a este número: '+ officeInfo.phone + ' <br> Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }

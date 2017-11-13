@@ -27,15 +27,15 @@
       <div class="col-xs-12 col-sm-6">
          <div class="box box-info">
           <div class="box-header with-border">
-            Cobro del número de pacientes atendidos
+            Cobro de citas atendidas y mensualidad
           </div>
           <div class="box-body">
             
                 <form action="/admin/configuration" method="POST">
-                    <label>Médicos Generales</label>
+                    <label>Mensualidad por Uso de Expediente Clínico</label>
                     <div class="input-group">
                        {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                      <input type="text" name="amount_general" class="form-control" value="{{ getAmountGeneralPerAppointment() }}">
+                      <input type="text" name="amount_expedient" class="form-control" value="{{ getAmountPerExpedientUse() }}">
                           <span class="input-group-btn">
                             <button type="submit" class="btn btn-info btn-flat">Guardar</button>
                           </span>
@@ -44,11 +44,11 @@
                   <br>
                   
                   <form action="/admin/configuration" method="POST">
-                    <label>Médicos Specialista</label>
+                    <label>Monto por cita atendida</label>
                     <div class="input-group ">
                     
                       {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                       <input type="text" name="amount_specialist" class="form-control" value="{{ getAmountSpecialistPerAppointment() }}">
+                       <input type="text" name="amount_attended" class="form-control" value="{{ getAmountPerAppointmentAttended() }}">
                           <span class="input-group-btn">
                             <button type="submit" class="btn btn-info btn-flat">Guardar</button>
                           </span>

@@ -107,6 +107,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::put('/account/assistant/{assistant}', 'Medic\UserController@updateAssistant');
 	Route::get('/account/assistants', 'Medic\UserController@getAssistants');
 	Route::get('/account/consultorios', 'Medic\UserController@getConsultoriosIndependientes');
+	Route::post('/account/patients', 'Medic\UserController@storePatient');
 	
 	Route::delete('/account/assistants/{assistant}', 'Medic\UserController@deleteAssistant');
 	Route::put('/account/settings', 'Medic\UserController@updateSettings');
@@ -183,6 +184,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::get('/reports', 'Medic\ReportsController@index');
 	Route::get('/reports/generate', 'Medic\ReportsController@generate');
 
+	Route::get('/payments/{id}/details', 'Medic\PaymentController@details');
 	Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
 	
 

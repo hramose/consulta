@@ -60,10 +60,10 @@
           
         </div>
      </div>
-      <div v-if="data.general">
+      <div v-if="data.generalByExpedientUse">
            <div class="box box-danger">
               <div class="box-header">
-                 <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                 <h3 class="box-title">Mensualidad por uso de expediente clinico</h3>
                 
               </div>
               <div class="box-body">
@@ -74,46 +74,77 @@
                               <table class="table no-margin">
                                 <thead>
                                 <tr>
-                                  <th>Médico</th>
-                                  <th>Consultas Atendidas</th>
-                                  <th>Ingresos Recibidos</th>
-                                  <th>Pendientes de Pago</th>
-                                  <th>Pagos Aplicados</th>
+                                  <th></th>
+                                  <th>Cantidad</th>
+                                  <th>Mensualidad</th>
+                                  <th>Total</th>
+                                 
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>General</td>
-                                    <td>{{ data.general.appointments }}</td>
-                                    <td>₡{{ money(data.general.incomes) }}</td>
+                                    <td>Medicos</td>
+                                    <td>{{ data.generalByExpedientUse.medics }}</td>
+                                    <td>${{ money(data.generalByExpedientUse.monthly_payment) }}</td>
                                     <td>
-                                      ₡{{  money(parseFloat(data.general.pending) ) }}
+                                      ₡{{  money(parseFloat(data.generalByExpedientUse.total) ) }}
                                     </td>
-                                    <td>
-                                      ₡{{  money(parseFloat(data.general.paid) ) }}
-                                    </td>
+                                    
                                 </tr>
+                               
+                                
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        
+                  
+
+                
+              </div>
+          </div>
+          <div v-if="data.individualByAppointmentAttended">
+           <div class="box box-success">
+              <div class="box-header">
+                 <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                 <span class="pull-right"><b class="label label-success">Total Atendido: ${{ money(parseFloat(data.individualByAppointmentAttended.totalAttended)) }}</b>  <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(data.individualByAppointmentAttended.totalPending)) }}</b> </span>
+              </div>
+              <div class="box-body">
+
+                    
+                        <div class="col-xs-12 ">
+                             <div class="table-responsive">
+                              <table class="table no-margin">
+                                <thead>
                                 <tr>
-                                    <td>Especialista</td>
-                                    <td>{{ data.specialist.appointments }}</td>
-                                    <td>₡{{ money(data.specialist.incomes) }}</td>
-                                    <td>
-                                      ₡{{  money(parseFloat(data.specialist.pending) ) }}
-                                    </td>
-                                    <td>
-                                      ₡{{  money(parseFloat(data.specialist.paid) ) }}
-                                    </td>
+                                  <th>Médico</th>
+                                  <th>Consultas Atendidas (Pacientes)</th>
+                                  <th>Monto</th>
+                                  <th>Consultas pedientes</th>
+                                  <th>Monto</th>
+                                  
+                                  
                                 </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="medic in data.individualByAppointmentAttended.medics">
+                                    <td>{{ medic.name }}</td>
+                                    <td>{{ medic.attented }}</td>
+                                    <td>${{ money(medic.attented_amount) }}</td>
+                                    <td>{{ medic.pending }}</td>
+                                    <td>${{ money(medic.pending_amount) }}</td>
+                                    
+                                   
+                                </tr>
+                               
                                 <tr>
-                                    <td><b>Totales</b></td>
-                                    <td>{{ parseInt(data.specialist.appointments) +  parseInt(data.general.appointments) }}</b></td>
-                                    <td><b>₡{{ money(parseFloat(data.specialist.incomes) + parseFloat(data.general.incomes)) }}</b></td>
+                                    <!-- <td><b>Totales</b></td>
+                                    <td>{{ dataInvoices.totalAppointments }}</b></td>
+                                    <td><b>₡{{ money(parseFloat(dataInvoices.totalInvoices)) }}</b></td>
                                     <td>
-                                      <b>₡{{  money(parseFloat(data.specialist.pending) + parseFloat(data.general.pending) ) }}</b>
-                                    </td>
-                                    <td>
-                                     <b> ₡{{  money(parseFloat(data.specialist.paid) + parseFloat(data.general.paid)) }}</b>
-                                    </td>
+                                      <b>₡{{ money(dataInvoices.totalCommission) }}</b>
+                                    </td> -->
+                                    
                                 </tr>
                                 
                                 </tbody>
@@ -126,18 +157,19 @@
                 
               </div>
           </div>
-          <div class="row">
+          </div>
+          <!-- <div class="row">
                   <div class="col-xs-12 col-sm-6">
                       <div class="box box-default box-chart">
                           <div class="box-header">
                             <h4>Médicos Generales: Ingresos recibidos vs pendientes</h4>
                           </div>
                           <div class="box-body">
-                            <!-- <appointments-chart></appointments-chart> -->
+                           
                            
                             <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsGeneral"  :datasets="dataSetsGeneral"  :option="myOption"></chartjs-pie>
                           </div>
-                          <!-- /.box-body -->
+                          
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-6">
@@ -146,14 +178,14 @@
                            <h4> Médicos Especialistas: Ingresos recibidos vs pendientes</h4>
                           </div>
                           <div class="box-body">
-                            <!-- <appointments-chart></appointments-chart> -->
+                            
                            
                             <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsSpecialist"  :datasets="dataSetsSpecialist" :option="myOption"></chartjs-pie>
                           </div>
-                          <!-- /.box-body -->
+                          
                     </div>
                   </div>
-            </div>
+            </div> -->
          
           
          
@@ -259,8 +291,18 @@
             
           },
          
-        
+         totalIncomes(incomes){
+              let total = 0;
 
+              for (var i = 0; i < incomes.length; i++) {
+                total += parseFloat(incomes[i].amount);
+              }
+              
+              return total;
+            
+          
+        },
+       
 
         generateReport(){
          
@@ -284,7 +326,7 @@
                    //alert('reporte')
                    console.log(resp.data);
                    this.data = resp.data
-                   this.getDataForChart();
+                   //this.getDataForChart();
                    this.loader = false;
                 });
 

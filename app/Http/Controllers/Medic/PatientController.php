@@ -64,34 +64,46 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-        //validamos que en users no hay email que va a registrase como paciente
-        $this->validate(request(),[
-                'email' => 'required|email|max:255|unique:users'
-            ]);
+        
+        $data = $request->all();
 
+        //dd($data);
 
         $patient =$this->patientRepo->store($request->all());
 
-        $data = $request->all();
-        $data['password'] = ($data['password']) ? $data['password'] : '123456';
-        $data['name'] = $data['first_name'];
-        $data['provider'] = 'email';
-        $data['provider_id'] = $data['email'];
-        $data['role'] = Role::whereName('paciente')->first();
-        $data['api_token'] = str_random(50);
+        //validamos que en users no hay email que va a registrase como paciente
+        if($data['email']){
+
+            $this->validate(request(),[
+                'email' => 'required|email|max:255|unique:users'
+            ]);
+
+            $data['password'] = (isset($data['password'])) ? $data['password'] : '123456';
+            $data['name'] = $data['first_name'];
+            $data['provider'] = 'email';
+            $data['provider_id'] = $data['email'];
+            $data['role'] = Role::whereName('paciente')->first();
+            $data['api_token'] = str_random(50);
+    
+            
+            $user = $this->userRepo->store($data);
+            $user_patient = $user->patients()->save($patient);
+    
+             try {
+                            
+                \Mail::to($user)->send(new NewPatient($user));
+                
+            }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+            {
+                \Log::error($e->getMessage());
+            }
+        
+        }
 
         
-        $user = $this->userRepo->store($data);
-        $user_patient = $user->patients()->save($patient);
 
-         try {
-                        
-            \Mail::to($user)->send(new NewPatient($user));
-            
-        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-        {
-            \Log::error($e->getMessage());
-        }
+        
+       
 
         flash('Paciente Creado','success');
 

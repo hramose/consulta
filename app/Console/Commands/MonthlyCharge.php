@@ -48,7 +48,8 @@ class MonthlyCharge extends Command
         $medics = User::whereHas('roles', function ($query) {
                         $query->where('name',  'medico');
                     })->where('active', 1)->with(['incomes' => function ($query){
-                                $query->where('type', 'I');
+                                $query->where('type', 'I')
+                                ->orWhere('type', 'P');
                             }])->get();
 
         
@@ -65,15 +66,19 @@ class MonthlyCharge extends Command
            
             //if(!$medic->settings->trial){ // si no esta en periodo de prueba ejecute el pago
 
-                $incomes = $medic->incomes()->where(\DB::raw('MONTH(date)'), '=', $month)->where(\DB::raw('YEAR(date)'), '=', $year)->get();
+                $incomes = $medic->incomes()->where(\DB::raw('MONTH(date)'), '=', $month)->where(\DB::raw('YEAR(date)'), '=', $year)->where('type','I')->get();
+                $incomesPending = $medic->incomes()->where(\DB::raw('MONTH(date)'), '=', $month)->where(\DB::raw('YEAR(date)'), '=', $year)->where('type','P')->get();
                 
                 $totalCharge = $incomes->sum('amount');
-             
+                $totalChargePending = $incomesPending->sum('amount');
+                $monthlyExpedient = getAmountPerExpedientUse();
+
                 if($totalCharge > 0)
                 {
                     $dataIncome['type'] = 'M';
                     $dataIncome['medic_type'] = 'A';
-                    $dataIncome['amount'] = $totalCharge;
+                    $dataIncome['amount'] = $monthlyExpedient + $totalCharge;
+                    $dataIncome['pending'] = $totalChargePending;
                     $dataIncome['appointment_id'] = 0;
                     $dataIncome['date'] = Carbon::now();
                     $dataIncome['month'] = $month;
@@ -87,6 +92,7 @@ class MonthlyCharge extends Command
 
                     $countMedics++;
                 }
+                
                 
 
           //   }

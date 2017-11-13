@@ -573,7 +573,7 @@ $(function () {
                 {
                      var officeInfo = event.office;//JSON.parse(event.office_info);
 
-                      officeInfoDisplay = 'en la '+ officeInfo.type +' '+ officeInfo.name+ ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
+                      officeInfoDisplay = 'en '+ officeInfo.type +' '+ officeInfo.name+ ' <br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +', Tel: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a><br>'
                       
                    
                 }
@@ -619,7 +619,7 @@ $(function () {
 
                       officeInfoDisplay = '<br>Dirección: ' + officeInfo.address + ', ' + officeInfo.province +' <br>'
                       
-                      titleAlert = 'Este horario está reservado para atención en la '+ officeInfo.type +' '+ officeInfo.name
+                      titleAlert = 'Este horario está reservado para atención en '+ officeInfo.type +' '+ officeInfo.name
                       
                       textAlert = 'Favor llamar a este número: '+ officeInfo.phone + ' <br> Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
@@ -1421,7 +1421,7 @@ $(function () {
          setupSchedule.find('#search-offices').select2('focus');
          setupSchedule.find('#search-offices').select2('open');
 
-         infoBox.addClass('alert-danger').html('Escribe un consultorio o evento. Por favor revisar!!!').show();
+         infoBox.addClass('alert-danger').html('Escribe un consultorio o clínica. Por favor revisar!!!').show();
                         setTimeout(function()
                         { 
                           infoBox.removeClass('alert-danger').hide();
