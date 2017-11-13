@@ -32,7 +32,7 @@ class ScheduleController extends ApiController
         $data = request()->all();
         $user = request()->user();
         $data['user_id'] = $user->id;
-
+        dd($data);
         $schedule = Schedule::create($data);
         dd($schedule);
         $schedule = $user->schedules()->save($schedule);
