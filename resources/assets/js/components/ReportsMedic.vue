@@ -66,7 +66,7 @@
           
         </div>
      </div>
-     <div v-if="dataInvoices.medics">
+     <div v-if="dataIncomes">
            <div class="box box-danger">
               <div class="box-header">
                  <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
@@ -75,43 +75,37 @@
               <div class="box-body">
 
                     
-                        <div class="col-xs-12 ">
-                             <div class="table-responsive">
-                              <table class="table no-margin">
-                                <thead>
-                                <tr>
-                                  <th>Médico</th>
-                                  <th>Consultas Atendidas (facturadas)</th>
-                                  <th>Ingresos Recibidos</th>
-                                  <th>Comisión</th>
-                                  
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="medic in dataInvoices.medics">
-                                    <td>{{ medic.name }}</td>
-                                    <td>{{ medic.invoices.length }}</td>
-                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
-                                    <td>
-                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
-                                    </td>
-                                   
-                                </tr>
-                               
-                                <tr>
-                                    <td><b>Totales</b></td>
-                                    <td>{{ dataInvoices.totalAppointments }}</b></td>
-                                    <td><b>₡{{ money(dataInvoices.totalInvoices) }}</b></td>
-                                    <td>
-                                      <b>₡{{ money(dataInvoices.totalCommission) }}</b>
-                                    </td>
+                       <div class="col-xs-12 ">
+                          <div class="table-responsive">
+                                  <table class="table no-margin">
+                                  <thead>
+                                  <tr>
+                                      
+                                      <th>Consultas Atendidas</th>
+                                      <th>Monto</th>
+                                      <th>Mensualidad</th>
+                                      <th>Total</th>
                                     
-                                </tr>
-                                
-                                </tbody>
-                              </table>
-                            </div>
-                        </div>
+                                      
+                                      
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                    
+                                      <td>{{ dataIncomes.attented }}</td>
+                                      <td>${{ money(dataIncomes.attented_amount) }}</td>
+                                      <td>${{ money(dataIncomes.monthly_payment) }}</td>
+                                      <td>${{ money(parseFloat(dataIncomes.monthly_payment) + parseFloat(dataIncomes.attented_amount)) }}</td>
+                                    
+                                      
+                                  </tr>
+                              
+                                  
+                                  </tbody>
+                                  </table>
+                          </div>
+                      </div>
                         
                   
 
@@ -193,26 +187,26 @@
                             
                                   <img src="/img/muy-malo.png" alt="1" title="Muy Malo" v-if="1 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 2">
                                
-                                  <img src="/img/muy-malo-off.png" alt="1" title="Muy Malo" v-else>
+                                  <img src="/img/muy-malo-off.png" class="evaluation-off" alt="1" title="Muy Malo" v-else>
                               
                               
                                  <img src="/img/malo.png" alt="2" title="Malo" v-if="2 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 3">
                                
-                                  <img src="/img/malo-off.png" alt="2" title="Malo" v-else>
+                                  <img src="/img/malo-off.png" class="evaluation-off" alt="2" title="Malo" v-else>
                                
                                  <img src="/img/regular.png" alt="3" title="regular" v-if="3 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 4">
                                
-                                  <img src="/img/regular-off.png" alt="3" title="regular" v-else>
+                                  <img src="/img/regular-off.png" class="evaluation-off" alt="3" title="regular" v-else>
                                
                                
                                  <img src="/img/bueno.png" alt="4" title="Bueno" v-if="4 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 5">
                                 
-                                  <img src="/img/bueno-off.png" alt="4" title="Bueno" v-else>
+                                  <img src="/img/bueno-off.png" class="evaluation-off" alt="4" title="Bueno" v-else>
                                
                       
                                  <img src="/img/excelente.png" alt="5" title="Excelente" v-if="5 <= dataReviews.rating_service_cache" >
                                
-                                  <img src="/img/excelente-off.png" alt="5" title="Excelente" v-else>
+                                  <img src="/img/excelente-off.png" class="evaluation-off" alt="5" title="Excelente" v-else>
                                
                              
                            
@@ -258,26 +252,26 @@
                               
                                     <img src="/img/muy-malo.png" alt="1" title="Muy Malo" v-if="1 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 2">
                                  
-                                    <img src="/img/muy-malo-off.png" alt="1" title="Muy Malo" v-else>
+                                    <img src="/img/muy-malo-off.png" class="evaluation-off" alt="1" title="Muy Malo" v-else>
                                 
                                 
                                    <img src="/img/malo.png" alt="2" title="Malo" v-if="2 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 3">
                                  
-                                    <img src="/img/malo-off.png" alt="2" title="Malo" v-else>
+                                    <img src="/img/malo-off.png" class="evaluation-off" alt="2" title="Malo" v-else>
                                  
                                    <img src="/img/regular.png" alt="3" title="regular" v-if="3 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 4">
                                  
-                                    <img src="/img/regular-off.png" alt="3" title="regular" v-else>
+                                    <img src="/img/regular-off.png" class="evaluation-off" alt="3" title="regular" v-else>
                                  
                                  
                                    <img src="/img/bueno.png" alt="4" title="Bueno" v-if="4 <= dataReviews.rating_medic_cache && dataReviews.rating_medic_cache < 5">
                                   
-                                    <img src="/img/bueno-off.png" alt="4" title="Bueno" v-else>
+                                    <img src="/img/bueno-off.png" class="evaluation-off" alt="4" title="Bueno" v-else>
                                  
                         
                                    <img src="/img/excelente.png" alt="5" title="Excelente" v-if="5 <= dataReviews.rating_medic_cache" >
                                  
-                                    <img src="/img/excelente-off.png" alt="5" title="Excelente" v-else>
+                                    <img src="/img/excelente-off.png" class="evaluation-off" alt="5" title="Excelente" v-else>
                                  
                                
                              
@@ -339,7 +333,7 @@
           
           data:[],
           dataPatients:[],
-          dataInvoices:[],
+          dataIncomes:[],
           dataReviews:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
@@ -462,7 +456,7 @@
            this.dataPoll = [];
            this.data = [];
            this.dataPatients = [];
-           this.dataInvoices = [];
+           this.dataIncomes = [];
            this.dataReviews = [];
           this.message= "";
         },
@@ -496,9 +490,19 @@
 
                this.data = resp.data.appointments
                this.dataPatients = resp.data.patients
-               this.dataInvoices = resp.data.invoices
+              
               
                this.getDataForChart();
+               this.loader = false;
+
+            });
+
+              this.$http.get('/medic/reports/incomes/generate', {params: Object.assign(queryParam, this.data)})
+            .then(resp => {
+              
+               this.dataIncomes = resp.data
+              
+              
                this.loader = false;
 
             });

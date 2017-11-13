@@ -86,11 +86,11 @@
           
         </div>
      </div>
-     <div v-if="dataInvoices.medics">
-           <div class="box box-danger">
+     <div v-if="dataIncomes.individualByAppointmentAttended">
+           <div class="box box-success">
               <div class="box-header">
                  <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
-                
+                 <span class="pull-right"><b class="label label-success">Total Atendido: ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalAttended)) }}</b>  <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> </span>
               </div>
               <div class="box-body">
 
@@ -101,30 +101,32 @@
                                 <thead>
                                 <tr>
                                   <th>Médico</th>
-                                  <th>Consultas Atendidas (facturadas)</th>
-                                  <th>Ingresos Recibidos</th>
-                                  <th>Comisión</th>
+                                  <th>Consultas Atendidas (Pacientes)</th>
+                                  <th>Monto</th>
+                                  <th>Consultas pedientes</th>
+                                  <th>Monto</th>
+                                  
                                   
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="medic in dataInvoices.medics">
+                                <tr v-for="medic in dataIncomes.individualByAppointmentAttended.medics">
                                     <td>{{ medic.name }}</td>
-                                    <td>{{ medic.invoices.length }}</td>
-                                    <td>₡{{ money(totalInvoices(medic.invoices)) }}</td>
-                                    <td>
-                                      ₡{{ money(totalCommission(medic.invoices, medic.commission)) }}
-                                    </td>
+                                    <td>{{ medic.attented }}</td>
+                                    <td>${{ money(medic.attented_amount) }}</td>
+                                    <td>{{ medic.pending }}</td>
+                                    <td>${{ money(medic.pending_amount) }}</td>
+                                    
                                    
                                 </tr>
                                
                                 <tr>
-                                    <td><b>Totales</b></td>
+                                    <!-- <td><b>Totales</b></td>
                                     <td>{{ dataInvoices.totalAppointments }}</b></td>
                                     <td><b>₡{{ money(parseFloat(dataInvoices.totalInvoices)) }}</b></td>
                                     <td>
                                       <b>₡{{ money(dataInvoices.totalCommission) }}</b>
-                                    </td>
+                                    </td> -->
                                     
                                 </tr>
                                 
@@ -136,28 +138,9 @@
                   
 
                 
-              </div>
+                </div>
+            </div>
           </div>
-          <!-- <div class="row">
-                  <div class="col-xs-12">
-                      <div class="box box-default box-chart">
-                          <div class="box-header">
-                            <h4>Ingresos recibidos vs pendientes</h4>
-                          </div>
-                          <div class="box-body">
-                       
-                           
-                            <chartjs-pie :scalesdisplay="false"  :labels="dataLabelsIncomes"  :datasets="dataSetsIncomes"></chartjs-pie>
-                          </div>
-                          
-                    </div>
-                  </div>
-                  
-            </div> -->
-         
-          
-         
-        </div>
       <div v-if="data.length">
            <div class="box box-danger">
               <div class="box-header">
@@ -281,26 +264,26 @@
                             
                                   <img src="/img/muy-malo.png" alt="1" title="Muy Malo" v-if="1 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 2">
                                
-                                  <img src="/img/muy-malo-off.png" alt="1" title="Muy Malo" v-else>
+                                  <img src="/img/muy-malo-off.png" class="evaluation-off" alt="1" title="Muy Malo" v-else>
                               
                               
                                  <img src="/img/malo.png" alt="2" title="Malo" v-if="2 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 3">
                                
-                                  <img src="/img/malo-off.png" alt="2" title="Malo" v-else>
+                                  <img src="/img/malo-off.png" class="evaluation-off" alt="2" title="Malo" v-else>
                                
                                  <img src="/img/regular.png" alt="3" title="regular" v-if="3 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 4">
                                
-                                  <img src="/img/regular-off.png" alt="3" title="regular" v-else>
+                                  <img src="/img/regular-off.png" class="evaluation-off" alt="3" title="regular" v-else>
                                
                                
                                  <img src="/img/bueno.png" alt="4" title="Bueno" v-if="4 <= dataReviews.rating_service_cache && dataReviews.rating_service_cache < 5">
                                 
-                                  <img src="/img/bueno-off.png" alt="4" title="Bueno" v-else>
+                                  <img src="/img/bueno-off.png" class="evaluation-off" alt="4" title="Bueno" v-else>
                                
                       
                                  <img src="/img/excelente.png" alt="5" title="Excelente" v-if="5 <= dataReviews.rating_service_cache" >
                                
-                                  <img src="/img/excelente-off.png" alt="5" title="Excelente" v-else>
+                                  <img src="/img/excelente-off.png" class="evaluation-off" alt="5" title="Excelente" v-else>
                                
                              
                            
@@ -367,6 +350,7 @@
           //dataSales:[],
           dataReviews:[],
           dataInvoices:[],
+          dataIncomes:[],
           statuses:['Reservadas','Atendidas','No Asistió'],
           statusesColorClass:['bg-aqua','bg-green','bg-yellow'],
           statusesColor:['#00c0ef','#00a65a','#f39c12'],
@@ -569,7 +553,7 @@
            this.dataPatients = [];
            //this.dataSales = [];
            this.dataReviews = [];
-           this.dataInvoices = [];
+           this.dataIncomes = [];
            this.dataSetsIncomes =[];
            this.message = "";
         },
@@ -616,12 +600,27 @@
                //this.dataSales = resp.data.sales
 
               
-                this.dataInvoices =  resp.data.invoices
+              //  this.dataInvoices =  resp.data.invoices
                 
              
                
               
                this.getDataForChart();
+
+               this.loader = false;
+
+            });
+
+            this.$http.get('/clinic/reports/incomes/generate', {params: Object.assign(queryParam, this.data)})
+            .then(resp => {
+               //alert('reporte')
+
+              
+                this.dataIncomes =  resp.data
+                
+             
+               
+          
 
                this.loader = false;
 

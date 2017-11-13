@@ -183,6 +183,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 
 	Route::get('/reports', 'Medic\ReportsController@index');
 	Route::get('/reports/generate', 'Medic\ReportsController@generate');
+	Route::get('/reports/incomes/generate', 'Medic\ReportsController@incomes');
 
 	Route::get('/payments/{id}/details', 'Medic\PaymentController@details');
 	Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
@@ -241,6 +242,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 
 	Route::get('/reports', 'Clinic\ReportsController@index');
 	Route::get('/reports/generate', 'Clinic\ReportsController@generate');
+	Route::get('/reports/incomes/generate', 'Clinic\ReportsController@incomes');
 
 	Route::get('/register/office', 'Clinic\RegisterController@showRegistrationOfficeForm');
 	Route::post('/register/office', 'Clinic\RegisterController@registerOffice');

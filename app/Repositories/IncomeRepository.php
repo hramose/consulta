@@ -5,6 +5,7 @@
 
 
 use App\Income;
+use App\Office;
 use App\User;
 use Carbon\Carbon;
 
@@ -32,6 +33,7 @@ class IncomeRepository extends DbRepository{
         
         $income = $this->model;
         $income->appointment_id = $data['appointment_id'];
+        $income->office_id = $data['office_id'];
         $income->type = $data['type'];
         $income->medic_type = $data['medic_type'];
         $income->date = $data['date'];
@@ -152,10 +154,33 @@ class IncomeRepository extends DbRepository{
         // $incomesS= $incomesSpecialist->sum('amount');
         // $paidSpecialist = ($countSpecialist) ? $incomesSpecialist->where('paid', 1)->sum('amount') : 0;
         // $pendingSpecialist = ($countSpecialist) ? ($incomesS - $paidSpecialist) : 0;
+        $medics = [];
+         if (isset($search['date1']) && $search['date1'] != "")
+        {
+               
+                
+                
+                $date1 = new Carbon($search['date1']);
+                $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+                $date2 = new Carbon($date2);
+        }
+
+         if (isset($search['clinic']) && $search['clinic'] != "" && !count($medics))
+            {
+
+              $medics = Office::find($search['clinic'])->medicsWithIncomes($date1, $date2);
+
+               if (isset($search['medic']) && $search['medic'] != "")
+               {
+                   $medics = $medics->where('id',$search['medic']);
+               }
+
+            }else{
         
-        $medics = User::with('incomes')->whereHas('roles', function($q){
-            $q->where('name', 'medico');
-        })->where('active',1)->get();
+                $medics = User::with('incomes')->whereHas('roles', function($q){
+                    $q->where('name', 'medico');
+                })->where('active',1)->get();
+            }
 
         $expedient = [
             'medics' => $medics->count(),
@@ -169,8 +194,8 @@ class IncomeRepository extends DbRepository{
         $totalPending = 0;
         foreach($medics as $medic){
 
-            if (isset($search['date1']) && $search['date1'] != "")
-            {
+            //if (isset($search['date1']) && $search['date1'] != "")
+            //{
                
                 
                 
@@ -178,14 +203,24 @@ class IncomeRepository extends DbRepository{
                 $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
                 $date2 = new Carbon($date2);
                 
+                if (isset($search['clinic']) && $search['clinic'] != "")
+                {
              
-                $incomesAttented = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                    $incomesAttented = $medic->incomes()->where('office_id', $search['clinic'])->where([['incomes.date', '>=', $date1],
                         ['incomes.date', '<=', $date2->endOfDay()]])->where('type','I');
     
-                 $incomesPending = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                    $incomesPending = $medic->incomes()->where('office_id', $search['clinic'])->where([['incomes.date', '>=', $date1],
                  ['incomes.date', '<=', $date2->endOfDay()]])->where('type','P');
-               
-            }
+                }else{
+
+                    $incomesAttented = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                        ['incomes.date', '<=', $date2->endOfDay()]])->where('type','I');
+    
+                    $incomesPending = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                 ['incomes.date', '<=', $date2->endOfDay()]])->where('type','P');
+
+                }
+           // }
 
             $totalMedicAttended = $incomesAttented->sum('amount');
             $totalMedicPending = $incomesPending->sum('amount');
@@ -196,7 +231,7 @@ class IncomeRepository extends DbRepository{
                 'attented'=> $incomesAttented->count(),
                 'attented_amount' =>   $totalMedicAttended,
                 'pending' => $incomesPending->count(),
-                'pending_amount' => $totalMedicAttended,
+                'pending_amount' => $totalMedicPending,
                 
             ];
 
@@ -227,6 +262,62 @@ class IncomeRepository extends DbRepository{
       return $statistics;
        
     }
+
+     /**
+     * Get all the appointments for the admin panel
+     * @param $search
+     * @return mixed
+     */
+    public function reportByMedic($search)
+    {
+        
+       
+
+        
+        $medic = User::find($search['medic']);
+        $medicData = [];
+       
+        if (isset($search['date1']) && $search['date1'] != "")
+        {
+            
+            
+            
+            $date1 = new Carbon($search['date1']);
+            $date2 = (isset($search['date2']) && $search['date2'] != "") ? $search['date2'] : $search['date1'];
+            $date2 = new Carbon($date2);
+            
+            
+            $incomesAttented = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                    ['incomes.date', '<=', $date2->endOfDay()]])->where('type','I');
+
+                $incomesPending = $medic->incomes()->where([['incomes.date', '>=', $date1],
+                ['incomes.date', '<=', $date2->endOfDay()]])->where('type','P');
+
+
+            $totalMedicAttended = $incomesAttented->sum('amount');
+            $totalMedicPending = $incomesPending->sum('amount');
+
+            $medicData = [
+                'id' =>  $medic->id,
+                'name' =>  $medic->name,
+                'attented'=> $incomesAttented->count(),
+                'attented_amount' =>   $totalMedicAttended,
+                'pending' => $incomesPending->count(),
+                'pending_amount' => $totalMedicAttended,
+                'monthly_payment' => getAmountPerExpedientUse(),
+                
+            ];
+            
+        }
+
+        
+      
+
+         
+      return $medicData;
+       
+    }
+    
     
 
     

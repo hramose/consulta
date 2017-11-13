@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Clinic;
 use App\Http\Controllers\Controller;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\ClinicRepository;
+use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
-     function __construct(AppointmentRepository $appointmentRepo, ClinicRepository $clinicRepo)
+     function __construct(AppointmentRepository $appointmentRepo, ClinicRepository $clinicRepo,IncomeRepository $incomeRepo)
     {
         $this->middleware('authByRole:clinica');
         $this->appointmentRepo = $appointmentRepo;
         $this->clinicRepo = $clinicRepo;
+        $this->incomeRepo = $incomeRepo;
     }
 
     /**
@@ -33,6 +35,35 @@ class ReportsController extends Controller
             return $this->statistics_polls();
         else
             return $this->statistics_appointments();
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function incomes()
+    {
+        $search = request()->all();
+        $statistics = [];
+        
+        if($search){
+
+            $search['clinic'] = (isset($search['clinic'])) ? $search['clinic'] : '';
+            $search['date1'] = (isset($search['date1'])) ? $search['date1'] : '';
+            $search['date2'] = (isset($search['date2'])) ? $search['date2'] : '';
+
+           
+            
+           
+            $statistics = $this->incomeRepo->reportsStatistics($search);
+           
+           
+           
+            
+       }
+        
+        return $statistics;
     }
 
     /**

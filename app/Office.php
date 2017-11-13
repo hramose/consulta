@@ -174,6 +174,18 @@ class Office extends Model
                                                          
                                                 })->where('active', 1)->get();
     }
+     public function medicsWithIncomes($date1, $date2)
+    {
+
+
+          return $this->users()->with(['incomes' => function ($query) use($date1, $date2) {
+                                $query->where([['incomes.date', '>=', $date1->startOfDay()],
+                                    ['incomes.date', '<=', $date2->endOfDay()]]);
+                            }])->whereHas('roles', function ($query){
+                                                    $query->where('name',  'medico');
+                                                         
+                                                })->where('active', 1)->get();
+    }
     
     public function administrators()
     {

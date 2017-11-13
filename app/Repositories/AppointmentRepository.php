@@ -137,6 +137,7 @@ class AppointmentRepository extends DbRepository{
             $dataIncome['medic_type'] = auth()->user()->specialities->count() > 0 ? 'S' :  'G';
             $dataIncome['amount'] = getAmountPerAppointmentAttended(); 
             $dataIncome['appointment_id'] = $appointment->id;
+            $dataIncome['office_id'] = $appointment->office_id;
             $dataIncome['date'] = $appointment->date;
             $dataIncome['month'] = $appointment->date->month;
             $dataIncome['year'] = $appointment->date->year;
@@ -366,7 +367,7 @@ class AppointmentRepository extends DbRepository{
         $appointments = $this->model;
         $balances = Balance::get();
         $medics = [];
-
+       
         if (isset($search['clinic']) && $search['clinic'] != "")
         {
             $appointments = $appointments->where('office_id', $search['clinic']);
@@ -382,6 +383,8 @@ class AppointmentRepository extends DbRepository{
             $appointments = $appointments->where('user_id', $search['medic']);
             //$balances = $balances->where('user_id', $search['medic']);
             $medics = User::where('id',$search['medic']);
+
+          
             
         }
         if (isset($search['speciality']) && $search['speciality'] != "")
@@ -420,10 +423,9 @@ class AppointmentRepository extends DbRepository{
 
             }else{
 
-               $medics = $medics->with(['invoices' => function ($query) use($date1, $date2) {
-                                $query->where('status', 1)
-                                ->where([['invoices.created_at', '>=', $date1],
-                                    ['invoices.created_at', '<=', $date2->endOfDay()]]);
+               $medics = $medics->with(['incomes' => function ($query) use($date1, $date2) {
+                                $query->where([['incomes.date', '>=', $date1],
+                                    ['incomes.date', '<=', $date2->endOfDay()]]);
                             }])->get();
             }
            
@@ -450,7 +452,7 @@ class AppointmentRepository extends DbRepository{
         $totalCommission = 0;
        
 
-        foreach ($medics as $medic) {
+        /*foreach ($medics as $medic) {
             $invoicesTotalMedic = $medic->invoices->sum('total');
             $totalAppointments += $medic->invoices->count();
             $totalInvoices += $invoicesTotalMedic;
@@ -458,27 +460,32 @@ class AppointmentRepository extends DbRepository{
             
             /*$paid =  $medic->invoices->filter(function ($item, $key) {
                         return $item->status == 1;
-                    });*/
+                    });
            // $totalPaid =  $paid->sum('total');
            //  $totalPending = $totalIncomes - $totalPaid;
 
-        }
+           
+    }*/
 
-          $statisticsInvoices = [
+        /*  $statisticsInvoices = [
             'medics' => $medics,
             'totalAppointments' => $totalAppointments,
             'totalInvoices' => $totalInvoices,
             'totalCommission' => $totalCommission,
            
 
-        ];
+        ];*/
+
+       
+        
+               
 
 
         $data =  [
             'appointments' => $statisticsAppointment,
             'patients' => $statisticsPatients,
             //'sales' => $statisticsSales,
-            'invoices' => $statisticsInvoices
+           // 'incomes' => $medicDataIncomes
 
         ];
          
