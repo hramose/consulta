@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $guarded = ['idRemove','office_info'];
+    protected $guarded = ['idRemove','office_info','ini','fin'];
 
     public function user()
     {
