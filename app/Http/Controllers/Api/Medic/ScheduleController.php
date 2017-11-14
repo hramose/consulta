@@ -44,16 +44,13 @@ class ScheduleController extends ApiController
      */
     public function storeAll()
     {
-        dd(request()->all());
+        $dataArray = request()->all();
 
-        $schedule = $this->scheduleRepo->store(request()->all());
-        
-        if(!$schedule) return '';
+        foreach ($dataArray as $schedule) {
+            $sc = $this->scheduleRepo->store($schedule);
+        }
 
-        $schedule['office'] = $schedule->office;
-        $schedule['user'] = $schedule->user;
-
-        return $schedule;
+        return $sc;
 
     }
 
