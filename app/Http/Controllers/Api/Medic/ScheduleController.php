@@ -39,6 +39,23 @@ class ScheduleController extends ApiController
         return $schedule;
 
     }
+     /**
+     * Guardar consulta(cita)
+     */
+    public function storeAll()
+    {
+        dd(request()->all());
+
+        $schedule = $this->scheduleRepo->store(request()->all());
+        
+        if(!$schedule) return '';
+
+        $schedule['office'] = $schedule->office;
+        $schedule['user'] = $schedule->user;
+
+        return $schedule;
+
+    }
 
 
     /**
