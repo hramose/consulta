@@ -65,7 +65,7 @@ class UserController extends ApiController
  
         
  
-         return $user;
+         return $user->load('settings');
  
      }
 
