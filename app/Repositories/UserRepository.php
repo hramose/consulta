@@ -65,7 +65,8 @@ class UserRepository extends DbRepository{
         if(isset($data['minTime']) || isset($data['maxTime']) || isset($data['freeDays']))
         {
            $settings = Setting::where('user_id',$user->id)->first();
-           
+           $data['minTime'] = $data['minTime']. ':00';
+           $data['maxTime'] = $data['maxTime']. ':00';
            if($settings)
             {
                 $settings->fill($data);
