@@ -49,7 +49,7 @@ Route::prefix('medic')->group(function ()
 	Route::get('/{medic}/appointments/list', 'Api\Medic\MedicController@getAppointments')->middleware('auth:api');
 	Route::post('/schedules', 'Api\Medic\ScheduleController@store')->middleware('auth:api');
 	Route::post('/schedules/all', 'Api\Medic\ScheduleController@storeAll')->middleware('auth:api');
-	Route::delete('/schedules/{schedule}', 'Api\Medic\ScheduleController@update')->middleware('auth:api');
+	Route::put('/schedules/{schedule}', 'Api\Medic\ScheduleController@update')->middleware('auth:api');
 	Route::delete('/schedules/{schedule}', 'Api\Medic\ScheduleController@delete')->middleware('auth:api');
 	
 });
