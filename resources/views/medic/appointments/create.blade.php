@@ -32,6 +32,7 @@
            $datetime_string = $datetime->format('c'); 
           echo json_encode($datetime_string);*/
    ?>
+   <div  class="notification-app alert-success" >Seleccione la hora de la cita</div> 
     <section class="content">
       
         <div class="row">

@@ -17,6 +17,15 @@
     <form  role="form" method="POST" action="{{ url('/medic/register') }}">
         {{ csrf_field() }}
       <div class="form-group has-feedback">
+        <input id="ide" type="text" class="form-control" name="ide" value="{{ old('ide') }}" required autofocus placeholder="Cédula">
+         @if ($errors->has('ide'))
+            <span class="help-block">
+                <strong>{{ $errors->first('ide') }}</strong>
+            </span>
+        @endif
+        <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
         <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="Nombre y Apellidos">
          @if ($errors->has('name'))
             <span class="help-block">
@@ -102,13 +111,16 @@
 <div id="conditions-popup" class="conditions-popup white-popup mfp-hide mfp-with-anim">
   <h3 style="text-align:center">CONDICIONES DE AFILIACIÓN:</h3>
 
- <p>Estimado Dr. , con el objetivo de que usted conozca nuestra plataforma, ponemos a su disposición GPS MEDICA 1.0, sistema que representa una versión demo limitada, en la que usted podrá hacer uso de algunos elementos de nuestra herramienta de manera gratuita y por un periodo indefinido.
+<p>Estimado Dr(a): GPS Médica Versión 1.0 le da la bienvenida y pone a su disposición nuestro Expediente Clínico Virtual, Agenda Clínica, Citas en Línea y Gestor para Clínicas.</p>  
 
-</p> 
+<p>Es importante entender que para poder acceder a la plataforma se requiere comprobar la veracidad de su información, de ahí que usted va a requerir su <b>firma digital</b>. En caso de no tenerla, le recomendamos solicitarla llamando a las oficinas del Banco Nacional más cercano.</p>  
 
- <p>Nótese que durante el uso de esta versión GPS MEDICA 1.0, no nos comprometemos a  realizar MERCADEO que pretenda atraerle pacientes o agendar citas en línea sin embargo, dicha plataforma está habilitada para permitirlo.</p> 
+<p>GPS Médica cargará un monto de <b>$1</b> por cada cita que sea atraída a la plataforma y reservada por el paciente (o usuario general). En caso de no ser atendida por el médico, esta no será sujeto de cobro. Tampoco serán sujetos de cobro las citas reservadas directamente por el médico u asistente (secretaria) en la plataforma.</p>
 
- <p>Lo invitamos a leer y visitar nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>
+<p>Si el médico desea hacer uso del Expediente Clínico deberá cancelar un monto fijo mensual de <b>$10</b>.</p>
+
+
+ <p>Para más información, le invitamos consultar nuestros nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>
  <p class="text-center"><a href="#" class="btn btn-success" id="btn-aceptar-terms">Aceptar</a> <a href="#" class="btn btn-danger" id="btn-cancel-terms">Cancelar</a></p>
 
 </div>
@@ -124,7 +136,7 @@
       allowClear: true
     });
     $(window).on('load', function() {
-      if ($('#conditions-popup').length) {
+      if ($('#conditions-popup').length && !sessionStorage.getItem("terms") ) {
           $.magnificPopup.open({
             items: {
               src: '#conditions-popup' 
@@ -133,9 +145,11 @@
             modal:true
             });
          $('#btn-aceptar-terms').on('click', function(e){
+            sessionStorage.setItem("terms",1);
             $.magnificPopup.close();
          });
          $('#btn-cancel-terms').on('click', function(e){
+           sessionStorage.removeItem("terms");
             $.magnificPopup.close();
             window.location.href = "https://gpsmedica.com/";
          });

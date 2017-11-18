@@ -18,6 +18,7 @@
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> -->
       <!-- Theme style -->
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
+       <link href="/js/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
 
        @yield('css')
       
@@ -66,7 +67,7 @@
      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
-            <a href="/medic/appointments" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Consultas</a>
+            <a href="/medic/appointments" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Agenda</a>
             <a href="/medic/appointments/create?wizard=1" class="btn btn-sm btn-success {{ set_active('medic/appointments/create') }}">Programe</a>
             <a href="/medic/account/edit?tab=clinics" class="btn btn-sm btn-warning {{ set_active('medic/account/edit') }}">Consultorios</a>
             <a href="/medic/patients" class="btn btn-sm btn-danger {{ set_active('medic/patients') }}">Pacientes</a>
@@ -83,7 +84,8 @@
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
     @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa!</div> 
+       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class="popup-youtube" href="http://www.youtube.com/watch?v=DrYMxb-7WQI">EMPIECE AQUI!</a></div> 
+     
      @endif
 
     @if (session()->has('flash_message'))
@@ -169,6 +171,7 @@
 <!-- jQuery 2.2.3 -->
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
 <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->

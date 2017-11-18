@@ -23,7 +23,8 @@ class VitalSignController extends Controller
             'temp' => 'numeric',
             'respiratory_rate' => 'numeric',
             'blood' => 'numeric',
-            'heart_rate' => 'numeric'
+            'heart_rate' => 'numeric',
+            'oxygen' => 'numeric'
            
         ]);
         $data = request()->all();
@@ -45,7 +46,8 @@ class VitalSignController extends Controller
             'temp' => 'numeric',
             'respiratory_rate' => 'numeric',
             'blood' => 'numeric',
-            'heart_rate' => 'numeric'
+            'heart_rate' => 'numeric',
+            'oxygen' => 'numeric'
            
         ]);
 

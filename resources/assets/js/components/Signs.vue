@@ -82,6 +82,17 @@
               </form-error>
           </div>
         </li>
+        <li>
+          <i class="fa fa-leaf"></i> 
+          Saturación de Oxígeno
+          <div class="pull-right">
+            <span style="margin-right: 5px;">%</span>
+            <input type="text" v-model="vital_signs.oxygen" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="8" />
+            <form-error v-if="errors.oxygen" :errors="errors" style="float:right;">
+                  {{ errors.oxygen[0] }}
+              </form-error>
+          </div>
+        </li>
       </ul>
         
   </div>
@@ -103,7 +114,8 @@
             temp: '',
             respiratory_rate: '',
             blood: '',
-            heart_rate:''
+            heart_rate:'',
+            oxygen:''
 
           },
           loader:false,
@@ -201,6 +213,7 @@
            this.vital_signs.blood_ps = (this.signs.blood_ps == 0) ? '' : this.signs.blood_ps;
            this.vital_signs.blood_pd = (this.signs.blood_pd == 0) ? '' : this.signs.blood_pd;
            this.vital_signs.heart_rate = (this.signs.heart_rate == 0) ? '' : this.signs.heart_rate;
+           this.vital_signs.oxygen = (this.signs.oxygen == 0) ? '' : this.signs.oxygen;
            
           
       }
