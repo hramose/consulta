@@ -43,7 +43,7 @@ class AppointmentController extends ApiController
            
             
          
-            $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
+            $appointments = Appointment::where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]])->orderBy('appointments.date', 'DESC')->orderBy('appointments.start', 'DESC')->get();
             
  
@@ -52,7 +52,7 @@ class AppointmentController extends ApiController
 
        $grouped = $appointments->groupBy(function($item) {
            
-            return $item->id;
+            return $item->date;
         })->toArray();
         
       
