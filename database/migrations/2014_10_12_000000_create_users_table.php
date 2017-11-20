@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->integer('rating_app_count')->unsigned()->default(0);
             $table->double('commission')->default(0);
             $table->string('medic_code')->nullable();
+            $table->string('ide')->nullable();
 
 
             $table->rememberToken();

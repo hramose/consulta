@@ -82,7 +82,7 @@
         },
     
         select(patient) {
-          debugger
+          
           if(patient){
             this.paciente = patient;
             this.selectedPatient = patient.id;

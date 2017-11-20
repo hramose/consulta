@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class VitalSign extends Model
 {
     protected $fillable = [
-        'height','weight','mass','temp','respiratory_rate','blood_ps','blood_pd','heart_rate'
+        'height','weight','mass','temp','respiratory_rate','blood_ps','blood_pd','heart_rate','oxygen'
     ];
 
     public function patient()

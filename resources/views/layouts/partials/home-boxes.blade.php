@@ -3,7 +3,7 @@
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>Iniciar Consultas</h3>
+                  <h3>Agenda</h3>
 
                   <p>Consultas</p>
                 </div>

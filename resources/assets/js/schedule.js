@@ -459,7 +459,8 @@ $(function () {
                          item.rendering = 'background';
                       }
                       
-
+                      item.title = 'Cita';
+                      
                       appointments.push(item);
                   });
                  
