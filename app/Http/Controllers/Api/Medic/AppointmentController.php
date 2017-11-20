@@ -48,11 +48,9 @@ class AppointmentController extends ApiController
             
  
 
-//$grouped = $appointments->groupBy('appointments.date')->toArray();
-
        $grouped = $appointments->groupBy(function($item) {
            
-            return $item->date;
+            return Carbon::parse($item->date)->toDateString();;
         })->toArray();
         
       
