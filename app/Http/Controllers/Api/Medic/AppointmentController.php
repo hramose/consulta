@@ -51,8 +51,8 @@ class AppointmentController extends ApiController
 //$grouped = $appointments->groupBy('appointments.date')->toArray();
 
        $grouped = $appointments->groupBy(function($item) {
-            dd($item)
-            return $item->date;
+           
+            return $item->id;
         })->toArray();
         
        dd($grouped);
