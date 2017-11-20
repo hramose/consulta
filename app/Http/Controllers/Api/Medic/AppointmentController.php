@@ -47,12 +47,14 @@ class AppointmentController extends ApiController
                     ['appointments.date', '<=', $date2->endOfDay()]])->get();
             
  
+
+$appointments = $appointments->groupBy('date')->toArray();
 dd($appointments);
-       $appointments = $appointments->groupBy(function($item) {
+      /* $appointments = $appointments->groupBy(function($item) {
             return $item->date;
-        })->toArray();
+        })->toArray();*/
         
-        
+
         $dataAppointments = [];
         $item = [];
 
