@@ -36,7 +36,33 @@ class AppointmentController extends ApiController
 
         $user = $request->user();
 
-        $appointments =  $this->appointmentRepo->findAllByDoctor($user->id);
+
+            
+            $date1 = Carbon::now()->subDays(3);
+            $date2 = Carbon::now();
+           
+            
+         
+            $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
+                    ['appointments.date', '<=', $date2->endOfDay()]])->get();
+            
+   
+
+       $appointments = $appointments->groupBy(function($item) {
+            return $item->date;
+        })->toArray();
+
+        $dataAppointments = [];
+        $item = [];
+
+        foreach ($appointments as $key => $value) {
+        
+            $item['date'] = $key;
+            $item['appointments'] = $value;
+            $dataAppointments[]= $item;
+        }
+
+       // $appointments =  $this->appointmentRepo->findAllByDoctor($user->id);
         //Appointment::where('created_by',$user->id)->with('patient')->orderBy('start','DESC')->paginate(1);
        
        /* $scheduledAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
@@ -50,7 +76,7 @@ class AppointmentController extends ApiController
              ];*/
              
      
-        return $appointments;
+        return $dataAppointments;
      
 
     }
