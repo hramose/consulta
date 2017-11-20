@@ -55,7 +55,7 @@ class AppointmentController extends ApiController
             return $item->id;
         })->toArray();
         
-       dd($grouped);
+      
         $dataAppointments = [];
         $item = [];
 
