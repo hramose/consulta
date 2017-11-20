@@ -42,11 +42,11 @@ class AppointmentController extends ApiController
             $date2 = Carbon::now();
            
             
-         dd($date1);
+         
             $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]])->get();
             
-   
+   dd($appointments);
 
        $appointments = $appointments->groupBy(function($item) {
             return $item->date;
