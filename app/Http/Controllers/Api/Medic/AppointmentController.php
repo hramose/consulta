@@ -44,7 +44,7 @@ class AppointmentController extends ApiController
             
          
             $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
-                    ['appointments.date', '<=', $date2->endOfDay()]]);
+                    ['appointments.date', '<=', $date2->endOfDay()]])->get();
             
  
 
@@ -52,6 +52,7 @@ class AppointmentController extends ApiController
             return $item->date;
         })->toArray();
         dd($appointments);
+        
         $dataAppointments = [];
         $item = [];
 
