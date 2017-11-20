@@ -43,14 +43,16 @@ class AppointmentController extends ApiController
            
             
          
-            $appointments = Appointment::where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
+            $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
                     ['appointments.date', '<=', $date2->endOfDay()]])->orderBy('appointments.date', 'DESC')->orderBy('appointments.start', 'DESC')->get();
             
  
 
+//$grouped = $appointments->groupBy('appointments.date')->toArray();
+
        $grouped = $appointments->groupBy(function($item) {
            
-            return Carbon::parse($item->date)->toDateString();;
+            return Carbon::parse($item->date)->toDateString();
         })->toArray();
         
       
