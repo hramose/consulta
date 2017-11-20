@@ -36,19 +36,20 @@ class AppointmentController extends ApiController
 
         $user = $request->user();
 
+        /*$appointments =  $this->appointmentRepo->findAllByDoctor($user->id);
 
-            
-            $date1 = Carbon::now()->subDays(3);
-            $date2 = Carbon::now();
-           
-            
-         
-            $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
-                    ['appointments.date', '<=', $date2->endOfDay()]])->orderBy('appointments.date', 'DESC')->orderBy('appointments.start', 'DESC')->get();
-            
- 
+        return $appointments;*/
+        $date1 = Carbon::now();
+        $date2 = Carbon::now();
+       
+        
+     
+        $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1],
+                ['appointments.date', '<=', $date2->endOfDay()]])->orderBy('appointments.date', 'DESC')->orderBy('appointments.start', 'DESC')->get();
+        
 
-//$grouped = $appointments->groupBy('appointments.date')->toArray();
+
+
 
        $grouped = $appointments->groupBy(function($item) {
            
@@ -66,19 +67,6 @@ class AppointmentController extends ApiController
             $dataAppointments[]= $item;
         }
 
-       // $appointments =  $this->appointmentRepo->findAllByDoctor($user->id);
-        //Appointment::where('created_by',$user->id)->with('patient')->orderBy('start','DESC')->paginate(1);
-       
-       /* $scheduledAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 0)->orderBy('start','DESC')->limit(10)->get();
-         $initAppointments = Appointment::with('user','office')->where('created_by',$user->id)->where('status', 1)->orderBy('start','DESC')->limit(10)->get();*/
-
-        
-          /*  $data = [
-                'scheduledAppointments' => $scheduledAppointments,
-                'initAppointments' => $initAppointments,
-             
-             ];*/
-             
      
         return $dataAppointments;
      

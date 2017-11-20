@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Allergy;
+use App\Appointment;
 use App\Http\Requests\PatientRequest;
+use App\Labexam;
+use App\Labresult;
 use App\Pressure;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\Repositories\UserRepository;
 use App\Sugar;
-use App\Appointment;
-use App\Labresult;
-use App\Labexam;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
@@ -305,7 +306,7 @@ class PatientController extends ApiController
        $labexams =  $patient->labexams()->limit(10)->get();
 
        $labexams = $labexams->groupBy(function($exam) {
-            return $exam->date;
+            return Carbon::parse($exam->date)->toDateString();
         })->toArray();
 
         $dataExams = [];
@@ -348,7 +349,7 @@ class PatientController extends ApiController
         }
 
         $labexams = $labexams->groupBy(function($exam) {
-            return $exam->date;
+            return Carbon::parse($exam->date)->toDateString();
         })->toArray();
 
         $data = [];
