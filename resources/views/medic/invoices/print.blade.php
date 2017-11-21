@@ -27,14 +27,19 @@
           {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
+          Ced:{{ auth()->user()->ide }}
           </address>
+          
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
           <div class="invoice-number">
             <h3>Nro. Factura:</h3>
             <h4>{{$invoice->id }}</h4>
-          </div>  
+            
+          </div>
+          <div> <span>Contado</span>  </div>
+         
           <div class="invoice-date">
           <b>Fecha:</b> {{ $invoice->created_at }}
           </div>

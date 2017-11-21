@@ -72,7 +72,7 @@ class PatientController extends Controller
         $patient =$this->patientRepo->store($request->all());
 
         //validamos que en users no hay email que va a registrase como paciente
-        if($data['email']){
+        if(isset($data['email']) && $data['email']){
 
             $this->validate(request(),[
                 'email' => 'required|email|max:255|unique:users'

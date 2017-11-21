@@ -33,7 +33,8 @@
          <div class="modal-footer" v-show="!newPatient">
          
           <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary btn-finalizar-cita">Crear cita</button>
+          <button type="button" class="btn btn-info btn-iniciar-cita">Iniciar consulta</button>
+          <button type="button" class="btn btn-success btn-finalizar-cita">Crear cita</button>
           <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
         </div>
       </div>

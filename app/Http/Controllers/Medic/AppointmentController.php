@@ -43,6 +43,17 @@ class AppointmentController extends Controller
 
     }
 
+    public function appointmentsFromClinic($clinic_id){
+        
+        $search['q'] = request('q');
+        $search['office'] = $clinic_id;
+        $search['date'] = Carbon::now()->toDateString();
+    	$appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
+
+    	return view('medic.appointments.index',compact('appointments','search','clinic_id'));
+
+    }
+
     /**
      * Mostrar vista de crear consulta(cita)
      */

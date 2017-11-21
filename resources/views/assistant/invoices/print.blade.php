@@ -34,7 +34,8 @@
           <div class="invoice-number">
             <h3>Nro. Factura:</h3>
             <h4>{{$invoice->id }}</h4>
-          </div>  
+          </div> 
+          <div> <span>Contado</span>  </div> 
           <div class="invoice-date">
           <b>Fecha:</b> {{ $invoice->created_at }}
           </div>

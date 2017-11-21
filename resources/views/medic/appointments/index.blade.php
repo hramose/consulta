@@ -10,10 +10,12 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
+                <a href="{{ url('/medic/clinics/'.$clinic_id.'/appointments') }}" class="btn btn-primary">Agenda del dia</a>
                 <a href="{{ url('/medic/appointments/create') }}" class="btn btn-success">Calendario Semanal</a>
                 <a href="{{ url('/medic/patients/create') }}" class="btn btn-danger">Nuevo Paciente</a>
+                <a href="{{ url('/medic/appointments/create') }}" class="btn btn-info">Crear Consulta</a>
                 <div class="box-tools">
-                  <form action="/medic/appointments" method="GET">
+                  <form action="/medic/clinics/{{ $clinic_id }}/appointments" method="GET">
                     <div class="input-group input-group-sm" style="width: 150px;">
                       
                         

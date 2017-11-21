@@ -26,7 +26,7 @@
             {{ $invoice->medic->name }} - {{ $invoice->medic->medic_code }}<br>
             {{ $invoice->clinic->address }}<br>
             Tel: {{ $invoice->clinic->phone }}<br>
-            Factura #{{$invoice->id }}<br>
+            Factura Contado #{{$invoice->id }}<br>
             Fecha: {{ \Carbon\Carbon::now() }}<br>
             Cliente: {{ $invoice->client_name }}
           </address>

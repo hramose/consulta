@@ -67,7 +67,7 @@
      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
-            <a href="/medic/appointments" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Agenda</a>
+            <a href="#" data-toggle="modal" data-target="#modalSelectClinic" class="btn btn-sm btn-info {{ set_active('medic/appointments') }}">Agenda</a>
             <a href="/medic/appointments/create?wizard=1" class="btn btn-sm btn-success {{ set_active('medic/appointments/create') }}">Programe</a>
             <a href="/medic/account/edit?tab=clinics" class="btn btn-sm btn-warning {{ set_active('medic/account/edit') }}">Consultorios</a>
             <a href="/medic/patients" class="btn btn-sm btn-danger {{ set_active('medic/patients') }}">Pacientes</a>
@@ -152,6 +152,53 @@
     
   </div>
   <!-- /.content-wrapper -->
+
+  <div class="modal fade" id="modalSelectClinic" role="dialog" aria-labelledby="modalSelectClinic">
+      <div class="modal-dialog " role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          
+          <h4 class="modal-title" id="modalSelectClinicLabel">Selección de clínica</h4>
+          </div>
+          <div class="modal-body" >
+              
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+         
+                  <th>Clinica</th>
+                  <th>Acción</th>
+                 
+                </tr>
+                 @foreach(auth()->user()->offices()->get() as $office)
+                    
+                    <tr>
+                      
+                      <td><a href="/medic/clinics/{{ $office->id}}/appointments">{{ $office->name }}</a></td>
+                      <td>
+                        <a href="/medic/clinics/{{ $office->id}}/appointments" class="btn btn-success">Seleccionar</a>
+                      </td>
+                      
+                    </tr>
+                @endforeach
+                
+               
+              </tbody>
+              </table>
+         
+              
+              
+                
+          </div>
+            <div class="modal-footer" >
+            
+            
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
 
   @include('layouts/partials/footer')
 

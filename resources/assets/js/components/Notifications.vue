@@ -15,7 +15,7 @@
                   
                   <li v-for="appointment in citas" class="appointment-li">
                     <a href="#">
-                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ appointment.patient.first_name }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right"> <input type="checkbox" name="viewed"  />   </span>   </h5>
+                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ (appointment.patient) ? appointment.patient.first_name : 'Paciente eliminado' }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right"> <input type="checkbox" name="viewed"  />   </span>   </h5>
                       
                     </a>
                     
@@ -39,7 +39,8 @@
                         
                         </div>
                         <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">{{ appointmentSelected.patient.first_name }} {{ appointmentSelected.patient.last_name }}</h3>
+                        <h3 class="widget-user-username">
+                            {{ appointmentSelected.patient.first_name }} {{  appointmentSelected.patient.last_name }}</h3>
                         <h5 class="widget-user-desc">{{ (appointmentSelected.patient.gender == 'm') ? 'Masculino' : 'Femenino' }}</h5>
                     </div>
                     <div class="box-footer no-padding">
@@ -119,15 +120,17 @@
             },
             toggleDetails(item){
                
-                
+                if(item.patient){
               
-                if(this.appointmentSelected == item)
-                    this.showDetails = !this.showDetails
-                else{
-                    this.showDetails = true;
+                    if(this.appointmentSelected == item)
+                        this.showDetails = !this.showDetails
+                    else{
+                        this.showDetails = true;
+                    }
+                    this.appointmentSelected = item
                 }
 
-                this.appointmentSelected = item
+                
             },
 	        viewed(item){
                

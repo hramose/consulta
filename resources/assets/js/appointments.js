@@ -1001,8 +1001,12 @@ $(function () {
                       }else{
                           
                           calendar.fullCalendar('renderEvent', resp, true);
-
+                        
                         }
+                  if (data.redirect_appointment)
+                    window.location.href = "/medic/appointments/" + resp.id +"/edit";
+                
+
                 }else{
                   infoBox.addClass('alert-danger').html('No se pudo crear la consulta!!').show();
                         setTimeout(function()
@@ -1116,7 +1120,7 @@ $(function () {
      
     }
 
-     function saveAppointment(event, idRemove)
+     function saveAppointment(event, idRemove, redirect_appointment)
     {
       
       var appointment = {
@@ -1130,7 +1134,8 @@ $(function () {
         patient_id: (event.patient_id) ? event.patient_id : 0,
         idRemove: idRemove,
         office_info: (event.office_info) ? event.office_info : '',
-        allDay: 0
+        allDay: 0,
+        redirect_appointment: redirect_appointment
         
       };
     
@@ -1251,7 +1256,7 @@ $(function () {
    
     });
 
-    function createEventFromModal()
+    function createEventFromModal(redirect_appointment)
     {
       
       var val = modalForm.find("#modal-new-event").val();
@@ -1303,12 +1308,13 @@ $(function () {
         var _id = calendar.fullCalendar('renderEvent', copiedEventObject, true)[0]._id; // get _id from event in the calendar (this is for if user will remove the event)
        
        
-        saveAppointment(copiedEventObject, _id);
+        saveAppointment(copiedEventObject, _id, redirect_appointment);
       }
       //Remove event from text input
       modalForm.find("#modal-new-event").val("");
       modalForm.find('#modal-new-event').attr('data-modaldate', '');
       modalForm.modal('hide');
+    
       /*modalForm.find('#search-offices').val([]);
       modalForm.find('#search-offices').text('');
       modalForm.find('.modal-search-patients').val([]);
@@ -1536,6 +1542,16 @@ $(function () {
         createEventFromModal();
         
     });
+
+  $(".btn-iniciar-cita").click(function (e) {
+    e.preventDefault();
+    var redirect_appointment = 1;
+    createEventFromModal(redirect_appointment);
+
+   
+
+
+  });
 
 
    

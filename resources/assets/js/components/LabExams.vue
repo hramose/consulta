@@ -11,7 +11,7 @@
           <div class="box-body">
                 <div class="form-group" v-show="!read">
                     <div class="input-group">
-                            <input type="text" class="form-control"  id="datetimepickerLabResult" v-model="date" @blur="onBlurDatetime" placeholder="Fecha" tabindex="1">
+                            <input type="text" class="form-control"  id="datetimepickerLabExam" v-model="date" @blur="onBlurDatetime" placeholder="Fecha" tabindex="1">
 
                             <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>

@@ -193,6 +193,11 @@
             locale: 'es',
             
          });
+		 $('#datetimepickerLabExam').datetimepicker({
+			format:'YYYY-MM-DD',
+            locale: 'es',
+            
+         });
   	$("#UploadFile").ajaxUpload({
       url : "/medic/patients/files",
       name: "file",
@@ -279,7 +284,7 @@
 						// 'close', and 'timer'
 						if (dismiss === 'cancel') {
 	
-						 window.location = '/medic/appointments';
+						 window.location = '/medic/clinics/{{ $appointment->office_id }}/appointments';
 								
 						}else{
 							window.location = '/medic/appointments/{{ $appointment->id }}/edit';
