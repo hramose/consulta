@@ -39,7 +39,7 @@ class AppointmentController extends Controller
       
     	$appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
 
-    	return view('medic.appointments.index',compact('appointments','search'));
+    	return view('medic.appointments.historical',compact('appointments','search'));
 
     }
 
