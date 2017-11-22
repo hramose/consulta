@@ -94,8 +94,8 @@
                                   <tr>
                                     
                                       <td>{{ dataIncomes.attented }}</td>
-                                      <td>${{ money(dataIncomes.attented_amount) }}</td>
-                                      <td>${{ money(dataIncomes.monthly_payment) }}</td>
+                                      <td>${{ money(parseFloat(dataIncomes.attented_amount)) }}</td>
+                                      <td>${{ money(parseFloat(dataIncomes.monthly_payment)) }}</td>
                                       <td>${{ money(parseFloat(dataIncomes.monthly_payment) + parseFloat(dataIncomes.attented_amount)) }}</td>
                                     
                                       
