@@ -416,19 +416,38 @@
 @if(isset($create))
   var tour = {
       id: "hello-hopscotch",
+      
+      i18n: {
+          nextBtn: "Siguiente",
+          prevBtn: "Atras",
+          doneBtn: "Listo"
+        },
+       
       steps: [
         {
           title: "Crear Cita",
           content: "Selecciona una hora en el calendario",
           target: "#calendar .fc-thu",
-          placement: "top"
-        },
+          placement: "top",
+          
+        }
         
-      ]
+      ],
+      onEnd: function () {
+       
+       // localStorage.setItem("tour_viewed", 1)
+
+      }
+
     };
 
-    // Start the tour!
-    hopscotch.startTour(tour);
+    //if(!localStorage.getItem("tour_viewed"))
+    //{
+      hopscotch.startTour(tour);
+   // }
+   
+    
+
 @endif
  
   /*$('body').tooltip({
