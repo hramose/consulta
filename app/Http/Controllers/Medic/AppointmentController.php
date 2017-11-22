@@ -36,10 +36,15 @@ class AppointmentController extends Controller
     public function index()
     {
         $search['q'] = request('q');
-      
-    	$appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
-
-    	return view('medic.appointments.historical',compact('appointments','search'));
+        $search['office'] =  request('clinic');
+        $clinic_id = request('clinic');
+       
+        $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
+        
+        if($search['office'])
+            return view('medic.appointments.index',compact('appointments','search','clinic_id'));
+        else
+            return view('medic.appointments.historical',compact('appointments','search','clinic_id'));
 
     }
 
@@ -48,6 +53,7 @@ class AppointmentController extends Controller
         $search['q'] = request('q');
         $search['office'] = $clinic_id;
         $search['date'] = Carbon::now()->toDateString();
+        $search['dir'] = 'ASC';
     	$appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
 
     	return view('medic.appointments.index',compact('appointments','search','clinic_id'));
@@ -63,7 +69,8 @@ class AppointmentController extends Controller
          // por si le da desde el formulario de paciente crear la cita a este paciente sin tener que buscarlo
         $p = null;
         $wizard = null;
-        
+        $clinic_id = request('clinic');
+
         if(request('p'))
             $p = Patient::find(request('p'));
 
@@ -96,7 +103,7 @@ class AppointmentController extends Controller
        // dd($selectWeeks);
 
        
-    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks'));
+    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks','clinic_id'));
 
     }
 

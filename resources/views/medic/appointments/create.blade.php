@@ -32,13 +32,25 @@
            $datetime_string = $datetime->format('c'); 
           echo json_encode($datetime_string);*/
    ?>
-   <div  class="notification-app alert-success" >Seleccione la hora de la cita</div> 
+    
+
     <section class="content">
-      
+      <div class="row">
+       <div class="col-md-12">
+        <div class="panel">
+          <div class="panel-body">
+          @include('layouts/partials/buttons-agenda-clinic')
+          
+          </div>
+         
+        </div>
+         
+        </div>
+       </div>
         <div class="row">
         <div class="col-md-3">
         
-
+              
           <!-- /. box -->
           @if($wizard)
              

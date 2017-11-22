@@ -3,11 +3,23 @@
 @section('content')
 
 	  @include('layouts/partials/header-pages',['page'=>'Pacientes'])
+
 	<section class="content">
-      
+       <div class="row">
+       <div class="col-md-12">
+        <div class="panel">
+          <div class="panel-body">
+          @include('layouts/partials/buttons-agenda-clinic')
+          
+          </div>
+         
+        </div>
+         
+        </div>
+       </div>
       <div class="row">
         <div class="col-md-4">
-			
+			    
           @include('medic/patients/partials/photo')
          
           

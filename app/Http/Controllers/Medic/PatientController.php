@@ -54,8 +54,9 @@ class PatientController extends Controller
      */
     public function create()
     {
+        $clinic_id = request('clinic');
         
-        return view('medic.patients.create');
+        return view('medic.patients.create',compact('clinic_id'));
 
     }
 

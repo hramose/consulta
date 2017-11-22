@@ -174,9 +174,9 @@
                     
                     <tr>
                       
-                      <td><a href="/medic/clinics/{{ $office->id}}/appointments">{{ $office->name }}</a></td>
+                      <td><a href="/medic/appointments?clinic={{ $office->id }}">{{ $office->name }}</a></td>
                       <td>
-                        <a href="/medic/clinics/{{ $office->id}}/appointments" class="btn btn-success">Seleccionar</a>
+                        <a href="/medic/appointments?clinic={{ $office->id }}" class="btn btn-success">Seleccionar</a>
                       </td>
                       
                     </tr>

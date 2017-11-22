@@ -19,6 +19,7 @@
           <div class="col-xs-12">
             <div class="box">
               <div class="box-header">
+                
                 <a href="{{ url('/medic/patients/create') }}" class="btn btn-success">Nuevo paciente</a>
 
                 <div class="box-tools">
