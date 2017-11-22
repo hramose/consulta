@@ -1,4 +1,4 @@
 <a href="{{ url('/medic/appointments?clinic='.$clinic_id) }}" class="btn btn-primary {{ set_active('medic/appointments') }}">Agenda del dia</a>
 <a href="{{ url('/medic/appointments/calendar?clinic='.$clinic_id) }}" class="btn btn-success {{ set_active('medic/appointments/calendar') }}">Calendario Semanal</a>
 <a href="{{ url('/medic/patients/create?clinic='.$clinic_id) }}" class="btn btn-danger {{ set_active('medic/patients/create') }}">Nuevo Paciente</a>
-<a href="{{ url('/medic/appointments/create?clinic='.$clinic_id) }}" class="btn btn-info {{ set_active('medic/appointments/create') }}">Crear Consulta</a>
+<a href="{{ url('/medic/appointments/create?create=1&clinic='.$clinic_id) }}" class="btn btn-info {{ set_active('medic/appointments/create') }}">Crear Consulta</a>

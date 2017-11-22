@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
   <link rel="stylesheet" href="/js/plugins/tooltipster.bundle.min.css"> 
+  <link rel="stylesheet" href="/js/plugins/hopscotch/css/hopscotch.min.css"> 
   <style>
     .tooltipster-sidetip.tooltipster-noir.tooltipster-gps .tooltipster-box {
       background: #605ca8;
@@ -393,8 +394,8 @@
       @else
          <modal-appointments></modal-appointments>
       @endif
-            
-
+      
+      
 @endsection
 @section('scripts')
 <!-- <script src="https://unpkg.com/vue-select@1.3.3"></script>cv -->
@@ -408,8 +409,28 @@
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
  <script src="/js/plugins/tooltipster.bundle.min.js"></script> 
+  <script src="/js/plugins/hopscotch/js/hopscotch.min.js"></script> 
 <script src="{{ elixir('/js/appointments.min.js') }}"></script>
+
 <script>
+@if(isset($create))
+  var tour = {
+      id: "hello-hopscotch",
+      steps: [
+        {
+          title: "Crear Cita",
+          content: "Selecciona una hora en el calendario",
+          target: "#calendar .fc-thu",
+          placement: "top"
+        },
+        
+      ]
+    };
+
+    // Start the tour!
+    hopscotch.startTour(tour);
+@endif
+ 
   /*$('body').tooltip({
     selector: '[data-toggle="tooltip"]',
     html:true

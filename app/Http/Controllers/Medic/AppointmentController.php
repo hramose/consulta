@@ -70,6 +70,7 @@ class AppointmentController extends Controller
         $p = null;
         $wizard = null;
         $clinic_id = request('clinic');
+        $create = request('create');
 
         if(request('p'))
             $p = Patient::find(request('p'));
@@ -103,7 +104,7 @@ class AppointmentController extends Controller
        // dd($selectWeeks);
 
        
-    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks','clinic_id'));
+    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks','clinic_id','create'));
 
     }
 
