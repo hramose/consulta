@@ -153,6 +153,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 	Route::put('/appointments/{id}/viewed', 'Medic\AppointmentController@viewed');
 	Route::get('/appointments/{id}/create', 'Medic\AppointmentController@createFrom');
 	//Route::get('/clinics/{clinic}/appointments', 'Medic\AppointmentController@appointmentsFromClinic');
+	Route::get('/appointments/calendar', 'Medic\AppointmentController@create');
 	Route::resource('appointments', 'Medic\AppointmentController');
 
 	Route::get('/invoices/services/list', 'Medic\InvoiceController@getServices');

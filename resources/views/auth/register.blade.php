@@ -121,7 +121,7 @@
 
 
  <p>Para más información, le invitamos consultar nuestros nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>
- <p class="text-center"><a href="#" class="btn btn-success" id="btn-aceptar-terms">Aceptar</a> <a href="#" class="btn btn-danger" id="btn-cancel-terms">Cancelar</a></p>
+ <p class="text-center"><a href="#" class="btn btn-success" id="btn-aceptar-terms">Aceptar Términos y Condiciones</a> <a href="#" class="btn btn-danger" id="btn-cancel-terms">Cancelar</a></p>
 
 </div>
 @endsection
