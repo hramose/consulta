@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
                  ->everyThirtyMinutes(); //se hace asi por que este no es necesario enviar email
 
         $schedule->command(\App\Console\Commands\MonthlyCharge::class)
-                 ->monthlyOn(1, '00:15'); //se hace asi por que este no es necesario enviar email
+                 ->dailyAt('00:05'); //se hace asi por que este no es necesario enviar email
 
         /*$schedule->command(\App\Console\Commands\ReminderAppointment::class) //hay q verificar si en el nuevo servidor si funciona asi
                  ->everyThirtyMinutes();*/

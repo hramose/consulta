@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Session;
 
 
 
-function money($amount, $symbol = '₡')
+function money($amount, $symbol = '₡', $decimals = 2)
 {
-    return (!$symbol) ? number_format($amount, 2, ".", ",") : $symbol . number_format($amount, 2, ".", ",");
+    return (!$symbol) ? number_format($amount, $decimals, ".", ",") : $symbol . number_format($amount, $decimals, ".", ",");
 }
 function number($amount)
 {

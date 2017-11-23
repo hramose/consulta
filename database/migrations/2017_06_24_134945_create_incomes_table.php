@@ -23,6 +23,9 @@ class CreateIncomesTable extends Migration
             $table->dateTime('date');
             $table->integer('month');
             $table->integer('year');
+            $table->string('period_from');
+            $table->string('period_to');
+            $table->double('subscription_cost')->default(0);
             $table->string('type', 2);
             $table->string('medic_type', 2);
             $table->tinyInteger('paid')->default(0); //1 pagada

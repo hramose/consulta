@@ -6,6 +6,9 @@ use App\Configuration;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Role;
+use App\Plan;
+use App\Subscription;
+use Carbon\Carbon;
 use App\Mail\UserActive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -79,10 +82,11 @@ class UserController extends Controller
        
 
         $user = $this->userRepo->findById($id);
-
+        $plans = Plan::all();
+        $subscription = $user->subscription;
        
         
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', compact('user','plans','subscription'));
 
     }
 
@@ -146,6 +150,72 @@ class UserController extends Controller
     	
         
     	return back();
+
+    }
+    /**
+     * Guardar paciente
+     */
+    public function addSubscription($id)
+    {
+        //validamos que en users no hay email que va a registrase como paciente
+        $this->validate(request(),[
+                 'plan_id' => 'required',
+            ]);
+
+
+        $user = $this->userRepo->findById($id);
+         $newPlan = Plan::find(request('plan_id'));
+
+        $user->subscription()->create([
+            'plan_id' => $newPlan->id,
+            'cost' => $newPlan->cost,
+            'quantity' => $newPlan->quantity,
+            'ends_at' => Carbon::now()->addMonths($newPlan->quantity)
+
+        ]);
+
+        flash('Subscripción Creada','success');
+
+        return Redirect('/admin/users/'.$id.'/edit');
+
+    }
+    /**
+     * Actualizar Paciente
+     */
+    public function updateSubscription($id)
+    {
+        $this->validate(request(),[
+                'plan_id' => 'required',
+                
+        ]);
+
+        $user = $this->userRepo->findById($id);
+        $newPlan = Plan::find(request('plan_id'));
+
+        $currentSubscription = $user->subscription;
+        $currentSubscription->plan_id = $newPlan->id;
+        $currentSubscription->save();
+
+    
+        
+        flash('Subscripción Actualizada','success');
+
+        return Redirect('/admin/users/'.$id.'/edit');
+
+    }
+     /**
+     * Eliminar consulta(cita)
+     */
+    public function deleteSubscription($id)
+    {
+
+        $user = $this->userRepo->findById($id);
+
+        $user->subscription->delete();
+        
+        flash('Subscripción Eliminado','success');
+
+        return back();
 
     }
 

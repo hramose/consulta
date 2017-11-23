@@ -47,55 +47,70 @@ class MonthlyCharge extends Command
         
         $medics = User::whereHas('roles', function ($query) {
                         $query->where('name',  'medico');
-                    })->where('active', 1)->with(['incomes' => function ($query){
+                    })->where('active', 1)->has('subscription')->with(['incomes' => function ($query){
                                 $query->where('type', 'I')
                                 ->orWhere('type', 'P');
-                            }])->get();
+                            }])->with('subscription')->get();
 
-        
+       
         $countMedics = 0;
 
         $month = Carbon::now()->subMonth()->month;
-        $year = (Carbon::now()->month == 1) ? Carbon::now()->subyear()->year : Carbon::now()->year;
+        $year = Carbon::now()->subMonth()->year;
+       
 
-        $currentMonth =  Carbon::now()->month;
-        $currentyear = Carbon::now()->year;
-
+        $currentDate = Carbon::now()->setTime(0,0,0);
+        
         foreach($medics as $medic)
         {
-           
-            //if(!$medic->settings->trial){ // si no esta en periodo de prueba ejecute el pago
-
-                $incomes = $medic->incomes()->where(\DB::raw('MONTH(date)'), '=', $month)->where(\DB::raw('YEAR(date)'), '=', $year)->where('type','I')->get();
-                $incomesPending = $medic->incomes()->where(\DB::raw('MONTH(date)'), '=', $month)->where(\DB::raw('YEAR(date)'), '=', $year)->where('type','P')->get();
+          
+            //dd($medic->subscription->ends_at->setTime(0,0,0)->gte($currentDate));
+            if($medic->subscription->ends_at->setTime(0,0,0)->gte($currentDate)) //la fecha de la subscripcion es mayor o igual a la fecha actual
+            {
+                $dateStart = $medic->subscription->ends_at->subMonths($medic->subscription->quantity)->setTime(0,0,0);
+                $dateEnd = $medic->subscription->ends_at->setTime(0,0,0);
                 
-                $totalCharge = $incomes->sum('amount');
-                $totalChargePending = $incomesPending->sum('amount');
-                $monthlyExpedient = getAmountPerExpedientUse();
+               
 
-                if($totalCharge > 0)
-                {
-                    $dataIncome['type'] = 'M';
-                    $dataIncome['medic_type'] = 'A';
-                    $dataIncome['amount'] = $monthlyExpedient + $totalCharge;
-                    $dataIncome['pending'] = $totalChargePending;
-                    $dataIncome['appointment_id'] = 0;
-                    $dataIncome['date'] = Carbon::now();
-                    $dataIncome['month'] = $month;
-                    $dataIncome['year'] = $year;
+                $incomes = $medic->incomes()->where([['date', '>=', $dateStart],
+                    ['date', '<=', $dateEnd]])->where('type','I')->get();
 
+                $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
+                    ['date', '<=', $dateEnd]])->where('type','P')->get();
 
-
-                    $income = $this->incomeRepo->store($dataIncome, $medic->id);
-                    
-                    $this->info('Total a cobrar , ' . $totalCharge.' medico:'.$medic->name);
-
-                    $countMedics++;
-                }
                 
+                 $totalCharge = $incomes->sum('amount');
+                 $totalChargePending = $incomesPending->sum('amount');
+                 $monthlyPlanCharge = floatval($medic->subscription->cost);
                 
+                 
 
-          //   }
+                $dataIncome['type'] = 'M';
+                $dataIncome['medic_type'] = 'A';
+                $dataIncome['amount'] = $monthlyPlanCharge + $totalCharge;
+                $dataIncome['pending'] = $totalChargePending;
+                $dataIncome['appointment_id'] = 0;
+                $dataIncome['office_id'] = 0;
+                $dataIncome['date'] = Carbon::now()->toDateString();
+                $dataIncome['month'] = Carbon::now()->month;
+                $dataIncome['year'] = Carbon::now()->year;
+                $dataIncome['period_from'] = $dateStart->toDateString();
+                $dataIncome['period_to'] = $dateEnd->toDateString();
+                $dataIncome['subscription_cost'] = $monthlyPlanCharge;
+
+
+
+                $income = $this->incomeRepo->store($dataIncome, $medic->id);
+
+               
+
+                
+               $this->info('Total a cobrar , ' . $totalCharge.' medico:'.$medic->name. 'subscripcion: '. $monthlyPlanCharge);
+
+               $countMedics++;
+                
+               // dd('subscripcion vencida');
+            }
 
                 
             

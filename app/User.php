@@ -209,6 +209,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Income::class);
     }
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
     /**
      * create a setting to user
      * @param null $profile

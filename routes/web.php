@@ -354,8 +354,12 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
             'as'   => 'requestMedic.' . $key,
             'uses' => 'Admin\UserController@' . $key,
         ));
-    }
+	}
+	Route::post('/users/{id}/subscriptions', 'Admin\UserController@addSubscription');
+	Route::put('/users/{id}/subscriptions', 'Admin\UserController@updateSubscription');
+	Route::delete('/users/{id}/subscriptions', 'Admin\UserController@deleteSubscription');
 
+	Route::resource('plans', 'Admin\PlanController');
     Route::resource('reports', 'Admin\ReportsController');
 	Route::resource('users', 'Admin\UserController');
 

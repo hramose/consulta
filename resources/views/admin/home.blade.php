@@ -27,11 +27,11 @@
       <div class="col-xs-12 col-sm-6">
          <div class="box box-info">
           <div class="box-header with-border">
-            Cobro de citas atendidas y mensualidad
+            Cobro de citas atendidas 
           </div>
           <div class="box-body">
             
-                <form action="/admin/configuration" method="POST">
+                <!-- <form action="/admin/configuration" method="POST">
                     <label>Mensualidad por Uso de Expediente Clínico</label>
                     <div class="input-group">
                        {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
@@ -40,7 +40,7 @@
                             <button type="submit" class="btn btn-info btn-flat">Guardar</button>
                           </span>
                     </div>
-                 </form>
+                 </form> -->
                   <br>
                   
                   <form action="/admin/configuration" method="POST">

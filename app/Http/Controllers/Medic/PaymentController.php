@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Medic;
 use App\Http\Controllers\Controller;
 use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
+use App\Plan;
+use Carbon\Carbon;
 
 
 class PaymentController extends Controller
@@ -29,13 +31,19 @@ class PaymentController extends Controller
     {
 
         $income = $this->incomeRepo->findById($id);
+        $medic = $income->medic;
         $income->paid = 1;
         $income->save();
+        
 
-        /*$updatedIncomes = \DB::table('incomes')
-            ->where('month', $income->month)
-            ->where('year', $income->year)
-            ->update(['paid' => 1]);*/
+
+        $plan = Plan::find($medic->subscription->plan_id);
+        $subscription = $medic->subscription;
+
+        $subscription->cost = $plan->cost;
+        $subscription->quantity = $plan->quantity;
+        $subscription->ends_at =  Carbon::parse($income->period_to)->addMonths($plan->quantity);
+        $subscription->save();
 
 
         return back();
@@ -49,21 +57,35 @@ class PaymentController extends Controller
     {
 
         $income = $this->incomeRepo->findById($id);
-        $user = $income->medic;
+        $medic = $income->medic;
 
-        $incomesAttented = $user->incomes()->where('type','I')->where('month', $income->month)->where('year', $income->year);
-        $incomesPending = $user->incomes()->where('type','P')->where('month', $income->month)->where('year', $income->year);
+        //$incomesAttented = $user->incomes()->where('type','I')->where('month', $income->month)->where('year', $income->year);
+        //$incomesPending = $user->incomes()->where('type','P')->where('month', $income->month)->where('year', $income->year);
+         $medicData = [];
+        if($medic->subscription){
 
-        $medicData = [
-            'id' =>  $user->id,
-            'name' =>  $user->name,
-            'attented'=> $incomesAttented->count(),
-            'attented_amount' => $incomesAttented->sum('amount'),
-            'pending' => $incomesPending->count(),
-            'pending_amount' => $incomesPending->sum('amount'),
-            'monthly_payment' => getAmountPerExpedientUse(),
-            
-        ];
+            $dateStart = Carbon::parse($income->period_from)->setTime(0,0,0);
+            $dateEnd = Carbon::parse($income->period_to)->setTime(0,0,0);
+                    
+                
+
+            $incomesAttented = $medic->incomes()->where([['date', '>=', $dateStart],
+                ['date', '<=', $dateEnd]])->where('type','I');
+
+            $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
+                ['date', '<=', $dateEnd]])->where('type','P');
+
+            $medicData = [
+                'id' =>  $medic->id,
+                'name' =>  $medic->name,
+                'attented'=> $incomesAttented->count(),
+                'attented_amount' => $incomesAttented->sum('amount'),
+                'pending' => $incomesPending->count(),
+                'pending_amount' => $incomesPending->sum('amount'),
+                'monthly_payment' => $income->subscription_cost,
+                
+            ];
+    }
 
 
         return $medicData;
