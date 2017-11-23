@@ -41,7 +41,7 @@
 	              		 @if($user->hasRole('medico'))
 						  <div class="box box-solid box-medics">
 							<div class="box-header with-border">
-								<h4 class="box-title">Subscripcion Actual @if(!$subscription)(No tiene Subscripción)@endif</h4>
+								<h4 class="box-title">Subscripcion Actual @if(!$subscription)(No tiene Subscripción)@else <small>(Vencimiento: {{ $user->subscription->ends_at->toDateString() }})</small> @endif</h4>
 								
 							</div>
 							<div class="box-body">
@@ -67,6 +67,7 @@
 										@endif
 										</div>
 									</div>
+									
 										
 										<div class="form-group">
 											<div class="col-sm-offset-2 col-sm-10">
