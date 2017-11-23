@@ -56,11 +56,15 @@ class OfficeController extends Controller
         ]);
 
         $data = request()->all();
-       
+      
+        $data['facturar'] =  ($data['facturar'] == 'true') ? 1 : 0; 
+        
         if(isset($data['notification_date']) && $data['notification_date'] != '0000-00-00 00:00:00' && $data['notification_date'] != '')
         {
             $data['notification'] = 1;
         }
+
+        
 
 
          if(isset($data['id']) && $data['id']){ // update
@@ -210,7 +214,8 @@ class OfficeController extends Controller
         ]);
          
          $data = request()->all();
-
+        
+         $data['facturar'] =  ($data['facturar'] == 'true') ? 1 : 0; 
          /*if($data['notification_date'])
          {
              $data['notification'] = 1;

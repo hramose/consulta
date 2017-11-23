@@ -27,6 +27,15 @@
           {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
+            @if($invoice->clinic->type == 'Consultorio Independiente')
+                @if($invoice->clinic->facturar)
+                  Ced. Jurídica: {{ $invoice->clinic->ide }}
+                @else 
+                  Ced: {{ auth()->user()->ide }}
+                @endif
+            @else 
+                Ced. Jurídica: {{ $invoice->clinic->ide }}
+            @endif
           </address>
         </div>
         <!-- /.col -->

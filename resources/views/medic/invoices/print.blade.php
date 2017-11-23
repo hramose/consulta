@@ -27,7 +27,15 @@
           {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-          Ced:{{ auth()->user()->ide }}
+          @if($invoice->clinic->type == 'Consultorio Independiente')
+              @if($invoice->clinic->facturar)
+                Ced. Jurídica: {{ $invoice->clinic->ide }}
+              @else 
+                Ced: {{ auth()->user()->ide }}
+              @endif
+          @else 
+              Ced. Jurídica: {{ $invoice->clinic->ide }}
+          @endif
           </address>
           
         </div>
@@ -191,7 +199,7 @@
               // 'close', and 'timer'
               if (dismiss === 'cancel') {
     
-              window.location = '/medic/appointments';
+              window.location = '/medic/appointments?clinic={{ $invoice->office_id }}';
                   
               }else{
                 window.location = '/medic/appointments/{{ $invoice->appointment->id }}/edit';

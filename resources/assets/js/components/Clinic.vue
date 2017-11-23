@@ -90,6 +90,16 @@
               </form-error>
             </div>
           </div>
+          <div class="form-group" >
+              <label for="office_ide" class="col-sm-2 control-label">Cédula</label>
+              <div class="col-sm-10">
+
+                 <input type="text" class="form-control" name="ide" placeholder="Cedula Jurídica" v-model="office.ide">
+                <form-error v-if="errors.ide" :errors="errors" style="float:right;">
+                    {{ errors.ide[0] }}
+                </form-error> 
+              </div>
+            </div>
            <div class="form-group">
             <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
                 
@@ -656,7 +666,8 @@
             lat : '',
             lon: '',
             notification_datetime: '',
-            notification_hour: ''
+            notification_hour: '',
+            ide:''
           },
           selectedOffice:null,
           allOffices: [],

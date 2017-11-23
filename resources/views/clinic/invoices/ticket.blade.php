@@ -25,6 +25,15 @@
             <strong>{{ $invoice->clinic->name }}</strong><br>
             {{ $invoice->medic->name }} - {{ $invoice->medic->medic_code }}<br>
             {{ $invoice->clinic->address }}<br>
+             @if($invoice->clinic->type == 'Consultorio Independiente')
+                @if($invoice->clinic->facturar)
+                  Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                @else 
+                  Ced: {{ auth()->user()->ide }}<br>
+                @endif
+            @else 
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+            @endif
             Tel: {{ $invoice->clinic->phone }}<br>
             Factura Contado #{{$invoice->id }}<br>
             Fecha: {{ \Carbon\Carbon::now() }}<br>

@@ -24,6 +24,15 @@
           <address>
             <strong>{{ $invoice->clinic->name }}</strong><br>
             {{ $invoice->medic->name }}<br>
+             @if($invoice->clinic->type == 'Consultorio Independiente')
+                @if($invoice->clinic->facturar)
+                  Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                @else 
+                  Ced: {{ auth()->user()->ide }}<br>
+                @endif
+            @else 
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+            @endif
             {{ $invoice->clinic->address }}<br>
             Tel: {{ $invoice->clinic->phone }}<br>
             Factura Contado #{{$invoice->id }}<br>
@@ -153,7 +162,7 @@
                 // 'close', and 'timer'
                 if (dismiss === 'cancel') {
       
-                window.location = '/medic/appointments';
+                window.location = '/medic/appointments?clinic={{ $invoice->office_id }}';
                     
                 }else{
                   window.location = '/medic/appointments/{{ $invoice->appointment->id }}/edit';

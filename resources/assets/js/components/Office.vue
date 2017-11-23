@@ -153,6 +153,7 @@
               </form-error>
             </div>
           </div>
+
           
           <div class="form-group">
             <label for="office_phone" class="col-sm-2 control-label">Teléfono</label>
@@ -164,6 +165,30 @@
               </form-error>
             </div>
           </div>
+          <div class="form-group" v-show="office.type == 'Consultorio Independiente'">
+              <label for="office_phone" class="col-sm-2 control-label">Facturación</label>
+
+                <div class="col-sm-10">
+                    <div class="checkbox">
+                            <label>
+                            <input type="checkbox" name="facturar" value="1"  v-model="office.facturar">
+                            Facturar a nombre del consultorio
+                            </label>
+                        </div>
+                </div>
+                  
+            </div>
+            <div class="form-group" v-show="office.facturar">
+              <label for="office_ide" class="col-sm-2 control-label">Cédula</label>
+              <div class="col-sm-10">
+
+                 <input type="text" class="form-control" name="ide" placeholder="Cedula Jurídica" v-model="office.ide">
+                <form-error v-if="errors.ide" :errors="errors" style="float:right;">
+                    {{ errors.ide[0] }}
+                </form-error> 
+              </div>
+            </div>
+        
            <div class="form-group">
             <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
                 
@@ -748,7 +773,8 @@
             notification_datetime: '',
             notification_hour: '',
             type:'Consultorio Independiente',
-            file:''
+            facturar:0,
+            ide:'',
           },
           inteOffice: {
             name:'',
@@ -758,7 +784,8 @@
           selectedValue:null,
           allOffices: [],
           errors: [],
-          officeNotFound:false
+          officeNotFound:false,
+          
          
         
           
@@ -786,7 +813,9 @@
                     notification_datetime: '',
                     notification_hour: '',
                     type: 'Consultorio Independiente',
-                    file:''
+                    file:'',
+                    facturar:0,
+                    ide:'',
                 };
              this.inteOffice = {
                     name:'',
@@ -815,7 +844,9 @@
                 notification_datetime: '',
                 notification_hour: '',
                 type: type,
-                file:''
+                file:'',
+                facturar:0,
+                ide:'',
               };
           this.allOffices = [];
           this.integraOffice = false

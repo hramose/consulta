@@ -103,6 +103,17 @@
               @endif
             </div>
           </div>
+           <div class="form-group">
+           
+            <div class="col-sm-12">
+              <input type="text" class="form-control" name="ide" placeholder="Cédula Jurídica" value="{{ old('ide') }}" >
+               @if ($errors->has('ide'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('ide') }}</strong>
+                  </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group">
             
 
