@@ -36,7 +36,8 @@
     
 
     <section class="content">
-      <div class="row">
+        @if(!$wizard)
+       <div class="row">
        <div class="col-md-12">
         <div class="panel">
           <div class="panel-body">
@@ -48,6 +49,7 @@
          
         </div>
        </div>
+       @endif
         <div class="row">
         <div class="col-md-3">
         
