@@ -50,7 +50,14 @@
                           @if($appointment->status == 2)
                             {{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}
                           @else
-                            <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+
+                            @if(auth()->user()->hasSubscription())
+
+                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                            @else
+                               <a href="#" data-toggle="modal" data-target="#modalSubscription" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                            @endif
+
                           @endif
                         </td>
                         <td data-title="Motivo">{{ $appointment->title }}</td>
@@ -65,7 +72,15 @@
                               @if($appointment->status == 0 && \Carbon\Carbon::now()->ToDateString() > $appointment->date)
                                 <span class="label label-default" style="margin-left: 5px;margin-top: 8px;display: inline-block;">Cita perdida</span>
                               @else
-                                <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+                                 @if(auth()->user()->hasSubscription())  
+                                    @if(!auth()->user()->monthlyCharge()->count())
+                                      <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+                                    @else
+                                       <a href="#" data-toggle="modal" data-target="#modalPendingPayments" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+                                    @endif
+                                  @else
+                                    <a href="#" data-toggle="modal" data-target="#modalSubscription" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
+                                  @endif
                               @endif
                              @if($appointment->status != 2 && $appointment->status != 1)
                                 <button type="submit" class="btn btn-warning" form="form-noshows" formaction="{!! url('/medic/appointments/'.$appointment->id.'/noshows') !!}">No Asistió</button>
@@ -100,6 +115,9 @@
         </div>
 
     </section>
+
+    @include('layouts/partials/modal-subscriptions')
+    @include('layouts/partials/modal-pending-payments')
 
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}

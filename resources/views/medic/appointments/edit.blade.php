@@ -149,13 +149,13 @@
 								@else
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient->id }}" :office_id="{{ $appointment->office->id }}" ></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient->id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}"></invoice-form>
 			              			</div>
 			              		</div>
 			              		<div class="row">
 									<div class="col-md-12">
 										<h3>Facturas del Día</h3>
-			              				<invoice-list :invoices="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
+			              				<invoice-list :invoices="{{ auth()->user()->invoices()->with('clinic')->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
 			              			</div>
 			              		</div>
 			              		@endif

@@ -78,6 +78,30 @@
           </div>
           <div v-show="invoiceHere">
               <div class="box-footer clearfix" >
+                 
+                  <div class="row" v-show="office_type == 'Clínica Privada'">
+                    <div class="col-md-6">
+                      <div class="">
+                        <div class="radio radio-facturar">
+                          <label>
+                            <input type="radio" name="bill_to"  value="M" v-model="bill_to">
+                            Facturar a nombre del médico
+                          </label>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                       <div class="">
+                         <div class="radio radio-facturar">
+                            <label>
+                              <input type="radio" name="bill_to"  value="C"  v-model="bill_to">
+                              Facturar a nombre de la clínica
+                            </label>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-md-6">
                         <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
@@ -100,6 +124,7 @@
                           </div>
                     </div>
                   </div>
+                   
                  
                    
                   
@@ -157,7 +182,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['appointment_id', 'office_id','patient_id'],
+        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a'],
         data () {
 	        return {
 	 
@@ -172,7 +197,8 @@
             newService:false,
             updateService:false,
             service:null,
-            invoiceHere: false
+            invoiceHere: false,
+            bill_to:'M'
            
 	         
 	        
@@ -392,9 +418,9 @@
                   change = this.change
                   pay_with = this.pay_with
                 }
-
+               
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change}).then((response) => {
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type}).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
@@ -407,11 +433,11 @@
                           this.invoiceHere = false;
                           this.loader = false;
 
-                          if(here){
+                          /*if(here){
                             window.location.href = "/medic/invoices/"+response.data.id+"/print";
     
                             //this.openInNewTab("/medic/invoices/"+response.data.id+"/print");
-                          }
+                          }*/
 
                         }
                        this.loader = false;
@@ -429,6 +455,8 @@
           
        },
        created(){
+            //if(this.office_type == 'Consultorio Independiente')
+               this.bill_to = this.facturar_a
 
        	    console.log('Component ready. InvoiceForm');
 

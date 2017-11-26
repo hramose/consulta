@@ -27,22 +27,20 @@
           {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-           @if($invoice->clinic->type == 'Consultorio Independiente')
-                @if($invoice->clinic->facturar)
-                  Ced. Jurídica: {{ $invoice->clinic->ide }}
-                @else 
-                  Ced: {{ auth()->user()->ide }}
-                @endif
-            @else 
-                Ced. Jurídica: {{ $invoice->clinic->ide }}
-            @endif
+            @if($invoice->clinic->bill_to == 'C')
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                Nombre: {{ $invoice->clinic->ide_name }}
+              @else 
+                Ced: {{ auth()->user()->ide }}<br>
+                Nombre: {{ $invoice->medic->name }}
+              @endif
           </address>
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
           <div class="invoice-number">
             <h3>Nro. Factura:</h3>
-            <h4>{{$invoice->id }}</h4>
+            <h4>{{$invoice->consecutivo }}</h4>
           </div>
           <div> <span>Contado</span>  </div>  
           <div class="invoice-date">

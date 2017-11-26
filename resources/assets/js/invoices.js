@@ -150,6 +150,7 @@ $(function () {
                modal.find('#modal-label-medic').text('')
                table_details.find('tbody').html('');
               
+              var consecutivo = resp.consecutivo;
 
                modal.find('#modal-label-medic').text(resp.medic.name);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
@@ -167,7 +168,7 @@ $(function () {
 
                table_details.find('tbody').html(detailsHtml);
                
-               $("#modalInvoiceLabel").html('Factura #'+ invoice_id + '  <span class="label label-warning pull-right">'+resp.created_at+'</span>');
+              $("#modalInvoiceLabel").html('Factura #' + consecutivo + '  <span class="label label-warning pull-right">'+resp.created_at+'</span>');
                $("#modal-label-total").html('Total: ₡<span>'+ money(resp.total)+'</span>');
                $('input[name="total"]').val(resp.total);
 

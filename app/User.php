@@ -161,6 +161,23 @@ class User extends Authenticatable
         return !! $speciality->intersect($this->specialities)->count();
     }
 
+     /**
+     * Determine if the user has the given role.
+     *
+     * @param  mixed $role
+     * @return boolean
+     */
+    public function hasSubscription($subscription = null)
+    {
+        
+        if ($this->subscription && $subscription && (is_string($subscription) || is_numeric($subscription))) {
+            return $this->subscription->plan_id == $subscription;
+        }
+
+
+        return  ($this->subscription) ? true : false;
+    }
+
     public function patients()
     {
         return $this->belongsToMany(Patient::class);

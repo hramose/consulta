@@ -10,6 +10,7 @@ use App\Repositories\OfficeRepository;
 use App\User;
 use App\RequestOffice;
 use Illuminate\Http\Request;
+use Validator;
 
 class OfficeController extends Controller
 {
@@ -43,21 +44,31 @@ class OfficeController extends Controller
      */
     public function store()
     {
-       
-        $this->validate(request(),[
+        $data = request()->all();
+        
+        $v = Validator::make($data, [
                 'type' => 'required',
                 'name' => 'required',
                 'address' => 'required',  
-                'province' => 'required',
+                'province' => 'required',  
                 'canton' => 'required', 
-                'district' => 'required', 
-                'phone' => 'required',
-                'file' => 'mimes:jpeg,bmp,png',         
+                'district' => 'required',  
+                'phone' => 'required', 
+                'file' => 'mimes:jpeg,bmp,png',     
         ]);
+         
+         
 
-        $data = request()->all();
+         $v->sometimes('ide', 'required', function ($input) {
+            return $input->bill_to == 'C';
+        });
+         $v->sometimes('ide_name', 'required', function ($input) {
+            return $input->bill_to == 'C';
+        });
+
+        $v->validate();
       
-        $data['facturar'] =  ($data['facturar'] == 'true') ? 1 : 0; 
+        //$data['facturar'] =  ($data['facturar'] == 'M') ? 1 : 0; 
         
         if(isset($data['notification_date']) && $data['notification_date'] != '0000-00-00 00:00:00' && $data['notification_date'] != '')
         {
@@ -202,7 +213,9 @@ class OfficeController extends Controller
     public function update($id)
     {
         
-    	 $this->validate(request(),[
+    	$data = request()->all();
+        
+        $v = Validator::make($data, [
                 'type' => 'required',
                 'name' => 'required',
                 'address' => 'required',  
@@ -213,9 +226,18 @@ class OfficeController extends Controller
                 'file' => 'mimes:jpeg,bmp,png',     
         ]);
          
-         $data = request()->all();
+         
+
+         $v->sometimes('ide', 'required', function ($input) {
+            return $input->bill_to == 'C';
+        });
+         $v->sometimes('ide_name', 'required', function ($input) {
+            return $input->bill_to == 'C';
+        });
         
-         $data['facturar'] =  ($data['facturar'] == 'true') ? 1 : 0; 
+        $v->validate();
+
+         //$data['facturar'] =  ($data['facturar'] == 'true') ? 1 : 0; 
          /*if($data['notification_date'])
          {
              $data['notification'] = 1;
