@@ -17,7 +17,13 @@
                       <td>{{ subscription.title }}</td>
                       <td>{{ subscription.quantity }} Meses</td>
                       <td>
-                        <a href="#" class="btn btn-success">Seleccionar</a>
+                       <form method="POST" v-bind:action="getUrl(subscription)" class="form-horizontal">
+                          <input type="hidden" name="_token" :value="token">
+
+                          <button type="submit" class="btn btn-success">Seleccionar</button>
+                         <!-- <a href="#" class="btn btn-success">Seleccionar</a> -->
+                      </form>
+                       
                       </td>
                       
                     </tr>
@@ -38,7 +44,7 @@
     
     export default {
       
-      //props:[],
+      props:['token'],
     
       data () {
         return {
@@ -48,6 +54,11 @@
       },
   
       methods: {
+           getUrl(subscription){
+          
+          return '/medic/subscriptions/'+ subscription.id +'/buy';
+
+        },
 
          getSubscriptionsPackages() {
          

@@ -7,6 +7,7 @@ use App\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
@@ -28,6 +29,27 @@ class SubscriptionController extends Controller
 
         return $plans;
         
+    }
+
+     /**
+     * Guardar consulta(cita)
+     */
+    public function buy($id)
+    {
+
+         $user = auth()->user();
+         $newPlan = Plan::find($id);
+
+        $user->subscription()->create([
+            'plan_id' => $newPlan->id,
+            'cost' => $newPlan->cost,
+            'quantity' => $newPlan->quantity,
+            'ends_at' => Carbon::now()->addMonths($newPlan->quantity)
+
+        ]);
+
+        return back();
+
     }
 
     

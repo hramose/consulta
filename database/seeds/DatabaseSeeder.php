@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     
     private $tables = [
-        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars','allergies','appointments','diagnostics', 'disease_notes','ginecos','heredos','medicines','nopathologicals','pathologicals', 'physical_exams', 'reminders','schedules','treatments','vital_signs','incomes','configurations'
+        'users','offices','roles','role_user', 'specialities','speciality_user','verified_offices','office_user','patients','patient_user','settings','histories','invoices','invoice_services','invoice_lines','review_services','review_medics','balances','assistants_users','assistants_offices','pressures','sugars','allergies','appointments','diagnostics', 'disease_notes','ginecos','heredos','medicines','nopathologicals','pathologicals', 'physical_exams', 'reminders','schedules','treatments','vital_signs','incomes','configurations','subscriptions','plans'
     ];
     
     /**
@@ -72,6 +72,23 @@ class DatabaseSeeder extends Seeder
 );
       
         $confi = factory(Configuration::class, 1)->create();
+
+         $plan1 = factory(Plan::class, 1)->create();
+          $plan2 = factory(Plan::class, 1)->create([
+               'title' => 'Plan $30',
+                'cost' => 30,
+                'quantity' => 3
+          ]);
+           $plan3 = factory(Plan::class, 1)->create([
+               'title' => 'Plan $50',
+                'cost' => 50,
+                'quantity' => 6
+           ]);
+            $plan4 = factory(Plan::class, 1)->create([
+                'title' => 'Plan $100',
+                'cost' => 100,
+                'quantity' => 12
+            ]);
 
     }
 

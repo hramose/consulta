@@ -57,5 +57,13 @@ $factory->define(App\Configuration::class, function ($faker) {
     ];
 });
 
+$factory->define(App\Plan::class, function ($faker) {
+    return [
+        'title' => 'Plan $10',
+        'cost' => 10,
+        'quantity' => 1
+    ];
+});
+
 
 

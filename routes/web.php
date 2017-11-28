@@ -189,7 +189,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function ()
 
 	Route::get('/payments/{id}/details', 'Medic\PaymentController@details');
 	Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
-
+	
+	Route::post('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
 	Route::get('/subscriptions/list', 'Medic\SubscriptionController@list');
 
 	

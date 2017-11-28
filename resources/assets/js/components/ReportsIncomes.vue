@@ -60,10 +60,10 @@
           
         </div>
      </div>
-      <div v-if="data.generalByExpedientUse">
+      <div v-if="data.medicsPlans">
            <div class="box box-danger">
               <div class="box-header">
-                 <h3 class="box-title">Mensualidad por uso de expediente clinico</h3>
+                 <h3 class="box-title">Medico por paquetes</h3>
                 
               </div>
               <div class="box-body">
@@ -74,20 +74,20 @@
                               <table class="table no-margin">
                                 <thead>
                                 <tr>
-                                  <th></th>
-                                  <th>Cantidad</th>
-                                  <th>Mensualidad</th>
+                                  <th>Plan</th>
+                                  <th>Médicos</th>
+                                  <th>Costo de Plan</th>
                                   <th>Total</th>
                                  
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Medicos</td>
-                                    <td>{{ data.generalByExpedientUse.medics }}</td>
-                                    <td>${{ money(data.generalByExpedientUse.monthly_payment) }}</td>
+                                <tr v-for="plan in data.medicsPlans">
+                                    <td>{{ plan.title }}</td>
+                                    <td>{{ plan.medics }}</td>
+                                    <td>${{ money(plan.cost) }}</td>
                                     <td>
-                                      ₡{{  money(parseFloat(data.generalByExpedientUse.total) ) }}
+                                      ₡{{  money(parseFloat(plan.total) ) }}
                                     </td>
                                     
                                 </tr>

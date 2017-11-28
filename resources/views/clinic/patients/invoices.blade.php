@@ -30,22 +30,18 @@
                   <form action="/clinic/patients/{{ $patient->id }}/invoices" method="GET">
                         
                           
-                  <div class="col-xs-12 col-sm-2">
-                          <div class="input-group">
+                  <div class="col-xs-12 col-sm-4">
+                          <div class="form-group">
                             <input type="text" class="form-control"  name="date1"  id="datepicker1" value="{{ isset($searchDate['date1']) ? $searchDate['date1'] : '' }}">
 
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
-                            </div>
+                            
                           </div>
                       </div>
-                       <div class="col-xs-12 col-sm-2" >
-                          <div class="input-group">
+                       <div class="col-xs-12 col-sm-4" >
+                          <div class="form-group">
                             <input type="text" class="form-control"  name="date2" id="datepicker2"  value="{{ isset($searchDate['date2']) ? $searchDate['date2'] : '' }}">
 
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
-                            </div>
+                           
                           </div>
                       </div>
                            

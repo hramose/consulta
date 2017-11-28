@@ -9,7 +9,7 @@
           <div class="modal-body" >
               
              <div class="text-center">
-                <table-subscriptions></table-subscriptions>
+                <table-subscriptions token="{{ csrf_token() }}"></table-subscriptions>
             </div>
               
                 

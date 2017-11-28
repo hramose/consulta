@@ -83,7 +83,7 @@
                                       
                                       <th>Consultas Atendidas</th>
                                       <th>Monto</th>
-                                      <th>Mensualidad</th>
+                                      <th>Plan</th>
                                       <th>Total</th>
                                     
                                       

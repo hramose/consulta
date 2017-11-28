@@ -56,7 +56,7 @@ class ReportsController extends Controller
            
             
            
-            $statistics = $this->incomeRepo->reportsStatistics($search);
+            $statistics = $this->incomeRepo->reportsStatisticsByClinic($search);
            
            
            
