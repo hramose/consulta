@@ -98,7 +98,7 @@
                       <tbody>
                         @foreach($invoices as $invoice)
                           <tr>
-                            <td>{{ $invoice->id }}</td>
+                            <td>{{ $invoice->consecutivo }}</td>
                              <td>{{ $invoice->medic->name }}</td>
                              <td>{{ $invoice->appointment->patient->first_name }}</td>
                             <td>

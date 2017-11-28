@@ -138,6 +138,8 @@ return [
         'email' => 'Email',
         'rating' => 'Puntuación',
         'rating2' => 'Puntuación',
+        'ide' => 'Cédula',
+        'ide_name' => 'Nombre Jurídico',
        
     
 

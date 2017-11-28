@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\User;
 use App\RequestOffice;
+use Illuminate\Support\Facades\View;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
         }
+
+        
+       
 
         view()->composer('layouts.app', function ($view)
         {
@@ -68,6 +73,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('medics','admins','requests'));
         });
 
+
        
         /* \DB::listen(function ($query) {
             var_dump($query->sql);
@@ -75,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
             // $query->time
         });*/
     }
+    
 
     /**
      * Register any application services.

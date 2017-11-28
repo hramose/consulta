@@ -26,13 +26,14 @@ class CreateOfficesTable extends Migration
             $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('ide')->nullable();
+            $table->string('ide_name')->nullable();
             $table->string('lat')->nullable();
             $table->string('lon')->nullable();
             $table->tinyInteger('notification')->default(0);
             $table->dateTime('notification_date');
             $table->string('address_map')->nullable();
             $table->tinyInteger('active')->default(0);
-            $table->tinyInteger('facturar')->default(0);
+            $table->char('bill_to', 2)->default('C');
             $table->timestamps();
         });
 

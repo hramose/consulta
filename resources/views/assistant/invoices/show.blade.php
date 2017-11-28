@@ -65,7 +65,7 @@
                       <tbody>
                         @foreach($invoices as $invoice)
                           <tr>
-                            <td>{{ $invoice->id }}</td>
+                            <td>{{ $invoice->consecutivo }}</td>
                             <td>
                              {{ $invoice->created_at }}
                             </td>

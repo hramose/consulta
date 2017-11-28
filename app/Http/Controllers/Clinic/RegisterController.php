@@ -80,7 +80,9 @@ class RegisterController extends Controller
                 'province' => 'required',
                 'canton' => 'required', 
                 'district' => 'required', 
-                'phone' => 'required',      
+                'phone' => 'required',
+                'ide' => 'required',  
+                'ide_name' => 'required',        
         ]);
 
         $data = request()->all();

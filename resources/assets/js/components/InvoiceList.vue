@@ -9,6 +9,7 @@
               <tr>
                 <th>#</th>
                 <th>Fecha</th>
+                <th>Clínica o consultorio</th>
                 <th>Total</th>
                 <th>Estado</th>
                
@@ -17,10 +18,12 @@
               <tbody>
               
                   <tr v-for="item in facturas">
-                    <td>{{ item.id }}</td>
+                    <td>{{ item.consecutivo }}</td>
+                   
                     <td>
                      {{ item.created_at }}
                     </td>
+                      <td>{{ item.clinic.name }}</td>
                    
                     <td>{{ money(item.total) }}</span></td>
                     <td>

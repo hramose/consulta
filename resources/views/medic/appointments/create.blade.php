@@ -392,9 +392,9 @@
   <!-- Modal -->
 
        @if(isset($p))
-        <modal-appointments :patient="{{ $p }}"></modal-appointments>
+        <modal-appointments :patient="{{ $p }}" has_subscription="{{ auth()->user()->hasSubscription() }}" :pending_payment="{{ auth()->user()->monthlyCharge() }}" :pending_payment_total="0" token="{{ csrf_token() }}"></modal-appointments>
       @else
-         <modal-appointments></modal-appointments>
+         <modal-appointments has_subscription="{{ auth()->user()->hasSubscription() }}" :pending_payment="{{ auth()->user()->monthlyCharge() }}" :pending_payment_total="0" token="{{ csrf_token() }}"></modal-appointments>
       @endif
       
       

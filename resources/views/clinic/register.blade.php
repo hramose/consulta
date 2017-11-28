@@ -106,10 +106,21 @@
            <div class="form-group">
            
             <div class="col-sm-12">
-              <input type="text" class="form-control" name="ide" placeholder="Cédula Jurídica" value="{{ old('ide') }}" >
+              <input type="text" class="form-control" name="ide" placeholder="Cédula Jurídica" value="{{ old('ide') }}" required>
                @if ($errors->has('ide'))
                   <span class="help-block">
                       <strong>{{ $errors->first('ide') }}</strong>
+                  </span>
+              @endif
+            </div>
+          </div>
+           <div class="form-group">
+           
+            <div class="col-sm-12">
+              <input type="text" class="form-control" name="ide_name" placeholder="Nombre Jurídico" value="{{ old('ide_name') }}" required>
+               @if ($errors->has('ide_name'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('ide_name') }}</strong>
                   </span>
               @endif
             </div>

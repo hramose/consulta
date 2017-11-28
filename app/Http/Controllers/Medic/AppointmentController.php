@@ -40,7 +40,8 @@ class AppointmentController extends Controller
         $clinic_id = request('clinic');
        
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
-        
+
+
         if($search['office'])
             return view('medic.appointments.index',compact('appointments','search','clinic_id'));
         else

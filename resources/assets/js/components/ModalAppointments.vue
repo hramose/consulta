@@ -5,11 +5,13 @@
       <div class="modal-content">
         <div class="modal-header">
         
-          <h4 class="modal-title" id="myModalLabel">Crear cita</h4>
+          <h4 class="modal-title" id="myModalLabel"  v-show="!showPackages && !showPendingPayment">Crear cita</h4>
+          <h4 v-show="showPackages">Parece que no tienes una <b>subscripción</b> todavia! Selecciona una para continuar con el proceso</h4>
+           <h4 v-show="showPendingPayment">Tienes pagos pendientes!. Haz el pago para poder continuar</h4>
         </div>
         <div class="modal-body" data-modaldate data-modaldate-end data-office data-officename>
             
-            <div class="box box-widget widget-user-2"  v-show="!newPatient" v-bind:data-patient="(paciente) ? paciente.id : '' " v-bind:data-title=" (paciente) ? paciente.first_name : '' " v-bind:data-office="(office) ? office.id : '' ">
+            <div class="box box-widget widget-user-2"  v-show="!newPatient && !showPackages && !showPendingPayment" v-bind:data-patient="(paciente) ? paciente.id : '' " v-bind:data-title=" (paciente) ? paciente.first_name : '' " v-bind:data-office="(office) ? office.id : '' ">
                <patient-search :patient="paciente"></patient-search>
                <!-- <div class="form-group">
                   <v-select :debounce="250" :on-search="getOffices"  :options="offices" placeholder="Selecciona el consultorio para la cita..." label="name" :on-change="selectOffice" :value.sync="office"></v-select>
@@ -20,20 +22,33 @@
                <a href="#" @click="nuevo()" class="">o Crear un paciente?</a>
             </div>
            
-          <div v-show="newPatient">
+          <div v-show="newPatient && !showPackages">
               <div class="callout callout-info"><h4>Información !</h4> <p>Agrega un paciente nuevo</p></div>
               <patient-form :fromModal="true" url="/medic/account/patients"></patient-form>
      
           </div>
-               
+          <div class="pending-payment text-center" v-show="showPendingPayment">
+           
+           <table-pending-payments :monthlyCharges="monthlyCharges" token="token"></table-pending-payments>
+        
             
-             
+           
+          </div>
+          <div class="text-center" v-show="showPackages">
+               <table-subscriptions></table-subscriptions>
+          </div>
+          
+         
+               
+
              
         </div>
          <div class="modal-footer" v-show="!newPatient">
          
-          <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-info btn-iniciar-cita">Iniciar consulta</button>
+          <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal" @click="showPackages = false; showPendingPayment = false; ">Cancelar</button>
+          <button type="button" class="btn btn-info btn-iniciar-cita" v-if="has_subscription && !monthlyCharges.length">Iniciar consulta</button>
+          <button type="button" class="btn btn-info btn-show-package" v-if="!has_subscription" @click="showPackages = true">Iniciar consulta</button>
+          <button type="button" class="btn btn-info btn-show-pending-payment"v-if="monthlyCharges.length" @click="showPendingPayment = true">Iniciar consulta</button>
           <button type="button" class="btn btn-success btn-finalizar-cita">Crear cita</button>
           <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
         </div>
@@ -49,12 +64,14 @@
     import vSelect from 'vue-select'
     import PatientSearch from './PatientSearch.vue';
     import PatientForm from './PatientForm.vue';
+    import TableSubscriptions from './TableSubscriptions.vue';
+    import TablePendingPayments from './TablePendingPayments.vue';
     //import Select2 from './Select2.vue';
     
     
     export default {
       
-      props:['patient'],
+      props:['patient','has_subscription','pending_payment','pending_payment_total','token'],
       components: {vSelect},
       data () {
         return {
@@ -64,7 +81,11 @@
           selectedPatient: 0,
           options: [],
           offices: [],
-          office:null
+          office:null,
+          subscriptionsPackages: [],
+          monthlyCharges: [],
+          showPackages:false,
+          showPendingPayment:false
 
         }
       },
@@ -140,11 +161,17 @@
           
           
            },
+           
         
 
       }, //methods
+
       created () {
              console.log('Component ready. Modal Appointments')
+
+            
+
+             this.monthlyCharges = this.pending_payment;
              
              bus.$on('patientCreated', this.selectedPatientRecentlyCreated);
              bus.$on('selectedPatient', this.select);

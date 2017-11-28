@@ -3,6 +3,7 @@
 
 
 use App\Invoice;
+use App\User;
 use App\InvoiceLine;
 use Carbon\Carbon;
 
@@ -25,12 +26,38 @@ class InvoiceRepository extends DbRepository{
      */
     public function store($data, $user_id = null)
     {
-       
+        
+        $user = ($user_id) ? User::find($user_id) : auth()->user();
         
         $invoice = $this->model;
         $invoice->appointment_id = $data['appointment_id'];
         $invoice->office_id = $data['office_id'];
         $invoice->patient_id = $data['patient_id'];
+        $invoice->bill_to = $data['bill_to'];
+        $invoice->office_type = $data['office_type'];
+
+        if($data['office_type'] == 'Consultorio Independiente' ){
+           
+            $consecutivo = Invoice::where('user_id',$user->id)->where('office_type','Consultorio Independiente')->max('consecutivo');
+        
+        }else{
+
+            if($data['bill_to'] == 'M'){
+
+                $consecutivo = Invoice::where('user_id',$user->id)->where('office_type','Consultorio Independiente')->max('consecutivo');
+                $last_office = Invoice::where('user_id',$user->id)->where('office_type','Consultorio Independiente')->orderBy('id', 'desc')->first();
+                $invoice->office_id = $last_office->office_id; // se guarda el id de la office del ultimo registro de consultorios independientes
+                $invoice->office_type = $last_office->office_type; // se guarda el tipo de la office del ultimo registro de consultorios independientes
+               
+            }
+            else
+                $consecutivo = Invoice::where('user_id',$user->id)->where('office_id', $data['office_id'])->where('office_type','Clínica Privada')->where('bill_to','C')->max('consecutivo');
+        }
+
+      
+      
+
+        $invoice->consecutivo = ($consecutivo) ? $consecutivo += 1  : 1;
         
         if(isset($data['pay_with']))
             $invoice->pay_with = $data['pay_with'];
@@ -39,7 +66,7 @@ class InvoiceRepository extends DbRepository{
         
         $invoice->status = $data['status'];
 
-        $invoice = auth()->user()->invoices()->save($invoice);
+        $invoice = $user->invoices()->save($invoice);
         
 
 
@@ -62,7 +89,7 @@ class InvoiceRepository extends DbRepository{
          $invoice->total = $totalInvoice;
          $invoice->save();
 
-        return $invoice;
+        return $invoice->load('clinic');
         
     }
 

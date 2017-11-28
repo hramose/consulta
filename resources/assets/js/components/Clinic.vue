@@ -17,7 +17,7 @@
             <label for="office_type" class="col-sm-2 control-label">Tipo</label>
 
             <div class="col-sm-10">
-              <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona tipo --"  v-model="office.type" >
+              <select class="form-control " style="width: 100%;" name="type" placeholder="-- Selecciona tipo --"  v-model="office.type" disabled>
                 <option disabled="disabled"></option>
                 <option v-for="item in tipos" v-bind:value="item">{{ item }}</option>
                 
@@ -90,16 +90,27 @@
               </form-error>
             </div>
           </div>
-          <div class="form-group" >
-              <label for="office_ide" class="col-sm-2 control-label">Cédula</label>
+            <div class="form-group" >
+            <label for="office_ide" class="col-sm-2 control-label">Cédula</label>
+
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="ide" placeholder="Cédula Jurídica"  v-model="office.ide">
+              <form-error v-if="errors.ide" :errors="errors" style="float:right;">
+                  {{ errors.ide[0] }}
+              </form-error>
+            </div>
+          </div>
+            <div class="form-group">
+              <label for="ide_name" class="col-sm-2 control-label">Nombre Jurídico</label>
               <div class="col-sm-10">
 
-                 <input type="text" class="form-control" name="ide" placeholder="Cedula Jurídica" v-model="office.ide">
-                <form-error v-if="errors.ide" :errors="errors" style="float:right;">
-                    {{ errors.ide[0] }}
+                 <input type="text" class="form-control" name="ide_name" placeholder="Nombre Jurídico" v-model="office.ide_name">
+                <form-error v-if="errors.ide_name" :errors="errors" style="float:right;">
+                    {{ errors.ide_name[0] }}
                 </form-error> 
               </div>
             </div>
+        
            <div class="form-group">
             <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
                 
@@ -667,7 +678,8 @@
             lon: '',
             notification_datetime: '',
             notification_hour: '',
-            ide:''
+            ide:'',
+            ide_name:''
           },
           selectedOffice:null,
           allOffices: [],

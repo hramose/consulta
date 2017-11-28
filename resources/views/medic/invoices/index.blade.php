@@ -51,6 +51,7 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
+                        <th>Clínica</th>
                         <th>Paciente</th>
                         <th>Total</th>
                         
@@ -60,9 +61,12 @@
                       <tbody>
                         @foreach($invoices as $invoice)
                           <tr>
-                            <td>{{ $invoice->id }}</td>
+                            <td>{{ $invoice->consecutivo }}</td>
                             <td>
                              {{ $invoice->created_at }}
+                            </td>
+                            <td>
+                             {{ $invoice->clinic->name }}
                             </td>
                              <td>
                              {{ $invoice->appointment->patient->first_name }}

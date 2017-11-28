@@ -28,13 +28,22 @@
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
           @if($invoice->clinic->type == 'Consultorio Independiente')
-              @if($invoice->clinic->facturar)
-                Ced. Jurídica: {{ $invoice->clinic->ide }}
+              @if($invoice->clinic->bill_to == 'C')
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                Nombre: {{ $invoice->clinic->ide_name }}
               @else 
-                Ced: {{ auth()->user()->ide }}
+                Ced: {{ auth()->user()->ide }}<br>
+                Nombre: {{ $invoice->medic->name }}
               @endif
-          @else 
-              Ced. Jurídica: {{ $invoice->clinic->ide }}
+          @else
+              @if($invoice->bill_to == 'C')
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                Nombre: {{ $invoice->clinic->ide_name }}
+              @else 
+                Ced: {{ auth()->user()->ide }}<br>
+                Nombre: {{ $invoice->medic->name }}
+              @endif
+              
           @endif
           </address>
           
@@ -43,7 +52,7 @@
         <div class="col-sm-4 invoice-col">
           <div class="invoice-number">
             <h3>Nro. Factura:</h3>
-            <h4>{{$invoice->id }}</h4>
+            <h4>{{$invoice->consecutivo }}</h4>
             
           </div>
           <div> <span>Contado</span>  </div>
