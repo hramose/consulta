@@ -132,7 +132,15 @@ class AppointmentController extends Controller
      */
     public function edit($id)
     {
-       
+        if(!auth()->user()->hasSubscription()) return redirect('/'); // verifica que tiene subscription
+        
+        if(!auth()->user()->monthlyCharge()->count()) return redirect('/'); //verifica que tiene pagos pendientes
+
+        $appointment = $this->appointmentRepo->findById($id);
+
+        if($appointment->user_id != auth()->id()) return redirect('/'); //verifica que la cita es del medico q la solicita
+
+        
         $appointment =  $this->appointmentRepo->update_status($id, 1);
 
         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
