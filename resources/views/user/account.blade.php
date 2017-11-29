@@ -62,10 +62,22 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">Teléfono</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="phone"  name="phone" placeholder="Teléfono"  value="{{ old('phone') ?: $user->phone }}"  required>
+                      @if ($errors->has('phone'))
+                          <span class="help-block">
+                              <strong>{{ $errors->first('phone') }}</strong>
+                          </span>
+                      @endif
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label for="email" class="col-sm-2 control-label">Email</label>
 
                     <div class="col-sm-10">
-                      <input type="email" class="form-control" id="email"  name="email" placeholder="Email"  value="{{ old('email') ?: $user->email }}" readonly required>
+                      <input type="email" class="form-control" id="email"  name="email" placeholder="Email"  value="{{ old('email') ?: $user->email }}">
                       @if ($errors->has('email'))
                           <span class="help-block">
                               <strong>{{ $errors->first('email') }}</strong>

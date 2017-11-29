@@ -25,15 +25,16 @@
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="Email">
+        <input id="email" type="phone" class="form-control" name="phone" value="{{ old('phone') }}" required placeholder="Teléfono">
 
-        @if ($errors->has('email'))
+        @if ($errors->has('phone'))
             <span class="help-block">
-                <strong>{{ $errors->first('email') }}</strong>
+                <strong>{{ $errors->first('phone') }}</strong>
             </span>
         @endif
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
+      
       <div class="form-group has-feedback">
         <input id="password" type="password" class="form-control" name="password" required placeholder="Contraseña">
 
@@ -48,6 +49,18 @@
         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmación de contraseña">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
+
+      <div class="form-group has-feedback">
+        <span>El correo no es obligatorio, pero puede ser util para poder recibir información de <b>factura dígital</b> y notificaciones</span>
+        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+
+        @if ($errors->has('email'))
+            <span class="help-block">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
+        
+      </div>
       
       <div class="row">
         
@@ -60,7 +73,7 @@
     </form>
 
 
-    <a href="{{ url('/login') }}" class="text-center">Ya tengo una cuenta</a>
+    <a href="{{ url('/user/login') }}" class="text-center">Ya tengo una cuenta</a>
   </div>
   <!-- /.form-box -->
 </div>

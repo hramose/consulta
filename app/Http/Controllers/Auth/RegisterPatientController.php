@@ -62,7 +62,7 @@ class RegisterPatientController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'phone' => 'required|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -80,8 +80,8 @@ class RegisterPatientController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);*/
-        $data['provider'] = 'email';
-        $data['provider_id'] = $data['email'];
+        $data['provider'] = ($data['email']) ? 'email': 'phone';
+        $data['provider_id'] = ($data['email']) ? $data['email'] : $data['phone'];
         $data['role'] = Role::whereName('paciente')->first();
         $data['api_token'] = str_random(50);
 

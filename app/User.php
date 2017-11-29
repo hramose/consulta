@@ -413,6 +413,9 @@ class User extends Authenticatable
     }
 
     
- 
+    public static function byPhone($phone)
+    {
+        return static::where('phone',$phone)->firstOrFail();
+    }
   
 }

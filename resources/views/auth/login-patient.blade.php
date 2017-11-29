@@ -9,17 +9,17 @@
   <div class="login-box-body">
     <p class="login-box-msg">Inicio de sesión</p>
 
-     <form role="form" method="POST" action="{{ url('/login') }}">
+     <form role="form" method="POST" action="{{ url('/user/login') }}">
         {{ csrf_field() }}
       <div class="form-group has-feedback">
         
-        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
-        @if ($errors->has('email'))
+        <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Teléfono">
+        @if ($errors->has('phone'))
             <span class="help-block">
-                <strong>{{ $errors->first('email') }}</strong>
+                <strong>{{ $errors->first('phone') }}</strong>
             </span>
         @endif
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input id="password" type="password" class="form-control" name="password" required placeholder="Contraseña">
@@ -46,9 +46,16 @@
       </div>
     </form>
    
+    <div class="social-auth-links text-center">
+      <p>- O -</p>
+      <a href="{{ url('/auth/facebook') }}" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Inicia usando
+        Facebook</a>
+      <a href="{{ url('/auth/google') }}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Inicia usando
+        Google+</a>
+    </div>
     <!-- /.social-auth-links -->
-     <p>Si aun no tiene cuenta puedes crear una presionando en <a href="{{ url('/medic/register') }}" class=" text-center " ><b>Crear cuenta nueva</b>   </a></p>
-    <a href="{{ url('/password/reset') }}">Olvidaste tu contraseña?</a><br>
+     <p>Si aun no tiene cuenta puedes crear una presionando en <a href="{{ url('/register') }}" class=" text-center " ><b>Crear cuenta nueva</b>   </a></p>
+    <a href="{{ url('/user/password/reset') }}">Olvidaste tu contraseña?</a><br>
     
     
 

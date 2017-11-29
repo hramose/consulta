@@ -69,4 +69,26 @@ class LoginController extends Controller
        
     }
 
+    
+    public function logout(Request $request)
+    {
+        $user = auth()->user();
+
+         $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        
+        if (!$user->hasRole('paciente')) {
+            
+           
+
+            return redirect('/login');
+        }
+
+       
+
+        return redirect('/');
+    }
+
 }

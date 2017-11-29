@@ -48,6 +48,7 @@ class UserController extends Controller
     	
         $this->validate(request(),[
                 'name' => 'required',
+                'phone' => ['required',Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ],
                 'medic_code' => 'required'
             ]);

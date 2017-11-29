@@ -68,7 +68,7 @@
            <div class="form-group">
 
             <div class="col-sm-12">
-              <input type="text" class="form-control" name="phone" placeholder="Teléfono (celular)" value="{{ old('phone') }}" required>
+              <input type="text" class="form-control" name="phone" placeholder="Teléfono (celular)" value="{{ auth()->user()->phone }}" required>
                @if ($errors->has('phone'))
                   <span class="help-block">
                       <strong>{{ $errors->first('phone') }}</strong>
@@ -80,7 +80,7 @@
           <div class="form-group">
            
             <div class="col-sm-12">
-              <input type="email" class="form-control" name="email" placeholder="Email" value="{{ auth()->user()->email }}" required>
+              <input type="email" class="form-control" name="email" placeholder="Email" value="{{ auth()->user()->email }}">
                @if ($errors->has('email'))
                   <span class="help-block">
                       <strong>{{ $errors->first('email') }}</strong>
