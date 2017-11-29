@@ -74,7 +74,7 @@ class LoginController extends Controller
     {
         $user = auth()->user();
 
-         $this->guard()->logout();
+        $this->guard()->logout();
 
         $request->session()->invalidate();
 

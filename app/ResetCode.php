@@ -29,6 +29,7 @@ class ResetCode extends Model
 
    public function send()
    {
+       
       if ($this->user->email) {
           try {
               \Mail::to($this->user->email)->send(new ResetCodeEmail($this->code));
