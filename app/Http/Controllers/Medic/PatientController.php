@@ -76,6 +76,7 @@ class PatientController extends Controller
         if(isset($data['email']) && $data['email']){
 
             $this->validate(request(),[
+                'phone' => 'required|unique:users',
                 'email' => 'required|email|max:255|unique:users'
             ]);
 

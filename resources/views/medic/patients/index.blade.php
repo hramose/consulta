@@ -94,8 +94,17 @@
 
                         @endif
                        @if($patient->isPatientOf(auth()->user()))
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente"><i class="fa fa-list"></i> Iniciar Consulta
-                          </button>
+                        @if(auth()->user()->hasSubscription())  
+                            @if(!auth()->user()->monthlyCharge()->count())
+                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente"><i class="fa fa-list"></i> Iniciar Consulta
+                            </button>
+                            @else
+                                <a href="#" data-toggle="modal" data-target="#modalPendingPayments" class="btn btn-success" title="Iniciar Consulta"><i class="fa fa-list"></i> Iniciar Consulta</a>
+                            @endif
+                          @else
+                            <a href="#" data-toggle="modal" data-target="#modalSubscription" class="btn btn-success" title="Iniciar Consulta"><i class="fa fa-list"></i> Iniciar Consulta</a>
+                          @endif
+                        
                         @endif
                       </td>
                     </tr>
@@ -114,6 +123,8 @@
     </section>
 
 @include('medic/patients/partials/initAppointment')
+@include('layouts/partials/modal-subscriptions')
+@include('layouts/partials/modal-pending-payments')
 
 <form method="post" id="form-delete" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}

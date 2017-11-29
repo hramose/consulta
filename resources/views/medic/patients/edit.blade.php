@@ -11,8 +11,17 @@
 	<div class="row">
 		<div class="col-md-8">
 			<!-- <a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a> -->
-			 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente
+			@if(auth()->user()->hasSubscription())  
+				@if(!auth()->user()->monthlyCharge()->count())
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente
                           </button>
+				@else
+						<a href="#" data-toggle="modal" data-target="#modalPendingPayments" class="btn btn-success" title="Iniciar Consulta" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente</a>
+				@endif
+			@else
+				<a href="#" data-toggle="modal" data-target="#modalSubscription" class="btn btn-success" title="Iniciar Consulta" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente</a>
+			@endif
+		
 		</div>
 	</div>
 	<section class="content">
@@ -82,7 +91,8 @@
 	</section>
 
 	@include('medic/patients/partials/initAppointment')
-
+	@include('layouts/partials/modal-subscriptions')
+	@include('layouts/partials/modal-pending-payments')
 @endsection
 @section('scripts')
 <script src="/js/plugins/select2/select2.full.min.js"></script>  
