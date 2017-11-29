@@ -7,7 +7,7 @@
   </div> -->
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Inicio de sesión</p>
+    <p class="login-box-msg"><b>Acceso para médicos y clínica</b></p>
 
      <form role="form" method="POST" action="{{ url('/login') }}">
         {{ csrf_field() }}
