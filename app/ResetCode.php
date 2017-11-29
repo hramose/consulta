@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Mail\ResetCodeEmail;
 
+
 class ResetCode extends Model
 {
    
@@ -12,10 +13,7 @@ class ResetCode extends Model
 
     public $timestamps = false;
 
-    public function setCreatedAtAttribute($value) { 
-
-        $this->attributes['created_at'] = \Carbon\Carbon::now(); 
-    }
+    protected $dates = ['created_at'];
 
    public static function generateFor(User $user)
    {
@@ -23,12 +21,21 @@ class ResetCode extends Model
        return static::create([
            "user_id" => $user->id,
            "phone" => $user->phone,
-           "code" => str_random(4)
+           "code" => rand(0, 9999)
        ]);
    }
 
    public function send()
    {
+    
+      if($this->user->phone){
+
+        $message = "Utiliza el codigo para poder cambiar la contraseña de tu usuario en GPS Medica. El Codigo es: ". $this->code;
+
+        \Twilio::message('+506'.$this->user->phone, $message);
+        
+
+      }
        
       if ($this->user->email) {
           try {

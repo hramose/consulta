@@ -1,9 +1,7 @@
 @extends('layouts.login')
 
 @section('content')
-<div class="login-logo">
-     <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
-  </div>
+
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Cambio de contraseña</p>
@@ -24,7 +22,7 @@
         <span class="glyphicon glyphicon-phone form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-         <input id="password" type="password" class="form-control" name="password" required placeholder="Contraseña">
+         <input id="password" type="password" class="form-control" name="password" required placeholder="Nueva Contraseña">
 
         @if ($errors->has('password'))
             <span class="help-block">
@@ -34,7 +32,7 @@
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-          <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmación de contraseña">
+          <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmación de nueva contraseña">
 
             @if ($errors->has('password_confirmation'))
                 <span class="help-block">
@@ -45,7 +43,7 @@
       </div>
        <div class="form-group has-feedback">
         
-         <input id="code" type="text" class="form-control" name="code" value="{{ old('code') }}" required autofocus placeholder="Código enviado por teléfono">
+         <input id="code" type="text" class="form-control" name="code" value="{{ old('code') }}" required autofocus placeholder="Código enviado por teléfono o correo">
 
             @if ($errors->has('code'))
                 <span class="help-block">

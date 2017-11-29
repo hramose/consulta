@@ -7,9 +7,9 @@
 @section('content')
 
 <div class="register-box">
-  <div class="register-logo">
+  <!-- <div class="register-logo">
      <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
-  </div>
+  </div> -->
 
   <div class="register-box-body">
     <p class="login-box-msg">Registra una nueva cuenta como Médico</p>

@@ -96,19 +96,17 @@ class ReminderAppointment extends Command
                             
                             Log::info('Mensaje Push code: '.$response->success);
                    }
-                    
-                    try {
-                        
-                        
-                         \Mail::to([$remider->appointment->patient->email])->send(new ReminderAppointments($remider->appointment));
 
-                        $remider->active = 0;
-                        $remider->save();
+                   if ($remider->appointment->patient && $remider->appointment->patient->email) { //si el paciente tiene correo lo envia
+                       try {
+                           \Mail::to([$remider->appointment->patient->email])->send(new ReminderAppointments($remider->appointment));
 
-                     }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-                    {
-                        Log::error($e->getMessage());
-                    }
+                           $remider->active = 0;
+                           $remider->save();
+                       } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                           Log::error($e->getMessage());
+                       }
+                   }
 
                     $countNotification++;
                     

@@ -18,7 +18,7 @@ class CreateResetCodesTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->string('phone')->index();
             $table->string('code')->index();
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->useCurrent();
 
         });
     }

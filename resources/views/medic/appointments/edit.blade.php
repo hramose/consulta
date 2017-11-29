@@ -276,7 +276,7 @@
 						//buttonsStyling: false
 					}).then(function () {
 						
-						window.location = '/medic/appointments/create?p={{ $appointment->patient->id }}';
+						window.location = '/medic/appointments/create?clinic={{ $appointment->office_id }}&p={{ $appointment->patient_id }}';
 								
 								
 					}, function (dismiss) {
@@ -284,7 +284,7 @@
 						// 'close', and 'timer'
 						if (dismiss === 'cancel') {
 	
-						 window.location = '/medic/clinics/{{ $appointment->office_id }}/appointments';
+						 window.location = '/medic/appointments?clinic={{ $appointment->office_id }}';
 								
 						}else{
 							window.location = '/medic/appointments/{{ $appointment->id }}/edit';

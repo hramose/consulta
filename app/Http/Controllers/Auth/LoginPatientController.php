@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\ResetCode;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class LoginPatientController extends Controller
 {
@@ -64,12 +65,16 @@ class LoginPatientController extends Controller
 
         $code->send();
 
+        flash('Se ha enviado un codigo al teléfono para poder utilizarlo en el cambio de contraseña!','success');
+
         return redirect('/user/password/reset/code');
 
     }
 
     public function resetCode()
     {
+        
+
         return view('auth.passwords.code');
 
     }
@@ -84,8 +89,17 @@ class LoginPatientController extends Controller
         
              ]);
 
-          $code = ResetCode::where('code',$request->code)->first();
+          $code = ResetCode::where('code',$request->code)->where('created_at','>', Carbon::now()->subHours(2))->first();
 
+          if (!$code) {
+
+              throw ValidationException::withMessages([
+                'code' => ['Codigo no existe o ha expirado'],
+            ]);
+
+            return back();
+
+          }
           
           $user = $code->user;
 
@@ -95,7 +109,12 @@ class LoginPatientController extends Controller
 
           Auth::login($user);
 
-         $code->delete();
+          \DB::table('reset_codes')->where('phone', $request->phone)->delete();
+
+         //$code->delete();
+
+         
+
 
 
         return redirect('/');

@@ -42,6 +42,14 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
+  <div class="login-logo">
+     <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
+  </div>
+   @if (session()->has('flash_message'))
+
+       <div  class="notification-app alert-{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</div> 
+
+    @endif
   @yield('content')
 </div>
 <!-- /.login-box -->

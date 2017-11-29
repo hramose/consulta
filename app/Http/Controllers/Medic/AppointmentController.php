@@ -134,7 +134,7 @@ class AppointmentController extends Controller
     {
         if(!auth()->user()->hasSubscription()) return redirect('/'); // verifica que tiene subscription
         
-        if(!auth()->user()->monthlyCharge()->count()) return redirect('/'); //verifica que tiene pagos pendientes
+        if(auth()->user()->monthlyCharge()->count()) return redirect('/'); //verifica que tiene pagos pendientes
 
         $appointment = $this->appointmentRepo->findById($id);
 

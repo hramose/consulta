@@ -433,11 +433,11 @@
                           this.invoiceHere = false;
                           this.loader = false;
 
-                          /*if(here){
+                          if(here){
                             window.location.href = "/medic/invoices/"+response.data.id+"/print";
     
                             //this.openInNewTab("/medic/invoices/"+response.data.id+"/print");
-                          }*/
+                          }
 
                         }
                        this.loader = false;

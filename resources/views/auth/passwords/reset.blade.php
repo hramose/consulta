@@ -1,9 +1,9 @@
 @extends('layouts.login')
 
 @section('content')
-<div class="login-logo">
+<!-- <div class="login-logo">
      <a href="/"><img src="/img/logo.png" alt="{{ config('app.name', 'Laravel') }}"></a>
-  </div>
+  </div> -->
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Cambio de contraseña</p>
