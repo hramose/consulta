@@ -76,11 +76,11 @@ class RegisterPatientController extends Controller
      */
     protected function create(array $data)
     {
-        /*return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);*/
+        $this->validate($data, [
+                'phone' => 'required|unique:patients',
+                'email' => 'email|unique:patients'
+            ]);
+
         $data['provider'] = ($data['email']) ? 'email': 'phone';
         $data['provider_id'] = ($data['email']) ? $data['email'] : $data['phone'];
         $data['role'] = Role::whereName('paciente')->first();
