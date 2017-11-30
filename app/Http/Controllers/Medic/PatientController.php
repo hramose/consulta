@@ -160,7 +160,7 @@ class PatientController extends Controller
                 //'address' => 'required',
                 'province' => 'required',
                 //'city' => 'required',
-                'phone' => 'required',
+                'phone' => ['required',Rule::unique('patients')->ignore($id)],
                 'email' => ['email', Rule::unique('patients')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
@@ -173,10 +173,12 @@ class PatientController extends Controller
         if($user_patient){
 
             $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'phone' => ['required', Rule::unique('users')->ignore($user_patient->id)]
                     'email' => ['email', Rule::unique('users')->ignore($user_patient->id)]
             ]);
         }else{
             $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'phone' => ['required', Rule::unique('users')->ignore($user_patient->id)]
                     'email' => ['email', Rule::unique('users')]
             ]);
         }
