@@ -27,9 +27,9 @@ class UserRepository extends DbRepository{
     {
         
         $data = $this->prepareData($data);
-       
+       dd($data);
         $user = $this->model->create($data);
-        dd($user);
+        
         $role = (isset($data['role'])) ? $data['role'] : Role::whereName('medico')->first();
         
         $user->assignRole($role);
