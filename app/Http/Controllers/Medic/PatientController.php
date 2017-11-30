@@ -168,11 +168,16 @@ class PatientController extends Controller
         $user_patient = $patient->user()->whereHas('roles', function ($query){
                         $query->where('name',  'paciente');
                     })->first();
+        if($user_patient){
 
-
-        $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
-                'email' => ['email', Rule::unique('users')->ignore($user_patient->id)]
-        ]);
+            $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'email' => ['email', Rule::unique('users')->ignore($user_patient->id)]
+            ]);
+        }else{
+            $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'email' => ['email', Rule::unique('users')]
+            ]);
+        }
 
         $patient = $this->patientRepo->update($id, request()->all());
 
