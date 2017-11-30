@@ -101,12 +101,14 @@ class AuthController extends ApiController
         
          $this->validate($request,[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore(auth()->id()) ],
+                'phone' => 'required|unique:users',
+                'email' => ['email', Rule::unique('users')],
                 'password' => 'required|min:6|confirmed',
             ]);
        
         $data['name'] = $request->input('name');
         $data['email'] = $request->input('email');
+        $data['phone'] = $request->input('phone');
         $data['password'] = $request->input('password');
         $data['provider'] = 'email';
         $data['provider_id'] = $request->input('email');
