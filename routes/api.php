@@ -96,8 +96,8 @@ Route::get('/clinics/{clinic}', 'Api\ClinicController@show')->middleware('auth:a
 Route::post('/reviews', 'Api\ReviewController@store')->middleware('auth:api');
 
 
-Route::post('/user/password/phone', 'Api\AuthController@sendResetCodePhone')->middleware('auth:api');
-Route::post('/user/password/reset', 'Api\AuthController@newPassword')->middleware('auth:api');
+Route::post('/user/password/phone', 'Api\AuthController@sendResetCodePhone');
+Route::post('/user/password/reset', 'Api\AuthController@newPassword');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
