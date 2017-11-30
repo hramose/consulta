@@ -221,7 +221,7 @@ class AuthController extends ApiController
 
 
 
-        return $this->respondCreated('Contraseña cambiada correctamente');
+        return $user;
 
 
     }
