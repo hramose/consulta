@@ -179,7 +179,7 @@ class AuthController extends ApiController
 
         $code->send();
 
-        return 'ok';
+       return $this->respondCreated('Codigo Enviado correctamente');
 
     }
 
@@ -221,7 +221,7 @@ class AuthController extends ApiController
 
 
 
-        return 'ok';
+        return $this->respondCreated('Contraseña cambiada correctamente');
 
 
     }
