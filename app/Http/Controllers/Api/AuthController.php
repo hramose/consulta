@@ -105,7 +105,7 @@ class AuthController extends ApiController
                 'email' => ['email', Rule::unique('users')],
                 'password' => 'required|min:6|confirmed',
             ]);
-       
+       dd($request->all());
         $data['name'] = $request->input('name');
         $data['email'] = $request->input('email');
         $data['phone'] = $request->input('phone');
