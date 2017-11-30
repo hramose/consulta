@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'info@avotz.com',
-        'name' => 'Consulta App',
+        'address' => 'info@gpsmedica.com',
+        'name' => 'GPS Médica',
     ],
 
     /*
