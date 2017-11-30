@@ -118,7 +118,7 @@ class PatientController extends ApiController
         ]);
 
          $this->validate(request(),[
-                'email' => ['email', Rule::unique('users')]//'required|email|max:255|unique:patients',    
+                'email' => ['email', Rule::unique('users')->ignore(auth()->id())]//'required|email|max:255|unique:patients',    
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
