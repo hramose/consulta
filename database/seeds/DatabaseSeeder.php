@@ -57,10 +57,10 @@ class DatabaseSeeder extends Seeder
         ]);
         $admin2 = factory(User::class, 1)->create([
             'name' => 'admin Julio',
-            'email' => 'farmaciamonserrat@gmail.com',
+            'email' => 'info@gpsmedica.com',
             'password' => bcrypt('123456'),
             'provider' => 'email',
-            'provider_id' => 'farmaciamonserrat@gmail.com',
+            'provider_id' => 'info@gpsmedica.com',
             'api_token' => str_random(50),
             'remember_token' => str_random(10),
         ]);
