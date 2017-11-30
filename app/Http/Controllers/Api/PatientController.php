@@ -40,9 +40,10 @@ class PatientController extends ApiController
     public function store(PatientRequest $request)
     {
        $this->validate(request(),[
+                'phone' => ['required', Rule::unique('users')->ignore(request()->user()->id)],//
                 'email' => ['email', Rule::unique('users')->ignore(request()->user()->id)]//'required|email|max:255|unique:patients',    
         ]);
-       
+
         $patient =$this->patientRepo->store($request->all(),$request->user());
 
 
@@ -67,6 +68,7 @@ class PatientController extends ApiController
                 'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
         ]);
          $this->validate(request(),[
+                'phone' => ['required', Rule::unique('users')->ignore(request()->user()->id)],//
                 'email' => ['email', Rule::unique('users')->ignore(request()->user()->id)]//'required|email|max:255|unique:patients',    
         ]);
 

@@ -223,10 +223,11 @@ class UserController extends Controller
         if(isset($data['email']) && $data['email'] ){
 
             $this->validate(request(),[
+                'phone' => 'required|unique:users',
                 'email' => 'required|email|max:255|unique:users'
             ]);
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : '123456';
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
             $data['name'] = $data['first_name'];
             $data['provider'] = 'email';
             $data['provider_id'] = $data['email'];
@@ -246,6 +247,26 @@ class UserController extends Controller
                 \Log::error($e->getMessage());
             }
         
+        }else{
+
+             $this->validate(request(),[
+                'phone' => 'required|unique:users',
+                
+            ]);
+
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
+            $data['name'] = $data['first_name'];
+            $data['provider'] = 'phone';
+            $data['provider_id'] = $data['phone'];
+            $data['role'] = Role::whereName('paciente')->first();
+            $data['api_token'] = str_random(50);
+    
+            
+            $user = $this->userRepo->store($data);
+            $user_patient = $user->patients()->save($patient);
+    
+             
+
         }
         
                 

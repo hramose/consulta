@@ -47,6 +47,7 @@ class PatientController extends Controller
     public function register(PatientRequest $request)
     {
         $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
         
@@ -64,6 +65,7 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
         
@@ -92,6 +94,7 @@ class PatientController extends Controller
         ]);
 
          $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 

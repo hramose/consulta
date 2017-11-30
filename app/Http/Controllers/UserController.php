@@ -84,12 +84,13 @@ class UserController extends Controller
                 //'address' => 'required',  
                 'province' => 'required',  
                 //'city' => 'required', 
-                'phone' => 'required',
+                'phone' => 'required|unique:patients',
                 'email' => 'email|max:255|unique:patients',
 
         ]);
 
          $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 
@@ -122,14 +123,15 @@ class UserController extends Controller
          $this->validate(request(),[
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
+                //'address' => 'required',  
                 'province' => 'required',  
-                'city' => 'required', 
-                'phone' => 'required',
+                //'city' => 'required', 
+                'phone' => ['required', Rule::unique('patients')->ignore($id) ],
                 'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
         ]);
 
           $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 
