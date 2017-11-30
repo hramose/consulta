@@ -211,17 +211,21 @@ class AuthController extends ApiController
           $user->save();
 
 
-          Auth::login($user);
+          $user = Auth::login($user);
 
           \DB::table('reset_codes')->where('phone', $request->phone)->delete();
 
          //$code->delete();
-
+        $data = [
+                'access_token' => $user->api_token,
+                'user' => $user,
+                'patients' => $user->patients->count()
+            ];
          
+        \Auth::logout();
 
 
-
-        return $user;
+        return $data;
 
 
     }
