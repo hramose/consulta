@@ -115,9 +115,9 @@ class AuthController extends ApiController
         $data['role'] = Role::whereName('paciente')->first();
         $data['api_token'] = str_random(90);
         $data['push_token'] = $request->input('push_token');    
-        dd($request->all());
+
         $user = $this->userRepo->store($data);
-        
+        dd($user);
 
         $data = [
             'access_token' => $user->api_token,
