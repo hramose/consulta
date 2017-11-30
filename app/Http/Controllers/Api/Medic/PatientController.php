@@ -59,7 +59,8 @@ class PatientController extends ApiController
             ]);
 
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
+
 
             $data['name'] = $data['first_name'];
             $data['provider'] = 'email';
@@ -80,7 +81,8 @@ class PatientController extends ApiController
                 'phone' => 'required|unique:users',
             ]);
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+          $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
+
 
             $data['name'] = $data['first_name'];
             $data['provider'] = 'phone';

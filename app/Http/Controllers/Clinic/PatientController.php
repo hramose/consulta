@@ -17,13 +17,13 @@ use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
-    function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
+    public function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
     {
-    	$this->middleware('authByRole:clinica')->except('list','verifyIsPatient','addToYourPatients');
-        $this->middleware('auth')->only('list','verifyIsPatient','addToYourPatients');
+        $this->middleware('authByRole:clinica')->except('list', 'verifyIsPatient', 'addToYourPatients');
+        $this->middleware('auth')->only('list', 'verifyIsPatient', 'addToYourPatients');
         $this->patientRepo = $patientRepo;
         $this->appointmentRepo = $appointmentRepo;
-         $this->userRepo = $userRepo;
+        $this->userRepo = $userRepo;
     }
 
     /**
@@ -33,21 +33,20 @@ class PatientController extends Controller
     {
         $search['q'] = request('q');
         $inita = null;
-        
-        if(request('p'))
-            $p = Patient::find(request('p'));
 
-        if(request('inita'))
+        if (request('p')) {
+            $p = Patient::find(request('p'));
+        }
+
+        if (request('inita')) {
             $inita = 1;
+        }
 
         $office = auth()->user()->offices->first();
-       
-        $patients = $this->patientRepo->findAllOfClinic($office,$search);
-        
 
+        $patients = $this->patientRepo->findAllOfClinic($office, $search);
 
-    	return view('clinic.patients.index',compact('patients','search','inita'));
-
+        return view('clinic.patients.index', compact('patients', 'search', 'inita'));
     }
 
     /**
@@ -55,9 +54,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        
         return view('clinic.patients.create');
-
     }
 
     /**
@@ -65,38 +62,38 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-       
-        $patient =$this->patientRepo->store($request->all());
+        $patient = $this->patientRepo->store($request->all());
 
         $data = $request->all();
 
-         if (isset($data['email']) && $data['email']) {
-                $this->validate(request(), [
+        if (isset($data['email']) && $data['email']) {
+            $this->validate(request(), [
                     'phone' => 'required|unique:users',
                     'email' => 'required|email|max:255|unique:users'
                 ]);
 
-                $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
-                $data['name'] = $data['first_name'];
-                $data['provider'] = 'email';
-                $data['provider_id'] = $data['email'];
-                $data['role'] = Role::whereName('paciente')->first();
-                $data['api_token'] = str_random(50);
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
 
-                $user = $this->userRepo->store($data);
-                $user_patient = $user->patients()->save($patient);
+            $data['name'] = $data['first_name'];
+            $data['provider'] = 'email';
+            $data['provider_id'] = $data['email'];
+            $data['role'] = Role::whereName('paciente')->first();
+            $data['api_token'] = str_random(50);
 
-                try {
-                    \Mail::to($user)->send(new NewPatient($user));
-                } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
-                    \Log::error($e->getMessage());
-                }
-         }else{
-             $this->validate(request(), [
+            $user = $this->userRepo->store($data);
+            $user_patient = $user->patients()->save($patient);
+
+            try {
+                \Mail::to($user)->send(new NewPatient($user));
+            } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                \Log::error($e->getMessage());
+            }
+        } else {
+            $this->validate(request(), [
                 'phone' => 'required|unique:users',
             ]);
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
 
             $data['name'] = $data['first_name'];
             $data['provider'] = 'phone';
@@ -106,29 +103,27 @@ class PatientController extends Controller
 
             $user = $this->userRepo->store($data);
             $user_patient = $user->patients()->save($patient);
+        }
 
-         }
+        flash('Paciente Creado', 'success');
 
-        flash('Paciente Creado','success');
-
-        return Redirect('/clinic/patients/'.$patient->id.'/edit');
-
+        return Redirect('/clinic/patients/' . $patient->id . '/edit');
     }
+
     /**
      * Mostrar vista editar paciente
      */
     public function edit($id)
     {
-        
         $patient = $this->patientRepo->findById($id);
         $office = auth()->user()->offices->first();
         $search['office'] = $office->id;
 
         $search['status'] = 1;
-        $initAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
-        
+        $initAppointments = $this->appointmentRepo->findAllByPatient($id, $search);
+
         $search['status'] = 0;
-        $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
+        $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id, $search);
 
         // $appointments = $this->appointmentRepo->findAllByPatient($id, $search);
 
@@ -140,11 +135,9 @@ class PatientController extends Controller
         //         return $item->status == 0;
         //     });
 
-        
-        $files = Storage::disk('public')->files("patients/". $id ."/files");
-        
-        return view('clinic.patients.edit', compact('patient','files','initAppointments','scheduledAppointments'));
+        $files = Storage::disk('public')->files('patients/' . $id . '/files');
 
+        return view('clinic.patients.edit', compact('patient', 'files', 'initAppointments', 'scheduledAppointments'));
     }
 
     /**
@@ -152,37 +145,33 @@ class PatientController extends Controller
      */
     public function update($id)
     {
-       $this->validate(request(),[
+        $this->validate(request(), [
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
-                'phone' => ['required', Rule::unique('patients')->ignore($id) ],
-                'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
+                'address' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'phone' => ['required', Rule::unique('patients')->ignore($id)],
+                'email' => ['email', Rule::unique('patients')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
- 
-        
-        flash('Paciente Actualizado','success');
+
+        flash('Paciente Actualizado', 'success');
 
         return back();
-
     }
 
-     /**
-     * Eliminar consulta(cita)
-     */
+    /**
+    * Eliminar consulta(cita)
+    */
     public function destroy($id)
     {
-
         $patient = $this->patientRepo->delete($id);
 
-        ($patient === true) ? flash('Paciente eliminado correctamente!','success') : flash('No se puede eliminar paciente por que tiene citas asignadas','error');
+        ($patient === true) ? flash('Paciente eliminado correctamente!', 'success') : flash('No se puede eliminar paciente por que tiene citas asignadas', 'error');
 
         return back();
-
     }
 
     /**
@@ -190,23 +179,20 @@ class PatientController extends Controller
      */
     public function photos()
     {
-       
-        $mimes = ['jpg','jpeg','bmp','png'];
-        $fileUploaded = "error";
-       
-        if(request('patient_id') && request()->file('photo'))
-        {
-        
+        $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
+        $fileUploaded = 'error';
+
+        if (request('patient_id') && request()->file('photo')) {
             $file = request()->file('photo');
 
             $ext = $file->guessClientExtension();
 
-            if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("patients/". request('patient_id'), "photo.jpg",'public');
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('patients/' . request('patient_id'), 'photo.jpg', 'public');
+            }
         }
 
         return $fileUploaded;
-
     }
 
     /**
@@ -214,24 +200,22 @@ class PatientController extends Controller
      */
     public function files()
     {
-    
-        $mimes = ['jpg','jpeg','bmp','png','pdf','doc','docx'];
-        $fileUploaded = "error";
+        $mimes = ['jpg', 'jpeg', 'bmp', 'png', 'pdf', 'doc', 'docx'];
+        $fileUploaded = 'error';
 
-        if(request('patient_id') && request()->file('file'))
-        {     
+        if (request('patient_id') && request()->file('file')) {
             $file = request()->file('file');
-            
+
             $name = $file->getClientOriginalName();
-           
+
             $ext = $file->guessClientExtension();
 
-            if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("patients/". request('patient_id')."/files", $name,'public');        
-        } 
-       
-        return $fileUploaded;
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('patients/' . request('patient_id') . '/files', $name, 'public');
+            }
+        }
 
+        return $fileUploaded;
     }
 
     /**
@@ -239,23 +223,19 @@ class PatientController extends Controller
      */
     public function deleteFiles()
     {
-        
         Storage::disk('public')->delete(request('file'));
-        
-        return '';
 
+        return '';
     }
 
     /**
      * Guardar historial medico de paciente
      */
     public function history($id)
-    {    
-       
-       $history = $this->patientRepo->updateHistory($id, request('data'));
-        
-       return 'Historial Medico guardado';
+    {
+        $history = $this->patientRepo->updateHistory($id, request('data'));
 
+        return 'Historial Medico guardado';
     }
 
     /**
@@ -263,11 +243,9 @@ class PatientController extends Controller
      */
     public function medicines($id)
     {
-    
-       $medicine = $this->patientRepo->addMedicine($id, request()->all());
-        
-       return  $medicine;
+        $medicine = $this->patientRepo->addMedicine($id, request()->all());
 
+        return  $medicine;
     }
 
     /**
@@ -275,11 +253,9 @@ class PatientController extends Controller
      */
     public function deleteMedicines($id)
     {
-      
         $medicine = $this->patientRepo->deleteMedicine($id);
-        
-        return '';
 
+        return '';
     }
 
     /**
@@ -290,81 +266,69 @@ class PatientController extends Controller
         /*if(auth()->user()->hasRole('asistente'))
         {
             $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-      
+
             $boss = User::find($boss_assistant->user_id);
 
             $patients = $this->patientRepo->list(request('q'), $boss);
-            
+
             return $patients;
         }*/
-       
+
         $patients = $this->patientRepo->listForClinics(request('q'));
-       
+
         return $patients;
-
     }
 
-     public function verifyIsPatient()
+    public function verifyIsPatient()
     {
-         $patient = $this->patientRepo->findById(request('patient_id'));
+        $patient = $this->patientRepo->findById(request('patient_id'));
 
-        
-        return ($patient->isPatientOf(request('medic_id'))) ? 'yes' :'no';
-
+        return ($patient->isPatientOf(request('medic_id'))) ? 'yes' : 'no';
     }
-    
 
     /**
      * Guardar paciente
      */
     public function addToYourPatients($id)
     {
-      
         $id_patient_confirm = request('id_patient_confirm');
-       
-        if($id != $id_patient_confirm)
-        {
-         
-         flash('Id de confirmacion incorrecto','danger');
 
-         return back();
+        if ($id != $id_patient_confirm) {
+            flash('Id de confirmacion incorrecto', 'danger');
+
+            return back();
         }
 
         $patient = auth()->user()->patients()->attach($id);
 
-        flash('Paciente Agregado a tu lista','success');
+        flash('Paciente Agregado a tu lista', 'success');
 
         return Redirect()->back();
-
     }
 
-     /**
-     * Mostrar vista de todas las consulta(citas) de un doctor
-     */
-     public function invoices($patient_id)
-     {
-         $patient = $this->patientRepo->findById($patient_id);
-         $searchDate['date1'] = Carbon::now()->subMonths(3); 
-         $searchDate['date2'] = Carbon::now();
-         
-         if(request('date1'))
-            $searchDate['date1'] = new Carbon(request('date1'));
-         
-             
-         if(request('date2'))
-             $searchDate['date2'] = new Carbon(request('date2'));
- 
-    
-         $office =  auth()->user()->offices->first();
- 
-         $invoices = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->orderBy('created_at','DESC')->paginate(20);
-         
-         $totalInvoicesAmount =  $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->sum('total');
-         
-       
- 
-         return view('clinic.patients.invoices',compact('patient','invoices','totalInvoicesAmount','searchDate'));
- 
-     }
+    /**
+    * Mostrar vista de todas las consulta(citas) de un doctor
+    */
+    public function invoices($patient_id)
+    {
+        $patient = $this->patientRepo->findById($patient_id);
+        $searchDate['date1'] = Carbon::now()->subMonths(3);
+        $searchDate['date2'] = Carbon::now();
 
+        if (request('date1')) {
+            $searchDate['date1'] = new Carbon(request('date1'));
+        }
+
+        if (request('date2')) {
+            $searchDate['date2'] = new Carbon(request('date2'));
+        }
+
+        $office = auth()->user()->offices->first();
+
+        $invoices = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->orderBy('created_at', 'DESC')->paginate(20);
+
+        $totalInvoicesAmount = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->sum('total');
+
+        return view('clinic.patients.invoices', compact('patient', 'invoices', 'totalInvoicesAmount', 'searchDate'));
+    }
 }

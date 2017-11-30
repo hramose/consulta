@@ -16,9 +16,9 @@ use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
-    function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
+    public function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo, UserRepository $userRepo)
     {
-    	$this->middleware('authByRole:asistente');
+        $this->middleware('authByRole:asistente');
         $this->patientRepo = $patientRepo;
         $this->appointmentRepo = $appointmentRepo;
         $this->userRepo = $userRepo;
@@ -31,24 +31,20 @@ class PatientController extends Controller
     {
         $search['q'] = request('q');
         $inita = null;
-        
-        if(request('p'))
+
+        if (request('p')) {
             $p = Patient::find(request('p'));
+        }
 
-        if(request('inita'))
+        if (request('inita')) {
             $inita = 1;
+        }
 
-      
-      
         $office = auth()->user()->clinicsAssistants->first();
 
-       
-        $patients = $this->patientRepo->findAllOfClinic($office,$search);
-        
+        $patients = $this->patientRepo->findAllOfClinic($office, $search);
 
-
-    	return view('assistant.patients.index',compact('patients','search','inita'));
-
+        return view('assistant.patients.index', compact('patients', 'search', 'inita'));
     }
 
     /**
@@ -56,9 +52,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        
         return view('assistant.patients.create');
-
     }
 
     /**
@@ -66,26 +60,22 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-       
-       
-        $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-      
+        $boss_assistant = \DB::table('assistants_users')->where('assistant_id', auth()->id())->first();
+
         $boss = User::find($boss_assistant->user_id);
-        
-        $patient =$this->patientRepo->store($request->all(), $boss);
+
+        $patient = $this->patientRepo->store($request->all(), $boss);
 
         $data = $request->all();
 
-    
         if (isset($data['email']) && $data['email']) {
-
             $this->validate(request(), [
                     'phone' => 'required|unique:users',
                     'email' => 'required|email|max:255|unique:users'
                 ]);
 
-            
-            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+           $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
+
             $data['name'] = $data['first_name'];
             $data['provider'] = 'email';
             $data['provider_id'] = $data['email'];
@@ -100,13 +90,12 @@ class PatientController extends Controller
             } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
                 \Log::error($e->getMessage());
             }
-        }else{
-
-             $this->validate(request(), [
+        } else {
+            $this->validate(request(), [
                 'phone' => 'required|unique:users',
             ]);
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+            $data['password'] = (isset($data['password']) && $data['password']) ? $data['password'] : $data['phone'];
 
             $data['name'] = $data['first_name'];
             $data['provider'] = 'phone';
@@ -116,32 +105,28 @@ class PatientController extends Controller
 
             $user = $this->userRepo->store($data);
             $user_patient = $user->patients()->save($patient);
-
-
         }
 
-        flash('Paciente Creado','success');
+        flash('Paciente Creado', 'success');
 
-        return Redirect('/assistant/patients/'.$patient->id.'/edit');
-
+        return Redirect('/assistant/patients/' . $patient->id . '/edit');
     }
+
     /**
      * Mostrar vista editar paciente
      */
     public function edit($id)
     {
-        
         $patient = $this->patientRepo->findById($id);
         $office = auth()->user()->clinicsAssistants->first();
         $search['office'] = $office->id;
         $search['status'] = 1;
-        $initAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
-        
+        $initAppointments = $this->appointmentRepo->findAllByPatient($id, $search);
+
         $search['status'] = 0;
-        $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id,$search);
+        $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id, $search);
 
         //$appointments = $this->appointmentRepo->findAllByPatient($id,$search);
-        
 
         // $initAppointments = $appointments->filter(function ($item, $key) {
         //         return $item->status > 0;
@@ -151,11 +136,9 @@ class PatientController extends Controller
         //         return $item->status == 0;
         //     });
 
-        
-        $files = Storage::disk('public')->files("patients/". $id ."/files");
-        
-        return view('assistant.patients.edit', compact('patient','files','initAppointments','scheduledAppointments'));
+        $files = Storage::disk('public')->files('patients/' . $id . '/files');
 
+        return view('assistant.patients.edit', compact('patient', 'files', 'initAppointments', 'scheduledAppointments'));
     }
 
     /**
@@ -163,37 +146,33 @@ class PatientController extends Controller
      */
     public function update($id)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
-                'phone' => ['required', Rule::unique('patients')->ignore($id) ],
-                'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
+                'address' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'phone' => ['required', Rule::unique('patients')->ignore($id)],
+                'email' => ['email', Rule::unique('patients')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
-        
-        
-        flash('Paciente Actualizado','success');
+
+        flash('Paciente Actualizado', 'success');
 
         return back();
-
     }
 
-     /**
-     * Eliminar consulta(cita)
-     */
+    /**
+    * Eliminar consulta(cita)
+    */
     public function destroy($id)
     {
-
         $patient = $this->patientRepo->delete($id);
 
-        ($patient === true) ? flash('Paciente eliminado correctamente!','success') : flash('No se puede eliminar paciente por que tiene citas asignadas','error');
+        ($patient === true) ? flash('Paciente eliminado correctamente!', 'success') : flash('No se puede eliminar paciente por que tiene citas asignadas', 'error');
 
         return back();
-
     }
 
     /**
@@ -201,23 +180,20 @@ class PatientController extends Controller
      */
     public function photos()
     {
-       
-        $mimes = ['jpg','jpeg','bmp','png'];
-        $fileUploaded = "error";
-       
-        if(request('patient_id') && request()->file('photo'))
-        {
-        
+        $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
+        $fileUploaded = 'error';
+
+        if (request('patient_id') && request()->file('photo')) {
             $file = request()->file('photo');
 
             $ext = $file->guessClientExtension();
 
-            if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("patients/". request('patient_id'), "photo.jpg",'public');
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('patients/' . request('patient_id'), 'photo.jpg', 'public');
+            }
         }
 
         return $fileUploaded;
-
     }
 
     /**
@@ -225,24 +201,22 @@ class PatientController extends Controller
      */
     public function files()
     {
-    
-        $mimes = ['jpg','jpeg','bmp','png','pdf','doc','docx'];
-        $fileUploaded = "error";
+        $mimes = ['jpg', 'jpeg', 'bmp', 'png', 'pdf', 'doc', 'docx'];
+        $fileUploaded = 'error';
 
-        if(request('patient_id') && request()->file('file'))
-        {     
+        if (request('patient_id') && request()->file('file')) {
             $file = request()->file('file');
-            
+
             $name = $file->getClientOriginalName();
-           
+
             $ext = $file->guessClientExtension();
 
-            if(in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("patients/". request('patient_id')."/files", $name,'public');        
-        } 
-       
-        return $fileUploaded;
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('patients/' . request('patient_id') . '/files', $name, 'public');
+            }
+        }
 
+        return $fileUploaded;
     }
 
     /**
@@ -250,23 +224,19 @@ class PatientController extends Controller
      */
     public function deleteFiles()
     {
-        
         Storage::disk('public')->delete(request('file'));
-        
-        return '';
 
+        return '';
     }
 
     /**
      * Guardar historial medico de paciente
      */
     public function history($id)
-    {    
-       
-       $history = $this->patientRepo->updateHistory($id, request('data'));
-        
-       return 'Historial Medico guardado';
+    {
+        $history = $this->patientRepo->updateHistory($id, request('data'));
 
+        return 'Historial Medico guardado';
     }
 
     /**
@@ -274,11 +244,9 @@ class PatientController extends Controller
      */
     public function medicines($id)
     {
-    
-       $medicine = $this->patientRepo->addMedicine($id, request()->all());
-        
-       return  $medicine;
+        $medicine = $this->patientRepo->addMedicine($id, request()->all());
 
+        return  $medicine;
     }
 
     /**
@@ -286,11 +254,9 @@ class PatientController extends Controller
      */
     public function deleteMedicines($id)
     {
-      
         $medicine = $this->patientRepo->deleteMedicine($id);
-        
-        return '';
 
+        return '';
     }
 
     /**
@@ -298,14 +264,13 @@ class PatientController extends Controller
      */
     public function list()
     {
-        $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-      
+        $boss_assistant = \DB::table('assistants_users')->where('assistant_id', auth()->id())->first();
+
         $boss = User::find($boss_assistant->user_id);
 
         $patients = $this->patientRepo->list(request('q'), $boss);
-       
-        return $patients;
 
+        return $patients;
     }
 
     /**
@@ -313,23 +278,18 @@ class PatientController extends Controller
      */
     public function addToYourPatients($id)
     {
-      
         $id_patient_confirm = request('id_patient_confirm');
-       
-        if($id != $id_patient_confirm)
-        {
-         
-         flash('Id de confirmacion incorrecto','danger');
 
-         return back();
+        if ($id != $id_patient_confirm) {
+            flash('Id de confirmacion incorrecto', 'danger');
+
+            return back();
         }
 
         $patient = auth()->user()->patients()->attach($id);
 
-        flash('Paciente Agregado a tu lista','success');
+        flash('Paciente Agregado a tu lista', 'success');
 
         return Redirect()->back();
-
     }
-
 }
