@@ -76,7 +76,7 @@ class RegisterPatientController extends Controller
      */
     protected function create(array $data)
     {
-        $this->validate(request(), [
+        $this->validate(request(), [ //verificar que no este en paciente el mismo telefono y email si es q lo envia
                 'phone' => 'required|unique:patients',
                 'email' => 'email|unique:patients'
             ]);
