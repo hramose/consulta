@@ -164,6 +164,10 @@ class PatientController extends Controller
                 'email' => ['email', Rule::unique('patients')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
+        $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
+        ]);
+
         $patient = $this->patientRepo->update($id, request()->all());
 
         flash('Paciente Actualizado', 'success');
