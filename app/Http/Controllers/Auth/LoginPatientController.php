@@ -118,7 +118,7 @@ class LoginPatientController extends Controller
 
 
         return redirect('/');
-;
+
 
     }
 

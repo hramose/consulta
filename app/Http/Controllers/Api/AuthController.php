@@ -6,10 +6,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use App\ResetCode;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 
 class AuthController extends ApiController
@@ -160,6 +164,70 @@ class AuthController extends ApiController
          return $patient;
          
      }
+
+
+
+    public function sendResetCodePhone(Request $request)
+    {
+        $this->validatePhone($request);
+
+        $user = User::byPhone($request->phone);
+
+        $code = ResetCode::generateFor($user);
+
+        $code->send();
+
+        return 'ok';
+
+    }
+
+    public function newPassword(Request $request)
+    {
+         $this->validate($request, [
+             'phone' => 'required|exists:users',
+             'password' =>'required|confirmed',
+             'code' => 'required|exists:reset_codes'
+
+        
+             ]);
+
+          $code = ResetCode::where('code',$request->code)->where('created_at','>', Carbon::now()->subHours(2))->first();
+
+          if (!$code) {
+
+              throw ValidationException::withMessages([
+                'code' => ['Codigo no existe o ha expirado'],
+            ]);
+
+           // return back();
+
+          }
+          
+          $user = $code->user;
+
+          $user->password = bcrypt($request->password);
+          $user->save();
+
+
+          Auth::login($user);
+
+          \DB::table('reset_codes')->where('phone', $request->phone)->delete();
+
+         //$code->delete();
+
+         
+
+
+
+        return 'ok';
+
+
+    }
+
+     protected function validatePhone(Request $request)
+    {
+        $this->validate($request, ['phone' => 'required|exists:users']);
+    }
 
     
 

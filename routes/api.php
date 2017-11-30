@@ -94,6 +94,10 @@ Route::delete('/appointments/{appointment}/delete', 'Api\AppointmentController@d
 Route::get('/clinics', 'Api\ClinicController@index')->middleware('auth:api');
 Route::get('/clinics/{clinic}', 'Api\ClinicController@show')->middleware('auth:api');
 Route::post('/reviews', 'Api\ReviewController@store')->middleware('auth:api');
+
+
+Route::post('/user/password/phone', 'Api\AuthController@sendResetCodePhone')->middleware('auth:api');
+Route::post('/user/password/reset', 'Api\AuthController@newPassword')->middleware('auth:api');
 /*Route::post('/token', function (Request $request) {
 	   
 	    
