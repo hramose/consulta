@@ -141,15 +141,21 @@ class AppointmentController extends ApiController
                     Log::info('Mensaje Push code: '.$response->success);
            }
         
-        try {
-                        
-            \Mail::to([$appointment->patient->email,$appointment->user->email])->send(new NewAppointment($appointment));
-            
-        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-        {
-            Log::error($e->getMessage());
+        if ($appointment->patient && $appointment->patient->email) {
+            try {
+                \Mail::to([$appointment->patient->email, $appointment->user->email])->send(new NewAppointment($appointment));
+            } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                Log::error($e->getMessage());
+            }
+        }else{
+             try {
+                \Mail::to($appointment->user->email)->send(new NewAppointment($appointment));
+            } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                Log::error($e->getMessage());
+            }
+
+
         }
-        
 
         $appointmentsToday = $user->appointmentsToday();
 

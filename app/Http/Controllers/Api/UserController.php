@@ -39,7 +39,8 @@ class UserController extends ApiController
 
         $this->validate(request(),[
                 'name' => 'required',
-                'email' => ['required','email', Rule::unique('users')->ignore($user->id) ]
+                'phone' => ['required',Rule::unique('users')->ignore($user->id)],
+                'email' => ['email', Rule::unique('users')->ignore($user->id) ]
             ]);
 
     	$user = $this->userRepo->update($user->id, request()->all());
@@ -102,8 +103,8 @@ class UserController extends ApiController
                 'address' => 'required',  
                 'province' => 'required',  
                 'city' => 'required', 
-                'phone' => 'required',
-                'email' => ['required','email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',    
+                'phone' => ['required', Rule::unique('patients')->ignore($id) ],
+                'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',    
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());

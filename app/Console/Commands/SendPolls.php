@@ -71,22 +71,23 @@ class SendPolls extends Command
                 if($user && Carbon::now()->diffInDays($appointment_date) == 7)
                 {
                     
-                   
-                    try {
-                        
-                        
-                        \Mail::to([$user->email])->send(new SendPoll($medic_id));
+                   if($user->email){
+                        try {
+                            
+                            
+                            \Mail::to([$user->email])->send(new SendPoll($medic_id));
 
-                    Log::info(url('/medics/'.$medic_id.'/polls'));
+                        Log::info(url('/medics/'.$medic_id.'/polls'));
 
-                    }catch (\Swift_TransportException $e)
-                    {
-                        Log::error($e->getMessage());
+                        }catch (\Swift_TransportException $e)
+                        {
+                            Log::error($e->getMessage());
+                        }
+
+                        $countNotification++;
+                        
+                        Log::info(Carbon::now()->diffInDays($appointment_date));
                     }
-
-                    $countNotification++;
-                    
-                    Log::info(Carbon::now()->diffInDays($appointment_date));
                 }
                
 

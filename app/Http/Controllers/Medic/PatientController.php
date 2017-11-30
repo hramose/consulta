@@ -68,7 +68,6 @@ class PatientController extends Controller
         
         $data = $request->all();
 
-        //dd($data);
 
         $patient =$this->patientRepo->store($request->all());
 
@@ -80,7 +79,7 @@ class PatientController extends Controller
                 'email' => 'required|email|max:255|unique:users'
             ]);
 
-            $data['password'] = (isset($data['password'])) ? $data['password'] : '123456';
+            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
             $data['name'] = $data['first_name'];
             $data['provider'] = 'email';
             $data['provider_id'] = $data['email'];
@@ -100,6 +99,25 @@ class PatientController extends Controller
                 \Log::error($e->getMessage());
             }
         
+        }else{
+
+             $this->validate(request(), [
+                'phone' => 'required|unique:users',
+                
+            ]);
+
+            $data['password'] = (isset($data['password'])) ? $data['password'] : $data['phone'];
+
+            $data['name'] = $data['first_name'];
+            $data['provider'] = 'phone';
+            $data['provider_id'] = $data['phone'];
+            $data['role'] = Role::whereName('paciente')->first();
+            $data['api_token'] = str_random(50);
+
+            $user = $this->userRepo->store($data);
+            $user_patient = $user->patients()->save($patient);
+
+
         }
 
         
