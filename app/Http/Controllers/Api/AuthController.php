@@ -105,7 +105,7 @@ class AuthController extends ApiController
                 'email' => ['email', Rule::unique('users')],
                 'password' => 'required|min:6|confirmed',
             ]);
-       dd($request->all());
+       
         $data['name'] = $request->input('name');
         $data['email'] = $request->input('email');
         $data['phone'] = $request->input('phone');
@@ -115,6 +115,7 @@ class AuthController extends ApiController
         $data['role'] = Role::whereName('paciente')->first();
         $data['api_token'] = str_random(90);
         $data['push_token'] = $request->input('push_token');    
+        dd($request->all());
         $user = $this->userRepo->store($data);
         
 
