@@ -140,6 +140,7 @@ return [
         'rating2' => 'Puntuación',
         'ide' => 'Cédula',
         'ide_name' => 'Nombre Jurídico',
+        'code' => 'Código',
        
     
 
