@@ -211,7 +211,7 @@ class AuthController extends ApiController
           $user->save();
 
 
-          $user = Auth::login($user);
+          Auth::login($user);
 
           \DB::table('reset_codes')->where('phone', $request->phone)->delete();
 
