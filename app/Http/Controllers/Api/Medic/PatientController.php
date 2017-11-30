@@ -117,9 +117,22 @@ class PatientController extends ApiController
                 'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
         ]);
 
-         $this->validate(request(),[
-                'email' => ['email', Rule::unique('users')->ignore(request()->user()->id)]//'required|email|max:255|unique:patients',    
-        ]);
+        $patient = $this->patientRepo->findById($id);
+        
+        $user_patient = $patient->user()->whereHas('roles', function ($query){
+                        $query->where('name',  'paciente');
+                    })->first();
+
+        if($user_patient){
+
+            $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'email' => ['email', Rule::unique('users')->ignore($user_patient->id)]
+            ]);
+        }else{
+            $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                    'email' => ['email', Rule::unique('users')]
+            ]);
+        }
 
         $patient = $this->patientRepo->update($id, request()->all());
         

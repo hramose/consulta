@@ -39,7 +39,10 @@ class PatientController extends ApiController
      */
     public function store(PatientRequest $request)
     {
-      
+       $this->validate(request(),[
+                'email' => ['email', Rule::unique('users')->ignore(request()->user()->id)]//'required|email|max:255|unique:patients',    
+        ]);
+       
         $patient =$this->patientRepo->store($request->all(),$request->user());
 
 
