@@ -169,7 +169,9 @@ class AuthController extends ApiController
 
     public function sendResetCodePhone(Request $request)
     {
-        $this->validatePhone($request);
+        $this->validate($request, [
+             'phone' => 'required|exists:users'
+        ]);
 
         $user = User::byPhone($request->phone);
 
@@ -224,11 +226,7 @@ class AuthController extends ApiController
 
     }
 
-     protected function validatePhone(Request $request)
-    {
-        $this->validate($request, ['phone' => 'required|exists:users']);
-    }
-
+   
     
 
 }
