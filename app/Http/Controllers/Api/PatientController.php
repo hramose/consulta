@@ -57,9 +57,9 @@ class PatientController extends ApiController
         $this->validate(request(),[
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
+                //'address' => 'required',  
                 'province' => 'required',  
-                'city' => 'required', 
+                //'city' => 'required', 
                 'phone' => ['required', Rule::unique('patients')->ignore($id) ],
                 'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
         ]);
