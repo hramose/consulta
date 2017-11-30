@@ -81,12 +81,16 @@ class UserController extends Controller
         $this->validate(request(),[
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
+                //'address' => 'required',  
                 'province' => 'required',  
-                'city' => 'required', 
+                //'city' => 'required', 
                 'phone' => 'required',
                 'email' => 'email|max:255|unique:patients',
 
+        ]);
+
+         $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 
         $data = request()->all();
@@ -123,6 +127,10 @@ class UserController extends Controller
                 'city' => 'required', 
                 'phone' => 'required',
                 'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
+        ]);
+
+          $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+                'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
