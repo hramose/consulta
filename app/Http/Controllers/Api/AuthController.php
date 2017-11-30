@@ -117,7 +117,7 @@ class AuthController extends ApiController
         $data['push_token'] = $request->input('push_token');    
 
         $user = $this->userRepo->store($data);
-        dd($user);
+        
 
         $data = [
             'access_token' => $user->api_token,

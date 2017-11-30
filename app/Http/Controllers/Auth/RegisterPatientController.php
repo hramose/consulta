@@ -63,6 +63,7 @@ class RegisterPatientController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'phone' => 'required|unique:users',
+            'email' => 'email|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
     }
