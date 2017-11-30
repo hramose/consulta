@@ -76,7 +76,7 @@ class RegisterPatientController extends Controller
      */
     protected function create(array $data)
     {
-        $this->validate($data, [
+        $this->validate(request(), [
                 'phone' => 'required|unique:patients',
                 'email' => 'email|unique:patients'
             ]);
