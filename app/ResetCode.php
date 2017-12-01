@@ -36,7 +36,8 @@ class ResetCode extends Model
         try {
             \Twilio::message('+506'.$this->user->phone, $message);
         } catch ( \Services_Twilio_RestException $e ) {
-            log( 'EACT', $e->getMessage(  ) , __FUNCTION__ );  
+          
+             \Log::error($e->getMessage());
         }
 
       }
@@ -45,7 +46,7 @@ class ResetCode extends Model
           try {
               \Mail::to($this->user->email)->send(new ResetCodeEmail($this->code));
           } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
-              Log::error($e->getMessage());
+              \Log::error($e->getMessage());
           }
       }
 
