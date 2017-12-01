@@ -180,7 +180,7 @@ class AuthController extends ApiController
         $status = $code->send();
 
         if($status['status'] == 0)
-          return $this->respondCreated($status['message']);
+          return $this->respondWithError($status['message']);
 
        return $this->respondCreated('Codigo Enviado correctamente');
 
