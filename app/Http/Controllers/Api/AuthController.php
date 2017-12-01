@@ -176,7 +176,7 @@ class AuthController extends ApiController
         $user = User::byPhone($request->phone);
 
         $code = ResetCode::generateFor($user);
-        return ($code);
+        //return ($code);
         $code->send();
 
        return $this->respondCreated('Codigo Enviado correctamente');
