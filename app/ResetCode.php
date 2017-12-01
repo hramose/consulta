@@ -27,6 +27,10 @@ class ResetCode extends Model
 
    public function send()
    {
+      $status = [
+        'status' => 1,
+        'message' => 'ok'
+      ];
     
       if($this->user->phone){
 
@@ -36,7 +40,8 @@ class ResetCode extends Model
         try {
             \Twilio::message('+506'.$this->user->phone, $message);
         } catch ( \Services_Twilio_RestException $e ) {
-          
+             $status['status'] = 0;
+             $status['message'] = $e->getMessage();
              \Log::error($e->getMessage());
         }
 
@@ -49,6 +54,8 @@ class ResetCode extends Model
               \Log::error($e->getMessage());
           }
       }
+
+      return $status;
 
    }
 

@@ -177,7 +177,10 @@ class AuthController extends ApiController
 
         $code = ResetCode::generateFor($user);
         
-        $code->send();
+        $status = $code->send();
+
+        if($status['status'] == 0)
+          return $this->respondCreated($status['message']);
 
        return $this->respondCreated('Codigo Enviado correctamente');
 
