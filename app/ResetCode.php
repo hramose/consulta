@@ -32,8 +32,12 @@ class ResetCode extends Model
 
         $message = "Utiliza el codigo para poder cambiar la contraseña de tu usuario en GPS Medica. El Codigo es: ". $this->code;
 
-        \Twilio::message('+506'.$this->user->phone, $message);
-        
+       
+        try {
+            \Twilio::message('+506'.$this->user->phone, $message);
+        } catch ( \Services_Twilio_RestException $e ) {
+            log( 'EACT', $e->getMessage(  ) , __FUNCTION__ );  
+        }
 
       }
        
