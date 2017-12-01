@@ -179,7 +179,7 @@ class AuthController extends ApiController
         //return ($code);
         $code->send();
 
-       return $this->respondCreated('Codigo Enviado correctamente');
+       return 'ok';//$this->respondCreated('Codigo Enviado correctamente');
 
     }
 
