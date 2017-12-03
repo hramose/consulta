@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Mail\NewClinicIntegrated;
 
 class OfficeController extends Controller
 {
@@ -60,9 +61,50 @@ class OfficeController extends Controller
      */
      public function active($id)
      {
-        $requestOffice = \DB::table('request_offices')
+        /*$requestOffice = \DB::table('request_offices')
         ->where('id', $id)
-        ->update(['status' => 1]); 
+        ->update(['status' => 1]); */
+
+        $requestOffice = RequestOffice::find($id);
+
+        if($requestOffice){
+
+           $requestOffice->status = 1;
+           $requestOffice->save();
+
+            if ($requestOffice->user->push_token) {
+                $push = new PushNotification('fcm');
+                $response = $push->setMessage([
+                                        'notification' => [
+                                                'title' => 'La integracion de la clinica ha sido realizada',
+                                                'body' => 'Ya puedes agregar la clinica ' .$requestOffice->name .' a tu perfil para programar y recibir citas',
+                                                'sound' => 'default'
+                                                ]
+                                        ])
+                                        ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                                        ->setDevicesToken($medic->push_token)
+                                        ->send()
+                                        ->getFeedback();
+
+                Log::info('Mensaje Push code: ' . $response->success);
+            }
+
+
+
+
+        }
+
+        
+
+      
+        if ($requestOffice->user->email) {
+            try {
+                \Mail::to($requestOffice->user->email)->send(new NewClinicIntegrated($requestOffice));
+            } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                Log::error($e->getMessage());
+            }
+        } 
+
 
          return back();
      

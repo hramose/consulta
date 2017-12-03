@@ -13,6 +13,20 @@
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      @if($clinicsUser->count())
+        <form method="POST" action="{{ url('/changeoffice') }}" class="form-changeoffice">
+        {{ csrf_field() }}
+          <select name="selected_clinic" id="selected_clinic" class="form-control">
+          
+            @foreach($clinicsUser as $userClinic)
+              <option value="{{  $userClinic->id }}" {{ (Session::has('office_id') && $userClinic->id == Session::get('office_id')) ? 'selected' : '' }}>{{  $userClinic->name }}</option>
+            @endforeach
+          </select>
+          
+        </form>
+      @endif
+
+     
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

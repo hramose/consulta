@@ -10,8 +10,8 @@
                 <tr>
                     
                     <th>Consultas Atendidas</th>
-                    <th>Monto</th>
-                    <th>Mensualidad</th>
+                    <th>Monto por Citas Online</th>
+                    <th>Monto por Expediente Clínico</th>
                     <th>Total</th>
                   
                     

@@ -59,7 +59,7 @@
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Numero de teléfono para contacto">
+        <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Numero de teléfono para pacientes">
          @if ($errors->has('phone'))
             <span class="help-block">
                 <strong>{{ $errors->first('phone') }}</strong>
@@ -117,7 +117,7 @@
 
 <p>GPS Médica cargará un monto de <b>$1</b> por cada cita que sea atraída a la plataforma y reservada por el paciente (o usuario general). En caso de no ser atendida por el médico, esta no será sujeto de cobro. Tampoco serán sujetos de cobro las citas reservadas directamente por el médico u asistente (secretaria) en la plataforma.</p>
 
-<p>Si el médico desea hacer uso del Expediente Clínico deberá cancelar un monto fijo mensual de <b>$10</b>.</p>
+<p>Si el médico desea hacer uso del Expediente Clínico deberá cancelar un monto fijo de acuerdo al paquete escogido.</p>
 
 
  <p>Para más información, le invitamos consultar nuestros nuestros <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a></p>

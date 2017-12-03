@@ -19,8 +19,8 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
         $this->appointmentRepo = $appointmentRepo;
-        $this->administrators = User::whereHas('roles', function ($query){
-            $query->where('name',  'administrador');
+        $this->administrators = User::whereHas('roles', function ($query) {
+            $query->where('name', 'administrador');
         })->get();
     }
 
@@ -33,54 +33,61 @@ class HomeController extends Controller
     {
         //dd(Carbon::now()->toDateTimeString());
 
-        if(auth()->user()->hasRole('administrador'))
+        if (auth()->user()->hasRole('administrador')) {
             return view('admin.home');
-        
-        if(auth()->user()->hasRole('paciente'))
-            return view('user.home');
+        }
 
-         if(auth()->user()->hasRole('clinica')){
-            
-            if(!auth()->user()->offices->count()) return Redirect('/clinic/register/office');
-            
+        if (auth()->user()->hasRole('paciente')) {
+            return view('user.home');
+        }
+
+        if (auth()->user()->hasRole('clinica')) {
+            if (!auth()->user()->offices->count()) {
+                return Redirect('/clinic/register/office');
+            }
+
             return view('clinic.home');
         }
 
-        if(auth()->user()->hasRole('asistente'))
+        if (auth()->user()->hasRole('asistente')) {
             return view('assistant.home');
-
-
-        $search['date'] = Carbon::today()->toDateTimeString();
-        $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);
-       
-       
-        return view('medic.home',compact('appointments'));
-
-       
-    }
-
-    public function support(){
-
-        $dataMessage = request()->all();
-
-        $dataMessage['user'] = auth()->user(); 
-
-        try {
-            
-            \Mail::to($this->administrators)->send(new NewContact($dataMessage));
-            
-          
-
-          return 'ok';
-
-        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-        {
-            \Log::error($e->getMessage());
         }
 
-       
+        $search['date'] = Carbon::today()->toDateTimeString();
+        $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id(), $search, 5);
 
+
+        if( !session()->has('office_id') || session('office_id') == '' ){
+            
+            if(auth()->user()->offices->count())
+                session(['office_id' => auth()->user()->offices->first()->id]);
+
+        }
+         
+
+        return view('medic.home', compact('appointments'));
     }
 
-    
+    public function changeOffice()
+    {
+        // Store a piece of data in the session...
+        session(['office_id' => request('selected_clinic')]);
+
+        return back();
+    }
+
+    public function support()
+    {
+        $dataMessage = request()->all();
+
+        $dataMessage['user'] = auth()->user();
+
+        try {
+            \Mail::to($this->administrators)->send(new NewContact($dataMessage));
+
+            return 'ok';
+        } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+            \Log::error($e->getMessage());
+        }
+    }
 }

@@ -129,6 +129,10 @@ class OfficeController extends Controller
                  $office = auth()->user()->verifiedOffices()->save($office);
             }
 
+            if(!session()->has('office_id') || session('office_id') == '' )
+                session(['office_id' =>  $office->id]);
+
+
             return $office;
         }
 

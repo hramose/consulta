@@ -30,13 +30,13 @@
         @include('layouts/partials/header-pages',['page'=>'Calendario de citas'])
      @endif
     <?php /* $datetime = new DateTime('now', 'America/Costa Rica');
-           $datetime_string = $datetime->format('c'); 
+           $datetime_string = $datetime->format('c');
           echo json_encode($datetime_string);*/
    ?>
     
 
     <section class="content">
-        @if(!$wizard)
+        
        <div class="row">
        <div class="col-md-12">
         <div class="panel">
@@ -49,7 +49,7 @@
          
         </div>
        </div>
-       @endif
+      
         <div class="row">
         <div class="col-md-3">
         

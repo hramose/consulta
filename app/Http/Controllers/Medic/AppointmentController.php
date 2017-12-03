@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Events\AppointmentDeleted;
 use App\Events\AppointmentDeletedToAssistant;
+use Illuminate\Support\Facades\Session;
 
 class AppointmentController extends Controller
 {
@@ -36,20 +37,21 @@ class AppointmentController extends Controller
     public function index()
     {
         $search['q'] = request('q');
-        $search['office'] =  request('clinic');
-        $clinic_id = request('clinic');
+        $search['office'] =  Session::get('office_id');
+        $clinic_id = Session::get('office_id');
+
        
         $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
 
 
         if($search['office'])
-            return view('medic.appointments.index',compact('appointments','search','clinic_id'));
+            return view('medic.appointments.index',compact('appointments','search'));
         else
-            return view('medic.appointments.historical',compact('appointments','search','clinic_id'));
+            return view('medic.appointments.historical',compact('appointments','search'));
 
     }
 
-    public function appointmentsFromClinic($clinic_id){
+    /*public function appointmentsFromClinic($clinic_id){
         
         $search['q'] = request('q');
         $search['office'] = $clinic_id;
@@ -59,7 +61,7 @@ class AppointmentController extends Controller
 
     	return view('medic.appointments.index',compact('appointments','search','clinic_id'));
 
-    }
+    }*/
 
     /**
      * Mostrar vista de crear consulta(cita)

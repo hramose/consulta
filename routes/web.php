@@ -13,6 +13,8 @@ use Edujugon\PushNotification\PushNotification;
 */
 
 Route::get('/', 'HomeController@index');
+Route::post('/changeoffice', 'HomeController@changeOffice');
+
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
 Route::post('/support', 'HomeController@support');

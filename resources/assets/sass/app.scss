@@ -261,7 +261,12 @@
 	display:block;
 	margin-bottom: 1rem;
 }
+.form-changeoffice{
+	float: left;
+	width: 150px;
+	margin-top: 8px;
 
+}
 .summary-flex{
 	display:flex;
 	flex-wrap:wrap;
@@ -383,7 +388,7 @@ body.loading:before{
 	}
 
 }
-@media screen and (min-width:1200px){
+@media screen and (min-width:1024px){
 	.menu-fixed{
 		display:none;
 	}

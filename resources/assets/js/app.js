@@ -251,6 +251,13 @@ modalForm.find('.modal-contact-btn-send').on('click', function (e) {
 
 });
 
+$('#selected_clinic').on('change', function (e) {
+   
+
+    $(this).parent('form').submit();
+
+});
+
 
 
 

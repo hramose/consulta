@@ -12,13 +12,13 @@
               <div class="box-header">
                  @include('layouts/partials/buttons-agenda-clinic')
                 <div class="box-tools">
-                  <form action="/medic/appointments?clinic={{ $clinic_id}}" method="GET">
+                  <form action="/medic/appointments" method="GET">
                     <div class="input-group input-group-sm" style="width: 150px;">
                       
                         
                         <input type="text" name="q" class="form-control pull-right" placeholder="Buscar..." value="{{ isset($search) ? $search['q'] : '' }}">
                         <div class="input-group-btn">
-                        <input type="hidden" name="clinic" value="{{ $clinic_id}}">
+                        
                           <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                         </div>
                       
