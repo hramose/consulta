@@ -127,7 +127,7 @@
     <div class="form-group">
       <label for="password" class="col-sm-2 control-label">Contraseña (Accesso a la plataforma): </label>
        <div class="col-sm-10">
-         <input type="text" class="form-control" name="password" placeholder="Si dejas este espacio en blanco la contraseña sera el numero de telefono" value="">
+         <input type="text" class="form-control" name="password" placeholder="Si dejas este espacio en blanco la contraseña sera el numero de teléfono" value="">
          <span class="label label-warning">Recordar al usuario que su perfil queda creado y que esta es su clave genérica.</span>
        </div>
 
