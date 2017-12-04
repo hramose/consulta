@@ -32,7 +32,7 @@
                 <strong>{{ $errors->first('phone') }}</strong>
             </span>
         @endif
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
       </div>
       
       <div class="form-group has-feedback">
