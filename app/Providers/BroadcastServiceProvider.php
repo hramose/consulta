@@ -23,15 +23,15 @@ class BroadcastServiceProvider extends ServiceProvider
             return (int) $user->id === (int) $userId;
         });
         Broadcast::channel('users.{id}.notifications', function ($user, $id) {
-            
             return (int) $user->id === (int) $id;
         });
         Broadcast::channel('offices.{id}.notifications', function ($user, $id) {
-            
             $office = $user->clinicsAssistants->first();
-        
 
             return (int) $office->id === (int) $id;
+        });
+        Broadcast::channel('adminclinic.{id}.notifications', function ($user, $id) {
+            return (int) $user->id === (int) $id;
         });
     }
 }

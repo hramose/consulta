@@ -41,7 +41,7 @@
                       <th>Nombre</th>
                       <th>Teléfono</th>
                       <th>Email</th>
-                      <th>Comisión</th>
+                      <!-- <th>Comisión</th> -->
                       <th>Especialidades</th>
                       <th></th>
                     </tr>
@@ -60,14 +60,14 @@
                       </td>
                       <td data-title="Teléfono">{{ $medic->phone }}</td>
                       <td data-title="Email">{{ $medic->email }}</td>
-                      <td data-title="Comisión">
+                      <!-- <td data-title="Comisión">
                          <form action="{!! url('/clinic/medics/'. $medic->id .'/commission') !!}" method="post" id="form-updateMedicCommission"  class="form-horizontal">
                             {{ csrf_field() }} <input type="hidden" name="_method" value="PUT">
                             <div class="input-group">
                               <div class="input-group-btn">
                                 <button type="submit" class="btn btn-success">Actualizar</button>
                               </div>
-                              <!-- /btn-group -->
+                              
                               <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-percent"></i></span>
                                  <input type="text" name="commission" placeholder="% Comisión" class="form-control" required="required" value="{{ $medic->commission }}" />
@@ -77,7 +77,7 @@
                              
                           </form>
 
-                      </td>
+                      </td> -->
                      <td data-title="Especialidades"> 
                        @foreach($medic->specialities as $speciality)
                             <span class="btn btn-warning btn-xs">{{ $speciality->name }}</span>
@@ -86,11 +86,11 @@
                        </td>
                       <td data-title="" style="padding-left: 5px;">
                        
-                        <div class="btn-group">
-                         
-                         
-                           
-                        </div>
+                         @if(!$medic->verifyOffice($office->id))
+                            <button type="submit"  class="btn btn-danger btn-xs" form="form-active-inactive" formaction="/clinic/medics/{{$medic->id }}/offices/{{ $office->id }}/assign">Pendiente de confirmación</button>
+                          @else 
+                            <button type="submit"  class="btn btn-success btn-xs" form="form-active-inactive" formaction="/clinic/medics/{{$medic->id }}/offices/{{ $office->id }}/unassign">Confirmado</button>
+                          @endif
                         
                        
                       </td>

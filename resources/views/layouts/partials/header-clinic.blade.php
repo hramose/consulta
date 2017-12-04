@@ -17,7 +17,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          
+           <clinic-notifications :medics="{{ $newMedicsRequest }}" :total="{{ $newMedicsRequest->count() }}" :user-id="{{ auth()->id() }}"></clinic-notifications>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->

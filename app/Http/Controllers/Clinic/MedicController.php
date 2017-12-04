@@ -148,6 +148,46 @@ class MedicController extends Controller
         
     }
 
+    public function assignOfficeFromNotifications($medic_id)
+    {
+        
+         $medic = $this->medicRepo->findbyId($medic_id);
+         $office = auth()->user()->offices->first();
+
+         
+        if(!$medic->verifyOffice($office->id))
+        {
+             $office = $medic->verifiedOffices()->save($office);
+
+              if($medic->push_token){
+                $push = new PushNotification('fcm');
+                $response = $push->setMessage([
+                    'notification' => [
+                            'title'=>'Asignado a Clínica',
+                            'body'=>'Haz sido aprobado como médico de '.  $office->name,
+                            'sound' => 'default'
+                            ]
+                    
+                    ])
+                    ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                    ->setDevicesToken($medic->push_token)
+                    ->send()
+                    ->getFeedback();
+                    
+                    Log::info('Mensaje Push code: '.$response->success);
+           }
+
+        }
+
+
+       
+
+        return $medic;
+
+       
+
+    }
+
     public function assignOffice($medic_id, $office_id)
     {
         
@@ -184,6 +224,13 @@ class MedicController extends Controller
         return back();
 
        
+
+    }
+    public function unassignOffice($medic_id, $office_id)
+    {
+        \DB::table('verified_offices')->where('office_id',$office_id)->where('user_id',$medic_id)->delete();
+        
+         return back();
 
     }
     public function updateCommission($medic_id)

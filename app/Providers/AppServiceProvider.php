@@ -46,6 +46,26 @@ class AppServiceProvider extends ServiceProvider
             $view->with('newAppointments', $newAppointments);
         });
 
+        view()->composer('layouts.partials.header-clinic', function ($view) {
+            $office_id = auth()->user()->offices->first()->id;
+
+            $medicsVerified = \DB::table('verified_offices')
+                    ->where('office_id', $office_id)
+
+                    ->pluck('user_id');
+
+            $medicsNoVerified = User::whereNotIn('users.id', $medicsVerified)->whereHas('roles', function ($q) {
+                $q->where('name', 'medico');
+            })->whereHas('offices', function ($q) use ($office_id) {
+                $q->where('offices.id', $office_id);
+            })->limit(10)->get();
+
+            //\Log::info('no v:' . $medicsNoVerified);
+            // \Log::info('ver:' . $medicsVerified);
+
+            $view->with('newMedicsRequest', $medicsNoVerified);
+        });
+
         view()->composer('layouts.partials.home-boxes-admin', function ($view) {
             $medics = User::whereHas('roles', function ($q) {
                 $q->where('name', 'medico');

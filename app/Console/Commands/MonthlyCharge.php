@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-
 class MonthlyCharge extends Command
 {
     /**
@@ -44,46 +43,36 @@ class MonthlyCharge extends Command
      */
     public function handle()
     {
-        
         $medics = User::whereHas('roles', function ($query) {
-                        $query->where('name',  'medico');
-                    })->where('active', 1)->has('subscription')->with(['incomes' => function ($query){
-                                $query->where('type', 'I')
+            $query->where('name', 'medico');
+        })->where('active', 1)->has('subscription')->with(['incomes' => function ($query) {
+            $query->where('type', 'I')
                                 ->orWhere('type', 'P');
-                            }])->with('subscription')->get();
+        }])->with('subscription')->get();
 
-       
         $countMedics = 0;
 
         $month = Carbon::now()->subMonth()->month;
         $year = Carbon::now()->subMonth()->year;
-       
 
-        $currentDate = Carbon::now()->setTime(0,0,0);
-        
-        foreach($medics as $medic)
-        {
-          
-            //dd($medic->subscription->ends_at->setTime(0,0,0)->gte($currentDate));
-            if($medic->subscription->ends_at->setTime(0,0,0)->gte($currentDate)) //la fecha de la subscripcion es mayor o igual a la fecha actual
-            {
-                $dateStart = $medic->subscription->ends_at->subMonths($medic->subscription->quantity)->setTime(0,0,0);
-                $dateEnd = $medic->subscription->ends_at->setTime(0,0,0);
-                
-               
+        $currentDate = Carbon::now()->setTime(0, 0, 0);
+
+        foreach ($medics as $medic) {
+            //dd($medic->subscription->ends_at->setTime(0, 0, 0) . '---' . $currentDate->addMonths($medic->subscription->quantity));
+            //dd($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity)));
+            if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate)) { //la fecha de la subs de finalizado es igual a la fecha actual
+                $dateStart = $medic->subscription->ends_at->subMonths($medic->subscription->quantity)->setTime(0, 0, 0);
+                $dateEnd = $medic->subscription->ends_at->setTime(0, 0, 0);
 
                 $incomes = $medic->incomes()->where([['date', '>=', $dateStart],
-                    ['date', '<=', $dateEnd]])->where('type','I')->get();
+                    ['date', '<=', $dateEnd]])->where('type', 'I')->get();
 
                 $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
-                    ['date', '<=', $dateEnd]])->where('type','P')->get();
+                    ['date', '<=', $dateEnd]])->where('type', 'P')->get();
 
-                
-                 $totalCharge = $incomes->sum('amount');
-                 $totalChargePending = $incomesPending->sum('amount');
-                 $monthlyPlanCharge = floatval($medic->subscription->cost);
-                
-                 
+                $totalCharge = $incomes->sum('amount');
+                $totalChargePending = $incomesPending->sum('amount');
+                $monthlyPlanCharge = floatval($medic->subscription->cost);
 
                 $dataIncome['type'] = 'M';
                 $dataIncome['medic_type'] = 'A';
@@ -98,28 +87,17 @@ class MonthlyCharge extends Command
                 $dataIncome['period_to'] = $dateEnd->toDateString();
                 $dataIncome['subscription_cost'] = $monthlyPlanCharge;
 
-
-
                 $income = $this->incomeRepo->store($dataIncome, $medic->id);
 
-               
+                $this->info('Total a cobrar , ' . $totalCharge . ' medico:' . $medic->name . 'subscripcion: ' . $monthlyPlanCharge);
 
-                
-               $this->info('Total a cobrar , ' . $totalCharge.' medico:'.$medic->name. 'subscripcion: '. $monthlyPlanCharge);
+                $countMedics++;
 
-               $countMedics++;
-                
-               // dd('subscripcion vencida');
+                // dd('subscripcion vencida');
             }
-
-                
-            
-
         }
 
-        Log::info( $countMedics.' cobros' );
-        $this->info('Hecho, ' . $countMedics.' cobros de medicos');
-
-       
+        Log::info($countMedics . ' cobros');
+        $this->info('Hecho, ' . $countMedics . ' cobros de medicos');
     }
 }
