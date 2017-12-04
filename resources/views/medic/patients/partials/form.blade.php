@@ -26,7 +26,7 @@
     <label for="birth_date" class="col-sm-2 control-label">Fecha de Nacimiento</label>
 
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ isset($patient) ? $patient->birth_date : old('birth_date') }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask {{ isset($patient) ? 'readonly' : ''}}>
+      <input type="text" class="form-control" name="birth_date" placeholder="Fecha de Nacimiento" value="{{ isset($patient) ? $patient->birth_date : old('birth_date') }}" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask {{ isset($patient) ? 'readonly' : ''}}>
        @if ($errors->has('birth_date'))
           <span class="help-block">
               <strong>{{ $errors->first('birth_date') }}</strong>
