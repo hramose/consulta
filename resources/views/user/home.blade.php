@@ -26,7 +26,7 @@
                   <div class="inner">
                    <h3>Buscar Médico</h3>
                     <div class="row">
-                      <div class=" col-xs-12 col-sm-4">
+                      <!-- <div class=" col-xs-12 col-sm-4">
                         <div class="small-box bg-white">
                           <div class="inner">
                             <span>Por Nombre </span>
@@ -34,8 +34,8 @@
                           </div>
                           
                         </div>
-                      </div>
-                      <div class=" col-xs-12 col-sm-4">
+                      </div> -->
+                      <div class=" col-xs-12 col-sm-6">
                         <div class="small-box bg-white">
                           <div class="inner">
                             <span>General </span>
@@ -43,7 +43,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class=" col-xs-12 col-sm-4">
+                      <div class=" col-xs-12 col-sm-6">
                         <div class="small-box bg-blank">
                           <div class="inner">
                             <span>Especialista</span>

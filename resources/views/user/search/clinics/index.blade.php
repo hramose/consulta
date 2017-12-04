@@ -28,12 +28,12 @@
                       </div>
                       <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="box box-default collapsed-box box-search-filters box-solid">
+                            <div class="box box-default box-search-filters box-solid">
                               <div class="box-header with-border ">
                                 <h3 class="box-title">Parámetros de busqueda</h3>
 
                                 <div class="box-tools">
-                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                   </button>
                                 </div>
                                 <!-- /.box-tools -->

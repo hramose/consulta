@@ -57,18 +57,18 @@
                       </div>
                       <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="box box-default collapsed-box box-search-filters box-solid">
+                            <div class="box box-default  box-search-filters box-solid">
                               <div class="box-header with-border ">
                                 <h3 class="box-title">Parámetros de busqueda</h3>
 
                                 <div class="box-tools">
-                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                   </button>
                                 </div>
                                 <!-- /.box-tools -->
                               </div>
                               <!-- /.box-header -->
-                              <div class="box-body {{ ((isset($general) || isset($specialist)) ? '' : 'collapse' ) }}">
+                              <div class="box-body ">
                                 <div class="row">
                             
                                     
@@ -225,7 +225,11 @@
                               
                               <td data-title="Nombre">
                                    Dr. {{ $doctor->name }} <br>
-                                 
+                                   @if($doctor->specialities->count())
+                                    @foreach($doctor->specialities as $speciality) <b>{{ $speciality->name }}</b> @endforeach
+                                  @else
+                                    <b>Médico General</b>
+                                  @endif 
                               </td>
                               <td data-title="Lugar">
                                   <div class="td-lugar">
@@ -268,7 +272,11 @@
                               
                               <td data-title="Nombre">
                                 Dr. {{ $medic->name }} <br>
-
+                                @if($medic->specialities->count())
+                                  @foreach($medic->specialities as $speciality) <b>{{ $speciality->name }}</b> @endforeach
+                                @else
+                                    <b>Médico General</b>
+                                @endif 
                                  
 
                               </td>
