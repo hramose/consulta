@@ -16,7 +16,7 @@
         <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus placeholder="Teléfono">
         @if ($errors->has('phone'))
             <span class="help-block">
-                <strong>{{ $errors->first('phone') }}</strong>
+                <strong>{{ $errors->first('phone') }} <a href="{{ url('/register') }}" class=" text-center " ><b>Crear cuenta nueva</b>   </a></strong>
             </span>
         @endif
         <span class="glyphicon glyphicon-phone form-control-feedback"></span>

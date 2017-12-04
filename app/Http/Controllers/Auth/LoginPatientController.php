@@ -35,8 +35,22 @@ class LoginPatientController extends Controller
       $v = $this->validateRequest($request);
 
         if (Auth::attempt(['phone' => $request->phone, 'password' => $request->password] ,$request->has('remember'))) {
-            // Authentication passed...
-            return redirect()->intended('/');
+            
+            $user = \Auth::user();
+
+            if ($user->hasRole('paciente')) {
+                // Authentication passed...
+
+                return redirect()->intended('/');
+            }
+
+           /* throw ValidationException::withMessages([
+                'phone' => [trans('auth.failed')],
+            ]);*/
+            
+            \Auth::logout();
+            
+           
         }
 
         throw ValidationException::withMessages([
