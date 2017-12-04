@@ -102,7 +102,7 @@
 
      
         @foreach(auth()->user()->monthlyCharge() as $charge)
-          <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount) }}</b> a pagar del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
+          <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
                 {{ csrf_field() }}
                
             <button type="submit" class="btn btn-success btn-sm">Pagar</button>
