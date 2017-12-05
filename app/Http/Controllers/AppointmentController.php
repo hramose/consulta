@@ -108,18 +108,18 @@ class AppointmentController extends Controller
 
         if($medic->push_token){
                 $push = new PushNotification('fcm');
-                $response = $push->setMessage([
+                $response = $push->setMessage(/*[
                        'title'=>'Nueva Cita Reservada',
                        'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
                        'badge' => '1'
-                   ]/*[
+                   ]*/[
                     'notification' => [
                             'title'=>'Nueva Cita Reservada',
                             'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
                             'sound' => 'default'
                             ]
                     
-                    ]*/)
+                    ])
 
                     ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
