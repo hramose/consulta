@@ -28,39 +28,41 @@ class IncomeRepository extends DbRepository
     public function store($data, $user_id = null)
     {
         $medic = User::find(($user_id) ? $user_id : auth()->id()); // buscar doctor
-
-        $income = $this->model;
-        $income->appointment_id = $data['appointment_id'];
-        $income->office_id = $data['office_id'];
-        $income->type = $data['type'];
-        $income->medic_type = $data['medic_type'];
-        $income->date = $data['date'];
-        $income->month = $data['month'];
-        $income->year = $data['year'];
-
-        $income->amount = $data['amount'];
-
-        if (isset($data['description'])) {
-            $income->description = $data['description'];
-        }
-
-        if (isset($data['pending'])) {
-            $income->pending = $data['pending'];
-        }
-
-        if (isset($data['period_from'])) {
-            $income->period_from = $data['period_from'];
-        }
-
-        if (isset($data['period_to'])) {
-            $income->period_to = $data['period_to'];
-        }
-
-        if (isset($data['subscription_cost'])) {
-            $income->subscription_cost = $data['subscription_cost'];
-        }
-
+        $income = $this->model->create($data);
         $income = $medic->incomes()->save($income);
+
+        /* $income = $this->model;
+         $income->appointment_id = $data['appointment_id'];
+         $income->office_id = $data['office_id'];
+         $income->type = $data['type'];
+         $income->medic_type = $data['medic_type'];
+         $income->date = $data['date'];
+         $income->month = $data['month'];
+         $income->year = $data['year'];
+
+         $income->amount = $data['amount'];
+
+         if (isset($data['description'])) {
+             $income->description = $data['description'];
+         }
+
+         if (isset($data['pending'])) {
+             $income->pending = $data['pending'];
+         }
+
+         if (isset($data['period_from'])) {
+             $income->period_from = $data['period_from'];
+         }
+
+         if (isset($data['period_to'])) {
+             $income->period_to = $data['period_to'];
+         }
+
+         if (isset($data['subscription_cost'])) {
+             $income->subscription_cost = $data['subscription_cost'];
+         }
+
+         $income = $medic->incomes()->save($income);*/
 
         return $income;
     }
