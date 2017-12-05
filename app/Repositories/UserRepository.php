@@ -56,15 +56,29 @@ class UserRepository extends DbRepository{
     {
         $user = $this->model->findOrFail($id);
         $data = $this->prepareData($data);
-        //dd($data);
+        
         $user->fill($data);
 
         if(isset($data['speciality']))
             $user->assignSpeciality($data['speciality']);
 
         if ($user->hasRole('medico')) {
+
+            if(isset($data['minTime'])){
+                $data['minTime'] = $data['minTime'] . ':00';
+            }
+            if(isset($data['maxTime'])){
+                $data['maxTime'] = $data['maxTime'] . ':00';
+            }
             
-            if (isset($data['minTime']) || isset($data['maxTime']) || isset($data['freeDays'])) {
+            $settings = Setting::where('user_id', $user->id)->first();
+
+            if ($settings) {
+                    $settings->fill($data);
+                    $settings->save();
+                }
+
+           /* if (isset($data['minTime']) || isset($data['maxTime']) || isset($data['freeDays'])) {
                 $settings = Setting::where('user_id', $user->id)->first();
                 $data['minTime'] = $data['minTime'] . ':00';
                 $data['maxTime'] = $data['maxTime'] . ':00';
@@ -72,7 +86,7 @@ class UserRepository extends DbRepository{
                     $settings->fill($data);
                     $settings->save();
                 }
-            }
+            }*/
 
         }
         

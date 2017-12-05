@@ -57,8 +57,9 @@ class UserController extends ApiController
      {  
          $user = request()->user();
 
- 
-         $user = $this->userRepo->update($user->id, request()->all());
+         $user->push_token = request('push_token'); // = $this->userRepo->update($user->id, request()->all());
+         $user->save();
+         //$user = $this->userRepo->update($user->id, request()->all());
  
         
  
