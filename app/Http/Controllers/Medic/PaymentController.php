@@ -59,21 +59,23 @@ class PaymentController extends Controller
         $income = $this->incomeRepo->findById($id);
         $medic = $income->medic;
 
-        //$incomesAttented = $user->incomes()->where('type','I')->where('month', $income->month)->where('year', $income->year);
-        //$incomesPending = $user->incomes()->where('type','P')->where('month', $income->month)->where('year', $income->year);
+        
          $medicData = [];
-        if($medic->subscription){
+        //if($medic->subscription){
 
-            $dateStart = Carbon::parse($income->period_from)->setTime(0,0,0);
-            $dateEnd = Carbon::parse($income->period_to)->setTime(0,0,0);
-                    
-                
+            //$dateStart = Carbon::parse($income->period_from)->setTime(0,0,0);
+            //$dateEnd = Carbon::parse($income->period_to)->setTime(0,0,0);
+            $month = Carbon::parse($income->date)->subMonth()->month;
+            $year = Carbon::parse($income->date)->subMonth()->year;
 
-            $incomesAttented = $medic->incomes()->where([['date', '>=', $dateStart],
-                ['date', '<=', $dateEnd]])->where('type','I');
+            $incomesAttented = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'I')->get();
 
-            $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
-                ['date', '<=', $dateEnd]])->where('type','P');
+            $incomesPending = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'P')->get();
+            // $incomesAttented = $medic->incomes()->where([['date', '>=', $dateStart],
+            //     ['date', '<=', $dateEnd]])->where('type','I');
+
+            // $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
+            //     ['date', '<=', $dateEnd]])->where('type','P');
 
             $medicData = [
                 'id' =>  $medic->id,
@@ -82,10 +84,11 @@ class PaymentController extends Controller
                 'attented_amount' => $incomesAttented->sum('amount'),
                 'pending' => $incomesPending->count(),
                 'pending_amount' => $incomesPending->sum('amount'),
-                'monthly_payment' => $income->subscription_cost,
+                'amountByAttended' => getAmountPerAppointmentAttended(),
+                'month' => $month .' - '. $year,
                 
             ];
-    }
+  //  }
 
 
         return $medicData;

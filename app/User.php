@@ -255,7 +255,12 @@ class User extends Authenticatable
         
          //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
         
-        return Income::where('user_id', $this->id)->where('type','M')->where('paid',0)->get();
+        return Income::where('user_id', $this->id)->where(function ($query) {
+                $query->where('type', 'M') // por cita atendida
+                    ->orWhere('type', 'MS'); // por subscripcion de paquete
+            })->where('paid', 0)->get();
+        
+      
     } 
 
     /**

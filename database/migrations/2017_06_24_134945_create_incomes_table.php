@@ -28,6 +28,7 @@ class CreateIncomesTable extends Migration
             $table->double('subscription_cost')->default(0);
             $table->string('type', 2);
             $table->string('medic_type', 2);
+            $table->text('description')->nullable();
             $table->tinyInteger('paid')->default(0); //1 pagada
             $table->timestamps();
         });

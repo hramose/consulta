@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Income;
 
 class MonthlyCharge extends Command
 {
@@ -60,24 +61,39 @@ class MonthlyCharge extends Command
         foreach ($medics as $medic) {
             //dd($medic->subscription->ends_at->setTime(0, 0, 0) . '---' . $currentDate->addMonths($medic->subscription->quantity));
             //dd($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity)));
+
+            $incomes = $medic->incomes()->where('month',$month)->where('year', $year)->where('type', 'I')->get();
+
+            $incomesPending = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'P')->get();
+
+            $totalCharge = $incomes->sum('amount');
+            $totalChargePending = $incomesPending->sum('amount');
+            
+
+            $dataIncome['type'] = 'M';
+            $dataIncome['medic_type'] = 'A';
+            $dataIncome['amount'] = $totalCharge;
+            $dataIncome['pending'] = $totalChargePending;
+            $dataIncome['appointment_id'] = 0;
+            $dataIncome['office_id'] = 0;
+            $dataIncome['date'] = Carbon::now()->toDateString();
+            $dataIncome['month'] = Carbon::now()->month;
+            $dataIncome['year'] = Carbon::now()->year;
+            $dataIncome['description'] = "Cobro mensual por cita atentida";
+            
+            $this->incomeRepo->store($dataIncome, $medic->id);
+           
+            $monthlyPlanCharge = 0;
+
             if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity))) { //la fecha de la subs de finalizado es igual a la fecha actual
                 $dateStart = $medic->subscription->ends_at->subMonths($medic->subscription->quantity)->setTime(0, 0, 0);
                 $dateEnd = $medic->subscription->ends_at->setTime(0, 0, 0);
 
-                $incomes = $medic->incomes()->where([['date', '>=', $dateStart],
-                    ['date', '<=', $dateEnd]])->where('type', 'I')->get();
-
-                $incomesPending = $medic->incomes()->where([['date', '>=', $dateStart],
-                    ['date', '<=', $dateEnd]])->where('type', 'P')->get();
-
-                $totalCharge = $incomes->sum('amount');
-                $totalChargePending = $incomesPending->sum('amount');
                 $monthlyPlanCharge = floatval($medic->subscription->cost);
 
-                $dataIncome['type'] = 'M';
+                $dataIncome['type'] = 'MS';
                 $dataIncome['medic_type'] = 'A';
-                $dataIncome['amount'] = $monthlyPlanCharge + $totalCharge;
-                $dataIncome['pending'] = $totalChargePending;
+                $dataIncome['amount'] = $monthlyPlanCharge;
                 $dataIncome['appointment_id'] = 0;
                 $dataIncome['office_id'] = 0;
                 $dataIncome['date'] = Carbon::now()->toDateString();
@@ -86,15 +102,21 @@ class MonthlyCharge extends Command
                 $dataIncome['period_from'] = $dateStart->toDateString();
                 $dataIncome['period_to'] = $dateEnd->toDateString();
                 $dataIncome['subscription_cost'] = $monthlyPlanCharge;
+                $dataIncome['description'] = "Cobro por subscripción de paquete";
+                $medic->id;
 
-                $income = $this->incomeRepo->store($dataIncome, $medic->id);
+                $newIncome = Income::create($dataIncome);
+                $medic->incomes()->save($newIncome);
+               //$this->incomeRepo->store($dataIncome, $medic->id);
 
-                $this->info('Total a cobrar , ' . $totalCharge . ' medico:' . $medic->name . 'subscripcion: ' . $monthlyPlanCharge);
+              
 
-                $countMedics++;
-
-                // dd('subscripcion vencida');
+                
             }
+
+            $this->info('Total a cobrar , ' . $totalCharge . ' medico: ' . $medic->name . ' subscripcion: ' . $monthlyPlanCharge);
+
+            $countMedics++;
         }
 
         Log::info($countMedics . ' cobros');

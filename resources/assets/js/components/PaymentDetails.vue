@@ -3,7 +3,7 @@
 
 
                     
-    <div class="col-xs-12 ">
+
         <div class="table-responsive">
                 <table class="table no-margin">
                 <thead>
@@ -11,7 +11,7 @@
                     
                     <th>Consultas Atendidas</th>
                     <th>Monto por Citas Online</th>
-                    <th>Monto por Expediente Clínico</th>
+                    <th>Periodo</th>
                     <th>Total</th>
                   
                     
@@ -22,9 +22,9 @@
                 <tr>
                   
                     <td>{{ data.attented }}</td>
-                    <td>${{ money(data.attented_amount) }}</td>
-                    <td>${{ money(data.monthly_payment) }}</td>
-                    <td>${{ money(parseFloat(data.monthly_payment) + parseFloat(data.attented_amount)) }}</td>
+                    <td>${{ money(data.amountByAttended) }}</td>
+                    <td>{{ data.month }}</td>
+                    <td>${{ money(parseFloat(data.attented_amount)) }}</td>
                   
                     
                 </tr>
@@ -33,7 +33,7 @@
                 </tbody>
                 </table>
         </div>
-    </div>
+  
                         
                   
 
@@ -55,9 +55,10 @@
 
           data:{
               attented:0,
+              amountByAttended: 0,
               attented_amount: 0,
-              monthly_payment: 0,
-              attented_amount: 0,
+              month: '',
+             
           },
           loader: false,
          
@@ -76,7 +77,7 @@
             },
          
          
-         totalIncomes(incomes){
+         /*totalIncomes(incomes){
               let total = 0;
 
               for (var i = 0; i < incomes.length; i++) {
@@ -86,7 +87,7 @@
               return total;
             
           
-        },
+        },*/
        
 
         getPaymentDetail(){
