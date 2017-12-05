@@ -41,8 +41,11 @@ class IncomeRepository extends DbRepository{
         $income->date = $data['date'];
         $income->month = $data['month'];
         $income->year = $data['year'];
-        $income->description = $data['description'];
+        
         $income->amount = $data['amount'];
+
+        if(isset($data['description']))
+            $income->description = $data['description'];
 
         if(isset($data['pending']))
             $income->pending = $data['pending'];
