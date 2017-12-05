@@ -85,7 +85,7 @@ class MonthlyCharge extends Command
            
             $monthlyPlanCharge = 0;
 
-            if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity))) { //la fecha de la subs de finalizado es igual a la fecha actual
+            if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate)) { //la fecha de la subs de finalizado es igual a la fecha actual
                 $dateStart = $medic->subscription->ends_at->subMonths($medic->subscription->quantity)->setTime(0, 0, 0);
                 $dateEnd = $medic->subscription->ends_at->setTime(0, 0, 0);
 
