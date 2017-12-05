@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('newAppointments', $newAppointments);
         });
 
-        view()->composer('layouts.partials.header-clinic', function ($view) {
+        view()->composer('layouts.app-clinic', function ($view) {
             $office_id = auth()->user()->offices->first()->id;
 
             $medicsVerified = \DB::table('verified_offices')

@@ -19,7 +19,7 @@
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>Médicos</h3>
+                  <h3>Médicos @if($newMedicsRequest->count())<span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="{{ $newMedicsRequest->count() }} Solicitudes Nuevas">{{ $newMedicsRequest->count() }}</span></span>@endif</h3>
 
                   <p>Doctores</p>
                 </div>
