@@ -15,7 +15,8 @@
                     <tr v-for="payment in monthlyCharges">
                       
                       <td>${{ money(payment.amount) }}</td>
-                      <td>{{ payment.period_from }} -- {{ payment.period_to }}</td>
+                      <td>
+                        {{ (payment.type == 'MS') ? payment.period_from +' -- '+ payment.period_to : payment.month + '-' + payment.year }}</td>
                       <td>
                         <form method="POST" v-bind:action="getUrl(payment)" class="form-horizontal">
                           <input type="hidden" name="_token" :value="token">
