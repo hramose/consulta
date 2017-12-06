@@ -62,27 +62,28 @@ class MonthlyCharge extends Command
             //dd($medic->subscription->ends_at->setTime(0, 0, 0) . '---' . $currentDate->addMonths($medic->subscription->quantity));
             //dd($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity)));
 
-            $incomes = $medic->incomes()->where('month',$month)->where('year', $year)->where('type', 'I')->get();
+            $incomes = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'I')->get();
 
             $incomesPending = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'P')->get();
 
             $totalCharge = $incomes->sum('amount');
             $totalChargePending = $incomesPending->sum('amount');
-            
 
-            $dataIncome['type'] = 'M';
-            $dataIncome['medic_type'] = 'A';
-            $dataIncome['amount'] = $totalCharge;
-            $dataIncome['pending'] = $totalChargePending;
-            $dataIncome['appointment_id'] = 0;
-            $dataIncome['office_id'] = 0;
-            $dataIncome['date'] = Carbon::now()->toDateString();
-            $dataIncome['month'] = Carbon::now()->month;
-            $dataIncome['year'] = Carbon::now()->year;
-            $dataIncome['description'] = "Cobro mensual por cita atentida";
-            
-            $this->incomeRepo->store($dataIncome, $medic->id);
-           
+            if ($totalCharge > 0) {
+                $dataIncome['type'] = 'M';
+                $dataIncome['medic_type'] = 'A';
+                $dataIncome['amount'] = $totalCharge;
+                $dataIncome['pending'] = $totalChargePending;
+                $dataIncome['appointment_id'] = 0;
+                $dataIncome['office_id'] = 0;
+                $dataIncome['date'] = Carbon::now()->toDateString();
+                $dataIncome['month'] = Carbon::now()->month;
+                $dataIncome['year'] = Carbon::now()->year;
+                $dataIncome['description'] = 'Cobro mensual por cita atentida';
+
+                $this->incomeRepo->store($dataIncome, $medic->id);
+            }
+
             $monthlyPlanCharge = 0;
 
             if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate)) { //la fecha de la subs de finalizado es igual a la fecha actual
@@ -102,16 +103,12 @@ class MonthlyCharge extends Command
                 $dataIncome['period_from'] = $dateStart->toDateString();
                 $dataIncome['period_to'] = $dateEnd->toDateString();
                 $dataIncome['subscription_cost'] = $monthlyPlanCharge;
-                $dataIncome['description'] = "Cobro por subscripción de paquete";
+                $dataIncome['description'] = 'Cobro por subscripción de paquete';
                 $medic->id;
 
                 $newIncome = Income::create($dataIncome);
                 $medic->incomes()->save($newIncome);
-               //$this->incomeRepo->store($dataIncome, $medic->id);
-
-              
-
-                
+                //$this->incomeRepo->store($dataIncome, $medic->id);
             }
 
             $this->info('Total a cobrar , ' . $totalCharge . ' medico: ' . $medic->name . ' subscripcion: ' . $monthlyPlanCharge);
