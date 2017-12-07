@@ -8,7 +8,6 @@ use App\Treatment;
 use App\Diagnostic;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
-use App\Repositories\findAllByDoctor;
 //use Vsmoraes\Pdf\Pdf;
 use PDF;
 use Carbon\Carbon;
@@ -20,15 +19,12 @@ use Illuminate\Support\Facades\Session;
 
 class AppointmentController extends Controller
 {
-    
-    function __construct(AppointmentRepository $appointmentRepo, PatientRepository $patientRepo)
+    public function __construct(AppointmentRepository $appointmentRepo, PatientRepository $patientRepo)
     {
-    	
         $this->middleware('auth');
-    	$this->appointmentRepo = $appointmentRepo;
+        $this->appointmentRepo = $appointmentRepo;
         $this->patientRepo = $patientRepo;
         //$this->pdf = $pdf;
-
     }
 
     /**
@@ -37,22 +33,20 @@ class AppointmentController extends Controller
     public function index()
     {
         $search['q'] = request('q');
-        $search['office'] =  Session::get('office_id');
+        $search['office'] = Session::get('office_id');
         $clinic_id = Session::get('office_id');
 
-       
-        $appointments =$this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
+        $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
 
-
-        if($search['office'])
-            return view('medic.appointments.index',compact('appointments','search'));
-        else
-            return view('medic.appointments.historical',compact('appointments','search'));
-
+        if ($search['office']) {
+            return view('medic.appointments.index', compact('appointments', 'search'));
+        } else {
+            return view('medic.appointments.historical', compact('appointments', 'search'));
+        }
     }
 
     /*public function appointmentsFromClinic($clinic_id){
-        
+
         $search['q'] = request('q');
         $search['office'] = $clinic_id;
         $search['date'] = Carbon::now()->toDateString();
@@ -68,47 +62,44 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-    
-         // por si le da desde el formulario de paciente crear la cita a este paciente sin tener que buscarlo
+        // por si le da desde el formulario de paciente crear la cita a este paciente sin tener que buscarlo
         $p = null;
         $wizard = null;
         $clinic_id = request('clinic');
         $create = request('create');
 
-        if(request('p'))
+        if (request('p')) {
             $p = Patient::find(request('p'));
+        }
 
-        if(request('wizard'))
+        if (request('wizard')) {
             $wizard = 1;
+        }
 
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id());
 
-       $month = Carbon::now()->month;
-       //$carbon = new Carbon(new Carbon(date('Y-m-d', strtotime('next monday', strtotime('2017-' . $month . '-01'))), 'America/Costa_Rica'));
+        $month = Carbon::now()->month;
+        //$carbon = new Carbon(new Carbon(date('Y-m-d', strtotime('next monday', strtotime('2017-' . $month . '-01'))), 'America/Costa_Rica'));
         $carbon = Carbon::now()->startOfMonth();
         $weeks_array = [];
         $selectWeeks = [];
-        while (intval($carbon->month) == intval($month)){
-            $weeks_array[$carbon->weekOfMonth][ $carbon->dayOfWeek ] = $carbon->toDateString();
+        while (intval($carbon->month) == intval($month)) {
+            $weeks_array[$carbon->weekOfMonth][$carbon->dayOfWeek] = $carbon->toDateString();
             $carbon->addDay();
-          
         }
         foreach ($weeks_array as $key => $week) {
             //dd($key);
 
-             $itemSelect = [
-                'name' => 'Semana '. $key.' ('.head($week) .' | '.last($week).')',
+            $itemSelect = [
+                'name' => 'Semana ' . $key . ' (' . head($week) . ' | ' . last($week) . ')',
                 'value' => $key
             ];
-             $selectWeeks [] = $itemSelect;
-
+            $selectWeeks[] = $itemSelect;
         }
-        
-       // dd($selectWeeks);
 
-       
-    	return view('medic.appointments.create',compact('appointments', 'p','wizard','selectWeeks','clinic_id','create'));
+        // dd($selectWeeks);
 
+        return view('medic.appointments.create', compact('appointments', 'p', 'wizard', 'selectWeeks', 'clinic_id', 'create'));
     }
 
     /**
@@ -116,17 +107,17 @@ class AppointmentController extends Controller
      */
     public function store()
     {
-
         $appointment = $this->appointmentRepo->store(request()->all());
-        
-        if(!$appointment) return '';
+
+        if (!$appointment) {
+            return '';
+        }
 
         $appointment['patient'] = $appointment->patient;
         $appointment['user'] = $appointment->user;
         $appointment->load('office');
 
         return $appointment;
-
     }
 
     /**
@@ -134,64 +125,61 @@ class AppointmentController extends Controller
      */
     public function edit($id)
     {
-        if(!auth()->user()->hasSubscription()) return redirect('/'); // verifica que tiene subscription
-        
-        if(auth()->user()->monthlyCharge()->count()) return redirect('/'); //verifica que tiene pagos pendientes
+        if (!auth()->user()->hasSubscription()) {
+            return redirect('/');
+        } // verifica que tiene subscription
+
+        if (auth()->user()->monthlyCharge()->count()) {
+            return redirect('/');
+        } //verifica que tiene pagos pendientes
 
         $appointment = $this->appointmentRepo->findById($id);
 
-        if($appointment->user_id != auth()->id()) return redirect('/'); //verifica que la cita es del medico q la solicita
-
+        if ($appointment->user_id != auth()->id()) {
+            return redirect('/');
+        } //verifica que la cita es del medico q la solicita
         
-        $appointment =  $this->appointmentRepo->update_status($id, 1);
+        $appointment = $this->appointmentRepo->update_status($id, 1);
 
-        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
-        $appointments =  $this->patientRepo->findById($appointment->patient->id)->appointments()->with('user','patient.medicines','diagnostics', 'diseaseNotes', 'physicalExams','treatments','labexams')->where('appointments.id','!=',$appointment->id)->where('status', 1)->where('appointments.date','<=',$appointment->date)->orderBy('start','DESC')->limit(3)->get();
-        
-        $files = $this->patientRepo->findById($appointment->patient->id)->archivos()->where('appointment_id',$id)->get(); //Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
-       
+        $patient = $this->patientRepo->findById($appointment->patient->id);
+
+        $history = $patient->history;
+        $appointments = $patient->appointments()->with('user', 'patient.medicines', 'diagnostics', 'diseaseNotes', 'physicalExams', 'treatments', 'labexams')->where('appointments.id', '!=', $appointment->id)->where('status', 1)->where('appointments.date', '<=', $appointment->date)->orderBy('start', 'DESC')->limit(3)->get();
+
+        $files = $patient->archivos()->where('appointment_id', $id)->get(); //Storage::disk('public')->files("patients/". $appointment->patient->id ."/files");
+
         $tab = request('tab');
 
-       
-       
-      
-
-        return view('medic.appointments.edit',compact('appointment', 'files', 'history','appointments','tab'));
-
+        return view('medic.appointments.edit', compact('appointment', 'files', 'history', 'appointments','patient', 'tab'));
     }
 
-     /**
-     * Guardar consulta(cita)
-     */
-     public function createFrom($id)
-     {
- 
-         $appointment = $this->appointmentRepo->findById($id);
-         
-        
-         $data = [
+    /**
+    * Guardar consulta(cita)
+    */
+    public function createFrom($id)
+    {
+        $appointment = $this->appointmentRepo->findById($id);
 
+        $data = [
             'patient_id' => $appointment->patient_id,
             'office_id' => $appointment->office_id,
             'date' => Carbon::now()->toDateString(),
-            'start' =>Carbon::now()->toDateString().'T'.Carbon::now()->toTimeString(),
-            'end' =>Carbon::now()->addMinutes(30)->toDateString().'T'.Carbon::now()->addMinutes(30)->toTimeString(),
+            'start' => Carbon::now()->toDateString() . 'T' . Carbon::now()->toTimeString(),
+            'end' => Carbon::now()->addMinutes(30)->toDateString() . 'T' . Carbon::now()->addMinutes(30)->toTimeString(),
             'allDay' => $appointment->allDay,
-            'title' => 'Seguimiento de la cita '.$appointment->id,
+            'title' => 'Seguimiento de la cita ' . $appointment->id,
             'backgroundColor' => $appointment->backgroundColor,
             'borderColor' => $appointment->borderColor,
             'medical_instructions' => $appointment->medical_instructions,
             'visible_at_calendar' => 0,
             'tracing' => $appointment->id
-            
-            
         ];
 
         $newAppointment = $this->appointmentRepo->store($data);
 
         // $newAppointment->diseaseNotes->fill($appointment->diseaseNotes->toArray());
         // $newAppointment->diseaseNotes->save();
-        
+
         // $newAppointment->physicalExams->fill($appointment->physicalExams->toArray());
         // $newAppointment->physicalExams->save();
 
@@ -204,7 +192,7 @@ class AppointmentController extends Controller
         //         'name' =>  $diag->name,
         //         'comments' =>  $diag->comments
         //     ]);
-            
+
         // }
         // foreach($appointment->treatments as $treat){
         //     Treatment::create([
@@ -214,28 +202,22 @@ class AppointmentController extends Controller
         //     ]);
         // }
 
-
-
-        return Redirect('/medic/appointments/'.$newAppointment->id.'/edit');
- 
-     }
- 
+        return Redirect('/medic/appointments/' . $newAppointment->id . '/edit');
+    }
 
     /**
      * Actualizar consulta(cita)
      */
     public function update($id)
     {
-        
         $appointment = $this->appointmentRepo->update($id, request()->all());
-        
-        if($appointment){
+
+        if ($appointment) {
             $appointment['patient'] = $appointment->patient;
             $appointment['user'] = $appointment->user;
         }
-        
-        return $appointment;
 
+        return $appointment;
     }
 
     /**
@@ -247,70 +229,59 @@ class AppointmentController extends Controller
 
         $appointment = $this->appointmentRepo->delete($id);
 
-        ($appointment === true) ? flash('Consulta eliminada correctamente!','success') : flash('No se puede eliminar consulta ya que se encuentra iniciada','error');
+        ($appointment === true) ? flash('Consulta eliminada correctamente!', 'success') : flash('No se puede eliminar consulta ya que se encuentra iniciada', 'error');
 
         event(new AppointmentDeleted($appointmentDeletedToPusher));
         event(new AppointmentDeletedToAssistant($appointmentDeletedToPusher));
 
         return back();
-
     }
-     /**
-     * Eliminar consulta(cita) ajax desde calendar
-     */
+
+    /**
+    * Eliminar consulta(cita) ajax desde calendar
+    */
     public function delete($id)
     {
         $appointmentDeletedToPusher = $this->appointmentRepo->findById($id);
 
         $appointment = $this->appointmentRepo->delete($id);
-        
-        if($appointment !== true)  return $appointment; //no se elimino correctamente
+
+        if ($appointment !== true) {
+            return $appointment;
+        } //no se elimino correctamente
 
         event(new AppointmentDeleted($appointmentDeletedToPusher));
         event(new AppointmentDeletedToAssistant($appointmentDeletedToPusher));
 
         return '';
-
     }
 
-     public function noShows($id)
+    public function noShows($id)
     {
-
         $reservation = \DB::table('appointments')
             ->where('id', $id)
-            ->update(['status' => 2]); //no asistio a la cita  
+            ->update(['status' => 2]); //no asistio a la cita
 
-         return back();
-
+        return back();
     }
 
-     public function finished($id)
+    public function finished($id)
     {
-
         $reservation = \DB::table('appointments')
             ->where('id', $id)
             ->update(['finished' => 1]); //cita finalizada
 
-         return 'finished';
-
+        return 'finished';
     }
 
     public function viewed($id)
     {
-       
-            $reservation = \DB::table('appointments')
+        $reservation = \DB::table('appointments')
             ->where('id', $id)
-            ->update(['viewed' => 1]); //vista desde el panel de notificacion  
+            ->update(['viewed' => 1]); //vista desde el panel de notificacion
 
-       
-
-       
-
-         return 'viewed';
-
+        return 'viewed';
     }
-    
-
 
     /**
      * Lista de todas las citas de un doctor sin paginar
@@ -319,63 +290,52 @@ class AppointmentController extends Controller
     {
         $search = request()->all();
         $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
-        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
+        $search['date2'] = isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
         $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination(auth()->id(), $search);
 
         return $appointments;
-        
     }
 
     /**
      * imprime resumen de la consulta
      */
-     public function pdfSummary($id)
-     {
-       
-         $appointment =  $this->appointmentRepo->findById($id);
-         $history =  $this->patientRepo->findById($appointment->patient->id)->history;
+    public function pdfSummary($id)
+    {
+        $appointment = $this->appointmentRepo->findById($id);
+        $history = $this->patientRepo->findById($appointment->patient->id)->history;
 
-         
-        return view('medic.appointments.pdf-summary',compact('appointment','history'));
-         
-     }
-     /**
-     * imprime resumen de la consulta
-     */
-     public function pdf($id)
-     {
-            $appointment =  $this->appointmentRepo->findById($id);
-        
+        return view('medic.appointments.pdf-summary', compact('appointment', 'history'));
+    }
 
-            $html = request('htmltopdf');
-            $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = false, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
+    /**
+    * imprime resumen de la consulta
+    */
+    public function pdf($id)
+    {
+        $appointment = $this->appointmentRepo->findById($id);
 
-            $pdf::SetFont('helvetica', '', 9);
-           
-            $pdf::SetTitle('Expediente Clínico');
-            $pdf::AddPage('L', 'A4');
-            $pdf::writeHTML($html, true, false, true, false, '');
-           
-            $pdf::Output('expediente-'.str_slug($appointment->patient->first_name).'-'. str_slug($appointment->patient->id).'.pdf'); 
-       
-         
-       
-         
-     }
- 
+        $html = request('htmltopdf');
+        $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = false, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
+
+        $pdf::SetFont('helvetica', '', 9);
+
+        $pdf::SetTitle('Expediente Clínico');
+        $pdf::AddPage('L', 'A4');
+        $pdf::writeHTML($html, true, false, true, false, '');
+
+        $pdf::Output('expediente-' . str_slug($appointment->patient->first_name) . '-' . str_slug($appointment->patient->id) . '.pdf');
+    }
 
     /**
      * imprime resumen de la consulta
      */
     public function printSummary($id)
     {
+        $appointment = $this->appointmentRepo->findById($id);
+        $history = $this->patientRepo->findById($appointment->patient->id)->history;
 
-        $appointment =  $this->appointmentRepo->findById($id);
-        $history =  $this->patientRepo->findById($appointment->patient->id)->history;
-        
-        return view('medic.appointments.print-summary',compact('appointment','history'));
-        
+        return view('medic.appointments.print-summary', compact('appointment', 'history'));
     }
 
     /**
@@ -383,12 +343,8 @@ class AppointmentController extends Controller
      */
     public function printTreatment($id)
     {
+        $appointment = $this->appointmentRepo->findById($id);
 
-        $appointment =  $this->appointmentRepo->findById($id);
-
-        
-        return view('medic.appointments.print-treatment',compact('appointment'));
-        
+        return view('medic.appointments.print-treatment', compact('appointment'));
     }
-
 }

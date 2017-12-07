@@ -140,7 +140,7 @@ class PatientController extends Controller
         //         return $item->status == 0;
         //     });
 
-        $appointments = $patient->appointments->load('user', 'diagnostics');
+        $appointments = [];//$patient->appointments->load('user', 'diagnostics'); // se comento por que es informacion repetida(diagnosticos) en las tres ultimas consultas
 
         //dd($appointments);
 

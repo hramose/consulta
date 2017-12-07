@@ -9,7 +9,7 @@
           <div class="modal-body" >
               
              <div class="text-center">
-                <table-pending-payments :monthly-charges="{{ auth()->user()->monthlyCharge() }}" token="{{ csrf_token() }}"></table-pending-payments>
+                <table-pending-payments :monthly-charges="{{ $monthlyCharge }}" token="{{ csrf_token() }}"></table-pending-payments>
             </div>
               
                 
