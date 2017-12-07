@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\NotificationOfficeLocation::class,
         \App\Console\Commands\ReminderAppointment::class,
         \App\Console\Commands\SendPolls::class,
-         \App\Console\Commands\MonthlyCharge::class
+         \App\Console\Commands\MonthlyCharge::class,
+          \App\Console\Commands\SubscriptionCharge::class
     ];
 
     /**
@@ -35,8 +36,12 @@ class Kernel extends ConsoleKernel
         $schedule->command(\App\Console\Commands\NotificationOfficeLocation::class)
                  ->everyThirtyMinutes(); //se hace asi por que este no es necesario enviar email
 
-        $schedule->command(\App\Console\Commands\MonthlyCharge::class)
+        $schedule->command(\App\Console\Commands\SubscriptionCharge::class)
                  ->dailyAt('00:05'); //se hace asi por que este no es necesario enviar email
+
+        $schedule->command(\App\Console\Commands\MonthlyCharge::class)
+                 ->monthlyOn(1,'00:05'); //se hace asi por que este no es necesario enviar email
+
         //dailyAt
         /*$schedule->command(\App\Console\Commands\ReminderAppointment::class) //hay q verificar si en el nuevo servidor si funciona asi
                  ->everyThirtyMinutes();*/
