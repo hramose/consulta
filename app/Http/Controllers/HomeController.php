@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct(AppointmentRepository $appointmentRepo)
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('firma');
         $this->appointmentRepo = $appointmentRepo;
         $this->administrators = User::whereHas('roles', function ($query) {
             $query->where('name', 'administrador');
@@ -89,5 +89,8 @@ class HomeController extends Controller
         } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
             \Log::error($e->getMessage());
         }
+    }
+    public function firma(){
+        return 'firma';
     }
 }
