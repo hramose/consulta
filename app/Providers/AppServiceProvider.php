@@ -33,7 +33,16 @@ class AppServiceProvider extends ServiceProvider
 
             $newAppointments = $appointments->get();
 
-            $view->with('newAppointments', $newAppointments);
+            $monthlyCharge = auth()->user()->monthlyCharge();
+
+            $userOffices = auth()->user()->offices->count();
+
+            $userOfficesindependientes = auth()->user()->offices()->where('type', 'Consultorio Independiente')->select('offices.id', 'notification', 'notification_date')->get();
+
+            $view->with('newAppointments', $newAppointments)
+                 ->with('monthlyCharge', $monthlyCharge)
+                 ->with('userOffices', $userOffices)
+                 ->with('userOfficesindependientes', $userOfficesindependientes);
         });
 
         view()->composer('layouts.app-assistant', function ($view) {
@@ -85,6 +94,15 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with(compact('clinicsUser'));
         });
+
+        view()->composer(['medic.appointments.index','medic.patients.index','medic.patients.edit'], function ($view) {
+            $monthlyCharge = auth()->user()->monthlyCharge();
+
+            $view->with(compact('monthlyCharge'));
+        });
+        
+      
+
 
         /* \DB::listen(function ($query) {
             var_dump($query->sql);

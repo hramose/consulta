@@ -10,14 +10,14 @@
 	 <section class="content">
 	     <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">{{ $appointment->patient->first_name }}</h3> <a href="#" class="btn-finish-appointment btn btn-success" style="position: absolute; right: 18px; top: 3px; z-index: 99">Terminar Consulta</a>
+              <h3 class="box-title">{{ $patient->first_name }}</h3> <a href="#" class="btn-finish-appointment btn btn-success" style="position: absolute; right: 18px; top: 3px; z-index: 99">Terminar Consulta</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <strong><i class="fa fa-calendar margin-r-5"></i> {{ $appointment->title }}</strong>
 
               <p class="text-muted">
-                {{ age($appointment->patient->birth_date) }} - {{ trans('utils.gender.'.$appointment->patient->gender) }} - {{ $appointment->patient->phone }}
+                {{ age($patient->birth_date) }} - {{ trans('utils.gender.'.$patient->gender) }} - {{ $patient->phone }}
               </p>
 
             </div>
@@ -54,8 +54,8 @@
 												 
 		                	</div>
 		                	<div class="col-md-6">
-								 @include('medic/patients/partials/summary-control', ['patient' => $appointment->patient,'history'=> $history])
-		          				 @include('medic/patients/partials/medicines-medic', ['patient' => $appointment->patient]) 
+								 @include('medic/patients/partials/summary-control', ['patient' => $patient,'history'=> $history])
+		          				 @include('medic/patients/partials/medicines-medic', ['patient' => $patient]) 
 											 
 												 
 		                 	</div>
@@ -106,10 +106,10 @@
 					   <div class="tab-pane" id="labexam">
 					   <div class="row">
 							<div class="col-md-6">
-							  <lab-exams :patient_id="{{ $appointment->patient->id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
+							  <lab-exams :patient_id="{{ $appointment->patient_id }}" :appointment_id="{{ $appointment->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}"></lab-exams>
 							</div>
 							<div class="col-md-6">
-							<lab-results :patient_id="{{ $appointment->patient->id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}" :results="{{$appointment->patient->labresults }}"></lab-results>
+							<lab-results :patient_id="{{ $appointment->patient_id }}" :read="{{ (\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1) ? 'true' : 'false' }}" :results="{{$patient->labresults }}"></lab-results>
 
 							</div>
 						</div>
@@ -149,7 +149,7 @@
 								@else
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient->id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}"></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}"></invoice-form>
 			              			</div>
 			              		</div>
 			              		<div class="row">
@@ -171,7 +171,7 @@
 		    <div class="col-md-3" style="position: relative;">
 				<a href="/medic/appointments/{{ $appointment->id }}/print" target="_blank" class="btn btn-default" style="position: absolute; right: 18px; top: 3px; z-index: 99"><i class="fa fa-print"></i> Imprimir</a>
 				<a href="/medic/appointments/{{ $appointment->id }}/pdf" class="btn btn-default" style="position: absolute; right: 113px; top: 3px; z-index: 99"  target="_blank">PDF</a>
-		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $appointment->patient->medicines()->where('medic_id', auth()->id())->get() }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" :labexams="{{ $appointment->labexams }}" :is-current="true"></summary-appointment>
+		    	<summary-appointment :history="{{ $history }}" :medicines="{{ $patient->medicines()->where('medic_id', auth()->id())->get() }}" :notes="{{ $appointment->diseaseNotes }}" :exams="{{ $appointment->physicalExams }}" :diagnostics="{{ $appointment->diagnostics }}" :treatments="{{ $appointment->treatments }}" instructions="{{ $appointment->medical_instructions }}" :labexams="{{ $appointment->labexams }}" :is-current="true"></summary-appointment>
 		      
 		    </div>
 		</div>

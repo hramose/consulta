@@ -52,8 +52,11 @@
                           @else
 
                             @if(auth()->user()->hasSubscription())
-
-                              <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                                @if(!$monthlyCharge->count())
+                                  <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                               @else
+                                   <a href="#" data-toggle="modal" data-target="#modalSubscription" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
+                               @endif
                             @else
                                <a href="#" data-toggle="modal" data-target="#modalSubscription" title="{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}">{{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}</a>
                             @endif
@@ -73,7 +76,7 @@
                                 <span class="label label-default" style="margin-left: 5px;margin-top: 8px;display: inline-block;">Cita perdida</span>
                               @else
                                  @if(auth()->user()->hasSubscription())  
-                                    @if(!auth()->user()->monthlyCharge()->count())
+                                    @if(!$monthlyCharge->count())
                                       <a href="{{ url('/medic/appointments/'.$appointment->id.'/edit') }}" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>
                                     @else
                                        <a href="#" data-toggle="modal" data-target="#modalPendingPayments" class="btn btn-info" title="{{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}"><i class="fa fa-eye"></i> {{ $appointment->status == 0 ? 'Iniciar Consulta' : 'Ver consulta' }}</a>

@@ -96,12 +96,12 @@
      
        <!-- <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/medic/appointments" title="Ir a citas">Aquí</a> !</div>  -->
     
-    @if(!auth()->user()->offices->count())
+    @if(!$userOffices)
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif
 
      
-        @foreach(auth()->user()->monthlyCharge() as $charge)
+        @foreach($monthlyCharge as $charge)
            @if($charge->type == 'M')
             <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
                 {{ csrf_field() }}
@@ -146,7 +146,7 @@
         @endforeach
     
     
-     @foreach(auth()->user()->offices()->where('type','Consultorio Independiente')->get() as $office)
+     @foreach($userOfficesindependientes as $office)
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
           <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
@@ -163,7 +163,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <div class="modal fade" id="modalSelectClinic" role="dialog" aria-labelledby="modalSelectClinic">
+  <!-- <div class="modal fade" id="modalSelectClinic" role="dialog" aria-labelledby="modalSelectClinic">
       <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -180,17 +180,17 @@
                   <th>Acción</th>
                  
                 </tr>
-                 @foreach(auth()->user()->offices()->get() as $office)
+                {{--  @foreach(auth()->user()->offices()->get() as $office) --}}
                     
                     <tr>
                       
-                      <td><a href="/medic/appointments?clinic={{ $office->id }}">{{ $office->name }}</a></td>
+                    {{--  <td><a href="/medic/appointments?clinic={{ $office->id }}">{{ $office->name }}</a></td>
                       <td>
                         <a href="/medic/appointments?clinic={{ $office->id }}" class="btn btn-success">Seleccionar</a>
-                      </td>
+                      </td>--}}
                       
                     </tr>
-                @endforeach
+                {{-- @endforeach--}}
                 
                
               </tbody>
@@ -208,7 +208,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   @include('layouts/partials/footer')
 

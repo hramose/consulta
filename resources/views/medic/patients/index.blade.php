@@ -107,7 +107,7 @@
                         @endif
                        @if($patient->isPatientOf(auth()->user()))
                         @if(auth()->user()->hasSubscription())  
-                            @if(!auth()->user()->monthlyCharge()->count())
+                            @if(!$monthlyCharge->count())
                               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente"><i class="fa fa-list"></i> Iniciar Consulta
                             </button>
                             @else

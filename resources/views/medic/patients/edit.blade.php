@@ -12,7 +12,7 @@
 		<div class="col-md-8">
 			<!-- <a href="{{ url('/medic/appointments/create?p='.$patient->id) }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Crear cita a este paciente</a> -->
 			@if(auth()->user()->hasSubscription())  
-				@if(!auth()->user()->monthlyCharge()->count())
+				@if(!$monthlyCharge->count())
 					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#initAppointment" data-backdrop="static" data-patient="{{ $patient->id }}" data-patientname="{{ $patient->first_name }} {{ $patient->last_name }}" title="Iniciar consulta con este paciente" style="margin-left: 15px;margin-top: 5px;"><i class="fa fa-list"></i> Iniciar consulta con este paciente
                           </button>
 				@else
@@ -66,7 +66,7 @@
 		                	</div>
 		                  @endforeach
 		                 </div> 
-					    <history :history="{{ $patient->history }}" :appointments="{{ $appointments }}"></history>	
+					    <history :history="{{ $patient->history }}" ></history>	
 				    </div>
 				    <!-- /.tab-pane -->
 				    <div class="{{ isset($tab) ? ($tab =='appointments') ? 'active' : '' : '' }} tab-pane" id="appointments">
