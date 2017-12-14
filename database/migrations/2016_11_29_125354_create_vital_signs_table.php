@@ -27,6 +27,7 @@ class CreateVitalSignsTable extends Migration
             $table->double('blood_pd')->default(0);
             $table->double('heart_rate')->default(0);
             $table->double('oxygen')->default(0);
+            $table->double('glicemia')->default(0);
             
 
         

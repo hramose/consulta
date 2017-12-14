@@ -93,6 +93,17 @@
               </form-error>
           </div>
         </li>
+         <li>
+          <i class="fa fa-area-chart"></i> 
+          Glicemia
+          <div class="pull-right">
+            <span style="margin-right: 5px;"></span>
+            <input type="text" v-model="vital_signs.glicemia" class="form-control pull-right" style="width:50px;height:25px;" @keydown="keydown()" tabindex="8" />
+            <form-error v-if="errors.glicemia" :errors="errors" style="float:right;">
+                  {{ errors.glicemia[0] }}
+              </form-error>
+          </div>
+        </li>
       </ul>
         
   </div>
@@ -115,7 +126,8 @@
             respiratory_rate: '',
             blood: '',
             heart_rate:'',
-            oxygen:''
+            oxygen:'',
+            glicemia:''
 
           },
           loader:false,
@@ -214,6 +226,7 @@
            this.vital_signs.blood_pd = (this.signs.blood_pd == 0) ? '' : this.signs.blood_pd;
            this.vital_signs.heart_rate = (this.signs.heart_rate == 0) ? '' : this.signs.heart_rate;
            this.vital_signs.oxygen = (this.signs.oxygen == 0) ? '' : this.signs.oxygen;
+           this.vital_signs.glicemia = (this.signs.glicemia == 0) ? '' : this.signs.glicemia;
            
           
       }

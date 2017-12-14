@@ -723,6 +723,14 @@ td.fc-day.fc-past{
 		}
 	}
 }
+.columns
+{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
 .medic-list-selected{
 	background: #F4F4F4 !important;
     border: 1px solid #e3e3e3;

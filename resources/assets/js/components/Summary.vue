@@ -16,6 +16,31 @@
          <div v-for="item in summary.medicines"><span>{{ item.name }}</span></div>
         
       </dd>
+      <dt class="text-aqua" v-show="summary.vital_signs.height"><h4>Signos Vitales</h4></dt>
+      <dd v-show="summary.vital_signs.height">
+        <div class="columns">
+          <div class="column">
+            <div v-show="summary.vital_signs.height"><strong >Altura: </strong>{{ summary.vital_signs.height }} </div>
+            <div v-show="summary.vital_signs.weight"><strong >Peso: </strong>{{ summary.vital_signs.weight }} </div>
+            <div v-show="summary.vital_signs.mass"><strong >Masa: </strong>{{ summary.vital_signs.mass }} </div>
+            
+          </div>
+          <div class="column">
+            <div v-show="summary.vital_signs.temp"><strong >Temp: </strong>{{ summary.vital_signs.temp }} </div>
+            <div v-show="summary.vital_signs.respiratory_rate"><strong >F. Resp: </strong>{{ summary.vital_signs.respiratory_rate }} </div>
+              <div v-show="summary.vital_signs.blood_pd"><strong >P. Arte: </strong> P.D {{ summary.vital_signs.blood_pd }} / P.S {{ summary.vital_signs.blood_ps}} </div>
+            
+          </div>
+          <div class="column">
+            <div v-show="summary.vital_signs.heart_rate"><strong >F. Cardiaca: </strong>{{ summary.vital_signs.heart_rate }} </div>
+            <div v-show="summary.vital_signs.oxygen"><strong > S. de Oxíg: </strong>{{ summary.vital_signs.oxygen }} </div>
+              <div v-show="summary.vital_signs.glicemia"><strong > Glicemia: </strong>{{ summary.vital_signs.glicemia }} </div>
+          </div>
+        </div>
+       
+        
+       
+      </dd>
       <dt class="text-aqua"><h4>Notas de padecimiento</h4></dt>
       <dd>
         <div v-show="summary.notes.reason"><strong >Razón de la visita: </strong>{{ summary.notes.reason }} </div>
@@ -81,7 +106,7 @@
 
 <script>
     export default {
-      props: ['history','medicines','notes','exams','diagnostics','treatments','instructions','labexams','isCurrent'],
+      props: ['history','medicines','notes','exams','diagnostics','treatments','instructions','labexams','isCurrent','vital_signs'],
       data () {
         return {
           summary: {
@@ -99,7 +124,8 @@
             labexams: [],
             diagnostics: [],
             treatments: [],
-            medical_instructions:""
+            medical_instructions:"",
+            vital_signs:{},
           },
           loader:false,
           
@@ -148,7 +174,10 @@
          },
           updateSummaryInstructions(data){
           this.summary.medical_instructions = data;
-         }
+         },
+         updateSummaryVitalSigns(data){
+         	this.summary.vital_signs = data;
+         },
         
           
      
@@ -168,6 +197,7 @@
            bus.$on('actSummaryDiagnostics', this.updateSummaryDiagnostics);
            bus.$on('actSummaryTreatments', this.updateSummaryTreatments);
            bus.$on('actSummaryInstructions', this.updateSummaryInstructions);
+            bus.$on('actSummaryVitalSigns', this.updateSummaryVitalSigns);
 
            if(this.history.allergies)
            {
@@ -207,7 +237,10 @@
            this.summary.diagnostics = this.diagnostics;
            this.summary.treatments = this.treatments;
            this.summary.medical_instructions = this.instructions;
-          
+           if(this.vital_signs)
+           {
+           this.summary.vital_signs = this.vital_signs;
+           }
       }
     }
 </script>

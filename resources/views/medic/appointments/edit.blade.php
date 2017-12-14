@@ -40,7 +40,7 @@
 						  @foreach($appointments as $lastAppointment)
 							<div class="col-md-4">
 
-							<summary-appointment history="" :medicines="{{ $lastAppointment->patient->medicines }}" :notes="{{ $lastAppointment->diseaseNotes }}" :exams="{{ $lastAppointment->physicalExams }}" :diagnostics="{{ $lastAppointment->diagnostics }}" :treatments="{{ $lastAppointment->treatments }}" instructions="{{ $lastAppointment->medical_instructions }}" :labexams="{{ $lastAppointment->labexams }}">
+							<summary-appointment history="" :vital_signs="{{ $lastAppointment->vitalSigns }}" :medicines="{{ $lastAppointment->patient->medicines }}" :notes="{{ $lastAppointment->diseaseNotes }}" :exams="{{ $lastAppointment->physicalExams }}" :diagnostics="{{ $lastAppointment->diagnostics }}" :treatments="{{ $lastAppointment->treatments }}" instructions="{{ $lastAppointment->medical_instructions }}" :labexams="{{ $lastAppointment->labexams }}">
 									Historia Clinica {{ $lastAppointment->id }} - {{ \Carbon\Carbon::parse($lastAppointment->start)->format('Y-m-d H:i') }}						</summary-appointment>
 												 
 		                	</div>
