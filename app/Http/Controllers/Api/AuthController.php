@@ -60,14 +60,23 @@ class AuthController extends ApiController
 
     public function registerSocial(Request $request)
     {
+        $error = [
+            'error' => 'Unauthenticated'
+        ];
        
-        $user = User::where('email',$request->input('email'))->first();
+        $user = User::where('email',$request->input('email'))->whereHas('roles', function ($query){
+                        $query->where('name',  'paciente');
+                    })->first();
         
         if($user)
         {
-            $user->name = $request->input('name');
-            $user->push_token = $request->input('push_token');
-            $user->save();
+           
+
+                $user->name = $request->input('name');
+                $user->push_token = $request->input('push_token');
+                $user->save();
+              
+             
         }
     
        
