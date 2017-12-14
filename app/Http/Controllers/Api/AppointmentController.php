@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use Edujugon\PushNotification\PushNotification;
 use App\Appointment;
+use App\Events\AppointmentCreated;
+use App\Events\AppointmentCreatedToAssistant;
 use App\Mail\NewAppointment;
 use App\Reminder;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\PatientRepository;
 use App\User;
 use Carbon\Carbon;
+use Edujugon\PushNotification\PushNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends ApiController
 {
@@ -140,6 +142,9 @@ class AppointmentController extends ApiController
 
                     Log::info('Mensaje Push code: '.$response->success);
            }
+
+        event(new AppointmentCreated($appointment));
+        event(new AppointmentCreatedToAssistant($appointment));
         
         if ($appointment->patient && $appointment->patient->email) {
             try {
