@@ -309,7 +309,7 @@ class PatientController extends ApiController
     {
        $patient = $this->patientRepo->findById($id);
        $history = $patient->history;
-       $appointments = $patient->appointments()->with('user','diagnostics','diseaseNotes','labexams','treatments','physicalExams')->where('status', 1)->orderBy('start','DESC')->limit(3)->get();//$patient->appointments->load('user','diagnostics');
+       $appointments = $patient->appointments()->with('user','diagnostics','diseaseNotes','labexams','treatments','physicalExams','vital_signs')->where('status', 1)->orderBy('start','DESC')->limit(3)->get();//$patient->appointments->load('user','diagnostics');
        $labresults = $patient->labresults()->limit(10)->get();
        $labexams =  $patient->labexams()->limit(10)->get();
 
