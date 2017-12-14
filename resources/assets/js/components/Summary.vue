@@ -28,7 +28,7 @@
           <div class="column">
             <div v-show="summary.vital_signs.temp"><strong >Temp: </strong>{{ summary.vital_signs.temp }} </div>
             <div v-show="summary.vital_signs.respiratory_rate"><strong >F. Resp: </strong>{{ summary.vital_signs.respiratory_rate }} </div>
-              <div v-show="summary.vital_signs.blood_pd"><strong >P. Arte: </strong> P.D {{ summary.vital_signs.blood_pd }} / P.S {{ summary.vital_signs.blood_ps}} </div>
+              <div v-show="summary.vital_signs.blood_pd"><strong >P. Arte: </strong> P.S {{ summary.vital_signs.blood_ps }} / P.D {{ summary.vital_signs.blood_pd}} </div>
             
           </div>
           <div class="column">
