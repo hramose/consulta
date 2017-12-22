@@ -19,6 +19,7 @@
       <!-- Theme style -->
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
        <link href="/js/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
+       <!-- <link rel="stylesheet" href="/js/plugins/hopscotch/css/hopscotch.min.css">  -->
 
        @yield('css')
       
@@ -83,10 +84,10 @@
      
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
-    @if(!auth()->user()->active)
+     {{-- @if(!auth()->user()->active)
        <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class="popup-youtube" href="http://www.youtube.com/watch?v=DrYMxb-7WQI">EMPIECE AQUI!</a></div> 
      
-     @endif
+     @endif --}}
 
     @if (session()->has('flash_message'))
 
@@ -96,9 +97,9 @@
      
        <!-- <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/medic/appointments" title="Ir a citas">Aquí</a> !</div>  -->
     
-    @if(!$userOffices)
+    {{-- @if(!$userOffices)
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
-     @endif
+     @endif --}}
 
      
         @foreach($monthlyCharge as $charge)
@@ -227,8 +228,9 @@
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 2.2.3 -->
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
-<script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+ <!-- <script src="/js/plugins/hopscotch/js/hopscotch.min.js"></script>  -->
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->

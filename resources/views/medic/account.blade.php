@@ -2,7 +2,8 @@
 @section('css')
   <link rel="stylesheet" href="/js/plugins/select2/select2.min.css">
    <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
-   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css"> 
+   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
+   <link rel="stylesheet" href="/js/plugins/hopscotch/css/hopscotch.min.css">  
 @endsection
 @section('content')
     
@@ -63,9 +64,9 @@
         <div class="col-md-8">
          
         <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }}"><a href="#profile" data-toggle="tab">Perfil</a></li>
-              <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab">Consultorios</a></li>
+            <ul class="nav nav-tabs" id="tabs-profile">
+              <li class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }}"><a href="#profile" data-toggle="tab" class="tab-profile">Perfil</a></li>
+              <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab" class="tab-consultorios">Consultorios</a></li>
               <li class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }}"><a href="#assistant" data-toggle="tab">Asistentes</a></li>
               <li class="{{ isset($tab) ? ($tab =='reviews') ? 'active' : '' : '' }}"><a href="#reviews" data-toggle="tab">Comentarios</a></li>
             </ul>
@@ -466,6 +467,7 @@
 <script src="/js/bootstrap.min.js"></script>
 
  <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
+  <script src="/js/plugins/hopscotch/js/hopscotch.min.js"></script> 
 <script>
   $(function () {
      $('.comments-box').slimScroll({
@@ -555,5 +557,121 @@
   });
 
   });
+</script>
+<script>
+ 
+
+@if(!auth()->user()->active && !$userOffices)
+  var tour = {
+      id: "inactive-user-consultorios",
+      
+      i18n: {
+          nextBtn: "Siguiente",
+          prevBtn: "Atras",
+          doneBtn: "Listo"
+        },
+       
+      steps: [
+        {
+          title: "Cuenta esta inactiva",
+          content: "Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class='popup-youtube' href='http://www.youtube.com/watch?v=DrYMxb-7WQI'>EMPIECE AQUI!</a>",
+          target: "#tabs-profile .tab-profile",
+          placement: "top",
+         
+              
+        },
+        {
+          title: "Consultorios",
+          content: "Recuerda agregar tus consultorios o clinica para poder ser agregado en el catalogo de busquedas!",
+          target: "#tabs-profile .tab-consultorios",
+          placement: "top",
+          
+          
+          
+        }
+        
+      ],
+      onEnd: function () {
+       
+       // localStorage.setItem("tour_viewed", 1)
+
+      }
+
+    };
+
+  
+    hopscotch.startTour(tour);
+   
+   
+    
+@elseif(!auth()->user()->active)
+
+    var tour = {
+      id: "inactive-user",
+      
+      i18n: {
+          nextBtn: "Siguiente",
+          prevBtn: "Atras",
+          doneBtn: "Listo"
+        },
+       
+      steps: [
+        {
+          title: "Cuenta esta inactiva",
+          content: "Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class='popup-youtube' href='http://www.youtube.com/watch?v=DrYMxb-7WQI'>EMPIECE AQUI!</a>",
+          target: "#tabs-profile .tab-profile",
+          placement: "top",
+         
+          
+        }
+       
+        
+      ],
+      onEnd: function () {
+       
+       // localStorage.setItem("tour_viewed", 1)
+
+      }
+
+    };
+
+  
+    hopscotch.startTour(tour);
+
+@elseif(!$userOffices)
+     var tour = {
+      id: "consultorios-user",
+      
+      i18n: {
+          nextBtn: "Siguiente",
+          prevBtn: "Atras",
+          doneBtn: "Listo"
+        },
+       
+      steps: [
+       {
+          title: "Consultorios",
+          content: "Recuerda agregar tus consultorios o clinica para poder ser agregado en el catalogo de busquedas!",
+          target: "#tabs-profile .tab-consultorios",
+          placement: "top",
+         
+          
+        }
+       
+        
+      ],
+      onEnd: function () {
+       
+       // localStorage.setItem("tour_viewed", 1)
+
+      }
+
+    };
+
+  
+    hopscotch.startTour(tour);
+
+@endif
+ 
 </script>
 @endsection

@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
   <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.print.css" media="print">
   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="/js/plugins/hopscotch/css/hopscotch.min.css"> 
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
@@ -174,5 +175,39 @@
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{ elixir('/js/schedule.min.js') }}"></script>
+ <script src="/js/plugins/hopscotch/js/hopscotch.min.js"></script> 
+<script>
+  var tour = {
+      id: "crear-cita",
+      
+      i18n: {
+          nextBtn: "Siguiente",
+          prevBtn: "Atras",
+          doneBtn: "Listo"
+        },
+       
+      steps: [
+        {
+          title: "Crear Cita",
+          content: "Selecciona una hora en el calendario",
+          target: "#calendar .fc-thu",
+          placement: "top",
+          
+        }
+        
+      ],
+      onEnd: function () {
+       
+       // localStorage.setItem("tour_viewed", 1)
 
+      }
+
+    };
+
+ 
+    hopscotch.startTour(tour);
+
+   
+    
+</script>
 @endsection

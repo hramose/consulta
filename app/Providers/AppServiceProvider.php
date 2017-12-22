@@ -44,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
                  ->with('userOffices', $userOffices)
                  ->with('userOfficesindependientes', $userOfficesindependientes);
         });
+        
+        view()->composer('medic.account', function ($view) {
+           
+            $userOffices = auth()->user()->offices->count();
+
+            $view->with('userOffices', $userOffices);
+        });
 
         view()->composer('layouts.app-assistant', function ($view) {
             $office = auth()->user()->clinicsAssistants->first();

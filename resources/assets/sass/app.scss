@@ -866,5 +866,31 @@ td.fc-day.fc-past{
 	background-color: rgba(#3C8CBB,.45) !important;
 	color:white !important;
 }
+
+
+.overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.8);
+  z-index: 5;
+}
+
+.overlay-relative{
+  position: relative;
+  z-index: 7;
+}
+
+.helper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  background: #FFF;
+  border-radius: 4px;
+  z-index: 6;
+}
 /**** AdminLTE.css *****/
 @import "AdminLTE";
