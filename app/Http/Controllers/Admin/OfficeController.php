@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Mail\NewClinicIntegrated;
+use Edujugon\PushNotification\Facades\PushNotification;
 
 class OfficeController extends Controller
 {
