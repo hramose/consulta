@@ -40,7 +40,7 @@ class AppointmentController extends ApiController
 
         return $appointments;*/
         $date1 = Carbon::now();
-        $date2 = Carbon::now();
+        $date2 = Carbon::now()->addWeek();
        
         
      
