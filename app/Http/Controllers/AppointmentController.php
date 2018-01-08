@@ -124,7 +124,11 @@ class AppointmentController extends Controller
                             'title'=>'Nueva Cita Reservada',
                             'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
                             'sound' => 'default'
-                            ]
+                            ],
+                    'data' => [
+                       'tipo' => 'appointment',
+                       
+                       ]
                     
                     ])->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
