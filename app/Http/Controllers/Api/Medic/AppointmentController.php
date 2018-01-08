@@ -44,7 +44,7 @@ class AppointmentController extends ApiController
        
         
      
-        $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where([['appointments.date', '>=', $date1->startOfDay()],
+        $appointments = Appointment::with('patient','user','office')->where('user_id',$user->id)->where('status',0)->where([['appointments.date', '>=', $date1->startOfDay()],
                 ['appointments.date', '<=', $date2->endOfDay()]])->orderBy('appointments.date', 'DESC')->orderBy('appointments.start', 'DESC')->get();
         
 
