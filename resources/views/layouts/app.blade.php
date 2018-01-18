@@ -143,7 +143,7 @@
                  <table>
                 <tr><td>acquirerId</td><td><input class="form-control" type="text" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" /></td></tr>
                 <tr><td>idCommerce</td><td> <input class="form-control" type="text" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" /></td></tr>
-                <tr><td>purchaseOperationNumber </td><td><input class="form-control" type="text" name="purchaseOperationNumber" value="{{ fillZeroLeftNumber($charge->id) }}" /></td></tr>
+                <tr><td>purchaseOperationNumber </td><td><input class="form-control" type="text" name="purchaseOperationNumber" value="{{ getUniqueNumber() }}" /></td></tr>
                 <tr><td>purchaseAmount </td><td><input class="form-control" type="text" name="purchaseAmount" value="{{ fillZeroRightNumber($charge->amount) }}" /></td></tr>
                 <tr><td>purchaseCurrencyCode </td><td><input class="form-control" type="text" name="purchaseCurrencyCode" value="840" /></td></tr>
                 <tr><td>language </td><td><input class="form-control" type="text" name="language" value="SP" /></td></tr>                

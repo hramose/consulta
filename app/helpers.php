@@ -188,3 +188,19 @@ function getPurchaseVerfication($purchaseOperationNumber, $purchaseAmount, $purc
     return openssl_digest(env('ACQUIRE_ID') . env('COMMERCE_ID') . $purchaseOperationNumber . $purchaseAmount . $purchaseCurrencyCode . env('CLAVE_SHA2'), 'sha512');
 
 }
+
+function getUniqueNumber()
+{
+    $d = date("d");
+    $m = date("m");
+    $y = date("Y");
+    $t = time();
+    $dmt = $d + $m + $y + $t;
+    $ran = rand(0, 10000000);
+    $dmtran = $dmt + $ran;
+    //$un = uniqid();
+    //$dmtun = $dmt . $un;
+    //$mdun = md5($dmtran . $un);
+    $sort = substr($dmtran, 1);
+    return $sort;
+}
