@@ -17,7 +17,24 @@ class PaymentController extends Controller
     {
     	
         $this->middleware('auth');
-    	$this->incomeRepo = $incomeRepo;
+        $this->incomeRepo = $incomeRepo;
+
+        $this->acquirerId = env('ACQUIRE_ID');
+        $this->commerceId = env('COMMERCE_ID');
+        $this->mallId = env('MALL_ID');
+        $this->purchaseCurrencyCode = env('CURRENCY_CODE');
+        $this->terminalCode = env('TERMINAL_CODE');
+        $this->claveSHA2 = env('CLAVE_SHA2');
+        
+        
+      
+       // $purchaseOperationNumber = '000000047';
+      //  $purchaseAmount = '10000';
+      //  $purchaseCurrencyCode = '840';
+			
+      
+          
+       // $purchaseVerification = openssl_digest($acquirerId . $idCommerce . $purchaseOperationNumber . $purchaseAmount . $purchaseCurrencyCode . $claveSecreta, 'sha512');    
        
 
     }
@@ -29,12 +46,16 @@ class PaymentController extends Controller
      */
     public function pay($id)
     {
+        //$purchaseOperationNumber = $this->getUniqueNumber();
 
         $income = $this->incomeRepo->findById($id);
         $medic = $income->medic;
-        $income->paid = 1;
-        $income->save();
+        //$income->paid = 1;
+        //$income->save();
+
+        $purchaseOperationNumber = str_pad($income->id, 9, "0", STR_PAD_LEFT);
         
+        dd($purchaseOperationNumber);
 
 
         $plan = Plan::find($medic->subscription->plan_id);
@@ -95,6 +116,7 @@ class PaymentController extends Controller
 
     }
 
+    
 
    
    

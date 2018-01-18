@@ -35,6 +35,7 @@
     
 
     <!-- Scripts -->
+    <script type="text/javascript" src="https://integracion.alignetsac.com/VPOS2/js/modalcomercio.js" ></script>
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -136,10 +137,37 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}!<form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="form-horizontal">
+            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}!<form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="alignet-form-vpos2 form-horizontal">
                 {{ csrf_field() }}
+
+                 <table>
+                <tr><td>acquirerId</td><td><input class="form-control" type="text" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" /></td></tr>
+                <tr><td>idCommerce</td><td> <input class="form-control" type="text" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" /></td></tr>
+                <tr><td>purchaseOperationNumber </td><td><input class="form-control" type="text" name="purchaseOperationNumber" value="{{ fillZeroNumber($charge->id) }} " /></td></tr>
+                <tr><td>purchaseAmount </td><td><input class="form-control" type="text" name="purchaseAmount" value="{{ $charge->amount }}" /></td></tr>
+                <tr><td>purchaseCurrencyCode </td><td><input class="form-control" type="text" name="purchaseCurrencyCode" value="840" /></td></tr>
+                <tr><td>language </td><td><input class="form-control" type="text" name="language" value="SP" /></td></tr>                
+                <tr><td>shippingFirstName </td><td><input class="form-control" type="text" name="shippingFirstName" value="Juan" /></td></tr>
+                <tr><td>shippingLastName </td><td><input class="form-control" type="text" name="shippingLastName" value="Perez" /></td></tr>
+                <tr><td>shippingEmail </td><td><input class="form-control" type="text" name="shippingEmail" value="modalprueba1@test.com" /></td></tr>
+                <tr><td>shippingAddress </td><td><input class="form-control" type="text" name="shippingAddress" value="Direccion ABC" /></td></tr>
+                <tr><td>shippingZIP </td><td><input class="form-control" type="text" name="shippingZIP" value="ZIP 123" /></td></tr>
+                <tr><td>shippingCity </td><td><input class="form-control" type="text" name="shippingCity" value="CITY ABC" /></td></tr>
+                <tr><td>shippingState </td><td><input class="form-control" type="text" name="shippingState" value="STATE ABC" /></td></tr>
+                <tr><td>shippingCountry </td><td><input class="form-control" type="text" name="shippingCountry" value="CR" /></td></tr>                
+		<!--Parametro para la Integracion con Pay-me. Contiene el valor del parametro codCardHolderCommerce.-->
+                <tr><td>userCommerce </td><td><input class="form-control" type="text" name="userCommerce" value="tecmedica" /></td></tr> <!-- 0101010101 -->
+		<!--Parametro para la Integracion con Pay-me. Contiene el valor del parametro codAsoCardHolderWallet.-->
+                <tr><td>userCodePayme </td><td><input class="form-control" type="text" name="userCodePayme" value="8--580--4390" /></td></tr> <!-- 5--420--2340 -->
+                <tr><td>descriptionProducts </td><td><input class="form-control" type="text" name="descriptionProducts" value="{{ $charge->description }}" /></td></tr>
+                <tr><td>programmingLanguage </td><td><input class="form-control" type="text" name="programmingLanguage" value="PHP" /></td></tr>
+		<!--Ejemplo envío campos reservados en parametro reserved1.-->
+		<tr><td>reserved1 </td><td><input class="form-control" type="text" name="reserved1" value="Valor Reservado ABC" /></td></tr>
+                <tr><td>purchaseVerification </td><td><input class="form-control" type="text" name="purchaseVerification" value="{{ getPurchaseVerfication(fillZeroNumber($charge->id),  $charge->amount, env('CURRENCY_CODE')) }}" /></td></tr>
+                <tr><td colspan="2"><input class="form-control" type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Pagar"></td></tr>
+            </table>
                
-                <button type="submit" class="btn btn-success btn-sm">Pagar</button>
+                <!-- <button type="submit" class="btn btn-success btn-sm">Pagar</button> -->
               </form>
           </div>
 
@@ -152,8 +180,8 @@
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
           <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
                 {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                <input type="hidden" name="notification" value="0">
-                <input type="hidden" name="id" value="{{ $office->id }}">
+                <input class="form-control" type="hidden" name="notification" value="0">
+                <input class="form-control" type="hidden" name="id" value="{{ $office->id }}">
             <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
           </form>
          </div>

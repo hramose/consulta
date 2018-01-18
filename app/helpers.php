@@ -172,3 +172,15 @@ function getLogo($clinic)
                       
       return $total;
      } 
+
+    function fillZeroNumber($value, $lenght = 9){
+        return str_pad($value, $lenght, "0", STR_PAD_LEFT);
+    }
+
+
+function getPurchaseVerfication($purchaseOperationNumber, $purchaseAmount, $purchaseCurrencyCode)
+{
+    //dd(env('ACQUIRE_ID') .'-'. env('COMMERCE_ID') . '-' . env('CLAVE_SHA2'));
+    return openssl_digest(env('ACQUIRE_ID') . env('COMMERCE_ID') . $purchaseOperationNumber . $purchaseAmount . $purchaseCurrencyCode . env('CLAVE_SHA2'), 'sha512');
+
+}
