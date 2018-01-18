@@ -143,7 +143,7 @@
                  <table>
                 <tr><td>acquirerId</td><td><input class="form-control" type="text" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" /></td></tr>
                 <tr><td>idCommerce</td><td> <input class="form-control" type="text" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" /></td></tr>
-                <tr><td>purchaseOperationNumber </td><td><input class="form-control" type="text" name="purchaseOperationNumber" value="{{ getUniqueNumber() }}" /></td></tr>
+                <tr><td>purchaseOperationNumber </td><td><input class="form-control" type="text" name="purchaseOperationNumber" value="{{ $purchaseOperationNumber = getUniqueNumber() }}" /></td></tr>
                 <tr><td>purchaseAmount </td><td><input class="form-control" type="text" name="purchaseAmount" value="{{ fillZeroRightNumber($charge->amount) }}" /></td></tr>
                 <tr><td>purchaseCurrencyCode </td><td><input class="form-control" type="text" name="purchaseCurrencyCode" value="840" /></td></tr>
                 <tr><td>language </td><td><input class="form-control" type="text" name="language" value="SP" /></td></tr>                
@@ -163,7 +163,7 @@
                 <tr><td>programmingLanguage </td><td><input class="form-control" type="text" name="programmingLanguage" value="PHP" /></td></tr>
 		<!--Ejemplo envío campos reservados en parametro reserved1.-->
 		<tr><td>reserved1 </td><td><input class="form-control" type="text" name="reserved1" value="Valor Reservado ABC" /></td></tr>
-                <tr><td>purchaseVerification </td><td><input class="form-control" type="text" name="purchaseVerification" value="{{ getPurchaseVerfication(fillZeroLeftNumber($charge->id),  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" /></td></tr>
+                <tr><td>purchaseVerification </td><td><input class="form-control" type="text" name="purchaseVerification" value="{{ getPurchaseVerfication($purchaseOperationNumber,  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" /></td></tr>
                 
                 <tr><td colspan="2"><input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Comprar"></td></tr>
             </table>
