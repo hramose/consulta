@@ -47,7 +47,7 @@ class PaymentController extends Controller
     public function pay($id)
     {
         //$purchaseOperationNumber = $this->getUniqueNumber();
-
+        dd(request()->all());
         $income = $this->incomeRepo->findById($id);
         $medic = $income->medic;
         //$income->paid = 1;

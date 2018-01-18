@@ -173,8 +173,12 @@ function getLogo($clinic)
       return $total;
      } 
 
-    function fillZeroNumber($value, $lenght = 9){
+    function fillZeroLeftNumber($value, $lenght = 9){
         return str_pad($value, $lenght, "0", STR_PAD_LEFT);
+    }
+    function fillZeroRightNumber($value, $lenght = 2)
+    {
+        return $value. "00";
     }
 
 
