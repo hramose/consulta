@@ -16,7 +16,7 @@ class PaymentController extends Controller
     function __construct(IncomeRepository $incomeRepo)
     {
     	
-        $this->middleware('auth');
+        $this->middleware('auth')->except('purchaseResponse');
         $this->incomeRepo = $incomeRepo;
 
         $this->acquirerId = env('ACQUIRE_ID');
@@ -39,7 +39,49 @@ class PaymentController extends Controller
 
     }
 
-    
+    /**
+     * Purchase VPOS Response
+     * @param Request $request
+     * @return $this
+     */
+    public function purchaseResponse()
+    {
+        //purchaseVerication que devuelve la Pasarela de Pagos
+        $purchaseVericationVPOS2 = request('purchaseVerification');
+        \Log::info('purchaseVerication VPOS: ' . $purchaseVericationVPOS2);
+      
+            //purchaseVerication que genera el comercio
+        $purchaseVericationComercio = openssl_digest(request('acquirerId') . request('idCommerce') . request('purchaseOperationNumber') . request('purchaseAmount') . request('purchaseCurrencyCode') . request('authorizationResult') . $this->claveSHA2, 'sha512');
+
+        \Log::info('purchaseVerication Comercio: ' . $purchaseVericationComercio);
+            //Si ambos datos son iguales
+        if ($purchaseVericationVPOS2 == $purchaseVericationComercio || $purchaseVericationVPOS2 == "") {
+
+            dd(request()->all());
+            $authorizationResult = request('authorizationResult');
+            $authorizationCode = request('authorizationCode');
+            $errorCode = request('errorCode');
+            $errorMessage = request('errorMessage');
+            $bin = request('bin');
+            $brand = request('brand');
+            $paymentReferenceCode = request('paymentReferenceCode');
+            $reserved1 = request('reserved1');
+            $reserved22 = request('reserved22');
+            $reserved23= request('reserved23');
+            $purchaseOperationNumber = request('purchaseOperationNumber');
+            $total = request('purchaseAmount') / 100;
+
+           
+       
+        } else {
+           
+            \Log::info('Transacción Invalida. Los datos fueron alterados en el proceso de respuesta');
+        }
+
+        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage'));
+
+   
+    }
 
     /**
      * Guardar consulta(cita)
