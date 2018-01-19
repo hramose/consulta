@@ -39,6 +39,22 @@ class PaymentController extends Controller
 
     }
 
+    public function create($id)
+    {
+       
+
+        $income = $this->incomeRepo->findById($id);
+        
+
+        $purchaseOperationNumber = getUniqueNumber($income->id);
+        $amount = fillZeroRightNumber($income->amount);
+        $purchaseCurrencyCode = env('CURRENCY_CODE');
+        $purchaseVerification = getPurchaseVerfication($purchaseOperationNumber, $amount, $purchaseCurrencyCode);
+
+        return view('medic.payments.create')->with(compact('income', 'purchaseOperationNumber', 'amount', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification'));
+
+    }
+
     /**
      * Purchase VPOS Response
      * @param Request $request

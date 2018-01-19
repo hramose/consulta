@@ -30,19 +30,19 @@
       </div>
       <!-- info row -->
       <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
+        <div class="col-sm-6">
         @if(isset($authorizationResult) && isset($purchaseOperationNumber))
-          <b>Numero de operación: {{ $purchaseOperationNumber }}</b><br>
+          <b>Numero de operación:</b> {{ $purchaseOperationNumber }}
           <br>
-          <b>Estado:
+          <b>Estado:</b>
             @if($authorizationResult == 00 || $authorizationResult == "Success")
-                <span>Autorizada</span>
+                <span class="text-green" ><b>Autorizada</b></span>
             @endif
             @if($authorizationResult == 01)
-                <span>Denegada en el Banco Emisor</span>
+                <span class="text-red"><b>Denegada en el Banco Emisor</b></span>
             @endif
             @if($authorizationResult == 05 || $authorizationResult == "Failure")
-                <span>Rechazada</span>
+                <span class="text-red"><b>Rechazada</b></span>
             @endif<br>
         @endif
           
@@ -68,7 +68,7 @@
             <tr>
                 <td>1</td>
                 <td>{{ $income->description }}</td>
-                <td>{{ money($income->amount) }}</td>
+                <td>{{ money($income->amount,'$') }}</td>
             </tr>
             
             </tbody>
@@ -91,11 +91,11 @@
               <tbody>
               <tr>
                 <th style="width:50%">Subtotal:</th>
-                <td>{{ money($income->amount) }}</td>
+                <td>{{ money($income->amount,'$') }}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td>{{ money($total) }}</td>
+                <td>{{ money($total,'$') }}</td>
               </tr>
             </tbody></table>
           </div>
@@ -113,83 +113,11 @@
         </div>
       </div>
     </section>
-	<div class="payment">
-
-
-
-            <h1 class="payment__title">Comprobante de pago</h1>
-
-            <section class="panel payment__method__card">
-
-                @if(isset($authorizationResult) && isset($purchaseOperationNumber))
-
-                    @if($authorizationResult == 00 || $authorizationResult == "Success")
-                        <div class="alert alert-info">Pago realizado con exito</div>
-                    @endif
-                    @if($authorizationResult == 01)
-                            <div class="alert alert-danger">La operación ha sido denegada en el Banco Emisor</div>
-                    @endif
-                    @if($authorizationResult == 05 || $authorizationResult == "Failure")
-                            <div class="alert alert-danger">La operación ha sido rechazada</div>
-                    @endif
-
-                    <div class="header-receipt {!! ($authorizationResult == 00 || $authorizationResult == "Success") ? 'ok' : 'error' !!}">
-                        <h2 class="header-receipt-number">Numero de operación: {!! $purchaseOperationNumber !!}</h2>
-                        <h3 class="header-receipt-status">Estado:
-                            @if($authorizationResult == 00 || $authorizationResult == "Success")
-                                <span>Autorizada</span>
-                            @endif
-                            @if($authorizationResult == 01)
-                                <span>Denegada en el Banco Emisor</span>
-                            @endif
-                            @if($authorizationResult == 05 || $authorizationResult == "Failure")
-                                <span>Rechazada</span>
-                            @endif
-                        </h3>
-                    </div>
-                @endif
-                <div class="form">
-                    @if(isset($income) && $income)
-                        <div class="table-responsive payment__options-table">
-
-                            <table class="table table-striped  table-bordered table-responsive">
-                                <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Precio</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                             
-                                    <tr>
-                                        <td>{{ $income->description }}</td>
-                                        <td> {{ money($income->amount) }}</td>
-                                    </tr>
-                              
-
-                                </tbody>
-
-                            </table>
-                            <h1 class="payment__title">Total: {{ money($total) }} </h1>
-                        </div>
-                    @endif
-
-
-                </div>
-            </section>
-
-
-
-
-
-
-    </div>
-		
+	
 @endsection
 @section('scripts')
 <script>
-function printSummary() {
+function printComprobante() {
             window.print();
         }
   

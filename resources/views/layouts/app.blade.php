@@ -35,7 +35,7 @@
     
 
     <!-- Scripts -->
-    <script type="text/javascript" src="https://integracion.alignetsac.com/VPOS2/js/modalcomercio.js" ></script>
+    
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -106,34 +106,8 @@
         @foreach($monthlyCharge as $charge)
            @if($charge->type == 'M')
             <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> 
-            <form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="alignet-form-vpos2 form-horizontal">
-            
-                <input class="form-control" type="hidden" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" />
-                <input class="form-control" type="hidden" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" />
-                <input class="form-control" type="hidden" name="purchaseOperationNumber" value="{{ $purchaseOperationNumber = getUniqueNumber($charge->id) }}" />
-                <input class="form-control" type="hidden" name="purchaseAmount" value="{{ fillZeroRightNumber($charge->amount) }}" />
-                <input class="form-control" type="hidden" name="purchaseCurrencyCode" value="{{ env('CURRENCY_CODE')}}" />
-                <input class="form-control" type="hidden" name="language" value="SP" />
-                <input class="form-control" type="hidden" name="shippingFirstName" value="{{ $charge->medic->name}}" />
-                <input class="form-control" type="hidden" name="shippingLastName" value="--" />
-                <input class="form-control" type="hidden" name="shippingEmail" value="{{ $charge->medic->email }}" />
-                <input class="form-control" type="hidden" name="shippingAddress" value="Direccion" />
-                <input class="form-control" type="hidden" name="shippingZIP" value="ZIP" />
-                <input class="form-control" type="hidden" name="shippingCity" value="CITY" />
-                <input class="form-control" type="hidden" name="shippingState" value="STATE" />
-                <input class="form-control" type="hidden" name="shippingCountry" value="CR" />
-                <input class="form-control" type="hidden" name="userCommerce" value="modalprueba1" />
-                <input class="form-control" type="hidden" name="userCodePayme" value="8--580--4390" />
-                <input class="form-control" type="hidden" name="descriptionProducts" value="{{ $charge->description }}" />
-                <input class="form-control" type="hidden" name="programmingLanguage" value="PHP" />
-                <input class="form-control" type="hidden" name="reserved1" value="Valor Reservado ABC" />
-                <input class="form-control" type="hidden" name="reserved2" value="{{ $charge->id }}" />
-                
-                <input class="form-control" type="hidden" name="purchaseVerification" value="{{ getPurchaseVerfication($purchaseOperationNumber,  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" />
-                <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Pagar" class="btn btn-success btn-sm">
-              
-                <!-- <button type="submit" class="btn btn-success btn-sm">Pagar</button> -->
-              </form>
+            <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-success btn-sm">Pagar</a>
+        
           </div>
           <div class="modal fade" id="modalPaymentDetail" role="dialog" aria-labelledby="modalPaymentDetail">
                   <div class="modal-dialog " role="document">
@@ -161,34 +135,7 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}!<form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="alignet-form-vpos2 form-horizontal">
-            
-                <input class="form-control" type="hidden" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" />
-                <input class="form-control" type="hidden" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" />
-                <input class="form-control" type="hidden" name="purchaseOperationNumber" value="{{ $purchaseOperationNumber = getUniqueNumber($charge->id) }}" />
-                <input class="form-control" type="hidden" name="purchaseAmount" value="{{ fillZeroRightNumber($charge->amount) }}" />
-                <input class="form-control" type="hidden" name="purchaseCurrencyCode" value="{{ env('CURRENCY_CODE')}}" />
-                <input class="form-control" type="hidden" name="language" value="SP" />
-                <input class="form-control" type="hidden" name="shippingFirstName" value="{{ $charge->medic->name}}" />
-                <input class="form-control" type="hidden" name="shippingLastName" value="--" />
-                <input class="form-control" type="hidden" name="shippingEmail" value="{{ $charge->medic->email }}" />
-                <input class="form-control" type="hidden" name="shippingAddress" value="Direccion" />
-                <input class="form-control" type="hidden" name="shippingZIP" value="ZIP" />
-                <input class="form-control" type="hidden" name="shippingCity" value="CITY" />
-                <input class="form-control" type="hidden" name="shippingState" value="STATE" />
-                <input class="form-control" type="hidden" name="shippingCountry" value="CR" />
-                <input class="form-control" type="hidden" name="userCommerce" value="modalprueba1" />
-                <input class="form-control" type="hidden" name="userCodePayme" value="8--580--4390" />
-                <input class="form-control" type="hidden" name="descriptionProducts" value="{{ $charge->description }}" />
-                <input class="form-control" type="hidden" name="programmingLanguage" value="PHP" />
-                <input class="form-control" type="hidden" name="reserved1" value="Valor Reservado ABC" />
-                <input class="form-control" type="hidden" name="reserved2" value="{{ $charge->id }}" />
-                
-                <input class="form-control" type="hidden" name="purchaseVerification" value="{{ getPurchaseVerfication($purchaseOperationNumber,  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" />
-                <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Pagar" class="btn btn-success btn-sm">
-              
-                <!-- <button type="submit" class="btn btn-success btn-sm">Pagar</button> -->
-              </form>
+            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-success btn-sm">Pagar</a>
           </div>
 
           @endif
