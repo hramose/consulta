@@ -137,26 +137,28 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}!<form method="POST" action="#" class="alignet-form-vpos2 form-horizontal">
+            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}!<form method="POST" action="{{ url('/medic/payments/'. $charge->id .'/pay') }}" class="alignet-form-vpos2 form-horizontal">
+            
                 <input class="form-control" type="text" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" />
                 <input class="form-control" type="text" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" />
                 <input class="form-control" type="text" name="purchaseOperationNumber" value="{{ $purchaseOperationNumber = getUniqueNumber($charge->id) }}" />
                 <input class="form-control" type="text" name="purchaseAmount" value="{{ fillZeroRightNumber($charge->amount) }}" />
-                <input class="form-control" type="text" name="purchaseCurrencyCode" value="{{ env('CURRENCY_CODE')}} " />
+                <input class="form-control" type="text" name="purchaseCurrencyCode" value="{{ env('CURRENCY_CODE')}}" />
                 <input class="form-control" type="text" name="language" value="SP" />
                 <input class="form-control" type="text" name="shippingFirstName" value="{{ $charge->medic->name}}" />
-                <input class="form-control" type="text" name="shippingLastName" value="Apellido" />
+                <input class="form-control" type="text" name="shippingLastName" value="--" />
                 <input class="form-control" type="text" name="shippingEmail" value="{{ $charge->medic->email }}" />
                 <input class="form-control" type="text" name="shippingAddress" value="Direccion" />
-                <input class="form-control" type="text" name="shippingZIP" value="ZIP 123" />
-                <input class="form-control" type="text" name="shippingCity" value="CITY ABC" />
-                <input class="form-control" type="text" name="shippingState" value="STATE ABC" />
+                <input class="form-control" type="text" name="shippingZIP" value="ZIP" />
+                <input class="form-control" type="text" name="shippingCity" value="CITY" />
+                <input class="form-control" type="text" name="shippingState" value="STATE" />
                 <input class="form-control" type="text" name="shippingCountry" value="CR" />
                 <input class="form-control" type="text" name="userCommerce" value="modalprueba1" />
                 <input class="form-control" type="text" name="userCodePayme" value="8--580--4390" />
                 <input class="form-control" type="text" name="descriptionProducts" value="{{ $charge->description }}" />
                 <input class="form-control" type="text" name="programmingLanguage" value="PHP" />
                 <input class="form-control" type="text" name="reserved1" value="Valor Reservado ABC" />
+                <input class="form-control" type="text" name="reserved2" value="{{ $charge->user_id }}" />
                 
                 <input class="form-control" type="text" name="purchaseVerification" value="{{ getPurchaseVerfication($purchaseOperationNumber,  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" />
                 <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Pagar">

@@ -57,7 +57,6 @@ class PaymentController extends Controller
             //Si ambos datos son iguales
         if ($purchaseVericationVPOS2 == $purchaseVericationComercio || $purchaseVericationVPOS2 == "") {
 
-            dd(request()->all());
             $authorizationResult = request('authorizationResult');
             $authorizationCode = request('authorizationCode');
             $errorCode = request('errorCode');
@@ -66,10 +65,48 @@ class PaymentController extends Controller
             $brand = request('brand');
             $paymentReferenceCode = request('paymentReferenceCode');
             $reserved1 = request('reserved1');
+            $reserved2 = request('reserved2'); // income id
             $reserved22 = request('reserved22');
-            $reserved23= request('reserved23');
+            $reserved23 = request('reserved23');
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
+
+            if ($authorizationResult == 00) {
+                //guardamos la operacion en db si no existe ya el mismo numero de operación
+                $income = $this->incomeRepo->findById($reserved2);
+                $medic = $income->medic;
+                $income->paid = 1;
+                $income->purchase_operation_number = $purchaseOperationNumber;
+                $income->save();
+
+                // informamos via email del producto recien creado y su confirmacion de pago
+                // try {
+
+                //     $this->mailer->paymentConfirmation(['email' => $medic->email, 'servicio' => $income->description, 'purchaseOperationNumber' => $purchaseOperationNumber, 'total' => $total]);
+
+                // } catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+                // {
+                //     \Log::error($e->getMessage());
+                // }
+                
+            }
+            if ($authorizationResult == 01) {
+
+            
+               // flash('La operación ha sido denegada en el Banco Emisor');
+
+            }
+            if ($authorizationResult == 05) {
+
+            
+
+                //flash('La operación ha sido rechazada');
+
+
+
+            }
+          
+           
 
            
        
@@ -78,7 +115,7 @@ class PaymentController extends Controller
             \Log::info('Transacción Invalida. Los datos fueron alterados en el proceso de respuesta');
         }
 
-        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage'));
+        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income'));
 
    
     }
