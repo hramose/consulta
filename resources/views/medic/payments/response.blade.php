@@ -51,7 +51,7 @@
       </div>
       <!-- /.row -->
 
-    @if(isset($income) && $income)
+    @if(isset($incomes) && $incomes->count())
       <!-- Table row -->
       <div class="row">
         <div class="col-xs-12 table-responsive">
@@ -64,12 +64,13 @@
             </tr>
             </thead>
             <tbody>
-        
+            @foreach($incomes as $income)
             <tr>
                 <td>1</td>
                 <td>{{ $income->description }}</td>
                 <td>{{ money($income->amount,'$') }}</td>
             </tr>
+            @endforeach
             
             </tbody>
           </table>
@@ -91,7 +92,7 @@
               <tbody>
               <tr>
                 <th style="width:50%">Subtotal:</th>
-                <td>{{ money($income->amount,'$') }}</td>
+                <td>{{ money($total,'$') }}</td>
               </tr>
               <tr>
                 <th>Total:</th>

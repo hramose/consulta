@@ -8,6 +8,7 @@ use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
 use App\Plan;
 use Carbon\Carbon;
+use App\Income;
 
 
 class PaymentController extends Controller
@@ -55,6 +56,28 @@ class PaymentController extends Controller
 
     }
 
+    public function createAll()
+    {
+
+
+        $incomes = auth()->user()->monthlyCharge();
+
+        $amountTotal = $incomes->sum('amount');
+        $incomesIds = $incomes->pluck('id')->implode(',');
+      
+       
+        $purchaseOperationNumber = getUniqueNumber();
+        $amount = fillZeroRightNumber($amountTotal);
+    
+        $purchaseCurrencyCode = env('CURRENCY_CODE');
+        $purchaseVerification = getPurchaseVerfication($purchaseOperationNumber, $amount, $purchaseCurrencyCode);
+        $medic_name = auth()->user()->name;
+        $medic_email = auth()->user()->email;
+
+        return view('medic.payments.createAll')->with(compact('incomes', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'incomesIds'));
+
+    }
+
     /**
      * Purchase VPOS Response
      * @param Request $request
@@ -81,16 +104,26 @@ class PaymentController extends Controller
             $brand = request('brand');
             $paymentReferenceCode = request('paymentReferenceCode');
             $reserved1 = request('reserved1');
-            $reserved2 = request('reserved2'); // income id
+            $reserved2 = request('reserved2'); // income id or ids
             $reserved22 = request('reserved22');
             $reserved23 = request('reserved23');
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
             $income = null;
 
+            
+
             if ($authorizationResult == 00) {
                 //guardamos la operacion en db si no existe ya el mismo numero de operación
-                $income = $this->incomeRepo->findById($reserved2);
+                $incomesIds = explode(",", $reserved2);
+                
+                $income = $this->incomeRepo->findById(trim($incomesIds[0]));
+                $incomes = Income::whereIn('id', $incomesIds)->get();
+
+                \DB::table('incomes')
+                    ->whereIn('id', $incomesIds)
+                    ->update(['paid' => 1]);
+
                 $medic = $income->medic;
                 $income->paid = 1;
                 $income->purchase_operation_number = $purchaseOperationNumber;
@@ -132,7 +165,7 @@ class PaymentController extends Controller
             \Log::info('Transacción Invalida. Los datos fueron alterados en el proceso de respuesta');
         }
 
-        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income'));
+        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
 
    
     }

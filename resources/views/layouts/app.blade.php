@@ -105,8 +105,8 @@
      
         @foreach($monthlyCharge as $charge)
            @if($charge->type == 'M')
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a> 
-            <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-success btn-sm">Pagar</a>
+            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a>  
+            <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Pagar</a>
         
           </div>
           <div class="modal fade" id="modalPaymentDetail" role="dialog" aria-labelledby="modalPaymentDetail">
@@ -135,11 +135,14 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-success btn-sm">Pagar</a>
+            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Pagar</a>
           </div>
 
           @endif
         @endforeach
+        @if($monthlyCharge->count())
+          <a href="{{ url('/medic/payments/create') }}" class="btn btn-success btn-sm">Pagar todo</a>
+        @endif
     
     
      @foreach($userOfficesindependientes as $office)
