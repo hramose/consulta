@@ -29,6 +29,7 @@ class CreateIncomesTable extends Migration
             $table->string('type', 2);
             $table->string('medic_type', 2);
             $table->text('description')->nullable();
+            $table->string('purchase_operation_number')->nullable();
             $table->tinyInteger('paid')->default(0); //1 pagada
             $table->timestamps();
         });
