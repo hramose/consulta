@@ -122,12 +122,12 @@ class PaymentController extends Controller
 
                 \DB::table('incomes')
                     ->whereIn('id', $incomesIds)
-                    ->update(['paid' => 1]);
+                    ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
 
                 $medic = $income->medic;
-                $income->paid = 1;
-                $income->purchase_operation_number = $purchaseOperationNumber;
-                $income->save();
+                // $income->paid = 1;
+                // $income->purchase_operation_number = $purchaseOperationNumber;
+                // $income->save();
 
                 // informamos via email del producto recien creado y su confirmacion de pago
                 // try {
