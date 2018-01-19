@@ -199,10 +199,10 @@ function getUniqueNumber($id = null)
     $ran = rand(0, 10000000);
     $dmtran = $dmt + $ran;
     if($id)
-        $dmtran = $dmtran . $id;
+        $dmtran = $dmtran + $id;
     //$un = uniqid();
     //$dmtun = $dmt . $un;
     //$mdun = md5($dmtran . $un);
-    $sort = substr($dmtran, 2);
+    $sort = substr($dmtran, 0, 9);
     return $sort;
 }
