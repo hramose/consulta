@@ -16,7 +16,7 @@ class PaymentController extends Controller
     function __construct(IncomeRepository $incomeRepo)
     {
     	
-        $this->middleware('auth')->except('purchaseResponse');
+        $this->middleware('auth');
         $this->incomeRepo = $incomeRepo;
 
         $this->acquirerId = env('ACQUIRE_ID');
@@ -71,7 +71,7 @@ class PaymentController extends Controller
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
             $income = null;
-            
+
             if ($authorizationResult == 00) {
                 //guardamos la operacion en db si no existe ya el mismo numero de operación
                 $income = $this->incomeRepo->findById($reserved2);
