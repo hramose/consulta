@@ -70,7 +70,8 @@ class PaymentController extends Controller
             $reserved23 = request('reserved23');
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
-
+            $income = null;
+            
             if ($authorizationResult == 00) {
                 //guardamos la operacion en db si no existe ya el mismo numero de operación
                 $income = $this->incomeRepo->findById($reserved2);

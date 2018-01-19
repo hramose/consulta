@@ -40,7 +40,7 @@
                     </div>
                 @endif
                 <div class="form">
-                    @if(isset($items))
+                    @if(isset($income) && $income)
                         <div class="table-responsive payment__options-table">
 
                             <table class="table table-striped  table-bordered table-responsive">

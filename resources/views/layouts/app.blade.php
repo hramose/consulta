@@ -158,7 +158,7 @@
                 <input class="form-control" type="text" name="descriptionProducts" value="{{ $charge->description }}" />
                 <input class="form-control" type="text" name="programmingLanguage" value="PHP" />
                 <input class="form-control" type="text" name="reserved1" value="Valor Reservado ABC" />
-                <input class="form-control" type="text" name="reserved2" value="{{ $charge->user_id }}" />
+                <input class="form-control" type="text" name="reserved2" value="{{ $charge->id }}" />
                 
                 <input class="form-control" type="text" name="purchaseVerification" value="{{ getPurchaseVerfication($purchaseOperationNumber,  fillZeroRightNumber($charge->amount), env('CURRENCY_CODE')) }}" />
                 <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Pagar">
