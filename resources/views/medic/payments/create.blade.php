@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('css')
-    <script type="text/javascript" src="https://integracion.alignetsac.com/VPOS2/js/modalcomercio.js" ></script>
+    <script type="text/javascript" src="{{ env('URL_VPOS2')}}" ></script>
 @endsection
 @section('content')
 
@@ -32,7 +32,7 @@
       </div>
       <!-- /.row -->
 
-    @if(isset($income) && $income)
+    @if(isset($incomes) && $incomes)
       <!-- Table row -->
       <div class="row">
         <div class="col-xs-12 table-responsive">
@@ -45,13 +45,13 @@
             </tr>
             </thead>
             <tbody>
-        
+            @foreach($incomes as $income)
             <tr>
                 <td>1</td>
                 <td>{{ $income->description }}</td>
                 <td>{{ money($income->amount,'$') }}</td>
             </tr>
-            
+            @endforeach
             </tbody>
           </table>
         </div>
@@ -79,11 +79,11 @@
               <tbody>
               <tr>
                 <th style="width:50%">Subtotal:</th>
-                <td>{{ money($income->amount,'$') }}</td>
+                <td>{{ money($amountTotal,'$') }}</td>
               </tr>
               <tr>
                 <th>Total:</th>
-                <td>{{ money($income->amount,'$') }}</td>
+                <td>{{ money($amountTotal,'$') }}</td>
               </tr>
             </tbody></table>
           </div>
@@ -95,7 +95,7 @@
       <!-- this row will not appear when printing -->
       <div class="row no-print">
         <div class="col-xs-12">
-        <form method="POST" action="{{ url('/medic/payments/'. $income->id .'/pay') }}" class="alignet-form-vpos2 form-horizontal">
+        <form method="POST" action="#" class="alignet-form-vpos2 form-horizontal">
             
                 <input class="form-control" type="hidden" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" />
                 <input class="form-control" type="hidden" name ="idCommerce" value="{{ env('COMMERCE_ID') }}" />
@@ -103,9 +103,9 @@
                 <input class="form-control" type="hidden" name="purchaseAmount" value="{{ $amount }}" />
                 <input class="form-control" type="hidden" name="purchaseCurrencyCode" value="{{ $purchaseCurrencyCode }}" />
                 <input class="form-control" type="hidden" name="language" value="SP" />
-                <input class="form-control" type="hidden" name="shippingFirstName" value="{{ $income->medic->name}}" />
+                <input class="form-control" type="hidden" name="shippingFirstName" value="{{ $medic_name }}" />
                 <input class="form-control" type="hidden" name="shippingLastName" value="--" />
-                <input class="form-control" type="hidden" name="shippingEmail" value="{{ $income->medic->email }}" />
+                <input class="form-control" type="hidden" name="shippingEmail" value="{{ $medic_email }}" />
                 <input class="form-control" type="hidden" name="shippingAddress" value="Direccion" />
                 <input class="form-control" type="hidden" name="shippingZIP" value="ZIP" />
                 <input class="form-control" type="hidden" name="shippingCity" value="CITY" />
@@ -113,10 +113,10 @@
                 <input class="form-control" type="hidden" name="shippingCountry" value="CR" />
                 <input class="form-control" type="hidden" name="userCommerce" value="modalprueba1" />
                 <input class="form-control" type="hidden" name="userCodePayme" value="8--580--4390" />
-                <input class="form-control" type="hidden" name="descriptionProducts" value="{{ $income->description }}" />
+                <input class="form-control" type="hidden" name="descriptionProducts" value="{{ $description }}" />
                 <input class="form-control" type="hidden" name="programmingLanguage" value="PHP" />
                 <input class="form-control" type="hidden" name="reserved1" value="Valor Reservado ABC" />
-                <input class="form-control" type="hidden" name="reserved2" value="{{ $income->id }}" />
+                <input class="form-control" type="hidden" name="reserved2" value="{{ $incomesIds }}" />
                 
                 <input class="form-control" type="hidden" name="purchaseVerification" value="{{ $purchaseVerification }}" />
                 <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Realizar pago" class="btn btn-success pull-right">

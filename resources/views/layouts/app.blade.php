@@ -102,7 +102,7 @@
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif --}}
 
-     
+     <div class="notifications-container" >
         @foreach($monthlyCharge as $charge)
            @if($charge->type == 'M')
             <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a>  
@@ -141,8 +141,9 @@
           @endif
         @endforeach
         @if($monthlyCharge->count())
-          <a href="{{ url('/medic/payments/create') }}" class="btn btn-success btn-sm">Pagar todo</a>
+          <a href="{{ url('/medic/payments/create') }}" class="btn btn-success btn-sm btn-payall">Pagar todo</a>
         @endif
+    </div>
     
     
      @foreach($userOfficesindependientes as $office)

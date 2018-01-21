@@ -187,9 +187,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/payments/{id}/details', 'Medic\PaymentController@details');
     Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
     Route::get('/payments/{id}/create', 'Medic\PaymentController@create');
-    Route::get('/payments/create', 'Medic\PaymentController@createAll');
-    
-    
+    Route::get('/payments/create', 'Medic\PaymentController@create');
 
     Route::post('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
     Route::get('/subscriptions/list', 'Medic\SubscriptionController@list');
@@ -373,14 +371,10 @@ Route::post('/user/logout', 'Auth\LoginPatientController@logout');
 Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
-
-
 Route::get('/user/password/reset', 'Auth\LoginPatientController@resetPassword');
 Route::post('/user/password/phone', 'Auth\LoginPatientController@sendResetCodePhone');
 Route::get('/user/password/reset/code', 'Auth\LoginPatientController@resetCode');
 Route::post('/user/password/reset', 'Auth\LoginPatientController@newPassword');
-
-
 
 //login for other roles users
 Route::get('login', 'Auth\LoginController@showLoginForm');
