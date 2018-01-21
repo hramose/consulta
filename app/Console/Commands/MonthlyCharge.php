@@ -7,7 +7,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use App\Income;
 
 class MonthlyCharge extends Command
 {
@@ -59,7 +58,6 @@ class MonthlyCharge extends Command
         $currentDate = Carbon::now()->setTime(0, 0, 0);
 
         foreach ($medics as $medic) {
-          
             $incomes = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'I')->get();
 
             $incomesPending = $medic->incomes()->where('month', $month)->where('year', $year)->where('type', 'P')->get();
@@ -68,7 +66,6 @@ class MonthlyCharge extends Command
             $totalChargePending = $incomesPending->sum('amount');
 
             if ($totalCharge > 0) {
-
                 $dataIncome['type'] = 'M';
                 $dataIncome['medic_type'] = 'A';
                 $dataIncome['amount'] = $totalCharge;
@@ -78,21 +75,14 @@ class MonthlyCharge extends Command
                 $dataIncome['date'] = Carbon::now()->toDateString();
                 $dataIncome['month'] = Carbon::now()->month;
                 $dataIncome['year'] = Carbon::now()->year;
-                $dataIncome['description'] = 'Cobro mensual por cita atentida';
+                $dataIncome['description'] = 'Cobro mensual por cita atendida';
 
                 $this->incomeRepo->store($dataIncome, $medic->id);
-
 
                 $countMedics++;
 
                 $this->info('Total a cobrar: ' . $totalCharge . ' medico: ' . $medic->name);
-
-
-
             }
-
-
-            
         }
 
         Log::info($countMedics . ' cobros por cita atendida');

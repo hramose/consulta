@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Income;
+use App\Plan;
 
 class SubscriptionCharge extends Command
 {
@@ -50,13 +51,12 @@ class SubscriptionCharge extends Command
 
         $countMedics = 0;
 
-       
         $currentDate = Carbon::now()->setTime(0, 0, 0);
 
         foreach ($medics as $medic) {
             //dd($medic->subscription->ends_at->setTime(0, 0, 0) . '---' . $currentDate->addMonths($medic->subscription->quantity));
             //dd($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate->addMonths($medic->subscription->quantity)));
-           
+
             $monthlyPlanCharge = 0;
 
             if ($medic->subscription->ends_at->setTime(0, 0, 0)->eq($currentDate)) { //la fecha de la subs de finalizado es igual a la fecha actual
@@ -64,6 +64,7 @@ class SubscriptionCharge extends Command
                 $dateEnd = $medic->subscription->ends_at->setTime(0, 0, 0);
 
                 $monthlyPlanCharge = floatval($medic->subscription->cost);
+                $plan = Plan::find($medic->subscription->plan_id);
 
                 $dataIncome['type'] = 'MS';
                 $dataIncome['medic_type'] = 'A';
@@ -76,8 +77,7 @@ class SubscriptionCharge extends Command
                 $dataIncome['period_from'] = $dateStart->toDateString();
                 $dataIncome['period_to'] = $dateEnd->toDateString();
                 $dataIncome['subscription_cost'] = $monthlyPlanCharge;
-                $dataIncome['description'] = 'Cobro por subscripción de paquete';
-                
+                $dataIncome['description'] = 'Cobro por subscripción de ' . $plan->title;
 
                 $this->incomeRepo->store($dataIncome, $medic->id);
 
@@ -85,13 +85,9 @@ class SubscriptionCharge extends Command
                 // $medic->incomes()->save($newIncome);
 
                 $countMedics++;
-                
+
                 $this->info('Total a cobrar: ' . $monthlyPlanCharge . ' medico: ' . $medic->name . ' subscripcion: ' . $monthlyPlanCharge);
-
-               
             }
-
-            
         }
 
         Log::info($countMedics . ' cobros de subscripciones');

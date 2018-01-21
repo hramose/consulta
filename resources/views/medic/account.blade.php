@@ -69,6 +69,7 @@
               <li class="{{ isset($tab) ? ($tab =='clinics') ? 'active' : '' : '' }}"><a href="#clinics" data-toggle="tab" class="tab-consultorios">Consultorios</a></li>
               <li class="{{ isset($tab) ? ($tab =='assistant') ? 'active' : '' : '' }}"><a href="#assistant" data-toggle="tab">Asistentes</a></li>
               <li class="{{ isset($tab) ? ($tab =='reviews') ? 'active' : '' : '' }}"><a href="#reviews" data-toggle="tab">Comentarios</a></li>
+              <li class="{{ isset($tab) ? ($tab =='payments') ? 'active' : '' : '' }}"><a href="#payments" data-toggle="tab">Hitorial de pagos</a></li>
             </ul>
             <div class="tab-content">
               <div class="{{ isset($tab) ? ($tab =='profile') ? 'active' : '' : 'active' }} tab-pane" id="profile">
@@ -442,7 +443,38 @@
                    
               </div>
               <!-- /.tab-pane -->
-
+            
+               <div class="{{ isset($tab) ? ($tab =='payments') ? 'active' : '' : '' }} tab-pane" id="payments">
+                 <h2>Historial de pagos</h2>
+                        <div class="row">
+                          <div class="col-xs-12 table-responsive">
+                            <table class="table table-striped">
+                              <thead>
+                              <tr>
+                                <th>Cant.</th>
+                                <th>Description</th>
+                                <th>Periodo</th>
+                                <th>Total</th>
+                                <th>Numero de Operación</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              @foreach($incomes as $income)
+                              <tr>
+                                  <td>1</td>
+                                  <td>{{ $income->description }}</td>
+                                  <td>{{ ($income->type == 'M') ? $income->month .'-'. $income->year : $income->period_from .' al '. $income->period_to }}</td>
+                                  <td>{{ money($income->amount,'$') }}</td>
+                                  <td>{{ $income->purchase_operation_number }}</td>
+                              </tr>
+                              @endforeach
+                              </tbody>
+                            </table>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+               </div>
              
               <!-- /.tab-pane -->
             </div>
