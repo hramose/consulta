@@ -82,21 +82,19 @@ class PaymentController extends Controller
             $total = request('purchaseAmount') / 100;
             $income = null;
 
-            if ($authorizationResult == 00) {
-                //guardamos la operacion en db si no existe ya el mismo numero de operación
-                $incomesIds = explode(',', $reserved2);
+            $incomesIds = explode(',', $reserved2);
 
-                $income = $this->incomeRepo->findById(trim($incomesIds[0]));
-                $incomes = Income::whereIn('id', $incomesIds)->get();
+            $income = $this->incomeRepo->findById(trim($incomesIds[0]));
+            $incomes = Income::whereIn('id', $incomesIds)->get();
+
+            $medic = $income->medic;
+
+            if ($authorizationResult == 00) {
+                //actualizamos la operacion en db
 
                 \DB::table('incomes')
                     ->whereIn('id', $incomesIds)
                     ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
-
-                $medic = $income->medic;
-                // $income->paid = 1;
-                // $income->purchase_operation_number = $purchaseOperationNumber;
-                // $income->save();
 
                 // informamos via email del producto recien creado y su confirmacion de pago
                 // try {
