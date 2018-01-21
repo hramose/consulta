@@ -47,7 +47,7 @@ class PaymentController extends Controller
         $medic_name = auth()->user()->name;
         $medic_email = auth()->user()->email;
 
-        return view('medic.payments.createAll')->with(compact('incomes', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'incomesIds', 'description'));
+        return view('medic.payments.create')->with(compact('incomes', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'incomesIds', 'description'));
     }
 
     /**
