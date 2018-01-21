@@ -105,12 +105,14 @@ class PaymentController extends Controller
                 // {
                 //     \Log::error($e->getMessage());
                 // }
+
+                flash('Pago realizado con exito', 'success');
             }
             if ($authorizationResult == 01) {
-                // flash('La operación ha sido denegada en el Banco Emisor');
+                flash('La operación ha sido denegada en el Banco Emisor', 'error');
             }
             if ($authorizationResult == 05) {
-                //flash('La operación ha sido rechazada');
+                flash('La operación ha sido rechazada', 'error');
             }
         } else {
             \Log::info('Transacción Invalida. Los datos fueron alterados en el proceso de respuesta');
