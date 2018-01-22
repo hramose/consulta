@@ -18,7 +18,6 @@ Route::get('/firma', 'HomeController@firma');
 Route::get('/home', 'HomeController@index');
 Route::get('/dashboard', 'HomeController@index');
 Route::post('/support', 'HomeController@support');
-Route::post('/medic/payments/receipt', 'Medic\PaymentController@purchaseResponse');
 Route::get('/push', function (Request $request) {
     $push = new PushNotification('fcm');
     $userToPush = ['fxpcUYLVUhQ:APA91bG6y1xhaKtdaoHf1MuBlMTWS_EG5EIttv_P1_XesMv0HfuJ_DgFRvorSfUhiSfYjGcFZsc1gGgWDyh5R0BNZxy78JRBYYf6P9Zh62z0RxXl1C9e4s5ODGmbhMWxHpdpNTwsgvYB'];
@@ -188,6 +187,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::post('/payments/{id}/pay', 'Medic\PaymentController@pay');
     Route::get('/payments/{id}/create', 'Medic\PaymentController@create');
     Route::get('/payments/create', 'Medic\PaymentController@create');
+    Route::post('/payments/receipt', 'Medic\PaymentController@purchaseResponse');
 
     Route::post('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
     Route::get('/subscriptions/list', 'Medic\SubscriptionController@list');
