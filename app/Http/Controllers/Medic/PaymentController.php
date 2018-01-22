@@ -40,7 +40,7 @@ class PaymentController extends Controller
         $description = $incomes->pluck('description')->implode(',');
 
         $purchaseOperationNumber = getUniqueNumber();
-        $amount = fillZeroRightNumber($amountTotal);
+        $amount = $amountTotal;//fillZeroRightNumber($amountTotal);
         $purchaseCurrencyCode = env('CURRENCY_CODE');
         $purchaseVerification = getPurchaseVerfication($purchaseOperationNumber, $amount, $purchaseCurrencyCode);
 
