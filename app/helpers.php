@@ -178,7 +178,7 @@ function getLogo($clinic)
     }
     function fillZeroRightNumber($value, $lenght = 2)
     {
-        return $value. "00";
+        return $value * 100;//$value. "00";
     }
 
 
