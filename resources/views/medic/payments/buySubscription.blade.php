@@ -119,7 +119,7 @@
                 <input class="form-control" type="hidden" name="reserved2" value="{{ $newPlan->id }}" />
                 
                 <input class="form-control" type="hidden" name="purchaseVerification" value="{{ $purchaseVerification }}" />
-                <input type="button" onclick="javascript:AlignetVPOS2.openModal('','2')" value="Realizar pago" class="btn btn-success pull-right">
+                <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Realizar pago" class="btn btn-success pull-right">
               
                 <!-- <button type="submit" class="btn btn-success btn-sm">Pagar</button> -->
               </form>
