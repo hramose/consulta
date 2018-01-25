@@ -89,7 +89,7 @@ class PaymentController extends Controller
                 //actualizamos la operacion en db
                 if($reserved3 && $reserved3 == 1) // es la compra de una subscripcion
                 {
-                    $plan = Plan::find($id);
+                    $plan = Plan::find($reserved2);
 
                     auth()->user()->subscription()->create([
                         'plan_id' => $plan->id,
@@ -146,7 +146,7 @@ class PaymentController extends Controller
             return view('medic.payments.responseSubscription')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'plan'));
 
         }else{
-            
+
             return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
         }
     }

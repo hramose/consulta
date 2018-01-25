@@ -20,6 +20,7 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('quantity');
             $table->integer('plan_id');
             $table->timestamp('ends_at')->nullable();
+            $table->string('purchase_operation_number')->nullable();
             $table->timestamps();
         });
     }
