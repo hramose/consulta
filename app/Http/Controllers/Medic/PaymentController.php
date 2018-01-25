@@ -95,7 +95,8 @@ class PaymentController extends Controller
                         'plan_id' => $plan->id,
                         'cost' => $plan->cost,
                         'quantity' => $plan->quantity,
-                        'ends_at' => Carbon::now()->addMonths($plan->quantity)
+                        'ends_at' => Carbon::now()->addMonths($plan->quantity),
+                        'purchase_operation_number' => $purchaseOperationNumber
 
                     ]);
 
