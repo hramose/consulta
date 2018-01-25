@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
         // ]);
         
         $amountTotal = $newPlan->cost;
-        $description = $newPlan->description;
+        $description = $newPlan->title;
 
         $purchaseOperationNumber = getUniqueNumber();
         $amount = fillZeroRightNumber($amountTotal);
