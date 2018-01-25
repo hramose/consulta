@@ -75,36 +75,57 @@ class PaymentController extends Controller
             $brand = request('brand');
             $paymentReferenceCode = request('paymentReferenceCode');
             $reserved1 = request('reserved1');
-            $reserved2 = request('reserved2'); // income id or ids
+            $reserved2 = request('reserved2'); // income id or ids or plan id
+            $reserved3 = request('reserved3'); // compra de plan o subscripcion
             $reserved22 = request('reserved22');
             $reserved23 = request('reserved23');
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
             $income = null;
-
-            $incomesIds = explode(',', $reserved2);
-
-            $income = $this->incomeRepo->findById(trim($incomesIds[0]));
-            $incomes = Income::whereIn('id', $incomesIds)->get();
-
-            $medic = $income->medic;
+           
+           
 
             if ($authorizationResult == 00) {
                 //actualizamos la operacion en db
+                if($reserved3 && $reserved3 == 1) // es la compra de una subscripcion
+                {
+                    $plan = Plan::find($id);
 
-                \DB::table('incomes')
-                    ->whereIn('id', $incomesIds)
-                    ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
+                    auth()->user()->subscription()->create([
+                        'plan_id' => $plan->id,
+                        'cost' => $plan->cost,
+                        'quantity' => $plan->quantity,
+                        'ends_at' => Carbon::now()->addMonths($plan->quantity)
 
-                // informamos via email del producto recien creado y su confirmacion de pago
-                // try {
+                    ]);
 
-                //     $this->mailer->paymentConfirmation(['email' => $medic->email, 'servicio' => $income->description, 'purchaseOperationNumber' => $purchaseOperationNumber, 'total' => $total]);
+                   
 
-                // } catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-                // {
-                //     \Log::error($e->getMessage());
-                // }
+                }else{
+                    
+                    $incomesIds = explode(',', $reserved2);
+
+                    $income = $this->incomeRepo->findById(trim($incomesIds[0]));
+                    $incomes = Income::whereIn('id', $incomesIds)->get();
+
+                    $medic = $income->medic;
+
+                    \DB::table('incomes')
+                        ->whereIn('id', $incomesIds)
+                        ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
+
+                    // informamos via email del producto recien creado y su confirmacion de pago
+                    // try {
+
+                    //     $this->mailer->paymentConfirmation(['email' => $medic->email, 'servicio' => $income->description, 'purchaseOperationNumber' => $purchaseOperationNumber, 'total' => $total]);
+
+                    // } catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
+                    // {
+                    //     \Log::error($e->getMessage());
+                    // }
+
+                    
+                }
 
                 flash('Pago realizado con exito', 'success');
             }
@@ -120,7 +141,14 @@ class PaymentController extends Controller
 
         \Log::info('results of VPOS: ' . json_encode(request()->all()));
 
-        return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
+        if ($reserved3 && $reserved3 == 1){
+
+            return view('medic.payments.responseSubscription')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'plan'));
+
+        }else{
+            
+            return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
+        }
     }
 
     /**

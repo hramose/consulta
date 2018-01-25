@@ -40,15 +40,26 @@ class SubscriptionController extends Controller
          $user = auth()->user();
          $newPlan = Plan::find($id);
 
-        $user->subscription()->create([
-            'plan_id' => $newPlan->id,
-            'cost' => $newPlan->cost,
-            'quantity' => $newPlan->quantity,
-            'ends_at' => Carbon::now()->addMonths($newPlan->quantity)
+        // $user->subscription()->create([
+        //     'plan_id' => $newPlan->id,
+        //     'cost' => $newPlan->cost,
+        //     'quantity' => $newPlan->quantity,
+        //     'ends_at' => Carbon::now()->addMonths($newPlan->quantity)
 
-        ]);
+        // ]);
+        
+        $amountTotal = $newPlan->cost;
+        $description = $newPlan->description;
 
-        return back();
+        $purchaseOperationNumber = getUniqueNumber();
+        $amount = fillZeroRightNumber($amountTotal);
+        $purchaseCurrencyCode = env('CURRENCY_CODE');
+        $purchaseVerification = getPurchaseVerfication($purchaseOperationNumber, $amount, $purchaseCurrencyCode);
+
+        $medic_name = $user->name;
+        $medic_email = $user->email;
+
+        return view('medic.payments.buySubscription')->with(compact('newPlan', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'description'));
 
     }
 

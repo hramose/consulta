@@ -17,12 +17,13 @@
                       <td>{{ subscription.title }}</td>
                       <td>{{ subscription.quantity }} Meses</td>
                       <td>
-                       <form method="POST" v-bind:action="getUrl(subscription)" class="form-horizontal">
+                       <!-- <form method="POST" v-bind:action="getUrl(subscription)" class="form-horizontal">
                           <input type="hidden" name="_token" :value="token">
 
                           <button type="submit" class="btn btn-success">Seleccionar</button>
-                         <!-- <a href="#" class="btn btn-success">Seleccionar</a> -->
-                      </form>
+                         
+                      </form> -->
+                      <a :href="getUrl(subscription)" class="btn btn-success">Seleccionar</a>
                        
                       </td>
                       

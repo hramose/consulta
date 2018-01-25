@@ -12,6 +12,8 @@ use Edujugon\PushNotification\PushNotification;
 |
 */
 
+Route::get('/factura/test', 'FacturaElectronicaController@test');
+
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');
 Route::get('/firma', 'HomeController@firma');
@@ -189,7 +191,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/payments/create', 'Medic\PaymentController@create');
     Route::post('/payments/receipt', 'Medic\PaymentController@purchaseResponse');
 
-    Route::post('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
+    Route::get('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
     Route::get('/subscriptions/list', 'Medic\SubscriptionController@list');
 });
 

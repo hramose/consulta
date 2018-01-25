@@ -18,11 +18,12 @@
                       <td>
                         {{ (payment.type == 'MS') ? payment.period_from +' -- '+ payment.period_to : payment.month + '-' + payment.year }}</td>
                       <td>
-                        <form method="POST" v-bind:action="getUrl(payment)" class="form-horizontal">
+                        <!-- <form method="POST" v-bind:action="getUrl(payment)" class="form-horizontal">
                           <input type="hidden" name="_token" :value="token">
                
                         <button type="submit" class="btn btn-success btn-sm">Pagar</button>
-                      </form>
+                      </form> -->
+                      <a :href="getUrl(payment)" class="btn btn-success">Pagar</a>
                       </td>
                       
                     </tr>

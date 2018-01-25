@@ -29,13 +29,13 @@
           </div>
           <div class="pending-payment text-center" v-show="showPendingPayment">
            
-           <table-pending-payments :monthlyCharges="monthlyCharges" token="token"></table-pending-payments>
+           <table-pending-payments :monthlyCharges="monthlyCharges" :token="token"></table-pending-payments>
         
             
            
           </div>
           <div class="text-center" v-show="showPackages">
-               <table-subscriptions></table-subscriptions>
+               <table-subscriptions :token="token"></table-subscriptions>
           </div>
           
          
@@ -48,7 +48,7 @@
           <button type="button" class="btn btn-default pull-left btn-cancelar-cita" data-dismiss="modal" @click="showPackages = false; showPendingPayment = false; ">Cancelar</button>
           <button type="button" class="btn btn-info btn-iniciar-cita" v-if="has_subscription && !monthlyCharges.length">Iniciar consulta</button>
           <button type="button" class="btn btn-info btn-show-package" v-if="!has_subscription" @click="showPackages = true">Iniciar consulta</button>
-          <button type="button" class="btn btn-info btn-show-pending-payment"v-if="monthlyCharges.length" @click="showPendingPayment = true">Iniciar consulta</button>
+          <button type="button" class="btn btn-info btn-show-pending-payment" v-if="monthlyCharges.length" @click="showPendingPayment = true">Iniciar consulta</button>
           <button type="button" class="btn btn-success btn-finalizar-cita">Crear cita</button>
           <button type="button" class="btn btn-primary btn-close-cita" data-dismiss="modal">Cerrar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
         </div>
