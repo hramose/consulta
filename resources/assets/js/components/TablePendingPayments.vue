@@ -56,7 +56,7 @@
       methods: {
          getUrl(payment){
           
-          return '/medic/payments/'+ payment.id +'/pay';
+          return '/medic/payments/'+ payment.id +'/create';
 
         },
         money(n, currency) {
