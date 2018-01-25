@@ -59,8 +59,12 @@
 .terms-container{
 	height: 180px;
     overflow-y: scroll;
-    padding: .5rem;
-	
+    padding: 1rem;
+	margin-bottom: 1rem;
+	background-color: #F6F4EC;
+}
+.terms-check-container{
+	font-size: 1.8rem;
 }
 .bg-home{
 	background-image: url('/img/bg-home.jpg') !important;

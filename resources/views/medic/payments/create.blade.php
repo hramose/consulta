@@ -145,13 +145,14 @@
                 <li style="font-weight: 400;"><span style="font-weight: 400;">Todo reclamo a la funcionabilidad del sistema o sus plataformas, deberá de ser tratado por escrito, y será mediante el  correo electrónico </span><a href="mailto:info@gpsmedica.com"><span style="font-weight: 400;">info@gpsmedica.com</span></a><span style="font-weight: 400;">, único medio válido a los efectos de presentación de reclamos por parte de los usuarios. Pero deberán de manera obligatoria comunicarse al teléfono número 8829-1001 para confirmar la entrega del mensaje, como así le sea asignado un número único de caso, para documentar sus reclamos e inconformidades.</span></li>
                 </ol>
             </div>
-            <label for="terms">Aceptar Términos y Condiciones.</label>
-            <input type="checkbox" name="terms" id="terms"> 
+            <div class="terms-check-container pull-right">
+                <label for="terms">Aceptar Términos y Condiciones.</label>
+                <input type="checkbox" name="terms" id="terms"> 
+            </div>
       </div>
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href="https://gpsmedica.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones.</a>
-          <input type="checkbox" name="terms" id="terms"> Aceptar
+          
         <form method="POST" action="#" class="alignet-form-vpos2 form-horizontal">
             
                 <input class="form-control" type="hidden" name ="acquirerId" value="{{ env('ACQUIRE_ID') }}" />
@@ -176,7 +177,7 @@
                 <input class="form-control" type="hidden" name="reserved2" value="{{ $incomesIds }}" />
                 
                 <input class="form-control" type="hidden" name="purchaseVerification" value="{{ $purchaseVerification }}" />
-                <input type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" value="Realizar pago" class="btn btn-success pull-right btn-VPOS">
+                <input type="button" onclick="{{ env('URL_MODAL') }}" value="Realizar pago" class="btn btn-success pull-right btn-VPOS">
               
                 <!-- <button type="submit" class="btn btn-success btn-sm">Pagar</button> -->
               </form>
