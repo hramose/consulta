@@ -12,7 +12,8 @@
         "edujugon/push-notification": "^2.2",
         "elibyy/tcpdf-laravel": "^5.5",
         "pusher/pusher-php-server": "^3.0",
-        "aloha/twilio": "^3.0"
+        "aloha/twilio": "^3.0",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

@@ -189,7 +189,7 @@ function getPurchaseVerfication($purchaseOperationNumber, $purchaseAmount, $purc
 
 }
 
-function getUniqueNumber($id = null)
+function getUniqueNumber($length = 9, $id = null)
 {
     $d = date("d");
     $m = date("m");
@@ -203,6 +203,6 @@ function getUniqueNumber($id = null)
     //$un = uniqid();
     //$dmtun = $dmt . $un;
     //$mdun = md5($dmtran . $un);
-    $sort = substr($dmtran, 0, 9);
+    $sort = substr($dmtran, 0, $length);
     return $sort;
 }

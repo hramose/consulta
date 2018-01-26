@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use App\FacturaElectronica\Factura;
+use GuzzleHttp\Client;
 
 class FacturaElectronicaController extends Controller
 {
@@ -13,52 +14,66 @@ class FacturaElectronicaController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Client $client)
     {
         $this->middleware('auth');
-      
+        $this->client = $client;
 
     }
 
     public function test()
     {
         $fechaEmision = '';
-        $numeroCedulaEmisor = '3-101-570764';
-        $numeroCedulaReceptor = '4-167-661';
-        $numeroCedulaResidente = '172400110315';
-        $miNumeroConsecutivo = 8912;
+        $numeroCedulaEmisor = '2-553-597';
+        $numeroCedulaReceptor = '5-360-224';
+        //$numeroCedulaResidente = '172400110315';
+        $miNumeroConsecutivo = 1;
 
         $factura1 = new Factura($numeroCedulaEmisor, $numeroCedulaReceptor, $miNumeroConsecutivo, $fechaEmision);
        // $factura2 = new Factura($numeroCedulaResidente, $numeroCedulaReceptor, $miNumeroConsecutivo);
      
         $authToken = $this->get_token();//get OAuth2.0 token
+       // dd($authToken);
 
         $fac = $factura1->getClave($fechaEmision);
         $invoiceXML = $factura1->generateXML();
         $invoice64String = $this->parseBase64($invoiceXML);
-       //dd($fac->clave);
-
-       /* $data = "{\n\t\"clave\": \"$fac->clave\","
-            . "\n\t\"fecha\": \"2017-10-03T00:00:00-0600\","
+       // dd($invoiceXML);
+        $data = "{\n\t\"clave\": \"$fac->clave\","
+            . "\n\t\"fecha\": \"2018-01-26T00:00:00-0600\","
             . "\n\t\"emisor\": {\n\t\t\"tipoIdentificacion\": \"02\",\n\t\t\"numeroIdentificacion\": \"$fac->emisor\"\n\t},"
             . "\n\t\"receptor\": {\n\t\t\"tipoIdentificacion\": \"02\",\n\t\t\"numeroIdentificacion\": \"$fac->receptor\"\n\t},"
             . "\n\t\"callbackUrl\": \"https://example.com/invoiceView\","
-            . "\n\t\"comprobanteXml\": \"$invoice64String\"\n}";*/
+            . "\n\t\"comprobanteXml\": \"$invoice64String\"\n}";
 
-        //dd($authToken);
-        $fields = [
-                "clave" => "50601011600310112345600100010100000000011999999999" ,
-                "fecha" => "2016-01-01T00:00:00-0600" ,
-                "emisor" => [
-                    "tipoIdentificacion" => "02" ,
-                    "numeroIdentificacion" => "003101123456"
-                ],
-                "receptor" => [
-                    "tipoIdentificacion" => "02" ,
-                    "numeroIdentificacion" => "003101123456"
-                ],
-                "comprobanteXml" => "PD94bWwgdmVyc2lvbj0iMS4wIiA/Pg0KDQo8ZG9tYWluIHhtbG5zPSJ1cm46amJvc3M6ZG9tYWluOjQuMCI+DQogICAgPGV4dGVuc2lvbnM+DQogICAgICAgIDxleHRlbnNpb24gbW9kdWxlPSJvcmcuamJvc3MuYXMuY2x1c3RlcmluZy5pbmZpbmlzcGFuIi8+DQogICAgICAgIDxleHRlbnNpb24gbW9kdWxlPSJvcmcuamJvc3MuYXMuY2x1c3RlcmluZy5qZ3JvdXBzIi8+DQogICAgICAgIDxleHRlbnNpb24gbW9kdWxlPSJvcmcuamJvc3MuYXMuY29ubmVjdG9yIi8+DQogICAgICAgIDxleHRlbnNpb24gbW"
+       
+        //dd($fac->clave);
+        $body = [
+            'clave' => $fac->clave,
+            'fecha' => '2018-01-26T00:00:00-0600',
+            'emisor' => [
+                'tipoIdentificacion' => '01',
+                'numeroIdentificacion' => $fac->emisor
+            ],
+            'receptor' => [
+                'tipoIdentificacion' => '01',
+                'numeroIdentificacion' => $fac->receptor
+            ],
+            'comprobanteXml' => $invoice64String
         ];
+
+        $headers = [
+            'authorization' => 'Bearer '. $authToken->access_token,
+            'content-type' => 'application/json'
+            
+        ];
+
+        $response = $this->client->request('POST', 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/recepcion', ['headers' => $headers,'form_params' => $body]);
+        $body = $response->getBody();
+        $content = $body->getContents();
+        $result = json_decode($content);
+        dd($result);
+
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/recepcion",
@@ -68,12 +83,12 @@ class FacturaElectronicaController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "{\n\t\"clave\": \"$fac->clave\","
-                . "\n\t\"fecha\": \"2018-01-25T00:00:00-0600\","
-                . "\n\t\"emisor\": {\n\t\t\"tipoIdentificacion\": \"01\",\n\t\t\"numeroIdentificacion\": \"$fac->emisor\"\n\t},"
-                . "\n\t\"receptor\": {\n\t\t\"tipoIdentificacion\": \"01\",\n\t\t\"numeroIdentificacion\": \"$fac->receptor\"\n\t},"
-                . "\n\t\"callbackUrl\": \"http://app.gpsmedica.com/factura/response\","
-                . "\n\t\"comprobanteXml\": \"$invoice64String\"\n}",
+            // CURLOPT_POSTFIELDS => "{\n\t\"clave\": \"$fac->clave\","
+            //     . "\n\t\"fecha\": \"2016-01-01T00:00:00-0600\","
+            //     . "\n\t\"emisor\": {\n\t\t\"tipoIdentificacion\": \"01\",\n\t\t\"numeroIdentificacion\": \"$fac->emisor\"\n\t},"
+            //     . "\n\t\"receptor\": {\n\t\t\"tipoIdentificacion\": \"01\",\n\t\t\"numeroIdentificacion\": \"$fac->receptor\"\n\t},"
+            //     . "\n\t\"callbackUrl\": \"http://consulta.test/factura/response\","
+            //     . "\n\t\"comprobanteXml\": \"$invoice64String\"\n}",
             //CURLOPT_COOKIE => "__cfduid=d73675273d6c68621736ad9329b7eff011507562303",
             CURLOPT_HTTPHEADER => array(
                 "authorization: Bearer " . $authToken->access_token,
@@ -91,6 +106,9 @@ class FacturaElectronicaController extends Controller
         } else {
             $response = json_decode($response);
         }
+
+        dd($fac->clave.'----'. $authToken->access_token);
+        //return $response;
         //dd($response);
        // try {
             
@@ -127,7 +145,7 @@ class FacturaElectronicaController extends Controller
             'grant_type' => 'password', //always 'password'
                       //go to https://www.hacienda.go.cr/ATV/login.aspx to generate a username and password credentials
             'username' => 'cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr',
-            'password' => '*xXwr.6v&_]dA*+_P[_Z',
+            'password' => ':w:Kc.}(Og@7w}}y!c]Q',
             'scope' => ''
         );//always empty
         // use key 'http' even if you send the request to https://...
@@ -161,7 +179,7 @@ class FacturaElectronicaController extends Controller
         return $base64;
     }
 
-    public function response()
+    public function haciendaResponse()
     {
         dd(reques()->all());
     }

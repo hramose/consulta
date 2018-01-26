@@ -137,7 +137,7 @@ class Factura
         $this->emisor = Common::validarId($emisorId);
         $this->receptor = Common::validarId($receptorId);
         $this->numeroConsecutivo = $numeroConsecutivo;
-        $this->fechaEmision = ($fechaEmision == '') ? date('dmY') : $fechaEmision;
+        $this->fechaEmision = ($fechaEmision == '') ? date('dmy') : $fechaEmision;
     }
 
     /* METODOS PUBLICOS */
@@ -152,7 +152,7 @@ class Factura
      */
     public function getClave()
     {
-        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo);
+        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo,'1', getUniqueNumber(8));
         return $this;
     }
 
@@ -162,13 +162,13 @@ class Factura
 
         $facturaXML = new \SimpleXMLElement($facuraBase);
         $facturaXML->Clave = $this->clave;
-        $facturaXML->NumeroConsecutivo = $this->numeroConsecutivo;
-        $facturaXML->FechaEmision = Carbon::createFromFormat('dmY', $this->fechaEmision)->toAtomString();
+        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo); //$this->numeroConsecutivo;
+        $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
 
-        $facturaXML->Emisor->Nombre = 'alo';
+        $facturaXML->Emisor->Nombre = 'Julio Quesada';
         $facturaXML->Emisor->Identificacion->Tipo = '01';
-        $facturaXML->Emisor->Identificacion->Numero = 503600224;
-        $facturaXML->Emisor->NombreComercial = 'alo';
+        $facturaXML->Emisor->Identificacion->Numero = '205530597';
+        $facturaXML->Emisor->NombreComercial = 'Julio Quesada';
         $facturaXML->Emisor->Ubicacion->Provincia = '5';
         $facturaXML->Emisor->Ubicacion->Canton = '01';
         $facturaXML->Emisor->Ubicacion->Distrito = '01';
@@ -176,11 +176,11 @@ class Factura
         $facturaXML->Emisor->Ubicacion->OtrasSenas = '';
         $facturaXML->Emisor->Telefono->CodigoPais = 506;
         $facturaXML->Emisor->Telefono->NumTelefono = 89679098;
-        $facturaXML->Emisor->CorreoElectronico = 'alonso@avotz.com';
+        $facturaXML->Emisor->CorreoElectronico = 'oporto@avotz.com';
 
-        $facturaXML->Receptor->Nombre = 'gera';
+        $facturaXML->Receptor->Nombre = 'Alonso';
         $facturaXML->Receptor->Identificacion->Tipo = '01';
-        $facturaXML->Receptor->Identificacion->Numero = 503600225;
+        $facturaXML->Receptor->Identificacion->Numero = '503600224';
         $facturaXML->Receptor->NombreComercial = '';
         $facturaXML->Receptor->Ubicacion->Provincia = '5';
         $facturaXML->Receptor->Ubicacion->Canton = '01';
@@ -189,11 +189,11 @@ class Factura
         $facturaXML->Receptor->Ubicacion->OtrasSenas = '';
         $facturaXML->Receptor->Telefono->CodigoPais = 506;
         $facturaXML->Receptor->Telefono->NumTelefono = 89679098;
-        $facturaXML->Receptor->CorreoElectronico = 'oporto@avotz.com';
+        $facturaXML->Receptor->CorreoElectronico = 'alonso@avotz.com';
 
-        $facturaXML->CodicionVenta = '01';
+        $facturaXML->CondicionVenta = '01';
         $facturaXML->PlazoCredito = '';
-        $facturaXML->MedioPago = '04';
+        $facturaXML->MedioPago = '01';
 
         //$facturaXML->DetalleServicio;
         //foreach ($facturaXML->DetalleServicio->LineaDetalle as $detalle) {
@@ -201,37 +201,35 @@ class Factura
         $detalle->addChild('NumeroLinea', '1');
         $codigo = $detalle->addChild('Codigo');
         $codigo->addChild('Tipo', '04');
-        $codigo->addChild('Codigo', '04');
-        $detalle->addChild('Cantidad', '1000');
+        $codigo->addChild('Codigo', '1');
+        $detalle->addChild('Cantidad', '1.000');
         $detalle->addChild('UnidadMedida', 'Unid');
         $detalle->addChild('UnidadMedidaComercial', '');
         $detalle->addChild('Detalle', 'test');
-        $detalle->addChild('PrecioUnitario', '1000');
-        $detalle->addChild('MontoTotal', '1000');
+        $detalle->addChild('PrecioUnitario', '1000.00000');
+        $detalle->addChild('MontoTotal', '1000.00000');
         $detalle->addChild('NaturalezaDescuento', '');
-        $detalle->addChild('SubTotal', '1000');
-        $detalle->addChild('MontoTotalLinea', '1000');
+        $detalle->addChild('SubTotal', '1000.00000');
+        $detalle->addChild('MontoTotalLinea', '1000.00000');
 
         // }
         $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
-        $facturaXML->ResumenFactura->CodigoMoneda = '576.74000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '1175.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '1175.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '1175.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '1175.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '0.00000';
-        $facturaXML->ResumenFactura->CodigoMoneda = '1175.00000';
+        $facturaXML->ResumenFactura->TipoCambio = '1.00000';
+        $facturaXML->ResumenFactura->TotalServGravados = '0.00000';
+        $facturaXML->ResumenFactura->TotalServExentos = '1000.00000';
+        $facturaXML->ResumenFactura->TotalMercanciasGravadas = '0.00000';
+        $facturaXML->ResumenFactura->TotalMercanciasExentas = '0.00000';
+        $facturaXML->ResumenFactura->TotalGravado = '0.00000';
+        $facturaXML->ResumenFactura->TotalExento = '1000.00000';
+        $facturaXML->ResumenFactura->TotalVenta = '1000.00000';
+        $facturaXML->ResumenFactura->TotalDescuentos = '0.00000';
+        $facturaXML->ResumenFactura->TotalVentaNeta = '1000.00000';
+        $facturaXML->ResumenFactura->TotalImpuesto = '0.00000';
+        $facturaXML->ResumenFactura->TotalComprobante = '1000.00000';
 
         $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
-        $facturaXML->Normativa->FechaResolucion = '20-02-2017 13:22:22';
+        $facturaXML->Normativa->FechaResolucion = '26-01-2018 13:22:22';
         $facturaXML->Otros->OtroTexto = '';
-
-        $facturaXML->CodicionVenta = '01';
 
         //dd($facturaXML->asXML());
         //header('Content-Type: text/xml');
@@ -249,6 +247,12 @@ class Factura
         //dd('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/julio.p12') . ' 5678 ' . storage_path('app/facturaelectronica/file.xml') . ' ' . storage_path('app/facturaelectronica/out.xml'));
     //dd(storage_path('app/facturaelectronica'));
        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/cert.p12') . ' 5678 ' . storage_path('app/facturaelectronica/file.xml') . ' ' . storage_path('app/facturaelectronica/out.xml'));
+
+      /*  $salida2 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' send https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 '. storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');/*
+
+        $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
+
+        //dd($salida);
 
        return Storage::get('facturaelectronica/out.xml');
     }

@@ -13,7 +13,7 @@ use Edujugon\PushNotification\PushNotification;
 */
 
 Route::get('/factura/test', 'FacturaElectronicaController@test');
-Route::get('/factura/response', 'FacturaElectronicaController@response');
+Route::post('/factura/response', 'FacturaElectronicaController@haciendaResponse');
 
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');
