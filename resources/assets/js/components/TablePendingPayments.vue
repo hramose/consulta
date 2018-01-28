@@ -23,11 +23,17 @@
                
                         <button type="submit" class="btn btn-success btn-sm">Pagar</button>
                       </form> -->
-                      <a :href="getUrl(payment)" class="btn btn-success">Pagar</a>
+                      <a :href="getUrl(payment)" class="btn btn-success">{{ (payment.type == 'MS') ? 'Renovar' : 'Pagar' }}</a>
+                      <a href="#" data-toggle="modal" data-target="#modalSubscription" class="btn btn-success" v-if="payment.type == 'MS'">Cambiar Plan</a>
                       </td>
                       
                     </tr>
-              
+                
+                <tr v-if="monthlyCharges.lenght > 1">
+                  
+                  <td colspan="3"> <a href="/medic/payments/create" class="btn btn-success">Pagar Todo</a></td>
+                 
+                </tr>
                 
                
               </tbody>
@@ -59,6 +65,7 @@
           return '/medic/payments/'+ payment.id +'/create';
 
         },
+       
         money(n, currency) {
                 return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
             },
