@@ -108,7 +108,7 @@ class PaymentController extends Controller
                     $plan = Plan::find($reserved2); //nueva subscription
                     $income = $this->incomeRepo->findById($reserved4);
 
-                    $subscription = auth()->user()->subscription();
+                    $subscription = auth()->user()->subscription()->first();
 
                     $subscription->plan_id = $plan->id;
                     $subscription->cost = $plan->cost;
