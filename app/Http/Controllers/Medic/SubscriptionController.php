@@ -53,7 +53,7 @@ class SubscriptionController extends Controller
 
         $planBuyChange = 1; // 1 compra de plan
 
-        return view('medic.payments.buySubscription')->with(compact('newPlan', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'description'));
+        return view('medic.payments.buySubscription')->with(compact('newPlan', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'description', 'planBuyChange'));
     }
 
     /**
