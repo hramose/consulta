@@ -91,18 +91,20 @@ class PaymentController extends Controller
                 if ($reserved3 && $reserved3 == 1) { // 1 es la compra de una subscripcion 2 -cambio de subscription
                     $plan = Plan::find($reserved2);
 
-                    auth()->user()->subscription()->create([
-                        'plan_id' => $plan->id,
-                        'cost' => $plan->cost,
-                        'quantity' => $plan->quantity,
-                        'ends_at' => Carbon::now()->addMonths($plan->quantity),
-                        'purchase_operation_number' => $purchaseOperationNumber
-                    ]);
-                    // informamos via email su confirmacion de pago de una compra
-                    try {
-                        \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
-                    } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
-                        \Log::error($e->getMessage());
+                    if (!auth()->user()->subscription()->first()) {
+                        auth()->user()->subscription()->create([
+                            'plan_id' => $plan->id,
+                            'cost' => $plan->cost,
+                            'quantity' => $plan->quantity,
+                            'ends_at' => Carbon::now()->addMonths($plan->quantity),
+                            'purchase_operation_number' => $purchaseOperationNumber
+                        ]);
+                        // informamos via email su confirmacion de pago de una compra
+                        try {
+                            \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
+                        } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                            \Log::error($e->getMessage());
+                        }
                     }
                 } elseif ($reserved3 && $reserved3 == 2) { // 1 es la compra de una subscripcion 2 -cambio de subscription
                     $plan = Plan::find($reserved2); //nueva subscription
