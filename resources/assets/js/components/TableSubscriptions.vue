@@ -23,7 +23,7 @@
                           <button type="submit" class="btn btn-success">Seleccionar</button>
                          
                       </form> -->
-                      <a :href="getUrl(subscription)" class="btn btn-success">Seleccionar</a>
+                      <a :href="(currentPlan == subscription.id) ? '#' : getUrl(subscription)" class="btn btn-success" :disabled="currentPlan == subscription.id">Seleccionar</a>
                        
                       </td>
                       
@@ -45,7 +45,7 @@
     
     export default {
       
-      props:['token','change'],
+      props:['token','change','currentPlan'],
     
       data () {
         return {

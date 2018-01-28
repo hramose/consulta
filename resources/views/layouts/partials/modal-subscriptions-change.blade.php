@@ -10,7 +10,7 @@
               
              <div class="text-center">
                 @if(isset($change))
-                  <table-subscriptions token="{{ csrf_token() }}" change="{{ $change }}"></table-subscriptions>
+                  <table-subscriptions token="{{ csrf_token() }}" change="{{ $change }}" current-plan="{{ auth()->user()->subscription->id }}"></table-subscriptions>
                 @else 
                   <table-subscriptions token="{{ csrf_token() }}"></table-subscriptions>
                 @endif
