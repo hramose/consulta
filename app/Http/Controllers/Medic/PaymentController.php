@@ -88,7 +88,7 @@ class PaymentController extends Controller
 
             if ($authorizationResult == 00) {
                 //actualizamos la operacion en db
-                if ($reserved3 && $reserved3 == 1) { // 1 es la compra de una subscripcion 2 -cambio de subscription
+                if ($reserved3 && $reserved3 == 1) { // 1 es la compra de una subscripcion
                     $plan = Plan::find($reserved2);
 
                     if (!auth()->user()->subscription()->first()) {
@@ -106,31 +106,33 @@ class PaymentController extends Controller
                             \Log::error($e->getMessage());
                         }
                     }
-                } elseif ($reserved3 && $reserved3 == 2) { // 1 es la compra de una subscripcion 2 -cambio de subscription
+                } elseif ($reserved3 && $reserved3 == 2) { // 2 -cambio de subscription
                     $plan = Plan::find($reserved2); //nueva subscription
                     $income = $this->incomeRepo->findById($reserved4);
 
                     $subscription = auth()->user()->subscription()->first();
                     $cost_plan_anterior = $subscription->cost;
 
-                    $subscription->plan_id = $plan->id;
-                    $subscription->cost = $plan->cost;
-                    $subscription->quantity = $plan->quantity;
-                    $subscription->ends_at = Carbon::now()->addMonths($plan->quantity);
-                    $subscription->purchase_operation_number = $purchaseOperationNumber;
-                    $subscription->save();
+                    if ($subscription->cost != $plan->cost) {
+                        $subscription->plan_id = $plan->id;
+                        $subscription->cost = $plan->cost;
+                        $subscription->quantity = $plan->quantity;
+                        $subscription->ends_at = Carbon::now()->addMonths($plan->quantity);
+                        $subscription->purchase_operation_number = $purchaseOperationNumber;
+                        $subscription->save();
 
-                    $income->description = 'Cambio de plan de subscripcion de $' . $cost_plan_anterior . ' al ' . $plan->title;
-                    $income->paid = 1;
-                    $income->purchase_operation_number = $purchaseOperationNumber;
-                    $income->amount = $plan->cost;
-                    $income->subscription_cost = $plan->cost;
-                    $income->save();
-                    // informamos via email su confirmacion de pago de una compra
-                    try {
-                        \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
-                    } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
-                        \Log::error($e->getMessage());
+                        $income->description = 'Cambio de plan de subscripcion de $' . $cost_plan_anterior . ' al ' . $plan->title;
+                        $income->paid = 1;
+                        $income->purchase_operation_number = $purchaseOperationNumber;
+                        $income->amount = $plan->cost;
+                        $income->subscription_cost = $plan->cost;
+                        $income->save();
+                        // informamos via email su confirmacion de pago de una compra
+                        try {
+                            \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
+                        } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                            \Log::error($e->getMessage());
+                        }
                     }
                 } else {
                     $incomesIds = explode(',', $reserved2);
