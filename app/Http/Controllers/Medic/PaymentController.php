@@ -109,6 +109,7 @@ class PaymentController extends Controller
                     $income = $this->incomeRepo->findById($reserved4);
 
                     $subscription = auth()->user()->subscription()->first();
+                    $cost_plan_anterior = $subscription->cost;
 
                     $subscription->plan_id = $plan->id;
                     $subscription->cost = $plan->cost;
@@ -117,7 +118,7 @@ class PaymentController extends Controller
                     $subscription->purchase_operation_number = $purchaseOperationNumber;
                     $subscription->save();
 
-                    $income->description = 'Cambio de plan de subscripcion al ' . $plan->title;
+                    $income->description = 'Cambio de plan de subscripcion de ' . $cost_plan_anterior . ' al ' . $plan->title;
                     $income->paid = 1;
                     $income->purchase_operation_number = $purchaseOperationNumber;
                     $income->amount = $plan->cost;
