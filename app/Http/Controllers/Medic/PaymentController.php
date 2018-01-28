@@ -118,7 +118,7 @@ class PaymentController extends Controller
                     $subscription->save();
 
                     $income->description = 'Cambio de plan de subscripcion al ' . $plan->title;
-                    $income->status = 1;
+                    $income->paid = 1;
                     $income->purchase_operation_number = $purchaseOperationNumber;
                     $income->amount = $plan->cost;
                     $income->subscription_cost = $plan->cost;
