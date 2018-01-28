@@ -50,8 +50,6 @@ class MonthlyCharge extends Command
                                 ->orWhere('type', 'P');
         }])->with('subscription')->get();
 
-        dd($medics->toArray());
-
         $countMedics = 0;
 
         $month = Carbon::now()->subMonth()->month;
