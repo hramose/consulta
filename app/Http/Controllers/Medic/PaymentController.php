@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Plan;
 use Carbon\Carbon;
 use App\Income;
+use App\Mail\PaymentConfirmation;
 
 class PaymentController extends Controller
 {
@@ -82,13 +83,10 @@ class PaymentController extends Controller
             $purchaseOperationNumber = request('purchaseOperationNumber');
             $total = request('purchaseAmount') / 100;
             $income = null;
-           
-           
 
             if ($authorizationResult == 00) {
                 //actualizamos la operacion en db
-                if($reserved3 && $reserved3 == 1) // es la compra de una subscripcion
-                {
+                if ($reserved3 && $reserved3 == 1) { // es la compra de una subscripcion
                     $plan = Plan::find($reserved2);
 
                     auth()->user()->subscription()->create([
@@ -97,17 +95,13 @@ class PaymentController extends Controller
                         'quantity' => $plan->quantity,
                         'ends_at' => Carbon::now()->addMonths($plan->quantity),
                         'purchase_operation_number' => $purchaseOperationNumber
-
                     ]);
-
-                   
-
-                }else{
-                    
+                } else {
                     $incomesIds = explode(',', $reserved2);
 
                     $income = $this->incomeRepo->findById(trim($incomesIds[0]));
                     $incomes = Income::whereIn('id', $incomesIds)->get();
+                    $description = $incomes->pluck('description')->implode(',');
 
                     $medic = $income->medic;
 
@@ -115,17 +109,12 @@ class PaymentController extends Controller
                         ->whereIn('id', $incomesIds)
                         ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
 
-                    // informamos via email del producto recien creado y su confirmacion de pago
-                    // try {
-
-                    //     $this->mailer->paymentConfirmation(['email' => $medic->email, 'servicio' => $income->description, 'purchaseOperationNumber' => $purchaseOperationNumber, 'total' => $total]);
-
-                    // } catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-                    // {
-                    //     \Log::error($e->getMessage());
-                    // }
-
-                    
+                    // informamos via email su confirmacion de pago
+                    try {
+                        \Mail::to(auth()->user()->email)->send(new PaymentConfirmation($incomes, $description, $purchaseOperationNumber, $total));
+                    } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                        \Log::error($e->getMessage());
+                    }
                 }
 
                 flash('Pago realizado con exito', 'success');
@@ -142,12 +131,9 @@ class PaymentController extends Controller
 
         \Log::info('results of VPOS: ' . json_encode(request()->all()));
 
-        if ($reserved3 && $reserved3 == 1){
-
+        if ($reserved3 && $reserved3 == 1) {
             return view('medic.payments.responseSubscription')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'plan'));
-
-        }else{
-
+        } else {
             return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
         }
     }
