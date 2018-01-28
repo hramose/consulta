@@ -193,6 +193,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::post('/payments/receipt', 'Medic\PaymentController@purchaseResponse');
 
     Route::get('/subscriptions/{id}/buy', 'Medic\SubscriptionController@buy');
+    Route::get('/subscriptions/{id}/change', 'Medic\SubscriptionController@change');
+
     Route::get('/subscriptions/list', 'Medic\SubscriptionController@list');
 });
 

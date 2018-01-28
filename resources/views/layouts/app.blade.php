@@ -136,14 +136,16 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por subscripcion del periodo {{ $charge->period_from }} -- {{ $charge->period_to }}! <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Pagar</a>
+            <div  class="notification-app alert-warning" >Tu subscripción ha vencido!! Renueva o cambia de Plan si deseas continuar..<a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Renovar</a> <a href="#" data-toggle="modal" data-target="#modalSubscription" class="btn btn-info btn-sm">Cambiar de plan</a>
           </div>
 
           @endif
         @endforeach
+
         @if($monthlyCharge->count())
           <a href="{{ url('/medic/payments/create') }}" class="btn btn-success btn-sm btn-payall">Pagar todo</a>
         @endif
+         @include('layouts/partials/modal-subscriptions',['change' => 1])
     </div>
     @endif
     

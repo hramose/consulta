@@ -177,8 +177,10 @@
                 <input class="form-control" type="hidden" name="programmingLanguage" value="PHP" />
                 <input class="form-control" type="hidden" name="reserved1" value="Valor Reservado ABC" />
                 <input class="form-control" type="hidden" name="reserved2" value="{{ $newPlan->id }}" />
-                <input class="form-control" type="hidden" name="reserved3" value="1" />
-                
+                <input class="form-control" type="hidden" name="reserved3" value="{{ $planBuyChange }}" />
+                @if(isset($income))
+                  <input class="form-control" type="hidden" name="reserved4" value="{{ $income->id }}" />
+                @endif
                 <input class="form-control" type="hidden" name="purchaseVerification" value="{{ $purchaseVerification }}" />
                 <input type="button" onclick="{{ env('URL_MODAL') }}" value="Realizar pago" class="btn btn-success pull-right btn-VPOS">
               

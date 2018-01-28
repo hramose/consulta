@@ -45,7 +45,7 @@
     
     export default {
       
-      props:['token'],
+      props:['token','change'],
     
       data () {
         return {
@@ -56,8 +56,8 @@
   
       methods: {
            getUrl(subscription){
-          
-          return '/medic/subscriptions/'+ subscription.id +'/buy';
+            
+          return (this.change && this.change == 1) ? '/medic/subscriptions/'+ subscription.id +'/change' :'/medic/subscriptions/'+ subscription.id +'/buy';
 
         },
 

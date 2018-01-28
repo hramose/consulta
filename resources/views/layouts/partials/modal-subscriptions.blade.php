@@ -9,7 +9,11 @@
           <div class="modal-body" >
               
              <div class="text-center">
-                <table-subscriptions token="{{ csrf_token() }}"></table-subscriptions>
+                @if(isset($change))
+                  <table-subscriptions token="{{ csrf_token() }}" change="{{ $change }}"></table-subscriptions>
+                @else 
+                  <table-subscriptions token="{{ csrf_token() }}"></table-subscriptions>
+                @endif
             </div>
               
                 

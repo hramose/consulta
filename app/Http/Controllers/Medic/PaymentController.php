@@ -79,6 +79,7 @@ class PaymentController extends Controller
             $reserved1 = request('reserved1');
             $reserved2 = request('reserved2'); // income id or ids or plan id
             $reserved3 = request('reserved3'); // compra de plan o subscripcion
+            $reserved4 = request('reserved4'); // income id si es para cambio de subscripcion
             $reserved22 = request('reserved22');
             $reserved23 = request('reserved23');
             $purchaseOperationNumber = request('purchaseOperationNumber');
@@ -87,7 +88,7 @@ class PaymentController extends Controller
 
             if ($authorizationResult == 00) {
                 //actualizamos la operacion en db
-                if ($reserved3 && $reserved3 == 1) { // es la compra de una subscripcion
+                if ($reserved3 && $reserved3 == 1) { // 1 es la compra de una subscripcion 2 -cambio de subscription
                     $plan = Plan::find($reserved2);
 
                     auth()->user()->subscription()->create([
@@ -97,6 +98,31 @@ class PaymentController extends Controller
                         'ends_at' => Carbon::now()->addMonths($plan->quantity),
                         'purchase_operation_number' => $purchaseOperationNumber
                     ]);
+                    // informamos via email su confirmacion de pago de una compra
+                    try {
+                        \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
+                    } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                        \Log::error($e->getMessage());
+                    }
+                } elseif ($reserved3 && $reserved3 == 2) { // 1 es la compra de una subscripcion 2 -cambio de subscription
+                    $plan = Plan::find($reserved2); //nueva subscription
+                    $income = $this->incomeRepo->findById($reserved4);
+
+                    $subscription = auth()->user()->subscription();
+
+                    $subscription->plan_id = $plan->id;
+                    $subscription->cost = $plan->cost;
+                    $subscription->quantity = $plan->quantity;
+                    $subscription->ends_at = Carbon::now()->addMonths($plan->quantity);
+                    $subscription->purchase_operation_number = $purchaseOperationNumber;
+                    $subscription->save();
+
+                    $income->description = 'Cambio de plan de subscripcion al ' . $plan->title;
+                    $income->status = 1;
+                    $income->purchase_operation_number = $purchaseOperationNumber;
+                    $income->amount = $plan->cost;
+                    $income->subscription_cost = $plan->cost;
+                    $income->save();
                     // informamos via email su confirmacion de pago de una compra
                     try {
                         \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
