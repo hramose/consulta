@@ -7,9 +7,9 @@
 | Cant. | Descripción         | Subtotal |
 | -----:|:-------------------:| --------:|
 @foreach($incomes as $income)
-| 1     | {{ $income->description }}| {{ money($income->amount, '$')}}|
+| 1     | {{ $plan->title }}| {{ money($plan->cost, '$')}}|
 @endforeach
-|       |              <b>Total:</b> | <b>{{ money($total, '$')}}</b>|
+|       |     <b>Total:</b> | <b>{{ money($plan->cost, '$')}}</b>|
 @endcomponent
 
 

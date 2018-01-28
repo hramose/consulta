@@ -9,6 +9,7 @@ use App\Plan;
 use Carbon\Carbon;
 use App\Income;
 use App\Mail\PaymentConfirmation;
+use App\Mail\PaymentSubscriptionConfirmation;
 
 class PaymentController extends Controller
 {
@@ -96,6 +97,12 @@ class PaymentController extends Controller
                         'ends_at' => Carbon::now()->addMonths($plan->quantity),
                         'purchase_operation_number' => $purchaseOperationNumber
                     ]);
+                    // informamos via email su confirmacion de pago de una compra
+                    try {
+                        \Mail::to(auth()->user()->email)->send(new PaymentSubscriptionConfirmation($plan, $purchaseOperationNumber));
+                    } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                        \Log::error($e->getMessage());
+                    }
                 } else {
                     $incomesIds = explode(',', $reserved2);
 
