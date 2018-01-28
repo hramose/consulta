@@ -50,7 +50,7 @@ class MonthlyCharge extends Command
                                 ->orWhere('type', 'P');
         }])->with('subscription')->get();
 
-        dd($medics);
+        dd($medics->toArray());
 
         $countMedics = 0;
 
