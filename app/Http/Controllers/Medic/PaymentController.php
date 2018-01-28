@@ -164,7 +164,7 @@ class PaymentController extends Controller
 
         \Log::info('results of VPOS: ' . json_encode(request()->all()));
 
-        if ($reserved3 && $reserved3 == 1) {
+        if ($reserved3 && ($reserved3 == 1 || $reserved3 == 2)) {
             return view('medic.payments.responseSubscription')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'plan'));
         } else {
             return view('medic.payments.response')->with(compact('authorizationCode', 'total', 'authorizationResult', 'purchaseOperationNumber', 'errorCode', 'errorMessage', 'income', 'incomes'));
