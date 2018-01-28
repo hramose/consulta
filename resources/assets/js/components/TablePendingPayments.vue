@@ -29,7 +29,7 @@
                       
                     </tr>
                 
-                <tr v-if="monthlyCharges.lenght > 1">
+                <tr v-if="monthlyCharges.length > 1">
                   
                   <td colspan="3"> <a href="/medic/payments/create" class="btn btn-success">Pagar Todo</a></td>
                  
