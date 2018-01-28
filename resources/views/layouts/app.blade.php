@@ -136,7 +136,7 @@
                 </div>
           @else 
 
-            <div  class="notification-app alert-warning" >Tu subscripción ha vencido!! Renueva o cambia de Plan si deseas continuar..<a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Renovar</a> <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-info btn-sm">Cambiar de plan</a>
+            <div  class="notification-app alert-warning" >Tu subscripción ha vencido!! Renueva o cambia de Plan si deseas continuar..<a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Renovar</a> <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-danger btn-sm">Cambiar de plan</a>
             
           </div>
           @include('layouts/partials/modal-subscriptions-change',['change' => 1]) 

@@ -24,7 +24,7 @@
                         <button type="submit" class="btn btn-success btn-sm">Pagar</button>
                       </form> -->
                       <a :href="getUrl(payment)" class="btn btn-success">{{ (payment.type == 'MS') ? 'Renovar' : 'Pagar' }}</a>
-                      <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-success" v-if="payment.type == 'MS'">Cambiar Plan</a>
+                      <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-danger" v-if="payment.type == 'MS'">Cambiar Plan</a>
                       </td>
                       
                     </tr>
