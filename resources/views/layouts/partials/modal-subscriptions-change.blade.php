@@ -1,4 +1,4 @@
- <div class="modal fade" id="modalSubscription" role="dialog" aria-labelledby="modalSubscription">
+ <div class="modal fade" id="modalSubscriptionChange" role="dialog" aria-labelledby="modalSubscriptionChange" style="z-index: 99999;">
       <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -9,10 +9,11 @@
           <div class="modal-body" >
               
              <div class="text-center">
-               
-               
+                @if(isset($change))
+                  <table-subscriptions token="{{ csrf_token() }}" change="{{ $change }}"></table-subscriptions>
+                @else 
                   <table-subscriptions token="{{ csrf_token() }}"></table-subscriptions>
-                
+                @endif
             </div>
               
                 
