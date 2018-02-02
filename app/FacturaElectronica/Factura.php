@@ -250,7 +250,7 @@ class Factura
         if(Storage::disk('local')->exists('facturaelectronica/out.xml'))
             return Storage::get('facturaelectronica/out.xml');
         else 
-            return 'Error al firmar';
+            dd('Error al firmar. ponte en contacto con el proveedor');
     }
 
     public function imprimir()
