@@ -247,8 +247,10 @@ class Factura
         $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');
 
         dd($salida2);*/
-
-       return Storage::get('facturaelectronica/out.xml');
+        if(Storage::disk('local')->exists('facturaelectronica/out.xml'))
+            return Storage::get('facturaelectronica/out.xml');
+        else 
+            return 'Error al firmar';
     }
 
     public function imprimir()
