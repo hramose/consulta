@@ -74,7 +74,7 @@ class FacturaElectronicaController extends Controller
         $content = $body->getContents();
         $result = json_decode($content);
         //return $result;
-        dd(json_encode($result) . '-' . json_encode($body) . '----' . $fac->clave . '----' . $authToken->access_token);
+       // dd(json_encode($result) . '-' . json_encode($body) . '----' . $fac->clave . '----' . $authToken->access_token);
         if(!$result){
             $headers = [
                 'authorization' => 'Bearer ' . $authToken->access_token,
