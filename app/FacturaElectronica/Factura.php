@@ -123,6 +123,7 @@ class Factura
     private $signPolicy = null;
     private $publicKey = null;
     private $privateKey = null;
+    private $version = "3.2.1";
 
     const SIGN_POLICY_3_1 = array(
         "name" => "Política de Firma FacturaE v3.1",
@@ -170,10 +171,10 @@ class Factura
         $facturaXML->Emisor->Identificacion->Numero = '205530597';
         $facturaXML->Emisor->NombreComercial = 'Julio Quesada';
         $facturaXML->Emisor->Ubicacion->Provincia = '5';
-        $facturaXML->Emisor->Ubicacion->Canton = '01';
-        $facturaXML->Emisor->Ubicacion->Distrito = '01';
-        $facturaXML->Emisor->Ubicacion->Barrio = '';
-        $facturaXML->Emisor->Ubicacion->OtrasSenas = '';
+        $facturaXML->Emisor->Ubicacion->Canton = '04'; //bagaces
+        $facturaXML->Emisor->Ubicacion->Distrito = '03'; //guayabo mogote
+        //$facturaXML->Emisor->Ubicacion->Barrio = '';
+        $facturaXML->Emisor->Ubicacion->OtrasSenas = 'test';
         $facturaXML->Emisor->Telefono->CodigoPais = 506;
         $facturaXML->Emisor->Telefono->NumTelefono = 89679098;
         $facturaXML->Emisor->CorreoElectronico = 'oporto@avotz.com';
@@ -185,8 +186,8 @@ class Factura
         $facturaXML->Receptor->Ubicacion->Provincia = '5';
         $facturaXML->Receptor->Ubicacion->Canton = '01';
         $facturaXML->Receptor->Ubicacion->Distrito = '01';
-        $facturaXML->Receptor->Ubicacion->Barrio = '';
-        $facturaXML->Receptor->Ubicacion->OtrasSenas = '';
+        //$facturaXML->Receptor->Ubicacion->Barrio = '';
+        $facturaXML->Receptor->Ubicacion->OtrasSenas = 'test';
         $facturaXML->Receptor->Telefono->CodigoPais = 506;
         $facturaXML->Receptor->Telefono->NumTelefono = 89679098;
         $facturaXML->Receptor->CorreoElectronico = 'alonso@avotz.com';
@@ -230,29 +231,22 @@ class Factura
         $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
         $facturaXML->Normativa->FechaResolucion = '26-01-2018 13:22:22';
         $facturaXML->Otros->OtroTexto = '';
+       
+        //$this->sign(storage_path('app/facturaelectronica/020553059711.p12'), null, '1234');
 
-        //dd($facturaXML->asXML());
-        //header('Content-Type: text/xml');
-        //echo $factura->asXML();
-
-        // dd($this->numeroConsecutivo.'---'.$this->clave);
-        // dd(Storage::url('facturaelectronica/cert.p12'));
-        //dd( storage_path('app/facturaelectronica/cert.p12'));
-      
-       //dd($this->sign(storage_path('app/facturaelectronica/cert.p12'), null, '1234'));
-
-       // $this->injectSignature($facturaXML->asXML());
+        //$facturaFirmadaString = $this->injectSignature($facturaXML->asXML());
+        //dd($facturaFirmadaString);
+       // Storage::put('facturaelectronica/out_php.xml', $facturaFirmadaString);
         Storage::put('facturaelectronica/file.xml', $facturaXML->asXML());
 
-        //dd('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/julio.p12') . ' 5678 ' . storage_path('app/facturaelectronica/file.xml') . ' ' . storage_path('app/facturaelectronica/out.xml'));
-    //dd(storage_path('app/facturaelectronica'));
-       $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/cert.p12') . ' 5678 ' . storage_path('app/facturaelectronica/file.xml') . ' ' . storage_path('app/facturaelectronica/out.xml'));
+        
+       $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/julio.p12') . ' 1234 ' . storage_path('app/facturaelectronica/file.xml') . ' ' . storage_path('app/facturaelectronica/out.xml'));
 
-      /*  $salida2 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' send https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 '. storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');/*
+        /*$salida2 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' send https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 '. storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');
 
-        $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
+        $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');
 
-        //dd($salida);
+        dd($salida2);*/
 
        return Storage::get('facturaelectronica/out.xml');
     }
@@ -309,14 +303,14 @@ class Factura
             
             return false;
         }
-        //dd(file_get_contents($pkcs12File));
+       // dd(file_get_contents($pkcs12File));
         // Extract public and private keys from store
         if (openssl_pkcs12_read(file_get_contents($pkcs12File), $certs, $pkcs12Pass)) {
-            dd('ssaa');
+            //dd('ssaa');
             $this->publicKey = openssl_x509_read($certs['cert']);
             $this->privateKey = openssl_pkey_get_private($certs['pkey']);
         }
-        dd($this->publicKey);
+        //dd($this->publicKey);
         return (!empty($this->publicKey) && !empty($this->privateKey));
     }
 
@@ -388,13 +382,13 @@ class Factura
         // Define namespace (NOTE: in alphabetical order)
         $xmlns = [];
         $xmlns[] = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
-        $xmlns[] = 'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '"';
+        $xmlns[] = 'xmlns:fe="https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/facturaElectronica"';
         $xmlns[] = 'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"';
         $xmlns = implode(' ', $xmlns);
         // Prepare signed properties
         $signTime = is_null($this->signTime) ? time() : $this->signTime;
         $certData = openssl_x509_parse($this->publicKey);
-        $certDigest = openssl_x509_fingerprint($this->publicKey, 'sha1', true);
+        $certDigest = openssl_x509_fingerprint($this->publicKey, 'sha256', true);
         $certDigest = base64_encode($certDigest);
         $certIssuer = [];
         foreach ($certData['issuer'] as $item => $value) {
@@ -409,7 +403,7 @@ class Factura
             '<xades:SigningCertificate>' .
             '<xades:Cert>' .
             '<xades:CertDigest>' .
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></ds:DigestMethod>' .
             '<ds:DigestValue>' . $certDigest . '</ds:DigestValue>' .
             '</xades:CertDigest>' .
             '<xades:IssuerSerial>' .
@@ -425,7 +419,7 @@ class Factura
             '<xades:Description>' . $this->signPolicy['name'] . '</xades:Description>' .
             '</xades:SigPolicyId>' .
             '<xades:SigPolicyHash>' .
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>' .
             '<ds:DigestValue>' . $this->signPolicy['digest'] . '</ds:DigestValue>' .
             '</xades:SigPolicyHash>' .
             '</xades:SignaturePolicyId>' .
@@ -527,7 +521,8 @@ class Factura
             '</ds:Object>' .
             '</ds:Signature>';
         // Inject signature
-        $xml = str_replace('</fe:Facturae>', $sig . '</fe:Facturae>', $xml);
+        //dd($sig);
+        $xml = str_replace('</FacturaElectronica>', $sig . '</FacturaElectronica>', $xml);
         return $xml;
     }
 }
