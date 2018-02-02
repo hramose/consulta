@@ -85,7 +85,7 @@ class FacturaElectronicaController extends Controller
             $body = $response->getBody();
             $content = $body->getContents();
             $result = json_decode($content);
-            return $result;
+            return json_encode($result);
            // dd(json_encode($result) .'-'. json_encode($body) . '----'.$fac->clave . '----' . $authToken->access_token);
         }else{
             dd('ss');
