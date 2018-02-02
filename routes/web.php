@@ -13,6 +13,7 @@ use Edujugon\PushNotification\PushNotification;
 */
 
 Route::get('/factura/test/{consecutivo}', 'FacturaElectronicaController@test');
+Route::get('/factura/recepcion/{clave}', 'FacturaElectronicaController@recepcion');
 Route::post('/factura/response', 'FacturaElectronicaController@haciendaResponse');
 Route::get('/factura/response', 'FacturaElectronicaController@decodemensajehacienda');
 Route::get('/factura/auth', 'FacturaElectronicaController@authToken');

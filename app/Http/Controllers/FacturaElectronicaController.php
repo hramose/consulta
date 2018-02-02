@@ -203,10 +203,25 @@ class FacturaElectronicaController extends Controller
     {
         dd($this->get_token());
     }
+    public function recepcion($clave)
+    {
+        $authToken = $this->get_token();
+
+        $headers = [
+            'authorization' => 'Bearer ' . $authToken->access_token,
+            'content-type' => 'application/json'
+
+        ];
+        $response = $this->client->request('GET', 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/recepcion/' . $clave, ['headers' => $headers]);
+        $body = $response->getBody();
+        $content = $body->getContents();
+        $result = json_decode($content);
+        dd($result);
+    }
     public function haciendaResponse()
     {
-        
-        dd(request()->all());
+        \Log::info('results of Hacienda: ' . json_encode(request()->all()));
+      
     }
 
     public function decodemensajehacienda()

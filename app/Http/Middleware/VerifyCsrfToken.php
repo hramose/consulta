@@ -33,6 +33,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/clinic/invoices/*',
         '/appointments/reminder',
         '/polls/send',
-        'medic/payments/receipt'
+        'medic/payments/receipt',
+        '/factura/response',
     ];
 }
