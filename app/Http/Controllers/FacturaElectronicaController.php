@@ -197,7 +197,8 @@ class FacturaElectronicaController extends Controller
     }
     private function decodeRespuestaXML($respuestaBase64)
     {
-        return base64_decode($respuestaBase64);
+        $facturaXML = new \SimpleXMLElement(base64_decode($respuestaBase64));
+        return $facturaXML;
     }
     public function authToken()
     {
@@ -216,7 +217,8 @@ class FacturaElectronicaController extends Controller
         $body = $response->getBody();
         $content = $body->getContents();
         $result = json_decode($content);
-        dd($result);
+      
+        dd($this->decodeRespuestaXML($result->{'respuesta-xml'}));
     }
     public function haciendaResponse()
     {
