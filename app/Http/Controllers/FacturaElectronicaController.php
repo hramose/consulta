@@ -21,13 +21,13 @@ class FacturaElectronicaController extends Controller
 
     }
 
-    public function test()
+    public function test($consecutivo)
     {
         $fechaEmision = '';
         $numeroCedulaEmisor = '2-553-597';
         $numeroCedulaReceptor = '5-360-224';
         //$numeroCedulaResidente = '172400110315';
-        $miNumeroConsecutivo = 4;
+        $miNumeroConsecutivo = $consecutivo;
 
         $factura1 = new Factura($numeroCedulaEmisor, $numeroCedulaReceptor, $miNumeroConsecutivo, $fechaEmision);
        // $factura2 = new Factura($numeroCedulaResidente, $numeroCedulaReceptor, $miNumeroConsecutivo);
