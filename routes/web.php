@@ -356,6 +356,9 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::put('/users/{id}/subscriptions', 'Admin\UserController@updateSubscription');
     Route::delete('/users/{id}/subscriptions', 'Admin\UserController@deleteSubscription');
 
+    Route::post('/users/{id}/configfactura', 'Admin\UserController@addConfigFactura');
+    Route::put('/users/{id}/configfactura', 'Admin\UserController@updateConfigFactura');
+
     Route::resource('plans', 'Admin\PlanController');
     Route::resource('reports', 'Admin\ReportsController');
     Route::resource('users', 'Admin\UserController');

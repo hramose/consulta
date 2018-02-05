@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code','ide','push_token'
+        'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code','ide','push_token','fe'
     ];
     protected $appends = array('photo');
 
@@ -229,6 +229,10 @@ class User extends Authenticatable
     public function subscription()
     {
         return $this->hasOne(Subscription::class);
+    }
+    public function configFactura()
+    {
+        return $this->hasOne(ConfigFactura::class);
     }
     /**
      * create a setting to user

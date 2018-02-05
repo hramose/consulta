@@ -484,7 +484,7 @@
                   },
                   {
                       title: 'Parrita',
-                      distritos:['San Vito']
+                      distritos:['Parrita']
                   },
                   {
                       title: 'Corredores',

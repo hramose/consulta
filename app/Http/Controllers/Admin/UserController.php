@@ -298,5 +298,102 @@ class UserController extends Controller
         return back();
 
     }
+
+    /**
+     * Guardar paciente
+     */
+    public function addConfigFactura($user_id)
+    {
+        //validamos que en users no hay email que va a registrase como paciente
+        $this->validate(request(), [
+            'nombre' => 'required',
+            'tipo_identificacion' => 'required',
+            'identificacion' => 'required',
+            'sucursal' => 'required|numeric',
+            'pos' => 'required|numeric',
+            'provincia' => 'required',
+            'canton' => 'required',
+            'distrito' => 'required',
+            'otras_senas' => 'required',
+            'email' => 'required|email',
+            'atv_user' => 'required',
+            'atv_password' => 'required',
+            'pin_certificado' => 'required',
+            //'certificado' => 'required',
+        ]);
+
+          
+        $user = $this->userRepo->findById($user_id);
+    
+
+        $user->configFactura()->create(request()->all());
+
+        $mimes = ['p12'];
+        $fileUploaded = "error";
+
+        if (request()->file('certificado')) {
+
+            $file = request()->file('certificado');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("facturaelectronica/" . $user->id, "cert.".$ext, 'local');
+        }
+
+
+        flash('Configuracion de factura electronica Creada', 'success');
+
+        return Redirect('/admin/users/' . $user_id . '/edit');
+
+    }
+    /**
+     * Actualizar Paciente
+     */
+    public function updateConfigFactura($user_id)
+    {
+        $this->validate(request(), [
+            'nombre' => 'required',
+            'tipo_identificacion' => 'required',
+            'identificacion' => 'required',
+            'sucursal' => 'required|numeric',
+            'pos' => 'required|numeric',
+            'provincia' => 'required',
+            'canton' => 'required',
+            'distrito' => 'required',
+            'otras_senas' => 'required',
+            'email' => 'required|email',
+            'atv_user' => 'required',
+            'atv_password' => 'required',
+            'pin_certificado' => 'required',
+            
+
+        ]);
+
+        $user = $this->userRepo->findById($user_id);
+        $config = $user->configFactura;
+        $config->fill(request()->all());
+        $config->save();
+
+        $mimes = ['p12'];
+        $fileUploaded = "error";
+
+        if (request()->file('certificado')) {
+
+            $file = request()->file('certificado');
+
+            $ext = $file->guessClientExtension();
+           
+            if (in_array($ext, $mimes))
+                $fileUploaded = $file->storeAs("facturaelectronica/" . $user->id, "cert." . $ext, 'local');
+        }
+
+
+
+        flash('Configuracion de factura electronica Actualizada', 'success');
+
+        return Redirect('/admin/users/' . $user_id . '/edit');
+
+    }
     
 }

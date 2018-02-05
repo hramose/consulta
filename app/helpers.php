@@ -120,6 +120,22 @@ function getLogo($clinic)
         
      
 }
+function existsCertFile($user)
+{
+
+
+    $resp = false;
+
+    if (!$user->configFactura) return false;
+
+    if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/cert.p12'))
+        $resp = true;
+  
+
+    return $resp;
+
+
+}
 /**
      * obtiene el monto que se cobra por cita atendita de los medicos generales
      *
