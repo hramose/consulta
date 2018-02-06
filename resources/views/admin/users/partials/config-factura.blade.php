@@ -180,6 +180,19 @@
       @endif
     </div>
   </div>
+
+  <div class="form-group">
+    <label for="consecutivo_inicio" class="col-sm-2 control-label">Consecutivo inicio</label>
+
+      <div class="col-sm-10">
+      <input type="number" class="form-control" name="consecutivo_inicio" placeholder="Otras Señas" value="{{ isset($user->configFactura) ? $user->configFactura->consecutivo_inicio : old('consecutivo_inicio') }}" required min="1">
+       @if ($errors->has('consecutivo_inicio'))
+          <span class="help-block">
+              <strong>{{ $errors->first('consecutivo_inicio') }}</strong>
+          </span>
+      @endif
+      </div>
+  </div>
   
 <div class="form-group">
     <label for="atv_user" class="col-sm-2 control-label">ATV usuario </label>
