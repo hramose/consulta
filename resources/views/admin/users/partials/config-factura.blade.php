@@ -235,7 +235,10 @@
  @if(!isset($read))
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-danger">{{ isset($buttonText) ? $buttonText : 'Guardar'}}</button>
+      <button type="submit" class="btn btn-success">{{ isset($buttonText) ? $buttonText : 'Guardar'}}</button>
+       @if(isset($user->configFactura) && $user->configFactura)
+        <button type="submit" class="btn btn-danger" form="form-delete-configfactura" formaction="{!! url('/admin/users/'.$user->id.'/configfactura') !!}">Eliminar configuración</button>
+       @endif
     </div>
   </div>
   @endif

@@ -1,6 +1,6 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
 
-
+namespace App\Http\Controllers\Admin;
 
 use App\Configuration;
 use App\Http\Controllers\Controller;
@@ -13,28 +13,25 @@ use App\Mail\UserActive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    function __construct(UserRepository $userRepo)
+    public function __construct(UserRepository $userRepo)
     {
-    	$this->middleware('auth');
-    	$this->userRepo = $userRepo;
+        $this->middleware('auth');
+        $this->userRepo = $userRepo;
     }
-
-    
 
     public function index()
     {
         $search['q'] = request('q');
         $search['role'] = request('role');
         $roles = Role::all();
-      
+
         $users = $this->userRepo->findAll($search);
-        
 
-
-        return view('admin.users.index',compact('users','search', 'roles'));
+        return view('admin.users.index', compact('users', 'search', 'roles'));
     }
 
     /**
@@ -42,9 +39,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
         return view('admin.users.create');
-
     }
 
     /**
@@ -53,12 +48,11 @@ class UserController extends Controller
     public function store()
     {
         //validamos que en users no hay email que va a registrase como paciente
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
                 'password' => 'required|min:6',
             ]);
-
 
         $data = request()->all();
         $data['active'] = 0; // los medicos estan inactivos por defecto para revision
@@ -66,28 +60,23 @@ class UserController extends Controller
         $data['provider_id'] = $data['email'];
         $data['api_token'] = str_random(50);
 
-        
         $user = $this->userRepo->store($data);
 
-        flash('Usuario Creado','success');
+        flash('Usuario Creado', 'success');
 
         return Redirect('/admin/users');
-
     }
+
     /**
      * Mostrar vista editar paciente
      */
     public function edit($id)
     {
-       
-
         $user = $this->userRepo->findById($id);
         $plans = Plan::all();
         $subscription = $user->subscription;
-       
-        
-        return view('admin.users.edit', compact('user','plans','subscription'));
 
+        return view('admin.users.edit', compact('user', 'plans', 'subscription'));
     }
 
     /**
@@ -95,18 +84,16 @@ class UserController extends Controller
      */
     public function update($id)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'name' => 'required|max:255',
-                'email' => ['required','email', Rule::unique('users')->ignore($id) ]//'required|email|max:255|unique:patients',   
+                'email' => ['required', 'email', Rule::unique('users')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
         $user = $this->userRepo->update($id, request()->all());
-    
-        
-        flash('Usuario Actualizado','success');
+
+        flash('Usuario Actualizado', 'success');
 
         return Redirect('/admin/users');
-
     }
 
     public function medicRequests()
@@ -114,32 +101,28 @@ class UserController extends Controller
         $search['q'] = request('q');
         $search['role'] = 'medico';
         $search['active'] = '0';
-      
-       
+
         $users = $this->userRepo->findAll($search);
-        
 
-
-        return view('admin.users.medic-requests',compact('users','search'));
+        return view('admin.users.medic-requests', compact('users', 'search'));
     }
+
     public function adminClinicRequests()
     {
         $search['q'] = request('q');
         $search['role'] = 'clinica';
         $search['active'] = '0';
-      
+
         $users = $this->userRepo->findAll($search);
-        
 
-
-        return view('admin.users.adminclinic-requests',compact('users','search'));
+        return view('admin.users.adminclinic-requests', compact('users', 'search'));
     }
-    
+
     /**
      * Actualizar informacion basica del medico
      */
     public function updateConfig()
-    {  
+    {
         $data = request()->all();
         $config = Configuration::first();
         $config->fill($data);
@@ -147,46 +130,42 @@ class UserController extends Controller
 
         Session::put('amount_specialist', $config->amount_specialist);
         Session::put('amount_general', $config->amount_general);
-    	
-        
-    	return back();
 
+        return back();
     }
+
     /**
      * Guardar paciente
      */
     public function addSubscription($id)
     {
         //validamos que en users no hay email que va a registrase como paciente
-        $this->validate(request(),[
+        $this->validate(request(), [
                  'plan_id' => 'required',
             ]);
 
-
         $user = $this->userRepo->findById($id);
-         $newPlan = Plan::find(request('plan_id'));
+        $newPlan = Plan::find(request('plan_id'));
 
         $user->subscription()->create([
             'plan_id' => $newPlan->id,
             'cost' => $newPlan->cost,
             'quantity' => $newPlan->quantity,
             'ends_at' => Carbon::now()->addMonths($newPlan->quantity)
-
         ]);
 
-        flash('Subscripción Creada','success');
+        flash('Subscripción Creada', 'success');
 
-        return Redirect('/admin/users/'.$id.'/edit');
-
+        return Redirect('/admin/users/' . $id . '/edit');
     }
+
     /**
      * Actualizar Paciente
      */
     public function updateSubscription($id)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'plan_id' => 'required',
-                
         ]);
 
         $user = $this->userRepo->findById($id);
@@ -196,49 +175,41 @@ class UserController extends Controller
         $currentSubscription->plan_id = $newPlan->id;
         $currentSubscription->save();
 
-    
-        
-        flash('Subscripción Actualizada','success');
+        flash('Subscripción Actualizada', 'success');
 
-        return Redirect('/admin/users/'.$id.'/edit');
-
+        return Redirect('/admin/users/' . $id . '/edit');
     }
-     /**
-     * Eliminar consulta(cita)
-     */
+
+    /**
+    * Eliminar consulta(cita)
+    */
     public function deleteSubscription($id)
     {
-
         $user = $this->userRepo->findById($id);
 
         $user->subscription->delete();
-        
-        flash('Subscripción Eliminado','success');
+
+        flash('Subscripción Eliminado', 'success');
 
         return back();
-
     }
 
-     /**
-     * Active a user.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
+    /**
+    * Active a user.
+    *
+    * @param  int $id
+    *
+    * @return Response
+    */
     public function active($id)
     {
         $user = $this->userRepo->update_active($id, 1);
 
         try {
-            
-             \Mail::to($user)->send(new UserActive($user));
-
-        }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-        {
+            \Mail::to($user)->send(new UserActive($user));
+        } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
             \Log::error($e->getMessage());
         }
-
 
         return back();
     }
@@ -285,18 +256,16 @@ class UserController extends Controller
         return back();
     }
 
-     /**
-     * Eliminar consulta(cita)
-     */
+    /**
+    * Eliminar consulta(cita)
+    */
     public function destroy($id)
     {
-
         $user = $this->userRepo->delete($id);
 
-        flash('Usuario Eliminado','success');
+        flash('Usuario Eliminado', 'success');
 
         return back();
-
     }
 
     /**
@@ -322,31 +291,28 @@ class UserController extends Controller
             //'certificado' => 'required',
         ]);
 
-          
         $user = $this->userRepo->findById($user_id);
-    
 
         $user->configFactura()->create(request()->all());
 
         $mimes = ['p12'];
-        $fileUploaded = "error";
+        $fileUploaded = 'error';
 
         if (request()->file('certificado')) {
-
             $file = request()->file('certificado');
 
             $ext = $file->guessClientExtension();
 
-            if (in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("facturaelectronica/" . $user->id, "cert.".$ext, 'local');
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+            }
         }
-
 
         flash('Configuracion de factura electronica Creada', 'success');
 
         return Redirect('/admin/users/' . $user_id . '/edit');
-
     }
+
     /**
      * Actualizar Paciente
      */
@@ -366,8 +332,6 @@ class UserController extends Controller
             'atv_user' => 'required',
             'atv_password' => 'required',
             'pin_certificado' => 'required',
-            
-
         ]);
 
         $user = $this->userRepo->findById($user_id);
@@ -376,24 +340,38 @@ class UserController extends Controller
         $config->save();
 
         $mimes = ['p12'];
-        $fileUploaded = "error";
+        $fileUploaded = 'error';
 
         if (request()->file('certificado')) {
-
             $file = request()->file('certificado');
 
             $ext = $file->guessClientExtension();
-           
-            if (in_array($ext, $mimes))
-                $fileUploaded = $file->storeAs("facturaelectronica/" . $user->id, "cert." . $ext, 'local');
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+            }
         }
-
-
 
         flash('Configuracion de factura electronica Actualizada', 'success');
 
         return Redirect('/admin/users/' . $user_id . '/edit');
-
     }
-    
+
+    /**
+     * Eliminar consulta(cita)
+     */
+    public function deleteConfigFactura($user_id)
+    {
+        $user = $this->userRepo->findById($user_id);
+
+        $user->configFactura->delete();
+
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user_id . '/cert.p12')) {
+            Storage::deleteDirectory('facturaelectronica/' . $user_id . '/');
+        }
+
+        flash('Configuracion Eliminada', 'success');
+
+        return back();
+    }
 }

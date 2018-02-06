@@ -153,6 +153,9 @@
 <form method="post" id="form-delete-subscription" data-confirm="Estas Seguro?">
   <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
 </form>
+<form method="post" id="form-delete-configfactura" data-confirm="Estas Seguro?">
+  <input name="_method" type="hidden" value="DELETE">{{ csrf_field() }}
+</form>
 
 @endsection
 @section('scripts')
