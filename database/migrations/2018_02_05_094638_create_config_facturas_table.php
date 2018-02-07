@@ -37,6 +37,7 @@ class CreateConfigFacturasTable extends Migration
             $table->string('atv_user');
             $table->string('atv_password');
             $table->string('pin_certificado');
+            $table->string('pin_certificado_test')->nullable();
         });
     }
 
