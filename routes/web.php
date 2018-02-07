@@ -16,7 +16,8 @@ Route::get('/factura/test/{consecutivo}', 'FacturaElectronicaController@test');
 Route::get('/factura/recepcion/{clave}', 'FacturaElectronicaController@recepcion');
 Route::post('/factura/response', 'FacturaElectronicaController@haciendaResponse');
 Route::get('/factura/decode', 'FacturaElectronicaController@decodemensajehacienda');
-Route::get('/factura/auth', 'FacturaElectronicaController@authToken');
+// Route::get('/factura/auth', 'FacturaElectronicaController@authToken');
+Route::post('/users/{id}/fe/conexion', 'FacturaElectronicaController@authToken');
 
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');

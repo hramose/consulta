@@ -33,6 +33,30 @@
 	            <!-- /.tab-content -->
 	        </div>
 	          <!-- /.nav-tabs-custom -->
+
+			  @if($user->hasRole('medico'))
+						  <div class="box box-solid box-medics">
+							<div class="box-header with-border">
+								<h4 class="box-title">Factura Eléctronica</h4>
+								
+							</div>
+							<div class="box-body">
+								@if($user->configFactura)
+								<form method="POST" action="{{ url('/admin/users/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+									{{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+									@include('admin/users/partials/config-factura',['buttonText' => 'Actualizar'])
+								</form>
+								@else 
+								 <form method="POST" action="{{ url('/admin/users/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+									{{ csrf_field() }}
+									@include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
+								</form>
+								@endif
+								
+							</div>
+							<!-- /.box-body -->
+						</div>
+						@endif
 			
 			
 		</div>
@@ -117,24 +141,26 @@
 						</div>
 						@endif
 
-						@if($user->hasRole('medico'))
+						@if($user->hasRole('medico') && $user->configFactura)
 						  <div class="box box-solid box-medics">
 							<div class="box-header with-border">
-								<h4 class="box-title">Factura Eléctronica</h4>
+								<h4 class="box-title">Prueba Factura Eléctronica</h4>
 								
 							</div>
 							<div class="box-body">
-								@if($user->configFactura)
-								<form method="POST" action="{{ url('/admin/users/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+								
+								<!-- <form method="POST" action="{{ url('/admin/users/'.$user->id.'/fe/conexion') }}" class="form-horizontal" enctype="multipart/form-data">
+									{{ csrf_field() }} -->
+									 <!-- <button type="submit" class="btn btn-success">Probar conexion Hacienda</button> -->
+
+									 <test-conexion-hacienda user-id="{{ $user->id }}"></test-conexion-hacienda>
+								
+								<!-- </form> -->
+								<form method="POST" action="{{ url('/admin/users/'.$user->id.'/fe') }}" class="form-horizontal" enctype="multipart/form-data">
 									{{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-									@include('admin/users/partials/config-factura',['buttonText' => 'Actualizar'])
+									
 								</form>
-								@else 
-								 <form method="POST" action="{{ url('/admin/users/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
-									{{ csrf_field() }}
-									@include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
-								</form>
-								@endif
+								
 								
 							</div>
 							<!-- /.box-body -->

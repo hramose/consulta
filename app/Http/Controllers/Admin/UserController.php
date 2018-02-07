@@ -14,13 +14,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\FacturaElectronicaRepository;
 
 class UserController extends Controller
 {
-    public function __construct(UserRepository $userRepo)
+    public function __construct(UserRepository $userRepo, FacturaElectronicaRepository $feRepo)
     {
         $this->middleware('auth');
         $this->userRepo = $userRepo;
+        $this->feRepo = $feRepo;
     }
 
     public function index()
@@ -374,4 +376,6 @@ class UserController extends Controller
 
         return back();
     }
+
+    
 }
