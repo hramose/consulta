@@ -83,7 +83,6 @@
           newPatient:false,
           editPhone:false,
           editEmail:false,
-          newPatient:false,
           oldPhone: '',
           oldEmail: ''
           
