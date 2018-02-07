@@ -18,6 +18,10 @@ Route::post('/factura/response', 'FacturaElectronicaController@haciendaResponse'
 Route::get('/factura/decode', 'FacturaElectronicaController@decodemensajehacienda');
 // Route::get('/factura/auth', 'FacturaElectronicaController@authToken');
 Route::post('/users/{id}/fe/conexion', 'FacturaElectronicaController@authToken');
+Route::post('/users/{id}/fe/generate/{consecutivo}', 'FacturaElectronicaController@generateFacturaTest');
+Route::get('/users/{id}/fe/recepcion/{clave}', 'FacturaElectronicaController@recepcion');
+Route::get('/users/{id}/fe/comprobantes/{clave}', 'FacturaElectronicaController@comprobante');
+Route::get('/users/{id}/fe/comprobantes', 'FacturaElectronicaController@comprobantes');
 
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');
