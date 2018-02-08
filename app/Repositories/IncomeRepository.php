@@ -270,7 +270,7 @@ class IncomeRepository extends DbRepository
         $statistics = [
             'generalByExpedientUse' => $expedient,
             'individualByAppointmentAttended' => $attended,
-            'individualByinvoiceBilled' => $billed
+            'individualByInvoiceBilled' => $billed
         ];
 
         return $statistics;

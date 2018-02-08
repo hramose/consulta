@@ -130,11 +130,11 @@
                 </div>
             </div>
           </div>
-          <div v-if="dataIncomes.individualByinvoiceBilled">
+          <div v-if="dataIncomes.individualByInvoiceBilled">
            <div class="box box-success">
               <div class="box-header">
                  <h3 class="box-title">Comision por Cita Facturada - Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
-                 <span class="pull-right"><b class="label label-success">Total Comision por facturas: ${{ money(parseFloat(dataIncomes.individualByinvoiceBilled.totalBilledCommission)) }}</b>  </span>
+                 <span class="pull-right"><b class="label label-success">Total Comision por facturas: ${{ money(parseFloat(dataIncomes.individualByInvoiceBilled.totalBilledCommission)) }}</b>  </span>
                   <!-- <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> -->
               </div>
               <div class="box-body">
