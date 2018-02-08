@@ -5,13 +5,13 @@
   "js/app.js": "js/app-095f99782e.js",
   "js/appointments.min.js": "js/appointments-c90c5d8150.min.js",
   "js/assistant.invoices.min.js": "js/assistant-dd7a07861d.invoices.min.js",
-  "js/clinic.appointments.min.js": "js/clinic-18b5683dfb.appointments.min.js",
-  "js/clinic.dailyagenda.min.js": "js/clinic-043798f849.dailyagenda.min.js",
+  "js/clinic.appointments.min.js": "js/clinic-71e8a05395.appointments.min.js",
+  "js/clinic.dailyagenda.min.js": "js/clinic-83e81258b1.dailyagenda.min.js",
   "js/clinic.invoices.min.js": "js/clinic-75b6582d46.invoices.min.js",
   "js/clinic.patients.min.js": "js/clinic-ca69cfa13c.patients.min.js",
   "js/invoices.min.js": "js/invoices-8cd8608b26.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
   "js/patients.min.js": "js/patients-5447bd07ca.min.js",
-  "js/schedule.min.js": "js/schedule-42a1a438d2.min.js",
+  "js/schedule.min.js": "js/schedule-7e75213a05.min.js",
   "js/search.min.js": "js/search-80d18bca9c.min.js"
 }
