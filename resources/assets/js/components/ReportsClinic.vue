@@ -159,7 +159,7 @@
                                     <td>{{ medic.name }}</td>
                                     <td>{{ medic.billed  }}</td>
                                     <td>₡{{ money(medic.billed_amount) }}</td>
-                                    <td>{{ medic.commission }}</td>
+                                    <td>{{ medic.commission }}%</td>
                                     <td>₡{{ money(medic.billed_commission_amount) }}</td>
                                     
                                    
