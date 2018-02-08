@@ -31,9 +31,7 @@ class FacturaElectronicaRepository extends DbRepository
         $this->accessToken = null;
         $this->refreshToken = null;
 
-        $this->client = new Client([
-            'timeout' => 4.0,
-            ]);
+        $this->client = new Client();
     }
 
     public function get_token($username, $password)
