@@ -214,6 +214,8 @@ class IncomeRepository extends DbRepository
         $medicsArray = [];
         $totalAttended = 0;
         $totalPending = 0;
+        $totalBilled = 0;
+        $totalBilledCommission = 0;
         foreach ($medics as $medic) {
             $incomesAttented = $medic->incomes()->where('office_id', $search['clinic'])->where([['incomes.date', '>=', $date1],
                 ['incomes.date', '<=', $date2->endOfDay()]])->where('type', 'I');
