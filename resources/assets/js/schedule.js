@@ -288,7 +288,7 @@ $(function () {
                     
                      swal({
                       title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
-                      html: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") +' <br>'+ officeInfoDisplay,
+                       html: 'Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' +' <br>'+ officeInfoDisplay,
                       showCancelButton: true,
                       confirmButtonColor: '#d33',
                       cancelButtonColor: '#3085d6',
@@ -319,7 +319,7 @@ $(function () {
 
                 var officeInfoDisplay = '';
                 var titleAlert = event.title;
-                var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
+              var textAlert = 'Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' + officeInfoDisplay;
 
 
                 if(event.office)
@@ -330,7 +330,7 @@ $(function () {
 
                       titleAlert = 'Este horario está reservado para atención en '+ officeInfo.type +' '+ officeInfo.name
                       
-                      textAlert = 'Favor llamar a este número: <a href="tel:'+ officeInfo.phone +'">'+ officeInfo.phone +'</a> <br>Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
+                  textAlert = 'Favor llamar a este número: <a href="tel:' + officeInfo.phone + '">' + officeInfo.phone + '</a> <br>Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' + officeInfoDisplay
                 }
                 element.find(".appointment-details").click(function() {
                    
