@@ -13,6 +13,7 @@ use App\Repositories\ScheduleRepository;
 use App\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
 
 class MedicController extends Controller
 {
