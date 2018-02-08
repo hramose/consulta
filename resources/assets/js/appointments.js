@@ -581,7 +581,7 @@ $(function () {
 
                   swal({
                     title: 'Cita con el Paciente '+ event.patient.first_name + ' '+ event.patient.last_name,
-                    html: 'Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' +' <br>'+ officeInfoDisplay,
+                    html: 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") +' <br>'+ officeInfoDisplay,
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
@@ -611,7 +611,7 @@ $(function () {
         
                 var officeInfoDisplay = '';
                 var titleAlert = event.title;
-              var textAlert = 'Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' + officeInfoDisplay;
+                var textAlert = 'Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay;
 
                 if(event.office)
                 {
@@ -621,7 +621,7 @@ $(function () {
                       
                       titleAlert = 'Este horario está reservado para atención en '+ officeInfo.type +' '+ officeInfo.name
                       
-                  textAlert = 'Favor llamar a este número: ' + officeInfo.phone + ' <br> Fecha: ' + event.start.format("YYYY-MM-DD") + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '' + officeInfoDisplay
+                      textAlert = 'Favor llamar a este número: '+ officeInfo.phone + ' <br> Fecha: '+ event.start.format("YYYY-MM-DD") +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm") + officeInfoDisplay
                 }
                
                
@@ -881,14 +881,14 @@ $(function () {
         
           eventRender: function(event, element) {
             
-            
+    
 
             //element.append( "<span class='closeon fa fa-trash'></span>" );
             var office_id = (event.office) ? event.office.id : '';
             var office_name = (event.office) ? event.office.name : '';
 
       
-            var textTooltip = office_name + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '';
+            var textTooltip = office_name +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm");
 
       
 
