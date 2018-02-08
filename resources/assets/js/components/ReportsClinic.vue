@@ -24,19 +24,7 @@
                             
                           
                       </div>
-                     <!--  <div class="col-xs-12 col-sm-2" v-show="search.type == 'Evaluación de usuario' ">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                              <select class="form-control " style="width: 100%;" name="type" v-model="search.reviewType" @change="changeReviews()">
-                                <option disabled="disabled"></option>
-                                 <option v-for="item in reviewTypes" v-bind:value="item">{{ item }}</option>
-                                
-                              </select>
-                            </div>
-                        </div>
-                            
-                          
-                      </div> -->
+                    
                       <div class="col-xs-12 col-sm-4" v-show="(search.type != 'General' && search.type != 'Evaluación de usuario') || search.reviewType != 'Clínica' ">
                         <div class="form-group">
                             <div class="col-sm-12">
@@ -90,7 +78,8 @@
            <div class="box box-success">
               <div class="box-header">
                  <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
-                 <span class="pull-right"><b class="label label-success">Total Atendido: ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalAttended)) }}</b>  <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> </span>
+                 <span class="pull-right"><b class="label label-success">Total Atendido: ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalAttended + dataIncomes.individualByAppointmentAttended.totalPending)) }}</b>  </span>
+                  <!-- <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> -->
               </div>
               <div class="box-body">
 
@@ -103,8 +92,8 @@
                                   <th>Médico</th>
                                   <th>Consultas Atendidas (Pacientes)</th>
                                   <th>Monto</th>
-                                  <th>Consultas pedientes</th>
-                                  <th>Monto</th>
+                                  <!-- <th>Consultas pedientes</th>
+                                  <th>Monto</th> -->
                                   
                                   
                                 </tr>
@@ -112,10 +101,10 @@
                                 <tbody>
                                 <tr v-for="medic in dataIncomes.individualByAppointmentAttended.medics">
                                     <td>{{ medic.name }}</td>
-                                    <td>{{ medic.attented }}</td>
-                                    <td>${{ money(medic.attented_amount) }}</td>
-                                    <td>{{ medic.pending }}</td>
-                                    <td>${{ money(medic.pending_amount) }}</td>
+                                    <td>{{ medic.attented + medic.pending  }}</td>
+                                    <td>${{ money(medic.attented_amount + medic.pending_amount) }}</td>
+                                    <!-- <td>{{ medic.pending }}</td>
+                                    <td>${{ money(medic.pending_amount) }}</td> -->
                                     
                                    
                                 </tr>

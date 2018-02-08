@@ -60,7 +60,7 @@
                       </td>
                       <td data-title="Teléfono">{{ $medic->phone }}</td>
                       <td data-title="Email">{{ $medic->email }}</td>
-                      <!-- <td data-title="Comisión">
+                      <td data-title="Comisión">
                          <form action="{!! url('/clinic/medics/'. $medic->id .'/commission') !!}" method="post" id="form-updateMedicCommission"  class="form-horizontal">
                             {{ csrf_field() }} <input type="hidden" name="_method" value="PUT">
                             <div class="input-group">
@@ -77,7 +77,7 @@
                              
                           </form>
 
-                      </td> -->
+                      </td>
                      <td data-title="Especialidades"> 
                        @foreach($medic->specialities as $speciality)
                             <span class="btn btn-warning btn-xs">{{ $speciality->name }}</span>
