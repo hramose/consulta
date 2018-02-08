@@ -221,22 +221,35 @@ class IncomeRepository extends DbRepository
             $incomesPending = $medic->incomes()->where('office_id', $search['clinic'])->where([['incomes.date', '>=', $date1],
             ['incomes.date', '<=', $date2->endOfDay()]])->where('type', 'P');
 
+            $invoicesBilled = $medic->invoices()->where('office_id', $search['clinic'])->where([
+                ['invoices.created_at', '>=', $date1],
+                ['incomes.created_at', '<=', $date2->endOfDay()]
+            ])->where('status', 1);
+
             $totalMedicAttended = $incomesAttented->sum('amount');
             $totalMedicPending = $incomesPending->sum('amount');
+            $totalMedicBilled = $invoicesBilled->sum('total');
+            $totalMedicCommissionBilled = $totalMedicBilled * ($medic->commission / 100);
 
             $medicData = [
                 'id' => $medic->id,
                 'name' => $medic->name,
+                'commission' => $medic->commission,
                 'attented' => $incomesAttented->count(),
                 'attented_amount' => $totalMedicAttended,
                 'pending' => $incomesPending->count(),
                 'pending_amount' => $totalMedicPending,
+                'billed' => $invoicesBilled->count(),
+                'billed_amount' => $totalMedicBilled,
+                'billed_commission_amount' => $totalMedicCommissionBilled,
             ];
 
             $medicsArray[] = $medicData;
 
             $totalAttended += $totalMedicAttended;
             $totalPending += $totalMedicPending;
+            $totalBilled += $totalMedicBilled;
+            $totalBilledCommission += $totalMedicCommissionBilled;
         }
 
         $attended = [
@@ -245,9 +258,17 @@ class IncomeRepository extends DbRepository
             'totalPending' => $totalPending,
         ];
 
+        $billed = [
+            'medics' => $medicsArray,
+            'totalBilled' => $totalBilled,
+            'totalBilledCommission' => $totalBilledCommission,
+           
+        ];
+
         $statistics = [
             'generalByExpedientUse' => $expedient,
-            'individualByAppointmentAttended' => $attended
+            'individualByAppointmentAttended' => $attended,
+            'individualByinvoiceBilled' => $billed
         ];
 
         return $statistics;

@@ -41,7 +41,7 @@
                       <th>Nombre</th>
                       <th>Teléfono</th>
                       <th>Email</th>
-                      <!-- <th>Comisión</th> -->
+                      <th>Comisión</th>
                       <th>Especialidades</th>
                       <th></th>
                     </tr>

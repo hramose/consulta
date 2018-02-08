@@ -77,8 +77,8 @@
      <div v-if="dataIncomes.individualByAppointmentAttended">
            <div class="box box-success">
               <div class="box-header">
-                 <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
-                 <span class="pull-right"><b class="label label-success">Total Atendido: ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalAttended + dataIncomes.individualByAppointmentAttended.totalPending)) }}</b>  </span>
+                 <h3 class="box-title">Comision por Cita atendida - Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                 <span class="pull-right"><b class="label label-success">Total Comision por citas: ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalAttended + dataIncomes.individualByAppointmentAttended.totalPending)) }}</b>  </span>
                   <!-- <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> -->
               </div>
               <div class="box-body">
@@ -90,7 +90,7 @@
                                 <thead>
                                 <tr>
                                   <th>Médico</th>
-                                  <th>Consultas Atendidas (Pacientes)</th>
+                                  <th>Consultas Atendidas</th>
                                   <th>Monto</th>
                                   <!-- <th>Consultas pedientes</th>
                                   <th>Monto</th> -->
@@ -105,6 +105,62 @@
                                     <td>${{ money(medic.attented_amount + medic.pending_amount) }}</td>
                                     <!-- <td>{{ medic.pending }}</td>
                                     <td>${{ money(medic.pending_amount) }}</td> -->
+                                    
+                                   
+                                </tr>
+                               
+                                <tr>
+                                    <!-- <td><b>Totales</b></td>
+                                    <td>{{ dataInvoices.totalAppointments }}</b></td>
+                                    <td><b>₡{{ money(parseFloat(dataInvoices.totalInvoices)) }}</b></td>
+                                    <td>
+                                      <b>₡{{ money(dataInvoices.totalCommission) }}</b>
+                                    </td> -->
+                                    
+                                </tr>
+                                
+                                </tbody>
+                              </table>
+                            </div>
+                        </div>
+                        
+                  
+
+                
+                </div>
+            </div>
+          </div>
+          <div v-if="dataIncomes.individualByinvoiceBilled">
+           <div class="box box-success">
+              <div class="box-header">
+                 <h3 class="box-title">Comision por Cita Facturada - Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
+                 <span class="pull-right"><b class="label label-success">Total Comision por facturas: ${{ money(parseFloat(dataIncomes.individualByinvoiceBilled.totalBilledCommission)) }}</b>  </span>
+                  <!-- <b class="label label-danger">Total Pendiente:  ${{ money(parseFloat(dataIncomes.individualByAppointmentAttended.totalPending)) }}</b> -->
+              </div>
+              <div class="box-body">
+
+                    
+                        <div class="col-xs-12 ">
+                             <div class="table-responsive">
+                              <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                  <th>Médico</th>
+                                  <th>Facturas</th>
+                                  <th>Monto Facturado</th>
+                                  <th>Comision</th>
+                                  <th>Monto Comision</th>
+                                  
+                                  
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="medic in dataIncomes.individualByInvoiceBilled.medics">
+                                    <td>{{ medic.name }}</td>
+                                    <td>{{ medic.billed  }}</td>
+                                    <td>${{ money(medic.billed_amount) }}</td>
+                                    <td>{{ medic.commission }}</td>
+                                    <td>${{ money(medic.billed_commission_amount) }}</td>
                                     
                                    
                                 </tr>
