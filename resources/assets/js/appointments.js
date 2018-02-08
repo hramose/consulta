@@ -881,7 +881,7 @@ $(function () {
         
           eventRender: function(event, element) {
             
-    
+            debugger
 
             //element.append( "<span class='closeon fa fa-trash'></span>" );
             var office_id = (event.office) ? event.office.id : '';
