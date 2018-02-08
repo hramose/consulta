@@ -223,7 +223,7 @@ class IncomeRepository extends DbRepository
 
             $invoicesBilled = $medic->invoices()->where('office_id', $search['clinic'])->where([
                 ['invoices.created_at', '>=', $date1],
-                ['incomes.created_at', '<=', $date2->endOfDay()]
+                ['invoices.created_at', '<=', $date2->endOfDay()]
             ])->where('status', 1);
 
             $totalMedicAttended = $incomesAttented->sum('amount');
