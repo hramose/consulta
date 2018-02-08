@@ -310,6 +310,16 @@ class UserController extends Controller
             }
         }
 
+        if (request()->file('certificado_test')) {
+            $file = request()->file('certificado_test');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+            }
+        }
+
         flash('Configuracion de factura electronica Creada', 'success');
 
         return Redirect('/admin/users/' . $user_id . '/edit');
@@ -354,6 +364,16 @@ class UserController extends Controller
             }
         }
 
+        if (request()->file('certificado_test')) {
+            $file = request()->file('certificado_test');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+            }
+        }
+
         flash('Configuracion de factura electronica Actualizada', 'success');
 
         return Redirect('/admin/users/' . $user_id . '/edit');
@@ -376,6 +396,4 @@ class UserController extends Controller
 
         return back();
     }
-
-    
 }

@@ -149,11 +149,13 @@
 							</div>
 							<div class="box-body">
 								
-								
+								@if(existsCertTestFile($user))
 
 								<test-conexion-hacienda user-id="{{ $user->id }}"></test-conexion-hacienda>
+								@else 
+									<h3>Parece que no tiene un certificado de pruebas instalado. Agrega uno para poder realizar pruebas de conexion con Hacienda</h3>
 								
-								
+								@endif
 								
 							</div>
 							<!-- /.box-body -->

@@ -24,7 +24,7 @@
             <li><b>Fecha:</b> {{ fe.fecha }}</li>
             <li><b>Estado:</b> {{ fe["ind-estado"] }}</li>
             
-            <li><button @click="verDetalleFactura(fe.clave)" class="btn btn-default">Ver Estado</button></li>
+            <li><button @click="verEstadoFactura(fe.clave)" class="btn btn-default">Ver Estado</button></li>
         </ul>
 
         <div class="form-group">

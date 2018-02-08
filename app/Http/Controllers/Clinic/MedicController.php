@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Clinic;
 
-
 use App\Http\Controllers\Controller;
 use Edujugon\PushNotification\PushNotification;
 use App\Office;
@@ -27,13 +26,11 @@ class MedicController extends Controller
         $this->middleware('authByRole:clinica');
         $this->medicRepo = $medicRepo;
         $this->appointmentRepo = $appointmentRepo;
-         $this->scheduleRepo = $scheduleRepo;
-          $this->officeRepo = $officeRepo;
-       
+        $this->scheduleRepo = $scheduleRepo;
+        $this->officeRepo = $officeRepo;
 
         View::share('specialities', Speciality::all());
     }
-
 
     /**
      * Mostrar vista de todas las consulta(citas) de un doctor
@@ -41,29 +38,25 @@ class MedicController extends Controller
     public function index()
     {
         $search['q'] = request('q');
-        
+
         //$medics = (auth()->user()->offices->count()) ? auth()->user()->offices->first()->users()->paginate(10) : [];
         $office = auth()->user()->offices->first();
-        $medics = $this->medicRepo->findAllByOffice($office->id,$search);
-        
+        $medics = $this->medicRepo->findAllByOffice($office->id, $search);
 
-
-        return view('clinic.medics.index',compact('medics','office','search'));
-
+        return view('clinic.medics.index', compact('medics', 'office', 'search'));
     }
+
     /**
      * Mostrar vista de todas las consulta(citas) de un doctor
      */
     public function search()
     {
-     
-       //if(!auth()->user()->active) return Redirect('/');
+        //if(!auth()->user()->active) return Redirect('/');
 
-       $medics = [];
-       
-       if(request()->all())
-       {
-            if(trim(request('q')) != '' || request('province') != '' || request('canton') != '' || request('district') != '' || request('lat') != '' || request('lon') != '' || request('speciality') != ''){
+        $medics = [];
+
+        if (request()->all()) {
+            if (trim(request('q')) != '' || request('province') != '' || request('canton') != '' || request('district') != '' || request('lat') != '' || request('lon') != '' || request('speciality') != '') {
                 $search['q'] = trim(request('q'));
                 $search['speciality'] = request('speciality');
                 $search['province'] = request('province');
@@ -74,34 +67,26 @@ class MedicController extends Controller
                 $search['general'] = request('general');
                 $search['active'] = 1;
                 $selectedSpeciality = $search['speciality'];
-                
-                
+
                 $medics = $this->medicRepo->findAll($search);
                 //$count = $medics->count();
 
                 //flash('Se '. (($count > 1) ? "encontraron" : "encontró ") . $count.' Médico(s)','success');
-                
-                if(request('speciality'))
-                {
-                    $specialist = 1;
-                    return view('medics.index',compact('medics','search','selectedSpeciality','specialist'));   
-                }
-                if(request('general'))
-                {
-                    $general = 1;
-                    return view('medics.index',compact('medics','search','selectedSpeciality','general'));   
-                }
-                
-               
-                    
-                
 
-                 return view('medics.index',compact('medics','search','selectedSpeciality'));
+                if (request('speciality')) {
+                    $specialist = 1;
+                    return view('medics.index', compact('medics', 'search', 'selectedSpeciality', 'specialist'));
+                }
+                if (request('general')) {
+                    $general = 1;
+                    return view('medics.index', compact('medics', 'search', 'selectedSpeciality', 'general'));
+                }
+
+                return view('medics.index', compact('medics', 'search', 'selectedSpeciality'));
             }
         }
 
-        return view('medics.index',compact('medics','specialist'));
-
+        return view('medics.index', compact('medics', 'specialist'));
     }
 
     /**
@@ -109,14 +94,18 @@ class MedicController extends Controller
      */
     public function schedule($medic_id, $office_id)
     {
-        if(!auth()->user()->active) return redirect('/');
+        if (!auth()->user()->active) {
+            return redirect('/');
+        }
 
         $medic = $this->medicRepo->findbyId($medic_id);
-         $office = $this->officeRepo->findbyId($office_id);
-        
-        if(!$medic->hasrole('medico')) return redirect('/');
-        
-        return view('medics.schedule',compact('medic','office'));
+        $office = $this->officeRepo->findbyId($office_id);
+
+        if (!$medic->hasrole('medico')) {
+            return redirect('/');
+        }
+
+        return view('medics.schedule', compact('medic', 'office'));
     }
 
     /**
@@ -126,132 +115,103 @@ class MedicController extends Controller
     {
         $search = request()->all();
         $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
-        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
+        $search['date2'] = isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
         $appointments = $this->appointmentRepo->findAllByDoctorWithoutPagination($id, $search);
-        
+
         return $appointments;
-        
     }
 
-     /**
-     * Lista de todas las citas de un doctor sin paginar
-     */
+    /**
+    * Lista de todas las citas de un doctor sin paginar
+    */
     public function getSchedules($id)
     {
         $search = request()->all();
         $search['date1'] = isset($search['date1']) ? Carbon::parse($search['date1']) : '';
-        $search['date2'] =  isset($search['date2']) ? Carbon::parse($search['date2']) : '';
+        $search['date2'] = isset($search['date2']) ? Carbon::parse($search['date2']) : '';
 
         $schedules = $this->scheduleRepo->findAllByDoctorWithoutPagination($id, $search);
 
         return $schedules;
-        
     }
 
     public function assignOfficeFromNotifications($medic_id)
     {
-        
-         $medic = $this->medicRepo->findbyId($medic_id);
-         $office = auth()->user()->offices->first();
+        $medic = $this->medicRepo->findbyId($medic_id);
+        $office = auth()->user()->offices->first();
 
-         
-        if(!$medic->verifyOffice($office->id))
-        {
-             $office = $medic->verifiedOffices()->save($office);
+        if (!$medic->verifyOffice($office->id)) {
+            $office = $medic->verifiedOffices()->save($office);
 
-              if($medic->push_token){
+            if ($medic->push_token) {
                 $push = new PushNotification('fcm');
                 $response = $push->setMessage([
                     'notification' => [
-                            'title'=>'Asignado a Clínica',
-                            'body'=>'Haz sido aprobado como médico de '.  $office->name,
+                            'title' => 'Asignado a Clínica',
+                            'body' => 'Haz sido aprobado como médico de ' . $office->name,
                             'sound' => 'default'
                             ]
-                    
                     ])
                     ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
                     ->send()
                     ->getFeedback();
-                    
-                    Log::info('Mensaje Push code: '.$response->success);
-           }
 
+                Log::info('Mensaje Push code: ' . $response->success);
+            }
         }
 
-
-       
-
         return $medic;
-
-       
-
     }
 
     public function assignOffice($medic_id, $office_id)
     {
-        
-         $medic = $this->medicRepo->findbyId($medic_id);
-         $office = $this->officeRepo->findbyId($office_id);
-         
-        if(!$medic->verifyOffice($office->id))
-        {
-             $office = $medic->verifiedOffices()->save($office);
+        $medic = $this->medicRepo->findbyId($medic_id);
+        $office = $this->officeRepo->findbyId($office_id);
 
-              if($medic->push_token){
+        if (!$medic->verifyOffice($office->id)) {
+            $office = $medic->verifiedOffices()->save($office);
+
+            if ($medic->push_token) {
                 $push = new PushNotification('fcm');
                 $response = $push->setMessage([
                     'notification' => [
-                            'title'=>'Asignado a Clínica',
-                            'body'=>'Haz sido aprobado como médico de '.  $office->name,
+                            'title' => 'Asignado a Clínica',
+                            'body' => 'Haz sido aprobado como médico de ' . $office->name,
                             'sound' => 'default'
                             ]
-                    
                     ])
                     ->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
                     ->setDevicesToken($medic->push_token)
                     ->send()
                     ->getFeedback();
-                    
-                    Log::info('Mensaje Push code: '.$response->success);
-           }
 
+                Log::info('Mensaje Push code: ' . $response->success);
+            }
         }
 
-
-       
-
         return back();
-
-       
-
     }
+
     public function unassignOffice($medic_id, $office_id)
     {
-        \DB::table('verified_offices')->where('office_id',$office_id)->where('user_id',$medic_id)->delete();
-        
-         return back();
-
-    }
-    public function updateCommission($medic_id)
-    {
-         $this->validate(request(),[
-                'commission' => 'required|numeric',
-                
-            ]);
-
-        
-         $medic = $this->medicRepo->findbyId($medic_id);
-         $medic->commission = request('commission');
-         $medic->save();
-         
-       
+        \DB::table('verified_offices')->where('office_id', $office_id)->where('user_id', $medic_id)->delete();
 
         return back();
+    }
 
-       
+    public function updateCommission($medic_id)
+    {
+        $this->validate(request(), [
+                'commission' => 'required|numeric',
+            ]);
 
+        $medic = $this->medicRepo->findbyId($medic_id);
+        $medic->commission = request('commission');
+        $medic->save();
+
+        return back();
     }
 
     /**
@@ -260,15 +220,10 @@ class MedicController extends Controller
     public function getMedics()
     {
         $search['q'] = request('q');
-    
+
         $office = auth()->user()->offices->first();
-        $medics = $this->medicRepo->findAllByOfficeWithoutPaginate($office->id,$search);
+        $medics = $this->medicRepo->findAllByOfficeWithoutPaginate($office->id, $search);
 
-       
-        
         return $medics;
-        
     }
-
-   
 }

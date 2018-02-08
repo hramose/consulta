@@ -33,7 +33,7 @@
       
       </div>
       <div class="col-sm-7">
-      <input type="text" class="form-control" name="identificacion" placeholder="Numero de identificación" value="{{ isset($user->configFactura) ? $user->configFactura->identificacion : isset($user->ide) ? $user->ide : old('identificacion') }}" required >
+      <input type="text" class="form-control" name="identificacion" placeholder="Numero de identificación" value="{{ isset($user->configFactura) ? $user->configFactura->identificacion : (isset($user->ide) ? $user->ide : old('identificacion')) }}" required >
        @if ($errors->has('identificacion'))
           <span class="help-block">
               <strong>{{ $errors->first('identificacion') }}</strong>
@@ -172,7 +172,7 @@
     <label for="email" class="col-sm-2 control-label">Email</label>
 
     <div class="col-sm-10">
-      <input type="email" class="form-control" name="email" placeholder="Email" value="{{ isset($user->configFactura) ? $user->configFactura->email : isset($user->email) ? $user->email : old('email') }}" required>
+      <input type="email" class="form-control" name="email" placeholder="Email" value="{{ isset($user->configFactura) ? $user->configFactura->email : (isset($user->email) ? $user->email : old('email')) }}" required>
        @if ($errors->has('email'))
           <span class="help-block">
               <strong>{{ $errors->first('email') }}</strong>
@@ -239,6 +239,32 @@
         @if ($errors->has('pin_certificado'))
           <span class="help-block">
               <strong>{{ $errors->first('pin_certificado') }}</strong>
+          </span>
+      @endif
+    </div>
+
+</div>
+<div class="form-group">
+    <label for="certificado_test" class="col-sm-2 control-label">Certificado de pruebas .p12 </label>
+
+
+    <div class="col-sm-10">
+        <input type="file" class="form-control" name="certificado_test" placeholder="Certificado ATV">
+        
+        @if(isset($user) && existsCertTestFile($user))
+            <h4 class="label label-success">Certificado Instalado</h4>
+        @else 
+            <h4 class="label label-danger">Certificado No Instalado</h4>
+        @endif
+    </div>
+</div>
+<div class="form-group">
+    <label for="pin_certificado_test" class="col-sm-2 control-label">PIN certificado de pruebas</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" name="pin_certificado_test" placeholder="PIN del certificado" value="{{ isset($user->configFactura) ? $user->configFactura->pin_certificado_test : old('pin_certificado_test') }}">
+        @if ($errors->has('pin_certificado_test'))
+          <span class="help-block">
+              <strong>{{ $errors->first('pin_certificado_test') }}</strong>
           </span>
       @endif
     </div>
