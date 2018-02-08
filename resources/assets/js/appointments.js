@@ -881,14 +881,15 @@ $(function () {
         
           eventRender: function(event, element) {
             
-    
+            var horaStart = event.start.format("HH:mm");
+            var horaEnd = (event.end) ? event.end.format("HH:mm") : '';
 
             //element.append( "<span class='closeon fa fa-trash'></span>" );
             var office_id = (event.office) ? event.office.id : '';
             var office_name = (event.office) ? event.office.name : '';
 
       
-            var textTooltip = office_name +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm");
+            var textTooltip = office_name + ' De: ' + horaStart + ' a: ' + horaEnd;
 
       
 
