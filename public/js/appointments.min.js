@@ -888,7 +888,7 @@ $(function () {
             var office_name = (event.office) ? event.office.name : '';
 
       
-            var textTooltip = office_name +' De: ' + event.start.format("HH:mm") + ' a: ' + event.end.format("HH:mm");
+            var textTooltip = office_name + ' De: ' + (event.start) ? event.start.format("HH:mm") : '' + ' a: ' + (event.end) ? event.end.format("HH:mm") : '';
 
       
 
