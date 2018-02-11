@@ -127,6 +127,8 @@
           <a href="#" target="_blank" class="btn btn-default" onclick="printComprobante();"><i class="fa fa-print"></i> Imprimir</a>
            <a href="/medic/appointments" class="btn btn-success pull-right"><i class="fa fa-edit"></i> Regresar a Agenda
           </a>
+          <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica" class="btn btn-warning pull-right"><i class="fa fa-edit"></i> Configurar Factura Electronica
+          </a>
         </div>
       </div>
     </section>
