@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->double('commission')->default(0);
             $table->string('medic_code')->nullable();
             $table->string('ide')->nullable();
+            $table->tinyInteger('fe')->default(0); //utiliza factura electronica
             $table->rememberToken();
             $table->timestamps();
         });

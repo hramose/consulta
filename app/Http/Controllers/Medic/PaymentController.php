@@ -28,13 +28,15 @@ class PaymentController extends Controller
 
     public function create($id = null)
     {
+        $user = auth()->user();
+
         if ($id) {
             $incomes = Income::where('id', $id)->where('user_id', auth()->id())->where(function ($query) {
                 $query->where('type', 'M') // por cita atendida
                     ->orWhere('type', 'MS'); // por subscripcion de paquete
             })->where('paid', 0)->get();
         } else {
-            $incomes = auth()->user()->monthlyCharge();
+            $incomes = $user->monthlyCharge();
         }
 
         $amountTotal = $incomes->sum('amount');
@@ -46,8 +48,8 @@ class PaymentController extends Controller
         $purchaseCurrencyCode = env('CURRENCY_CODE');
         $purchaseVerification = getPurchaseVerfication($purchaseOperationNumber, $amount, $purchaseCurrencyCode);
 
-        $medic_name = auth()->user()->name;
-        $medic_email = auth()->user()->email;
+        $medic_name = $user->name;
+        $medic_email = $user->email;
 
         return view('medic.payments.create')->with(compact('incomes', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'incomesIds', 'description'));
     }

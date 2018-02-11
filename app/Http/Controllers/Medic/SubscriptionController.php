@@ -30,6 +30,9 @@ class SubscriptionController extends Controller
     public function buy($id)
     {
         $user = auth()->user();
+
+        if ($user->subscription) return Redirect('/');
+
         $newPlan = Plan::find($id);
 
         // $user->subscription()->create([
@@ -53,6 +56,11 @@ class SubscriptionController extends Controller
 
         $planBuyChange = 1; // 1 compra de plan
 
+        if (request('fe') == '1' || request('fe') == '0') { //actualizamos el campo si esta utilizando factura eletronica
+            $user->fe = request('fe');
+            $user->save();
+        }
+
         return view('medic.payments.buySubscription')->with(compact('newPlan', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'description', 'planBuyChange'));
     }
 
@@ -61,7 +69,11 @@ class SubscriptionController extends Controller
     */
     public function change($id)
     {
+       
         $user = auth()->user();
+
+        if(!$user->expiredSubscription()->count()) return Redirect('/');
+        
         $newPlan = Plan::find($id);
 
         $amountTotal = $newPlan->cost;
@@ -80,6 +92,11 @@ class SubscriptionController extends Controller
         $income = Income::where('user_id', auth()->id())->where(function ($query) {
             $query->Where('type', 'MS'); // por subscripcion de paquete
         })->where('paid', 0)->first();
+
+        if (request('fe') == '1' || request('fe') == '0') { //actualizamos el campo si esta utilizando factura eletronica
+            $user->fe = request('fe');
+            $user->save();
+        }
 
         return view('medic.payments.buySubscription')->with(compact('newPlan', 'purchaseOperationNumber', 'amount', 'amountTotal', 'purchaseOperationNumber', 'purchaseCurrencyCode', 'purchaseVerification', 'medic_name', 'medic_email', 'description', 'planBuyChange', 'income'));
     }

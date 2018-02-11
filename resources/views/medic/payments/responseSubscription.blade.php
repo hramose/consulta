@@ -17,7 +17,23 @@
 
             
 @endif
+   
     <section class="invoice">
+      @if(auth()->user()->fe && !auth()->user()->configFactura)  
+        <div class="row">
+          <div class="col-xs-12">
+          
+              <div class="callout callout-warning">
+                <h4>Información importante!</h4>
+
+                <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica"><b>Configurar Factura Electronica</b></a></p>
+              </div>
+              
+          
+          </div>
+          <!-- /.col -->
+        </div>
+       @endif
       <!-- title row -->
       <div class="row">
         <div class="col-xs-12">

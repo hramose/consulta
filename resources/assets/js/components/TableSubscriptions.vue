@@ -10,12 +10,32 @@
                   <th class="text-center">Acción</th>
                  
                 </tr>
-               
+
+                    <tr>
+                      <td colspan="3"><label for="fe">¿Desear utilizar Factura Electronica? </label><br>
+                      <div class="form-group radios-fe">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="fe" id="fe-no" value="0" v-model="fe">
+                            No
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="fe" id="fe-si" value="1" v-model="fe">
+                            Si
+                          </label>
+                        </div>
+                        
+                      </div>
+                      </td>
+                    </tr>
                     
                     <tr v-for="subscription in subscriptionsPackages">
                       
                       <td>{{ subscription.title }}</td>
                       <td>{{ subscription.quantity }} Meses</td>
+                     
                       <td>
                        <!-- <form method="POST" v-bind:action="getUrl(subscription)" class="form-horizontal">
                           <input type="hidden" name="_token" :value="token">
@@ -26,8 +46,10 @@
                       <a :href="(currentPlan == subscription.id) ? '#' : getUrl(subscription)" class="btn btn-success" :disabled="currentPlan == subscription.id">Seleccionar</a>
                        
                       </td>
+                       
                       
                     </tr>
+                   
               
                 
                
@@ -50,14 +72,15 @@
       data () {
         return {
           loader:false,
-          subscriptionsPackages:[]
+          subscriptionsPackages:[],
+          fe:0
         }
       },
   
       methods: {
            getUrl(subscription){
             
-          return (this.change && this.change == 1) ? '/medic/subscriptions/'+ subscription.id +'/change' :'/medic/subscriptions/'+ subscription.id +'/buy';
+          return (this.change && this.change == 1) ? '/medic/subscriptions/'+ subscription.id +'/change?fe='+ this.fe :'/medic/subscriptions/'+ subscription.id +'/buy?fe='+ this.fe;
 
         },
 

@@ -5,7 +5,7 @@
 @section('content')
 
 @include('layouts/partials/header-pages',['page'=>'Realizar de pago'])
-
+    
     <section class="invoice">
       <!-- title row -->
       <div class="row">
