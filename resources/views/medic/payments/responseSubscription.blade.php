@@ -26,7 +26,7 @@
               <div class="callout callout-warning">
                 <h4>Información importante!</h4>
 
-                <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica"><b>Configurar Factura Electronica</b></a></p>
+                <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electrónica"><b>Configurar Factura Electrónica</b></a></p>
               </div>
               
           
@@ -127,7 +127,7 @@
           <a href="#" target="_blank" class="btn btn-default" onclick="printComprobante();"><i class="fa fa-print"></i> Imprimir</a>
            <a href="/medic/appointments" class="btn btn-success pull-right"><i class="fa fa-edit"></i> Regresar a Agenda
           </a>
-          <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica" class="btn btn-danger pull-right"><i class="fa fa-edit"></i> Configurar Factura Electronica
+          <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica" class="btn btn-danger pull-right"><i class="fa fa-edit"></i> Configurar Factura Electrónica
           </a>
         </div>
       </div>

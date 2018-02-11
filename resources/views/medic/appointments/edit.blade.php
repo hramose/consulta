@@ -146,18 +146,24 @@
 					                    <p>No se puede facturar en consultas pasadas o finalizadas... para ver todas tus facturas, ingresa al modulo facturación</p>
 					                </div>
 
+								@elseif( auth()->user()->fe && (!auth()->user()->configFactura || !existsCertFile(auth()->user())) )
+									<div class="callout callout-danger">
+					                    <h4>Información importante!</h4>
+
+					                    <p>No tienes configurado los parametros para la factura electronica. Por favor configuralos para poder continuar. <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica"><b>Configurar Factura Electrónica</b></a></p>
+					                </div>
 								@else
 								<div class="row">
 									<div class="col-md-12">
 			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}"></invoice-form>
 			              			</div>
 			              		</div>
-			              		<div class="row">
+			              		<!-- <div class="row">
 									<div class="col-md-12">
 										<h3>Facturas del Día</h3>
 			              				<invoice-list :invoices="{{ auth()->user()->invoices()->with('clinic')->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
 			              			</div>
-			              		</div>
+			              		</div> -->
 			              		@endif
 			              		
 		              </div>
