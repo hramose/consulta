@@ -7,6 +7,11 @@ function money($amount, $symbol = '₡', $decimals = 2)
 {
     return (!$symbol) ? number_format($amount, $decimals, '.', ',') : $symbol . number_format($amount, $decimals, '.', ',');
 }
+function numberFE($amount, $decimals = 3)
+{
+    return  number_format($amount, $decimals, '.', '');
+}
+
 function number($amount)
 {
     return preg_replace('/([^0-9\\.])/i', '', $amount);

@@ -6,6 +6,7 @@ use App\FacturaElectronica\Factura;
 use GuzzleHttp\Client;
 use App\Repositories\FacturaElectronicaRepository;
 use App\Repositories\UserRepository;
+use App\Invoice;
 
 class FacturaElectronicaController extends Controller
 {
@@ -104,16 +105,17 @@ class FacturaElectronicaController extends Controller
 
         $fechaEmision = '';
         $numeroCedulaEmisor = $user->configFactura->identificacion;
-        $numeroCedulaReceptor = '5-360-224';
-        $tipoIdentificacionReceptor = '01';
+        //$numeroCedulaReceptor = '5-360-224';
+        // $tipoIdentificacionReceptor = '01';
         //$numeroCedulaResidente = '172400110315';
         $miNumeroConsecutivo = $consecutivo;
 
-        $factura1 = new Factura($numeroCedulaEmisor, $numeroCedulaReceptor, $miNumeroConsecutivo, $tipoIdentificacionReceptor, $fechaEmision);
+        $factura1 = new Factura($numeroCedulaEmisor, null, $miNumeroConsecutivo, $fechaEmision);
         // $factura2 = new Factura($numeroCedulaResidente, $numeroCedulaReceptor, $miNumeroConsecutivo);
 
         $fac = $factura1->getClave($fechaEmision);
-        $invoiceXML = $factura1->generateXML($user);
+        $invoiceGPS = Invoice::find(1);
+        $invoiceXML = $factura1->generateXML($user, $invoiceGPS);
         $signedinvoiceXML = $factura1->signXML($user, true);
 
         return $this->feRepo->sendHacienda($user, $signedinvoiceXML, $fac);

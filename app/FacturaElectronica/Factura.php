@@ -119,13 +119,12 @@ class Factura
      */
     public $establecimiento;
 
-    public function __construct($emisorId, $receptorId, $numeroConsecutivo, $tipoIdentificacionReceptor, $fechaEmision = '')
+    public function __construct($emisorId, $receptorId = null, $numeroConsecutivo, $fechaEmision = '')
     {
         $this->emisor = Common::validarId($emisorId);
-        $this->receptor = Common::validarId($receptorId);
+        $this->receptor = ($receptorId) ? Common::validarId($receptorId) : null;
         $this->numeroConsecutivo = $numeroConsecutivo;
         $this->fechaEmision = ($fechaEmision == '') ? date('dmy') : $fechaEmision;
-        $this->tipo_identificacion_receptor = $tipoIdentificacionReceptor;
     }
 
     /* METODOS PUBLICOS */
@@ -144,7 +143,7 @@ class Factura
         return $this;
     }
 
-    public function generateXML($user, $invoiceGPS = null)
+    public function generateXML($user, $invoiceGPS)
     {
         $facuraBase = Storage::get('facturaelectronica/factura.xml');
 
@@ -162,29 +161,112 @@ class Factura
         $facturaXML->Emisor->Ubicacion->Distrito = $user->configFactura->distrito;//'03'; //guayabo mogote
         //$facturaXML->Emisor->Ubicacion->Barrio = '';
         $facturaXML->Emisor->Ubicacion->OtrasSenas = $user->configFactura->otras_senas;
-        $facturaXML->Emisor->Telefono->CodigoPais = $user->configFactura->codigo_pais_tel;
-        $facturaXML->Emisor->Telefono->NumTelefono = $user->configFactura->telefono;
+
+        if ($user->configFactura->codigo_pais_tel && $user->configFactura->telefono) {
+            $facturaXML->Emisor->Telefono->CodigoPais = $user->configFactura->codigo_pais_tel;
+            $facturaXML->Emisor->Telefono->NumTelefono = $user->configFactura->telefono;
+        } else {
+            unset($facturaXML->Emisor->Telefono);
+        }
+        if ($user->configFactura->codigo_pais_fax && $user->configFactura->fax) {
+            $facturaXML->Emisor->Fax->CodigoPais = $user->configFactura->codigo_pais_fax;
+            $facturaXML->Emisor->Fax->NumTelefono = $user->configFactura->fax;
+        } else {
+            unset($facturaXML->Emisor->Fax);
+        }
+
         $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
 
-        $facturaXML->Receptor->Nombre = 'Alonso';
-        $facturaXML->Receptor->Identificacion->Tipo = '01';
-        $facturaXML->Receptor->Identificacion->Numero = '503600224';
-        $facturaXML->Receptor->NombreComercial = '';
-        $facturaXML->Receptor->Ubicacion->Provincia = '5';
-        $facturaXML->Receptor->Ubicacion->Canton = '01';
-        $facturaXML->Receptor->Ubicacion->Distrito = '01';
-        //$facturaXML->Receptor->Ubicacion->Barrio = '';
-        $facturaXML->Receptor->Ubicacion->OtrasSenas = 'test';
-        $facturaXML->Receptor->Telefono->CodigoPais = 506;
-        $facturaXML->Receptor->Telefono->NumTelefono = 89679098;
-        $facturaXML->Receptor->CorreoElectronico = 'alonso@avotz.com';
+        $facturaXML->Receptor->Nombre = $invoiceGPS->client_name;
+        $facturaXML->CondicionVenta = '01'; //contado
+        $facturaXML->MedioPago = '01'; //efectivo 02 tarjeta
+
+        //$facturaXML->DetalleServicio;
+
+        foreach ($invoiceGPS->lines as $key => $detail) {
+            $detalle = $facturaXML->DetalleServicio->addChild('LineaDetalle');
+            $detalle->addChild('NumeroLinea', $key + 1);
+            $codigo = $detalle->addChild('Codigo');
+            $codigo->addChild('Tipo', '04');
+            $codigo->addChild('Codigo', $detail->service_id);
+            $detalle->addChild('Cantidad', numberFE(1, $decimals = 3));
+            $detalle->addChild('UnidadMedida', 'Unid');
+            $detalle->addChild('UnidadMedidaComercial', '');
+            $detalle->addChild('Detalle', $detail->service);
+            $detalle->addChild('PrecioUnitario', numberFE($detail->amount, $decimals = 5));
+            $detalle->addChild('MontoTotal', numberFE($detail->total_line, $decimals = 5));
+            //$detalle->addChild('NaturalezaDescuento', '');
+            $detalle->addChild('SubTotal', numberFE($detail->total_line, $decimals = 5));
+            $detalle->addChild('MontoTotalLinea', numberFE($detail->total_line, $decimals = 5));
+        }
+
+        $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
+        $facturaXML->ResumenFactura->TipoCambio = '1.00000';
+        $facturaXML->ResumenFactura->TotalServGravados = '0.00000';
+        $facturaXML->ResumenFactura->TotalServExentos = numberFE($invoiceGPS->subtotal, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalGravado = '0.00000';
+        $facturaXML->ResumenFactura->TotalExento = numberFE($invoiceGPS->subtotal, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalVenta = numberFE($invoiceGPS->total, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalDescuentos = '0.00000';
+        $facturaXML->ResumenFactura->TotalVentaNeta = numberFE($invoiceGPS->total, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalImpuesto = '0.00000';
+        $facturaXML->ResumenFactura->TotalComprobante = numberFE($invoiceGPS->total, $decimals = 5);
+
+        $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
+        $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
+        $facturaXML->Otros->OtroTexto = 'Id y Consecutivo Sistema Interno: ' . $invoiceGPS->id . '-' . $invoiceGPS->consecutivo;
+
+        Storage::put('facturaelectronica/' . $user->id . '/file.xml', $facturaXML->asXML());
+
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/file.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/file.xml');
+        } else {
+            dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
+        }
+    }
+
+    public function generateTestXML($user)
+    {
+        $facuraBase = Storage::get('facturaelectronica/factura.xml');
+
+        $facturaXML = new \SimpleXMLElement($facuraBase);
+        $facturaXML->Clave = $this->clave;
+        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo); //$this->numeroConsecutivo;
+        $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
+
+        $facturaXML->Emisor->Nombre = $user->configFactura->nombre;
+        $facturaXML->Emisor->Identificacion->Tipo = $user->configFactura->tipo_identificacion;
+        $facturaXML->Emisor->Identificacion->Numero = $user->configFactura->identificacion;//'205530597';
+        $facturaXML->Emisor->NombreComercial = $user->configFactura->nombre_comercial;
+        $facturaXML->Emisor->Ubicacion->Provincia = $user->configFactura->provincia;
+        $facturaXML->Emisor->Ubicacion->Canton = $user->configFactura->canton; //bagaces
+        $facturaXML->Emisor->Ubicacion->Distrito = $user->configFactura->distrito;//'03'; //guayabo mogote
+        //$facturaXML->Emisor->Ubicacion->Barrio = '';
+        $facturaXML->Emisor->Ubicacion->OtrasSenas = $user->configFactura->otras_senas;
+        //$facturaXML->Emisor->Telefono->CodigoPais = $user->configFactura->codigo_pais_tel;
+        // $facturaXML->Emisor->Telefono->NumTelefono = $user->configFactura->telefono;
+        $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
+
+        $facturaXML->Receptor->Nombre = 'Alo';
+
+        // $facturaXML->Receptor->Identificacion->Tipo = '01';
+        // $facturaXML->Receptor->Identificacion->Numero = '503600224';
+        // $facturaXML->Receptor->NombreComercial = '';
+        // $facturaXML->Receptor->Ubicacion->Provincia = '5';
+        // $facturaXML->Receptor->Ubicacion->Canton = '01';
+        // $facturaXML->Receptor->Ubicacion->Distrito = '01';
+        // //$facturaXML->Receptor->Ubicacion->Barrio = '';
+        // $facturaXML->Receptor->Ubicacion->OtrasSenas = 'test';
+        // $facturaXML->Receptor->Telefono->CodigoPais = 506;
+        // $facturaXML->Receptor->Telefono->NumTelefono = 89679098;
+        // $facturaXML->Receptor->CorreoElectronico = 'alonso@avotz.com';
 
         $facturaXML->CondicionVenta = '01';
-        $facturaXML->PlazoCredito = '';
+        //$facturaXML->PlazoCredito = '';
         $facturaXML->MedioPago = '01';
 
         //$facturaXML->DetalleServicio;
-        //foreach ($facturaXML->DetalleServicio->LineaDetalle as $detalle) {
+
         $detalle = $facturaXML->DetalleServicio->addChild('LineaDetalle');
         $detalle->addChild('NumeroLinea', '1');
         $codigo = $detalle->addChild('Codigo');
@@ -196,17 +278,14 @@ class Factura
         $detalle->addChild('Detalle', 'test');
         $detalle->addChild('PrecioUnitario', '1000.00000');
         $detalle->addChild('MontoTotal', '1000.00000');
-        $detalle->addChild('NaturalezaDescuento', '');
+        //$detalle->addChild('NaturalezaDescuento', '');
         $detalle->addChild('SubTotal', '1000.00000');
         $detalle->addChild('MontoTotalLinea', '1000.00000');
 
-        // }
         $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
         $facturaXML->ResumenFactura->TipoCambio = '1.00000';
         $facturaXML->ResumenFactura->TotalServGravados = '0.00000';
         $facturaXML->ResumenFactura->TotalServExentos = '1000.00000';
-        $facturaXML->ResumenFactura->TotalMercanciasGravadas = '0.00000';
-        $facturaXML->ResumenFactura->TotalMercanciasExentas = '0.00000';
         $facturaXML->ResumenFactura->TotalGravado = '0.00000';
         $facturaXML->ResumenFactura->TotalExento = '1000.00000';
         $facturaXML->ResumenFactura->TotalVenta = '1000.00000';
@@ -216,7 +295,7 @@ class Factura
         $facturaXML->ResumenFactura->TotalComprobante = '1000.00000';
 
         $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
-        $facturaXML->Normativa->FechaResolucion = '26-01-2018 13:22:22';
+        $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
         $facturaXML->Otros->OtroTexto = '';
 
         Storage::put('facturaelectronica/' . $user->id . '/file.xml', $facturaXML->asXML());

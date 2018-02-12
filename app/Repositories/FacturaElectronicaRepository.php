@@ -108,10 +108,10 @@ class FacturaElectronicaRepository extends DbRepository
                 'tipoIdentificacion' => $user->configFactura->tipo_identificacion,
                 'numeroIdentificacion' => $encabezadoFactura->emisor
             ],
-            'receptor' => [
-                'tipoIdentificacion' => $encabezadoFactura->tipo_identificacion_receptor,
-                'numeroIdentificacion' => $encabezadoFactura->receptor
-            ],
+            // 'receptor' => [
+            //     'tipoIdentificacion' => $encabezadoFactura->tipo_identificacion_receptor,
+            //     'numeroIdentificacion' => $encabezadoFactura->receptor
+            // ],
             'callbackUrl' => env('APP_URL') . '/factura/response',
             'comprobanteXml' => $invoice64String
         ];
