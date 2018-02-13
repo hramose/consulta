@@ -60,12 +60,12 @@ class Common
      * @return string
      *
      */
-    public static function generarClave($fechaEmision, $numeroIdentificacion, $tipoDocumento, $consecutivo, $situacionComprobante = '1', $codigoSeguridad = '99999999')
+    public static function generarClave($fechaEmision, $numeroIdentificacion, $tipoDocumento, $consecutivo, $situacionComprobante = '1', $codigoSeguridad = '99999999', $establecimiento = '1', $pos = '1')
     {
         $clave = self::CODIGO_PAIS;
         $clave .= str_replace('-', '', $fechaEmision);
         $clave .= $numeroIdentificacion;
-        $clave .= self::generarConsecutivo($tipoDocumento, $consecutivo);
+        $clave .= self::generarConsecutivo($tipoDocumento, $consecutivo, $establecimiento, $pos);
         $clave .= $situacionComprobante;
         $clave .= $codigoSeguridad;
 

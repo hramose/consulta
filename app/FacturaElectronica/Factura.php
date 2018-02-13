@@ -118,6 +118,7 @@ class Factura
      * @var string $establecimiento
      */
     public $establecimiento;
+    public $pos;
 
     public function __construct($emisorId, $receptorId = null, $numeroConsecutivo, $fechaEmision = '')
     {
@@ -137,9 +138,12 @@ class Factura
      * @param string $fechaComprobante Fecha en que se generó la factura electrónica (dd-mm-yyyy)
      * @return stting
      */
-    public function getClave()
+    public function getClave($establecimiento = '1', $pos = '1')
     {
-        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo, '1', getUniqueNumber(8));
+        $this->establecimiento = $establecimiento;
+        $this->pos = $pos;
+        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo, '1', getUniqueNumber(8), $this->establecimiento, $this->pos);
+        
         return $this;
     }
 
@@ -149,7 +153,7 @@ class Factura
 
         $facturaXML = new \SimpleXMLElement($facuraBase);
         $facturaXML->Clave = $this->clave;
-        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo); //$this->numeroConsecutivo;
+        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo,$this->establecimiento, $this->pos); //$this->numeroConsecutivo;
         $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
 
         $facturaXML->Emisor->Nombre = $user->configFactura->nombre;

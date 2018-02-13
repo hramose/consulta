@@ -145,9 +145,21 @@ class PaymentController extends Controller
 
                     $medic = $income->medic;
 
-                    \DB::table('incomes')
-                        ->whereIn('id', $incomesIds)
-                        ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
+                    $subscription = auth()->user()->subscription()->first();
+                    $plan = Plan::find($subscription->plan_id);
+
+                    foreach ($incomes as $income) {
+                        if($income->type == 'MS'){
+                           
+                            $subscription->ends_at = Carbon::now()->addMonths($plan->quantity);
+                            $subscription->save();
+                        }
+                        $income->paid = 1;
+                        $income->save();
+                    }
+                    // \DB::table('incomes')
+                    //     ->whereIn('id', $incomesIds)
+                    //     ->update(['paid' => 1, 'purchase_operation_number' => $purchaseOperationNumber]);
 
                     // informamos via email su confirmacion de pago
                     try {
