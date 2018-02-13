@@ -127,7 +127,8 @@ class FacturaElectronicaRepository extends DbRepository
             $content = $body->getContents();
             $result = json_decode($content);
 
-            if (!$result) {
+            return $result;
+            /*if (!$result) {
                 $headers = [
                             'authorization' => 'Bearer ' . $authToken->access_token,
                             'content-type' => 'application/json'
@@ -141,7 +142,7 @@ class FacturaElectronicaRepository extends DbRepository
                 return json_encode($result);
             } else {
                 return 'Ha ocurrido un error al enviar la factura a hacienda';
-            }
+            }*/
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return \GuzzleHttp\Psr7\str($e->getResponse());
         }
@@ -163,7 +164,7 @@ class FacturaElectronicaRepository extends DbRepository
             $content = $body->getContents();
             $result = json_decode($content);
 
-            return json_encode($this->decodeRespuestaXML($result->{'respuesta-xml'}));
+            return $result;//json_encode($this->decodeRespuestaXML($result->{'respuesta-xml'}));
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return \GuzzleHttp\Psr7\str($e->getResponse());
         }

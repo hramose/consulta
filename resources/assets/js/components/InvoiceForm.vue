@@ -19,7 +19,50 @@
             </div>
           </div>
           <div class="invoice-summary" v-show="servicesToInvoice.length">
-              
+               <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Factura</h3>
+
+                  <div class="box-tools pull-right">
+                    <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                     <div class="form-group">
+                       <label for="service" class="col-sm-2 control-label">A nombre de:</label>
+
+                        <div class="col-sm-5">
+                          <input type="text" v-model="client_name" name="client_name" class="form-control">
+                          <form-error v-if="errors.client_name" :errors="errors" style="float:right;">
+                              {{ errors.client_name[0] }}
+                          </form-error>
+                        </div>
+                          <div class="col-sm-5">
+                          <input type="text" v-model="client_email" name="client_email" class="form-control" placeholder="Correo electrónico">
+                          <form-error v-if="errors.client_email" :errors="errors" style="float:right;">
+                              {{ errors.client_email[0] }}
+                          </form-error>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                       <label for="service" class="col-sm-2 control-label">Medio de pago:</label>
+
+                        <div class="col-sm-10">
+                          <select name="medio_pago" id="medio_pago" v-model="medio_pago" class="form-control">
+                            <option value="01">Efectivo</option>
+                            <option value="02">Tarjeta</option>
+                          </select>
+                          <form-error v-if="errors.medio_pago" :errors="errors" style="float:right;">
+                              {{ errors.medio_pago[0] }}
+                          </form-error>
+                        </div>
+                         
+                     </div>
+                </div>
+               </div>
               <div class="box box-info">
                 <div class="box-header with-border">
                   <h3 class="box-title">Resumen de Factura</h3>
@@ -47,7 +90,7 @@
                       <tr v-for="item in servicesToInvoice">
                         <td>1</td>
                         <td>{{ item.name }}</td>
-                        <td>₡{{ money(item.amount) }}</span></td>
+                        <td>₡{{ money(item.amount) }}</td>
                         <td>
                           ₡{{  money(parseFloat(item.amount) * 1) }}
                         </td>
@@ -182,7 +225,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a'],
+        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a','nombre_cliente','correo_cliente'],
         data () {
 	        return {
 	 
@@ -198,7 +241,10 @@
             updateService:false,
             service:null,
             invoiceHere: false,
-            bill_to:'M'
+            bill_to:'M',
+            client_name:'',
+            client_email:'',
+            medio_pago:'01'
            
 	         
 	        
@@ -420,7 +466,7 @@
                 }
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type}).then((response) => {
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type, client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago}).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
@@ -456,7 +502,9 @@
        },
        created(){
             //if(this.office_type == 'Consultorio Independiente')
-               this.bill_to = this.facturar_a
+               this.bill_to = this.facturar_a;
+               this.client_name = this.nombre_cliente
+               this.client_email = this.correo_cliente
 
        	    console.log('Component ready. InvoiceForm');
 

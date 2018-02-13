@@ -177,9 +177,20 @@ class Factura
 
         $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
 
-        $facturaXML->Receptor->Nombre = $invoiceGPS->client_name;
+        if ($invoiceGPS->client_name) {
+            $facturaXML->Receptor->Nombre = $invoiceGPS->client_name;
+
+            if ($invoiceGPS->client_email) {
+                $facturaXML->Receptor->CorreoElectronico = $invoiceGPS->client_email;
+            } else {
+                unset($facturaXML->Receptor->CorreoElectronico);
+            }
+        } else {
+            unset($facturaXML->Receptor);
+        }
+
         $facturaXML->CondicionVenta = '01'; //contado
-        $facturaXML->MedioPago = '01'; //efectivo 02 tarjeta
+        $facturaXML->MedioPago = $invoiceGPS->medio_pago; //01 efectivo 02 tarjeta
 
         //$facturaXML->DetalleServicio;
 
@@ -206,7 +217,7 @@ class Factura
         $facturaXML->ResumenFactura->TotalServExentos = numberFE($invoiceGPS->subtotal, $decimals = 5);
         $facturaXML->ResumenFactura->TotalGravado = '0.00000';
         $facturaXML->ResumenFactura->TotalExento = numberFE($invoiceGPS->subtotal, $decimals = 5);
-        $facturaXML->ResumenFactura->TotalVenta = numberFE($invoiceGPS->total, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalVenta = numberFE($invoiceGPS->subtotal, $decimals = 5);
         $facturaXML->ResumenFactura->TotalDescuentos = '0.00000';
         $facturaXML->ResumenFactura->TotalVentaNeta = numberFE($invoiceGPS->total, $decimals = 5);
         $facturaXML->ResumenFactura->TotalImpuesto = '0.00000';
@@ -248,7 +259,7 @@ class Factura
         $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
 
         $facturaXML->Receptor->Nombre = 'Alo';
-
+        $facturaXML->Receptor->CorreoElectronico = 'Alo@test.com';
         // $facturaXML->Receptor->Identificacion->Tipo = '01';
         // $facturaXML->Receptor->Identificacion->Numero = '503600224';
         // $facturaXML->Receptor->NombreComercial = '';

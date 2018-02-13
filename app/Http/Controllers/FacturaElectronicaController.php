@@ -142,5 +142,8 @@ class FacturaElectronicaController extends Controller
     public function haciendaResponse()
     {
         \Log::info('results of Hacienda: ' . json_encode(request()->all()));
+
+        //actualizar el status_fe del invoice
+        //mostrar mensaje de recibido por parte de hacieda
     }
 }

@@ -5,10 +5,27 @@
 @endsection
 @section('content')
  <section class="content">
-	
+ 
 		 <!-- Main content -->
     <section class="invoice">
       <!-- title row -->
+      @if($invoice->fe && $invoice->status_fe != 'aceptado')  
+        <div class="row">
+          <div class="col-xs-12">
+          
+              <div class="callout callout-warning">
+                <h4>Información importante!</h4>
+
+                <p>Estado: {{ $invoice->status_fe }}. Parece que la factura aun no ha sido aprobada por Hacienda. Puedes verificar desde este enlace por que no ha sido aprobada <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura"><b>Comprobar estado de factura</b></a>
+              
+              </p>
+              </div>
+              
+          
+          </div>
+          <!-- /.col -->
+        </div>
+       @endif
         <!-- info row -->
         <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
@@ -165,18 +182,54 @@
     </section>
     <!-- /.content -->
 		
-
- 
+@if($invoice->fe)
+    @include('medic/invoices/partials/status-hacienda-modal')
+@endif
 </section>
  @endsection
  @section('scripts')
+ <script src="/js/bootstrap.min.js"></script>
  <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
  <script>
+
+   $('#modalRespHacienda').on('shown.bs.modal', function (event) {
+     
+     // var button = $(event.relatedTarget) // Button that triggered the modal
+      var invoiceId = $(this).find('.modal-body').attr('data-invoice') // Extract info from data-* attributes
+     
+       $.ajax({
+          type: 'GET',
+          url: '/medic/invoices/'+ invoiceId +'/recepcion',
+          data: {_token: $('meta[name="csrf-token"]').content},
+          success: function (resp) {
+            
+            var respHacienda = JSON.parse(resp.resp_hacienda);
+            $("#resp-clave").text(respHacienda.Clave)
+            $("#resp-emisor").text(respHacienda.NombreEmisor)
+            $("#resp-receptor").text(respHacienda.NombreReceptor)
+            $("#resp-mensaje").text(respHacienda.Mensaje)
+            $("#resp-detalle").text(respHacienda.DetalleMensaje)
+            
+          },
+          error: function () {
+            console.log('error finalizando citan');
+
+          }
+
+        });
+     
+    });
 
  	 function printSummary() {
             window.print();
         }
-        window.onload = printSummary;
+         @if($invoice->fe)
+            @if($invoice->status_fe == 'aceptado')
+              window.onload = printSummary;
+            @endif
+         @else 
+            window.onload = printSummary;
+         @endif
 
      $('.btn-finish-appointment').on('click', function (e) {
         $.ajax({

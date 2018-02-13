@@ -146,7 +146,7 @@
 					                    <p>No se puede facturar en consultas pasadas o finalizadas... para ver todas tus facturas, ingresa al modulo facturación</p>
 					                </div>
 
-								@elseif( auth()->user()->fe && (!auth()->user()->configFactura || !existsCertFile(auth()->user())) )
+								@elseif( auth()->user()->fe && (!auth()->user()->configFactura || !existsCertTestFile(auth()->user())) )
 									<div class="callout callout-danger">
 					                    <h4>Información importante!</h4>
 
@@ -155,7 +155,7 @@
 								@else
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}"></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}" nombre_cliente="{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}" correo_cliente="{{ $appointment->patient->email }}"></invoice-form>
 			              			</div>
 			              		</div>
 			              		<!-- <div class="row">

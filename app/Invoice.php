@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    
     protected $fillable = [
-        'client_name','discount','subtotal','total','status','pay_with','change'
+        'client_name', 'client_email', 'discount', 'subtotal', 'total', 'status', 'pay_with', 'change', 'clave_fe', 'status_fe', 'medio_pago', 'resp_hacienda', 'fe'
     ];
 
     public function lines()
@@ -18,20 +17,21 @@ class Invoice extends Model
 
     public function medic()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-     public function clinic()
+
+    public function clinic()
     {
-        return $this->belongsTo(Office::class,'office_id');
+        return $this->belongsTo(Office::class, 'office_id');
     }
 
     public function appointment()
     {
         return $this->belongsTo(Appointment::class);
     }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
     }
-    
 }

@@ -176,6 +176,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
     Route::get('/invoices/{id}/print', 'Medic\InvoiceController@print');
     Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
+    Route::get('/invoices/{id}/recepcion', 'Medic\InvoiceController@recepcion');
 
     Route::resource('invoices', 'Medic\InvoiceController');
 
