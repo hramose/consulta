@@ -16,7 +16,7 @@
               <div class="callout callout-warning">
                 <h4>Información importante!</h4>
 
-                <p>Estado: {{ $invoice->status_fe }}. Parece que la factura aun no ha sido aprobada por Hacienda. Puedes verificar desde este enlace por que no ha sido aprobada <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura"><b>Comprobar estado de factura</b></a>
+                <p>Estado: {{ $invoice->status_fe }}. Parece que la factura aun no ha sido aprobada por Hacienda. Puedes verificar desde este enlace por que no ha sido aprobada <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado de factura</b></a>
               
               </p>
               </div>
@@ -44,24 +44,31 @@
           {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-          @if($invoice->clinic->type == 'Consultorio Independiente')
-              @if($invoice->clinic->bill_to == 'C')
-                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
-                Nombre: {{ $invoice->clinic->ide_name }}
-              @else 
-                Ced: {{ auth()->user()->ide }}<br>
-                Nombre: {{ $invoice->medic->name }}
+          @if($invoice->fe)
+            <b>Ced:</b> {{ $invoice->medic->configFactura->identificacion }}<br>
+            <b>Nombre:</b> {{ $invoice->medic->configFactura->nombre }}
+          @else 
+               @if($invoice->clinic->type == 'Consultorio Independiente')
+                  @if($invoice->clinic->bill_to == 'C')
+                   <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
+                   <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
+                  @else 
+                   <b>Ced:</b> {{ $invoice->medic->ide }}<br>
+                    <b>Nombre:</b> {{ $invoice->medic->name }}
+                  @endif
+              @else
+                  @if($invoice->bill_to == 'C')
+                   <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
+                   <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
+                  @else 
+                    <b>Ced:</b> {{ $invoice->medic->ide }}<br>
+                    <b>Nombre:</b> {{ $invoice->medic->name }}
+                  @endif
+                  
               @endif
-          @else
-              @if($invoice->bill_to == 'C')
-                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
-                Nombre: {{ $invoice->clinic->ide_name }}
-              @else 
-                Ced: {{ auth()->user()->ide }}<br>
-                Nombre: {{ $invoice->medic->name }}
-              @endif
-              
+
           @endif
+         
           </address>
           
         </div>
@@ -194,8 +201,8 @@
 
    $('#modalRespHacienda').on('shown.bs.modal', function (event) {
      
-     // var button = $(event.relatedTarget) // Button that triggered the modal
-      var invoiceId = $(this).find('.modal-body').attr('data-invoice') // Extract info from data-* attributes
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var invoiceId = button.attr('data-invoice') // Extract info from data-* attributes
      
        $.ajax({
           type: 'GET',
@@ -223,13 +230,9 @@
  	 function printSummary() {
             window.print();
         }
-         @if($invoice->fe)
-            @if($invoice->status_fe == 'aceptado')
-              window.onload = printSummary;
-            @endif
-         @else 
-            window.onload = printSummary;
-         @endif
+        
+        window.onload = printSummary;
+        
 
      $('.btn-finish-appointment').on('click', function (e) {
         $.ajax({

@@ -490,14 +490,14 @@ $(function () {
 
 
      function crud(method, url, data, revertFunc) {
-      $('body').addClass('loading');
+       $('.loader').show();
      
       $.ajax({
             type: method || 'POST',
             url: url,
             data: data,
             success: function (resp) {
-              $('body').removeClass('loading');
+              $('.loader').hide();
               
               if(method == "POST")
               {
@@ -711,7 +711,7 @@ $(function () {
           
           var id = modalReminder.find('.modal-body').attr('data-appointment');
           var reminder_time = modalReminder.find('#reminder_time').val();
-          $('body').addClass('loading');
+          $('.loader').show();
 
            $.ajax({
               type: 'POST',
@@ -719,13 +719,13 @@ $(function () {
               data: { reminder_time : reminder_time },
               success: function (resp) {
 
-                $('body').removeClass('loading');
+                $('.loader').hide();
 
                 modalReminder.modal('hide');
               },
               error: function () {
                 
-                $('body').removeClass('loading');
+                $('.loader').hide();
 
                 console.log('error saving reminder');
                 

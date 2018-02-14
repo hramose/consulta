@@ -375,6 +375,7 @@
         <div class="col-md-9">
           <div class="box box-default box-calendar medico-calendar">
             <div class="box-body no-padding">
+               @include('layouts/partials/loading')
               <!-- THE CALENDAR -->
 
               <div id="calendar" data-slotDuration="{{ auth()->user()->settings->slotDuration }}" data-minTime="{{ auth()->user()->settings->minTime }}" data-maxTime="{{ auth()->user()->settings->maxTime }}" data-freeDays="{{ auth()->user()->settings->freeDays }}" data-schedule="{{ $wizard }}"></div>

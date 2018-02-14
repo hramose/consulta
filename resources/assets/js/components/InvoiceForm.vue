@@ -3,30 +3,12 @@
   
       
       <div class="form-invoice-service" v-show="!newService && !updateService">
-          <div class="form-group">
-            <label for="service" class="col-sm-2 control-label">Servicio</label>
-
-            <div class="col-sm-5">
-               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el servicio a facturar..." label="name_price" :on-change="selectService" :value.sync="service"></v-select>
-              <form-error v-if="errors.service" :errors="errors" style="float:right;">
-                  {{ errors.service[0] }}
-              </form-error>
-            </div>
-            <div class="col-sm-5">
-                <button type="submit" class="btn btn-default" @click="addToInvoice()">Agregar a Factura</button>
-                <button type="submit" class="btn btn-default" @click="editService()" v-show="service">Modificar Servicio</button>
-                <button type="submit" class="btn btn-default" @click="createService()">Crear Servicio</button>
-            </div>
-          </div>
-          <div class="invoice-summary" v-show="servicesToInvoice.length">
-               <div class="box box-info">
+          <div class="box box-info">
                 <div class="box-header with-border">
                   <h3 class="box-title">Factura</h3>
 
                   <div class="box-tools pull-right">
-                    <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+                    
                   </div>
                 </div>
                 <!-- /.box-header -->
@@ -63,9 +45,27 @@
                      </div>
                 </div>
                </div>
+
+          <div class="form-group">
+            <label for="service" class="col-sm-2 control-label">Servicio</label>
+
+            <div class="col-sm-5">
+               <v-select :debounce="250" :on-search="getServices"  :options="services" placeholder="Selecciona el servicio a facturar..." label="name_price" :on-change="selectService" :value.sync="service"></v-select>
+              <form-error v-if="errors.service" :errors="errors" style="float:right;">
+                  {{ errors.service[0] }}
+              </form-error>
+            </div>
+            <div class="col-sm-5">
+                <button type="submit" class="btn btn-default" @click="addToInvoice()">Agregar a Factura</button>
+                <button type="submit" class="btn btn-default" @click="editService()" v-show="service">Modificar Servicio</button>
+                <button type="submit" class="btn btn-default" @click="createService()">Crear Servicio</button>
+            </div>
+          </div>
+          <div class="invoice-summary" v-show="servicesToInvoice.length">
+               
               <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Resumen de Factura</h3>
+                  <h3 class="box-title">Detalle de Factura</h3>
 
                   <div class="box-tools pull-right">
                     <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -106,7 +106,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    Total de Factura: ₡{{  money(getTotalInvoice()) }}
+                    <h2 class="pull-right"> Total de Factura: ₡{{  money(getTotalInvoice()) }}</h2> 
                 </div>
                  
               </div>
@@ -114,15 +114,18 @@
 
 
            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
-              <button type="submit" class="btn btn-success" @click="invoiceHere = true">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+            <div class="col-sm-12">
+              <div class="pull-right">
+                  <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
+                  <button type="submit" class="btn btn-success" @click="invoiceHere = true">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+              </div>
+             
             </div>
           </div>
           <div v-show="invoiceHere">
               <div class="box-footer clearfix" >
                  
-                  <div class="row" v-show="office_type == 'Clínica Privada'">
+                  <div class="row" v-show="!fe && office_type == 'Clínica Privada'">
                     <div class="col-md-6">
                       <div class="">
                         <div class="radio radio-facturar">
@@ -174,8 +177,11 @@
                 </div>
                 <!-- /.box-footer -->
                 <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                  <div class="col-sm-12">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                    </div>
+                    
                   </div>
                 </div>
           </div>
@@ -225,7 +231,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a','nombre_cliente','correo_cliente'],
+        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a','nombre_cliente','correo_cliente','usa_fe'],
         data () {
 	        return {
 	 
@@ -244,7 +250,8 @@
             bill_to:'M',
             client_name:'',
             client_email:'',
-            medio_pago:'01'
+            medio_pago:'01',
+            fe:0
            
 	         
 	        
@@ -450,6 +457,7 @@
                 a.click();
             },
 	          invoice(here){
+                let $vm = this;
 
                 if(this.loader)
                    return
@@ -480,7 +488,28 @@
                           this.loader = false;
 
                           if(here){
-                            window.location.href = "/medic/invoices/"+response.data.id+"/print";
+
+                            swal({
+                              title: 'Factura Guardada',
+                              text: "¿Deseas imprimir la factura?",
+                              type: 'success',
+                              showCancelButton: true,
+                              confirmButtonColor: '#d33',
+                              cancelButtonColor: '#3085d6',
+                              confirmButtonText: 'Si',
+                              cancelButtonText: 'No'
+                            }).then(function () {
+
+                              window.location.href = "/medic/invoices/"+response.data.id+"/print";
+
+                            }, function(dismiss) {
+                              
+                            });
+            
+
+
+
+                            //window.location.href = "/medic/invoices/"+response.data.id+"/print";
     
                             //this.openInNewTab("/medic/invoices/"+response.data.id+"/print");
                           }
@@ -505,6 +534,7 @@
                this.bill_to = this.facturar_a;
                this.client_name = this.nombre_cliente
                this.client_email = this.correo_cliente
+               this.fe = this.usa_fe
 
        	    console.log('Component ready. InvoiceForm');
 

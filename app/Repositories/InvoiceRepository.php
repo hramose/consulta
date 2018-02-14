@@ -18,7 +18,7 @@ class InvoiceRepository extends DbRepository
         $this->model = $model;
         $this->limit = 10;
         $this->userRepo = $userRepo;
-        $this->feRepo = new FacturaElectronicaRepository('test');
+        $this->feRepo = new FacturaElectronicaRepository(env('FE_ENV'));
     }
 
     /**
@@ -33,10 +33,12 @@ class InvoiceRepository extends DbRepository
         $invoice->appointment_id = $data['appointment_id'];
         $invoice->office_id = $data['office_id'];
         $invoice->patient_id = $data['patient_id'];
-        $invoice->bill_to = $data['bill_to'];
+        $invoice->bill_to = ($user->fe) ? 'M' : $data['bill_to'];
         $invoice->office_type = $data['office_type'];
 
-        if ($data['office_type'] == 'Consultorio Independiente') {
+         $consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
+
+        /*if ($data['office_type'] == 'Consultorio Independiente') {
             $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
         } else {
             if ($data['bill_to'] == 'M') {
@@ -47,7 +49,7 @@ class InvoiceRepository extends DbRepository
             } else {
                 $consecutivo = Invoice::where('user_id', $user->id)->where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('bill_to', 'C')->max('consecutivo');
             }
-        }
+        }*/
 
         if ($user->fe) {
             $consecutivo_inicio = $user->configFactura->consecutivo_inicio;
@@ -116,7 +118,7 @@ class InvoiceRepository extends DbRepository
 
         $invoiceXML = $factura->generateXML($user, $invoice);
 
-        $signedinvoiceXML = $factura->signXML($user, true); //true por que es de prueba
+        $signedinvoiceXML = $factura->signXML($user, env('FE_ENV') == 'test' ? true : false ); //true por que es de prueba
 
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 

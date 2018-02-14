@@ -40,13 +40,7 @@
     </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
-<div class="preloader">
-    <div class="img">
-      <img src="/img/loader.gif" alt="Preloader image">
-      <span>Cargando...</span>
-    </div>
-    
-</div>
+ @include('layouts/partials/preloader')
 <div id="app" class="wrapper ">
 
   <!-- Main Header -->

@@ -480,10 +480,10 @@
               <div class="{{ isset($tab) ? ($tab =='fe') ? 'active' : '' : '' }} tab-pane" id="fe">
                 
                   @if($user->configFactura)
-                  <div class="form-horizontal">
+                  <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                     @include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
-                  </div>
+                   </form>
                   @else 
                   <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}

@@ -155,7 +155,7 @@
 								@else
 								<div class="row">
 									<div class="col-md-12">
-			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}" nombre_cliente="{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}" correo_cliente="{{ $appointment->patient->email }}"></invoice-form>
+			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}" nombre_cliente="{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}" correo_cliente="{{ $appointment->patient->email }}" :usa_fe="{{ auth()->user()->fe }}"></invoice-form>
 			              			</div>
 			              		</div>
 			              		<!-- <div class="row">

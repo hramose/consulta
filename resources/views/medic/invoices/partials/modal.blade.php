@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body">
-                
+                 @include('layouts/partials/loading')
               
                <div class="table-responsive">
                     <table class="table no-margin" id="table-details">

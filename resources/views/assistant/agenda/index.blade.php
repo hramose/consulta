@@ -80,6 +80,7 @@
           @if($medic)
           <div class="box box-default box-calendar">
             <div class="box-body no-padding">
+               @include('layouts/partials/loading')
               <!-- THE CALENDAR -->
 
               <div id="calendar" data-slotDuration="{{ $medic->settings->slotDuration }}" data-minTime="{{ $medic->settings->minTime }}" data-maxTime="{{ $medic->settings->maxTime }}" data-freeDays="{{ $medic->settings->freeDays }}" data-medic="{{ $medic->id }}" data-office="{{ $office->id }}"></div>
@@ -90,6 +91,7 @@
           @else
             <div class="box box-default box-calendar">
             <div class="box-body ">
+               @include('layouts/partials/loading')
               <!-- THE CALENDAR -->
                <div class="callout callout-info">
                     <h4>Información importante!</h4>

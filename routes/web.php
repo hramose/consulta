@@ -117,6 +117,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/account/consultorios', 'Medic\UserController@getConsultoriosIndependientes');
     Route::post('/account/patients', 'Medic\UserController@storePatient');
     Route::post('/account/{id}/configfactura', 'Medic\UserController@addConfigFactura');
+    Route::put('/account/{id}/configfactura', 'Medic\UserController@updateConfigFactura');
+    Route::delete('/users/{id}/configfactura', 'Medic\UserController@deleteConfigFactura');
 
     Route::delete('/account/assistants/{assistant}', 'Medic\UserController@deleteAssistant');
     Route::put('/account/settings', 'Medic\UserController@updateSettings');

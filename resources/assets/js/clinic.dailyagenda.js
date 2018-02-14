@@ -449,13 +449,13 @@ $(function () {
 
 
   function crud(calendar, method, url, data, revertFunc) {
-       $('body').addClass('loading');
+    $('.loader').show();
       $.ajax({
             type: method || 'POST',
             url: url,
             data: data,
             success: function (resp) {
-               $('body').removeClass('loading');
+              $('.loader').hide();
               if(method == "POST")
               {
                 

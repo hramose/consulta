@@ -54,7 +54,9 @@
                         <th>Clínica</th>
                         <th>Paciente</th>
                         <th>Total</th>
-                        
+                        @if($medic->fe)
+                        <th>Estado Hacienda</th>
+                        @endif
                         <th></th>
                       </tr>
                       </thead>
@@ -78,6 +80,9 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
+                             @if($medic->fe)
+                            <td>{{ title_case($invoice->status_fe) }} - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a></td>
+                            @endif
                             <td>
                               @if($invoice->status)
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
@@ -179,7 +184,9 @@
     @include('medic/invoices/partials/modal')
   
 
-
+    @if($invoice->fe)
+        @include('medic/invoices/partials/status-hacienda-modal')
+    @endif
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>

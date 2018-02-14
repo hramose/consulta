@@ -7,8 +7,8 @@
             
             </div>
 
-            <div class="modal-body" data-invoice="{{ $invoice->id }}">
-                
+            <div class="modal-body">
+                @include('layouts/partials/loading')
               <ul>
                   <li><b>Clave: </b> <span id="resp-clave"><span></li>
                   <li><b>Emisor: </b><span id="resp-emisor"><span></li>
