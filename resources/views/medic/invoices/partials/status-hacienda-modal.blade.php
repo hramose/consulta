@@ -1,6 +1,7 @@
 <div class="modal fade" id="modalRespHacienda" role="dialog" aria-labelledby="modalRespHacienda">
         <div class="modal-dialog " role="document">
           <div class="modal-content">
+             @include('layouts/partials/loading')  
             <div class="modal-header">
             
                 <h4 class="modal-title" id="modalRespHaciendaLabel">Estatus de Factura Hacienda</h4>
@@ -8,7 +9,6 @@
             </div>
 
             <div class="modal-body">
-                @include('layouts/partials/loading')
               <ul>
                   <li><b>Clave: </b> <span id="resp-clave"><span></li>
                   <li><b>Emisor: </b><span id="resp-emisor"><span></li>

@@ -1,5 +1,5 @@
 {
-  "css/app.css": "css/app-a0b364ebc1.css",
+  "css/app.css": "css/app-9507bc7eaf.css",
   "js/admin.min.js": "js/admin-d6764a5b8c.min.js",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
   "js/app.js": "js/app-99418ec089.js",
@@ -9,7 +9,7 @@
   "js/clinic.dailyagenda.min.js": "js/clinic-76d876bbc8.dailyagenda.min.js",
   "js/clinic.invoices.min.js": "js/clinic-75b6582d46.invoices.min.js",
   "js/clinic.patients.min.js": "js/clinic-ca69cfa13c.patients.min.js",
-  "js/invoices.min.js": "js/invoices-24a06ab3c9.min.js",
+  "js/invoices.min.js": "js/invoices-55f408f13b.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
   "js/patients.min.js": "js/patients-5447bd07ca.min.js",
   "js/schedule.min.js": "js/schedule-c2f4189a89.min.js",

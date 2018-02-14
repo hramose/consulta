@@ -70,6 +70,13 @@ class InvoiceController extends Controller
         if (request('client_name')) {
             $invoice->client_name = request('client_name');
         }
+         if (request('client_email')) {
+            $invoice->client_email = request('client_email');
+        }
+         if (request('medio_pago')) {
+            $invoice->medio_pago = request('medio_pago');
+        }
+        
         if (request('pay_with')) {
             $invoice->pay_with = request('pay_with');
         }

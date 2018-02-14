@@ -44,7 +44,7 @@ $(function () {
         $.ajax({
             type: 'PUT',
             url: '/medic/invoices/'+invoice_id,
-            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val()},
+          data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val() },
             success: function (resp) {
             
 
@@ -53,8 +53,28 @@ $(function () {
               { 
                 infoBox.removeClass('alert-success').hide();
               },3000);
+
+              swal({
+                title: 'Factura procesada!!!',
+                text: "¿Deseas imprimir la factura?",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Si'
+              }).then(function () {
+
+                if ($("#rd_ticket").is(":checked"))
+                  window.location.href = "/medic/invoices/" + invoice_id + '/ticket';
+                else
+                  window.location.href = "/medic/invoices/" + invoice_id + '/print';
+
+              }, function (dismiss) { 
+
+                window.location.href = "/medic/invoices"
+
+              });
               
-              window.location.href = "/assistant/medics/"+medic_id+'/invoices'
               
             
               
@@ -74,7 +94,7 @@ $(function () {
     
        var invoice_id = $(this).attr('data-invoice');
        var medic_id = $(this).attr('data-medic');
-       var show =  $(this).attr('data-show');
+       /*var show =  $(this).attr('data-show');
        if(show != '1'){
           $.ajax({
             type: 'PUT',
@@ -104,7 +124,7 @@ $(function () {
 
             }
         });
-      }else{
+      }else{*/
 
           
         if($("#rd_ticket").is(":checked"))
@@ -113,7 +133,7 @@ $(function () {
         window.location.href = "/medic/invoices/"+invoice_id+'/print';
       
 
-      }
+     /* }*/
       
        
 
@@ -157,7 +177,9 @@ $(function () {
                modal.find('#modal-label-medic').text(resp.medic.name);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-               $('input[name="client_name"]').val(resp.appointment.patient.fullname);
+              $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : resp.appointment.patient.fullname);
+              $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : resp.appointment.patient.email);
+              $('input[name="medio_pago"]').val(resp.medio_pago);
                $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
                $('input[name="change"]').val(resp.change);
                
@@ -175,8 +197,12 @@ $(function () {
                $('input[name="total"]').val(resp.total);
 
                if(resp.status){
+                
                 modal.find('.btn-print').focus();
                 modal.find('.btn-facturar').hide();
+                 $('input[name="client_name"]').attr('disabled', true)
+                 $('input[name="client_email"]').attr('disabled', true)
+                 $('select[name="medio_pago"]').attr('disabled', true)
                 $('.pay_with_label').html( money(resp.pay_with));
                 $('.change_label').html( money(resp.change));
                 $('.pay_with-field').remove();
@@ -184,6 +210,7 @@ $(function () {
                 modal.find('.btn-print').attr('data-show','1');
               }else{
                 $('input[name="pay_with"]').focus();
+                 modal.find('.btn-print').hide();
                }
                 
             },

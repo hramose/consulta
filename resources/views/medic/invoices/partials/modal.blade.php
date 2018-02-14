@@ -1,6 +1,7 @@
-<div class="modal fade" id="modalInvoice" role="dialog" aria-labelledby="modalInvoice">
-        <div class="modal-dialog " role="document">
+<div class="modal fade" id="modalInvoice" role="dialog" aria-labelledby="modalInvoice">      
+  <div class="modal-dialog " role="document">
           <div class="modal-content">
+              @include('layouts/partials/loading')  
             <div class="modal-header">
             
             <h4 class="modal-title" id="modalInvoiceLabel">Facturación</h4>
@@ -10,8 +11,32 @@
             </div>
 
             <div class="modal-body">
-                 @include('layouts/partials/loading')
-              
+               <div class="form-horizontal">
+                    <div class="form-group">
+                      <label for="service" class="col-sm-2 control-label">A nombre de:</label>
+
+                      <div class="col-sm-5">
+                        <input type="text" name="client_name" class="form-control">
+                        
+                      </div>
+                        <div class="col-sm-5">
+                        <input type="text" name="client_email" class="form-control" placeholder="Correo electrónico">
+                        
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="service" class="col-sm-2 control-label">Medio de pago:</label>
+
+                      <div class="col-sm-10">
+                        <select name="medio_pago" id="medio_pago" class="form-control">
+                          <option value="01">Efectivo</option>
+                          <option value="02">Tarjeta</option>
+                        </select>
+                      
+                      </div>
+                        
+                    </div>
+              </div>
                <div class="table-responsive">
                     <table class="table no-margin" id="table-details">
                       <thead>
@@ -87,7 +112,7 @@
               
                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
                <button type="button" class="btn btn-success btn-print" data-invoice data-medic tabindex="2">Imprimir</button>
-              <!-- <button type="button" class="btn btn-primary btn-facturar" data-invoice data-medic>Facturar</button> -->
+              <button type="button" class="btn btn-success btn-facturar" data-invoice data-medic tabindex="2">Facturar</button>
              
             </div>
           </div>
