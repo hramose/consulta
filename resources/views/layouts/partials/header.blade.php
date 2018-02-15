@@ -89,7 +89,7 @@
                     <a href="{{ url('/medic/patients') }}">Pacientes</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="{{ url('/medic/appointments') }}">Consultas</a>
+                    <a href="{{ url('/medic/account/edit?tab=clinics') }}">Consultorios</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="{{ url('/medic/account/edit?tab=assistant') }}">Asistentes</a>

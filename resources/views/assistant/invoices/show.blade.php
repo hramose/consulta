@@ -58,6 +58,9 @@
                         <th>Fecha</th>
                         <th>Paciente</th>
                         <th>Total</th>
+                         @if($medic->fe)
+                        <th>Estado Hacienda</th>
+                        @endif
                         
                         <th></th>
                       </tr>
@@ -79,6 +82,9 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
+                             @if($medic->fe)
+                            <td>{{ title_case($invoice->status_fe) }}  @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif</td>
+                            @endif
                             <td>
                                 @if($invoice->status)
                                   
@@ -175,9 +181,11 @@
 
     </section>
 
-    @include('assistant/invoices/partials/modal')
+    @include('medic/invoices/partials/modal')
   
-
+ @if($medic->fe)
+    @include('medic/invoices/partials/status-hacienda-modal')
+ @endif
 
 @endsection
 @section('scripts')
@@ -187,5 +195,5 @@
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
- 
+  <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

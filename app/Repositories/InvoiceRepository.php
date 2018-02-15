@@ -92,11 +92,25 @@ class InvoiceRepository extends DbRepository
 
         $invoice->save();
 
-        if ($user->fe) {
+        if ($user->fe && !$data['send_to_assistant']) {
             $this->sendToHacienda($invoice);
         }
 
         return $invoice->load('clinic');
+    }
+
+    public function update($id, $data)
+    {
+        $invoice = $this->model->find($id);
+        $invoice->fill($data);
+        $invoice->status = 1;
+        $invoice->save();
+
+        if ($invoice->medic->fe) {
+            $this->sendToHacienda($invoice);
+        }
+
+        return $invoice;
     }
 
     public function sendToHacienda($invoice)
@@ -123,6 +137,46 @@ class InvoiceRepository extends DbRepository
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 
         return $this->feRepo->sendHacienda($user, $signedinvoiceXML, $fac);
+    }
+
+    public function print($id)
+    {
+        $invoice = $this->model->find($id);
+        $invoice->load('lines');
+        $invoice->load('medic');
+        $invoice->load('clinic');
+        $invoice->load('appointment.patient');
+
+        $respHacienda = null;
+
+        if ($invoice->fe && !$invoice->status_fe) {
+            $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
+            $invoice->status_fe = $respHacienda->{'ind-estado'};
+
+            // if (isset($respHacienda->{'respuesta-xml'})) {
+            //     $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
+            // }
+
+            $invoice->save();
+        }
+
+        return $invoice;
+    }
+    public function recepcionHacienda($id)
+    {
+        $invoice = $this->model->find($id);
+
+        $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
+
+        $invoice->status_fe = $respHacienda->{'ind-estado'};
+
+        if (isset($respHacienda->{'respuesta-xml'})) {
+            $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
+        }
+
+        $invoice->save();
+
+        return $invoice;
     }
 
     /**

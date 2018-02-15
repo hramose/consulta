@@ -12,6 +12,7 @@ use App\RequestOffice;
 use Illuminate\Http\Request;
 use Validator;
 use App\Events\MedicRequest;
+use Illuminate\Support\Facades\Session;
 
 class OfficeController extends Controller
 {
@@ -258,6 +259,8 @@ class OfficeController extends Controller
         if ($office->type == 'Consultorio Independiente') {
             $this->officeRepo->delete($id);
         }
+
+        Session::forget('office_id');
 
         return '';
     }

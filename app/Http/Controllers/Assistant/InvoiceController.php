@@ -14,6 +14,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\FacturaElectronicaRepository;
 
 class InvoiceController extends Controller
 {
@@ -25,6 +26,7 @@ class InvoiceController extends Controller
     	$this->medicRepo = $medicRepo;
         $this->invoiceRepo = $invoiceRepo;
         $this->patientRepo = $patientRepo;
+        $this->feRepo = new FacturaElectronicaRepository('test');
        
 
     }
@@ -123,8 +125,6 @@ class InvoiceController extends Controller
     public function store()
     {
 
-       // dd(request()->all());
-
         $invoice = $this->invoiceRepo->store(request()->all());
         
 
@@ -139,23 +139,10 @@ class InvoiceController extends Controller
      */
     public function update($id)
     {
-       
-        $invoice = Invoice::find($id);
-
-        $invoice->status = 1;
-        
-        if(request('client_name'))
-            $invoice->client_name = request('client_name');
-        if(request('pay_with'))
-            $invoice->pay_with = request('pay_with');
-        if(request('change'))
-            $invoice->change = request('change');
-
-        $invoice->save();
-        
-
+        $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
+       
 
     }
 
@@ -164,7 +151,7 @@ class InvoiceController extends Controller
     /**
      * Lista de todas las citas de un doctor sin paginar
      */
-    public function getServices()
+   /* public function getServices()
     {
 
         $services = InvoiceService::where('name', 'like', '%'. request('q').'%')->get();
@@ -177,7 +164,7 @@ class InvoiceController extends Controller
         $service = InvoiceService::create(request()->all());
 
          return $service;
-    }
+    }*/
 
      /**
      * Lista de todas las citas de un doctor sin paginar
@@ -198,29 +185,20 @@ class InvoiceController extends Controller
      */
     public function print($id)
     {
-
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
-
+        $invoice = $this->invoiceRepo->print($id);
         
+
         return view('assistant.invoices.print',compact('invoice'));
         
     }
+
 
     /**
      * imprime resumen de la consulta
      */
     public function ticket($id)
     {
-
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
+        $invoice = $this->invoiceRepo->print($id);
 
         
         return view('assistant.invoices.ticket',compact('invoice'));

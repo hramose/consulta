@@ -573,7 +573,7 @@ $(function () {
                 
             },
             error: function () {
-               $('body').removeClass('loading');
+              $('.loader').hide();
               console.log('error saving appointment');
 
             }

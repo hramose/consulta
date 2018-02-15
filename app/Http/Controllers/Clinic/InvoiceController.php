@@ -36,22 +36,10 @@ class InvoiceController extends Controller
     public function update($id)
     {
        
-        $invoice = Invoice::find($id);
-
-        $invoice->status = 1;
-        
-        if(request('client_name'))
-            $invoice->client_name = request('client_name');
-        if(request('pay_with'))
-            $invoice->pay_with = request('pay_with');
-        if(request('change'))
-            $invoice->change = request('change');
-
-        $invoice->save();
-        
-
+        $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
+
 
     }
 
@@ -76,12 +64,7 @@ class InvoiceController extends Controller
     public function print($id)
     {
 
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
-
+        $invoice = $this->invoiceRepo->print($id);
         
         return view('clinic.invoices.print',compact('invoice'));
         
@@ -93,11 +76,7 @@ class InvoiceController extends Controller
     public function ticket($id)
     {
 
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
+        $invoice = $this->invoiceRepo->print($id);
 
         
         return view('clinic.invoices.ticket',compact('invoice'));

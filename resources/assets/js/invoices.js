@@ -40,14 +40,14 @@ $(function () {
          var invoice_id = $(this).attr('data-invoice');
          var medic_id = $(this).attr('data-medic');
         
-        
+      $('.loader').show();
         $.ajax({
             type: 'PUT',
             url: '/medic/invoices/'+invoice_id,
           data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val() },
             success: function (resp) {
             
-
+              $('.loader').hide();
               infoBox.addClass('alert-success').html('Factura procesada!!!').show();
               setTimeout(function()
               { 
@@ -82,7 +82,7 @@ $(function () {
             },
             error: function () {
               console.log('error get details');
-
+              $('.loader').hide();
             }
         });
      
@@ -216,6 +216,7 @@ $(function () {
             },
             error: function () {
               console.log('error get details');
+              $('.loader').hide();
 
             }
         });
@@ -225,41 +226,5 @@ $(function () {
       
    
     });
-
-  $('#modalRespHacienda').on('shown.bs.modal', function (event) {
-
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var invoiceId = button.attr('data-invoice') // Extract info from data-* attributes
-    $('.loader').show();
-    $("#resp-clave").text('')
-    $("#resp-emisor").text('')
-    $("#resp-receptor").text('')
-    $("#resp-mensaje").text('')
-    $("#resp-detalle").text('')
-    
-    $.ajax({
-      type: 'GET',
-      url: '/medic/invoices/' + invoiceId + '/recepcion',
-      data: { _token: $('meta[name="csrf-token"]').content },
-      success: function (resp) {
-        
-        $('.loader').hide();
-
-        var respHacienda = JSON.parse(resp.resp_hacienda);
-        $("#resp-clave").text(respHacienda.Clave)
-        $("#resp-emisor").text(respHacienda.NombreEmisor)
-        $("#resp-receptor").text(respHacienda.NombreReceptor)
-        $("#resp-mensaje").text(respHacienda.Mensaje)
-        $("#resp-detalle").text(respHacienda.DetalleMensaje)
-
-      },
-      error: function () {
-        console.log('error finalizando citan');
-
-      }
-
-    });
-
-  });
 
 });

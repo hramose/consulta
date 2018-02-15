@@ -63,30 +63,10 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
-        $invoice = Invoice::find($id);
-
-        $invoice->status = 1;
-
-        if (request('client_name')) {
-            $invoice->client_name = request('client_name');
-        }
-         if (request('client_email')) {
-            $invoice->client_email = request('client_email');
-        }
-         if (request('medio_pago')) {
-            $invoice->medio_pago = request('medio_pago');
-        }
-        
-        if (request('pay_with')) {
-            $invoice->pay_with = request('pay_with');
-        }
-        if (request('change')) {
-            $invoice->change = request('change');
-        }
-
-        $invoice->save();
+        $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
+      
     }
 
     /**
@@ -152,46 +132,9 @@ class InvoiceController extends Controller
      */
     public function print($id)
     {
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
-
-        $respHacienda = null;
-
-        if ($invoice->fe && !$invoice->status_fe) {
-            $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
-            $invoice->status_fe = $respHacienda->{'ind-estado'};
-
-            // if (isset($respHacienda->{'respuesta-xml'})) {
-            //     $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
-            // }
-
-            $invoice->save();
-        }
-
+        $invoice = $this->invoiceRepo->print($id);
+        
         return view('medic.invoices.print', compact('invoice'));
-    }
-
-    /**
-     * imprime resumen de la consulta
-     */
-    public function recepcion($id)
-    {
-        $invoice = Invoice::find($id);
-
-        $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
-
-        $invoice->status_fe = $respHacienda->{'ind-estado'};
-
-        if (isset($respHacienda->{'respuesta-xml'})) {
-            $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
-        }
-
-        $invoice->save();
-
-        return $invoice;
     }
 
     /**
@@ -199,11 +142,8 @@ class InvoiceController extends Controller
      */
     public function ticket($id)
     {
-        $invoice = Invoice::find($id);
-        $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('clinic');
-        $invoice->load('appointment.patient');
+        $invoice = $this->invoiceRepo->print($id);
+       
 
         return view('medic.invoices.ticket', compact('invoice'));
     }

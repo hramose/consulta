@@ -35,9 +35,9 @@ class AppointmentController extends Controller
         $search['q'] = request('q');
         $search['office'] = Session::get('office_id');
         $clinic_id = Session::get('office_id');
-
+        
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
-
+       
         if ($search['office']) {
             return view('medic.appointments.index', compact('appointments', 'search'));
         } else {

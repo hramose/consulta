@@ -81,7 +81,7 @@
                                 @endif
                             </td> -->
                              @if($medic->fe)
-                            <td>{{ title_case($invoice->status_fe) }} - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a></td>
+                            <td>{{ title_case($invoice->status_fe) }}  @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif</td>
                             @endif
                             <td>
                               @if($invoice->status)
@@ -184,7 +184,7 @@
     @include('medic/invoices/partials/modal')
   
 
-    @if($invoice->fe)
+   @if($medic->fe)
         @include('medic/invoices/partials/status-hacienda-modal')
     @endif
 @endsection
@@ -196,5 +196,5 @@
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
  <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{ elixir('/js/invoices.min.js') }}"></script>
-
+ <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

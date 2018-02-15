@@ -6,6 +6,7 @@ use App\FacturaElectronica\Factura;
 use GuzzleHttp\Client;
 use App\Repositories\FacturaElectronicaRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\InvoiceRepository;
 use App\Invoice;
 
 class FacturaElectronicaController extends Controller
@@ -15,11 +16,12 @@ class FacturaElectronicaController extends Controller
      *
      * @return void
      */
-    public function __construct(Client $client, UserRepository $userRepo)
+    public function __construct(Client $client, UserRepository $userRepo, InvoiceRepository $invoiceRepo)
     {
         $this->middleware('auth')->except('haciendaResponse');
         $this->client = $client;
         $this->userRepo = $userRepo;
+        $this->invoiceRepo = $invoiceRepo;
         $this->feRepo = new FacturaElectronicaRepository('test');
     }
 
@@ -145,5 +147,12 @@ class FacturaElectronicaController extends Controller
 
         //actualizar el status_fe del invoice
         //mostrar mensaje de recibido por parte de hacieda
+    }
+
+     public function recepcionInvoice($id)
+    {
+        $invoice = $this->invoiceRepo->recepcionHacienda($id);
+
+        return $invoice;
     }
 }

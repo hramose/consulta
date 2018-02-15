@@ -50,12 +50,15 @@ $(function () {
     
          var invoice_id = $(this).attr('data-invoice');
          var patient_id = $(this).attr('data-patient');
+
+        $('.loader').show();
+
         $.ajax({
             type: 'PUT',
             url: '/clinic/invoices/'+invoice_id,
-            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
-             
+              $('.loader').hide();
 
               infoBox.addClass('alert-success').html('Factura procesada!!!').show();
               setTimeout(function()
@@ -70,6 +73,7 @@ $(function () {
             },
             error: function () {
               console.log('error get details');
+              $('.loader').hide();
 
             }
         });
@@ -88,7 +92,7 @@ $(function () {
           $.ajax({
             type: 'PUT',
             url: '/clinic/invoices/'+invoice_id,
-            data: {client_name: $('input[name="client_name"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
             
 
@@ -146,13 +150,14 @@ $(function () {
   
      
 
-
+       $('.loader').show();
      
        $.ajax({
             type: 'GET',
             url: '/clinic/invoices/'+invoice_id+'/details',
             data: {},
             success: function (resp) {
+              $('.loader').hide();
                modal.find('#modal-label-medic').text('')
                table_details.find('tbody').html('');
               
@@ -191,7 +196,7 @@ $(function () {
             },
             error: function () {
               console.log('error get details');
-
+              $('.loader').hide();
             }
         });
      

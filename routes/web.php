@@ -22,6 +22,7 @@ Route::post('/users/{id}/fe/generate/{consecutivo}', 'FacturaElectronicaControll
 Route::get('/users/{id}/fe/recepcion/{clave}', 'FacturaElectronicaController@recepcion');
 Route::get('/users/{id}/fe/comprobantes/{clave}', 'FacturaElectronicaController@comprobante');
 Route::get('/users/{id}/fe/comprobantes', 'FacturaElectronicaController@comprobantes');
+Route::get('/invoices/{id}/recepcion', 'FacturaElectronicaController@recepcionInvoice');
 
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');

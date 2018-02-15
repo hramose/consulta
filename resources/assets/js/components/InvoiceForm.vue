@@ -465,21 +465,23 @@
                 let status = 0;
                 let pay_with = 0;
                 let change = 0;
+                let sendToAssistant = 1;
                 
                 if(here) {
 
                   status = 1;
                   change = this.change
                   pay_with = this.pay_with
+                  sendToAssistant = 0;
                 }
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type, client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago}).then((response) => {
+                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type, client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago, send_to_assistant: sendToAssistant }).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
                       
-                          bus.$emit('alert', 'Servicio facturado','success');
+                          bus.$emit('alert', (here) ? 'Servicio facturado' : 'Enviado a asistente','success');
                           bus.$emit('addToInvoiceList', response.data); 
                           this.service = null;
                           this.servicesToInvoice = [];
@@ -517,7 +519,7 @@
                         }
                        this.loader = false;
                   }, (response) => {
-                      console.log('error al facturar servicio')
+                      console.log('error al facturar o enviar factura')
                        this.loader = false;
                        this.errors = response.data;
                        this.invoiceHere = false;

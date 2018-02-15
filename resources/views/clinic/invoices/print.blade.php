@@ -9,129 +9,7 @@
     <section class="invoice">
       <!-- title row -->
   
-      <!-- info row -->
-      <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
-          <div class="logo">
-            <img src="{{ getLogo($invoice->clinic) }}" alt="logo">
-          </div>  
-        
-  
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          <h2>{{ $invoice->clinic->name }}</h2>
-          <address>
-          {{ $invoice->clinic->type }}<br>
-          {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
-          {{ $invoice->clinic->address }}<br>
-          <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-            @if($invoice->clinic->bill_to == 'C')
-                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
-                Nombre: {{ $invoice->clinic->ide_name }}
-              @else 
-                Ced: {{ auth()->user()->ide }}<br>
-                Nombre: {{ $invoice->medic->name }}
-              @endif
-          </address>
-        </div>
-        <!-- /.col -->
-        <div class="col-sm-4 invoice-col">
-          <div class="invoice-number">
-            <h3>Nro. Factura:</h3>
-            <h4>{{$invoice->consecutivo }}</h4>
-          </div>
-          <div> <span>Contado</span>  </div>  
-          <div class="invoice-date">
-          <b>Fecha:</b> {{ $invoice->created_at }}
-          </div>
-          
-         
-          
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <hr>
-      <div class="row invoice-patient">
-        <div class="col-xs-4 invoice-col invoice-left">     
-            <b>Paciente:</b> {{ $invoice->client_name }}<br>
-            {{ $invoice->appointment->patient->address }}<br>
-        </div>
-        <div class="col-xs-4 invoice-col invoice-right">
-           
-        </div>
-        <div class="col-xs-4 invoice-col invoice-right">
-            <b>Médico:</b> {{ $invoice->medic->name }}<br>
-            @foreach($invoice->medic->specialities as $speciality)
-              {{ $speciality->name }} 
-            @endforeach
-        </div>
-      </div>
-      <hr>
-
-      <!-- Table row -->
-      <div class="row">
-        <div class="col-xs-12 table-responsive">
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th>Cantidad</th>
-	          <th>Servicio</th>
-	          <th>Precio</th>
-	          <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($invoice->lines as $line)
-            <tr>
-              <td>{{ $line->quantity }}</td>
-              <td>{{ $line->service }}</td>
-              <td>{{ money($line->amount) }}</td>
-              <td>{{ money($line->total_line) }}</td>
-             
-            </tr>
-            @endforeach
-            
-            </tbody>
-          </table>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-      <div class="row">
-        <!-- accepted payments column -->
-        <div class="col-xs-6">
-          
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-6">
-          
-
-          <div class="table-responsive">
-            <table class="table">
-             
-              <tr>
-                <th>Total:</th>
-                <td>{{ money($invoice->total) }}</td>
-              </tr>
-              <tr>
-                <th>Pago con:</th>
-                <td>{{ money($invoice->pay_with) }}</td>
-              </tr>
-              <tr>
-                <th>Vuelto:</th>
-                <td>{{ money($invoice->change) }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+       @include('medic/invoices/partials/invoice')
 
       <!-- this row will not appear when printing -->
       <div class="row no-print">
@@ -149,11 +27,15 @@
     </section>
     <!-- /.content -->
 		
-
+@if($invoice->fe)
+    @include('medic/invoices/partials/status-hacienda-modal')
+@endif
  
 </section>
  @endsection
  @section('scripts')
+ <script src="/js/bootstrap.min.js"></script>
+ <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
  <script>
 
  	 function printSummary() {
