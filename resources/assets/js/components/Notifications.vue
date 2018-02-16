@@ -165,7 +165,7 @@
                 Echo.private(`users.${this.userId}.notifications`)
                     .listen('AppointmentCreated', (e) => {
 
-                        this.citas.push(JSON.parse(e.appointment));
+                        this.citas.unshift(JSON.parse(e.appointment));
                          
                          audio.play()
                     
@@ -183,7 +183,7 @@
                 Echo.private(`offices.${this.officeId}.notifications`)
                     .listen('AppointmentCreatedToAssistant', (e) => {
 
-                        this.citas.push(JSON.parse(e.appointment));
+                        this.citas.unshift(JSON.parse(e.appointment));
                          audio.play()
                     
                     })

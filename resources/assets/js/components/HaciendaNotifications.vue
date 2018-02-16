@@ -43,7 +43,7 @@
                         
                         <ul class="nav nav-stacked">
                                 
-                                <li><a href="#"><div style="color:#444;">{{ mensajeSelected.body }}</div></a></li>
+                                <li><a :href="mensajeSelected.callback ? mensajeSelected.callback : '#'"><div style="color:#444;">{{ mensajeSelected.body }}</div></a></li>
                                
                              
                             </ul>
@@ -161,7 +161,7 @@
                     .listen('HaciendaResponse', (e) => {
 
                         console.log(e)
-                        this.mensajes.push(e.notification);
+                        this.mensajes.unshift(e.notification);
                         audio.play()
                     
                     })
@@ -172,7 +172,7 @@
                 Echo.private(`offices.${this.officeId}.hacienda`)
                     .listen('HaciendaResponseToAssistant', (e) => {
 
-                        this.mensajes.push(e.notification);
+                        this.mensajes.unshift(e.notification);
                          audio.play()
                     
                     })
