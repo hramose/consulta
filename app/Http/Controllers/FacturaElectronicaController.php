@@ -25,73 +25,6 @@ class FacturaElectronicaController extends Controller
         $this->feRepo = new FacturaElectronicaRepository('test');
     }
 
-    public function test($consecutivo)
-    {
-        $fechaEmision = '';
-        $numeroCedulaEmisor = '2-553-597';
-        $numeroCedulaReceptor = '5-360-224';
-        //$numeroCedulaResidente = '172400110315';
-        $miNumeroConsecutivo = $consecutivo;
-
-        $factura1 = new Factura($numeroCedulaEmisor, $numeroCedulaReceptor, $miNumeroConsecutivo, $fechaEmision);
-        // $factura2 = new Factura($numeroCedulaResidente, $numeroCedulaReceptor, $miNumeroConsecutivo);
-
-        $authToken = $this->get_token();//get OAuth2.0 token
-        //dd($authToken);
-
-        $fac = $factura1->getClave($fechaEmision);
-        $invoiceXML = $factura1->generateXML();
-        $invoice64String = $this->parseBase64($invoiceXML);
-
-        $body = [
-            'clave' => $fac->clave,
-            'fecha' => '2018-02-07T00:00:00-0600',
-            'emisor' => [
-                'tipoIdentificacion' => '01',
-                'numeroIdentificacion' => $fac->emisor
-            ],
-            'receptor' => [
-                'tipoIdentificacion' => '01',
-                'numeroIdentificacion' => $fac->receptor
-            ],
-            'callbackUrl' => env('APP_URL') . '/factura/response',
-            'comprobanteXml' => $invoice64String
-        ];
-
-        $headers = [
-            'authorization' => 'Bearer ' . $authToken->access_token,
-            'content-type' => 'application/json'
-        ];
-
-        $response = $this->client->request('POST', 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/recepcion', ['headers' => $headers, 'json' => $body]);
-        $body = $response->getBody();
-        $content = $body->getContents();
-        $result = json_decode($content);
-        //return $result;
-        // dd(json_encode($result) . '-' . json_encode($body) . '----' . $fac->clave . '----' . $authToken->access_token);
-        if (!$result) {
-            $headers = [
-                'authorization' => 'Bearer ' . $authToken->access_token,
-                'content-type' => 'application/json'
-            ];
-            $response = $this->client->request('GET', 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/recepcion/' . $fac->clave, ['headers' => $headers]);
-            $body = $response->getBody();
-            $content = $body->getContents();
-            $result = json_decode($content);
-
-            return json_encode($result);
-            // dd(json_encode($result) .'-'. json_encode($body) . '----'.$fac->clave . '----' . $authToken->access_token);
-        } else {
-            dd('ss');
-        }
-    }
-
-    private function decodeRespuestaXML($respuestaBase64)
-    {
-        $facturaXML = new \SimpleXMLElement(base64_decode($respuestaBase64));
-        return $facturaXML;
-    }
-
     public function authToken($user_id)
     {
         $user = $this->userRepo->findById($user_id);
@@ -143,10 +76,14 @@ class FacturaElectronicaController extends Controller
 
     public function haciendaResponse()
     {
-        \Log::info('results of Hacienda: ' . json_encode(request()->all()));
+        $resp = request()->all();
 
+        \Log::info('results of Hacienda: ' . json_encode($resp));
+       
+        flash('No hay Facturas nuevas para ejecutar un cierre', 'error');
         //actualizar el status_fe del invoice
         //mostrar mensaje de recibido por parte de hacieda
+        return $resp;
     }
 
      public function recepcionInvoice($id)
