@@ -16,7 +16,7 @@ class HaciendaResponse implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $resp;
-    public $user_id;
+
     /**
      * Create a new event instance.
      *
@@ -24,7 +24,7 @@ class HaciendaResponse implements ShouldBroadcast
      */
     public function __construct($resp)
     {
-        $this->user_id = auth()->id();
+     
         $this->resp = $resp;
        
     }
@@ -36,6 +36,6 @@ class HaciendaResponse implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('users.'.$this->user_id.'.hacienda');
+        return new PrivateChannel('users.'.$this->resp->medic_id.'.hacienda');
     }
 }

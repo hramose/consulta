@@ -79,16 +79,23 @@ class FacturaElectronicaController extends Controller
     {
        
         $resp = request()->all();
+        
+        $invoice = Invoice::where('clave_fe', $resp['clave'])->first();
 
+        if(!$invoice) return false;
+        
         $data = [
             "clave" => $resp['clave'],
             "fecha" => $resp['fecha'],
-            "estado" => $resp['ind-estado']
+            "estado" => $resp['ind-estado'],
+            "invoice_id" => $invoice->id,
+            "medic_id" => $invoice->user_id,
+            "office_id" => $invoice->office_id
         ];
 
-        event(new HaciendaResponse($resp));
+        event(new HaciendaResponse($data));
 
-        \Log::info('results of Hacienda: ' . json_encode($resp));
+        \Log::info('results of Hacienda: ' . json_encode($data));
       
     }
 
