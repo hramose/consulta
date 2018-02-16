@@ -118,4 +118,13 @@ class FacturaElectronicaController extends Controller
 
         return $invoice;
     }
+
+    public function haciendaNotificationViewed($id)
+    {
+        $notification = \DB::table('hacienda_notifications')
+            ->where('id', $id)
+            ->update(['viewed' => 1]); //vista desde el panel de notificacion
+
+        return 'viewed';
+    }
 }
