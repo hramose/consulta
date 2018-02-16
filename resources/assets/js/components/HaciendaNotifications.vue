@@ -161,7 +161,7 @@
                     .listen('HaciendaResponse', (e) => {
 
                         console.log(e)
-                        this.mensajes.push(e.resp);
+                        this.mensajes.push(e.notification);
                         audio.play()
                     
                     })
@@ -172,7 +172,7 @@
                 Echo.private(`offices.${this.officeId}.hacienda`)
                     .listen('HaciendaResponseToAssistant', (e) => {
 
-                        this.mensajes.push(e.resp);
+                        this.mensajes.push(e.notification);
                          audio.play()
                     
                     })
