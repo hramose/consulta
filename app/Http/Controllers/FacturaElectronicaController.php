@@ -86,7 +86,7 @@ class FacturaElectronicaController extends Controller
             "estado" => $resp['ind-estado']
         ];
 
-        event(new HaciendaResponse(json_encode($data)));
+        event(new HaciendaResponse($data));
 
         \Log::info('results of Hacienda: ' . json_encode($data));
       

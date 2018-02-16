@@ -24,7 +24,7 @@ class HaciendaResponse implements ShouldBroadcast
      */
     public function __construct($resp)
     {
-        $this->user_id =  auth()->id();
+        $this->user_id = auth()->id();
         $this->resp = $resp;
        
     }
