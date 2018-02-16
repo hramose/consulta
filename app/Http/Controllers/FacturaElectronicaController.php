@@ -79,9 +79,15 @@ class FacturaElectronicaController extends Controller
     {
         $resp = request()->all();
 
-        event(new HaciendaResponse(json_encode($resp)));
+        $data = [
+            "clave" => $resp->clave,
+            "fecha" => $resp->fecha,
+            "estado" => $resp->{'ind-estado'}
+        ];
 
-        \Log::info('results of Hacienda: ' . json_encode($resp));
+        event(new HaciendaResponse(json_encode($data)));
+
+        \Log::info('results of Hacienda: ' . json_encode($data));
       
     }
 
