@@ -77,7 +77,7 @@ class FacturaElectronicaController extends Controller
 
     public function haciendaResponse()
     {
-        $resp = request()->all();
+        $resp = json_decode(request()->all());
 
         $data = [
             "clave" => $resp->clave,
