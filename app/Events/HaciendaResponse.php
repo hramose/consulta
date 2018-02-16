@@ -16,7 +16,7 @@ class HaciendaResponse implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $resp;
-   
+    public $user_id;
     /**
      * Create a new event instance.
      *
