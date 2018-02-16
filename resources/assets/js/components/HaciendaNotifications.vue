@@ -155,7 +155,7 @@
                 Echo.private(`users.${this.userId}.hacienda`)
                     .listen('HaciendaResponse', (e) => {
 
-                        //this.mensajes.push(JSON.parse(e.appointment));
+                        this.mensajes.push(JSON.parse(e.resp));
                          console.log(e)
                          audio.play()
                     
@@ -167,7 +167,7 @@
                 Echo.private(`offices.${this.officeId}.hacienda`)
                     .listen('HaciendaResponseToAssistant', (e) => {
 
-                        this.mensajes.push(JSON.parse(e.appointment));
+                        this.mensajes.push(JSON.parse(e.resp));
                          audio.play()
                     
                     })

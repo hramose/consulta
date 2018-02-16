@@ -9,6 +9,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\InvoiceRepository;
 use App\Invoice;
 use App\Events\HaciendaResponse;
+use Carbon\Carbon;
 
 class FacturaElectronicaController extends Controller
 {
@@ -90,7 +91,11 @@ class FacturaElectronicaController extends Controller
             "estado" => $resp['ind-estado'],
             "invoice_id" => $invoice->id,
             "medic_id" => $invoice->user_id,
-            "office_id" => $invoice->office_id
+            "office_id" => $invoice->office_id,
+            "title" => 'Factura con estado '. $resp['ind-estado'],
+            "body" => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura '. $resp['clave'] .' tiene estado de ' . $resp['ind-estado'] .' .Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
+            "created_at" => Carbon::now()->toDateString()
+
         ];
 
         event(new HaciendaResponse($data));
