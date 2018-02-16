@@ -34,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
             $newHaciendaNotifications = [];
 
             if(auth()->user()->fe){
-                
-                $haciendaNotifications = \App\HaciendaNotification::where('user_id', auth()->id())->where('viewed', 0)->limit(10);
+
+                $haciendaNotifications = \App\HaciendaNotification::where('user_id', auth()->id())->where('viewed', 0)->orderBy('created_at','DESC')->limit(10);
                 $newHaciendaNotifications = $haciendaNotifications->get();
             }
 
