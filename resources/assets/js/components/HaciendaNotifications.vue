@@ -156,7 +156,7 @@
                     .listen('HaciendaResponse', (e) => {
 
                         console.log(e)
-                        this.mensajes.push(JSON.parse(e.resp));
+                        this.mensajes.push(e.resp);
                          audio.play()
                     
                     })
