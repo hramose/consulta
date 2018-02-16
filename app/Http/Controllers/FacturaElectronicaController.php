@@ -98,6 +98,8 @@ class FacturaElectronicaController extends Controller
         //     "created_at" => Carbon::now()->toDateString()
 
         // ];
+       $invoice->status_fe = $resp['ind-estado'];
+       $invoice->save();
 
        $notification = HaciendaNotification::create([
             "title" => 'Factura ' . $resp['ind-estado'],
