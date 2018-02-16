@@ -102,7 +102,7 @@ class InvoiceRepository extends DbRepository
 
     public function update($id, $data)
     {
-        $invoice = $this->model->find($id);
+        $invoice = $this->findById($id);
         $invoice->fill($data);
         $invoice->status = 1;
         $invoice->save();
@@ -142,7 +142,7 @@ class InvoiceRepository extends DbRepository
 
     public function print($id)
     {
-        $invoice = $this->model->find($id);
+        $invoice = $this->findById($id);
         $invoice->load('lines');
         $invoice->load('medic');
         $invoice->load('clinic');
@@ -165,7 +165,7 @@ class InvoiceRepository extends DbRepository
     }
     public function recepcionHacienda($id)
     {
-        $invoice = $this->model->find($id);
+        $invoice = $this->findById($id);
 
         $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
 
