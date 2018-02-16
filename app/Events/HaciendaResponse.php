@@ -36,6 +36,6 @@ class HaciendaResponse implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('users.'.$this->resp->medic_id.'.hacienda');
+        return new PrivateChannel('users.'.$this->resp['medic_id'].'.hacienda');
     }
 }
