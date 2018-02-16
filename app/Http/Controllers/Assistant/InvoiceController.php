@@ -207,18 +207,10 @@ class InvoiceController extends Controller
      /**
      * Lista de todas las citas de un doctor sin paginar
      */
-    public function balance($medic_id)
+    /*public function balance($medic_id)
     {
         
-        // $bala = Balance::where('user_id', $medic_id)->whereDate('created_at',Carbon::now()->toDateString())->count();
-
-
-        // if($bala)
-        // {
-        //     flash('Cierre ya fue ejecutado el dia de hoy','error');
-        //     return Redirect()->back();
-        // }
-
+        
         $invoices = Invoice::where('user_id', $medic_id)->where('status', 1)->whereDate('created_at',Carbon::now()->toDateString());
         $totalInvoices =  $invoices->sum('total');
         $countInvoices =  $invoices->count();
@@ -242,7 +234,7 @@ class InvoiceController extends Controller
         return Redirect()->back();
         
         
-    }
+    }*/
 
     public function generalBalance()
     {

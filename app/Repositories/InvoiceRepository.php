@@ -6,6 +6,7 @@ use App\Invoice;
 use App\User;
 use App\InvoiceLine;
 use App\FacturaElectronica\Factura;
+use App\Balance;
 
 class InvoiceRepository extends DbRepository
 {
@@ -178,7 +179,25 @@ class InvoiceRepository extends DbRepository
 
         return $invoice;
     }
+    public function balance($medic_id)
+    {
+       $invoices = $this->model->where('user_id', $medic_id)->where('status', 1)->whereDate('created_at', Carbon::now()->toDateString());
+        $totalInvoices = $invoices->sum('total');
+        $countInvoices = $invoices->count();
 
+        if ($countInvoices == 0) {
+            flash('No hay Facturas nuevas para ejecutar un cierre', 'error');
+
+            return Redirect()->back();
+        }
+        
+
+        $balance = Balance::create([
+            'user_id' => $medic_id,
+            'invoices' => $countInvoices,
+            'total' => $totalInvoices
+            ]);
+    }
     /**
      * Find all the appointments by Doctor
      * @internal param $username

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
 
+
 class InvoiceController extends Controller
 {
     public function __construct(InvoiceRepository $invoiceRepo)
@@ -148,39 +149,16 @@ class InvoiceController extends Controller
         return view('medic.invoices.ticket', compact('invoice'));
     }
 
-    /**
-     * Lista de todas las citas de un doctor sin paginar
-     */
+   /*
     public function balance()
     {
         $medic_id = auth()->id();
 
-        // $bala = Balance::where('user_id', $medic_id)->whereDate('created_at',Carbon::now()->toDateString())->count();
-
-        // if($bala)
-        // {
-        //     flash('Cierre ya fue ejecutado el dia de hoy','error');
-        //     return Redirect()->back();
-        // }
-
-        $invoices = Invoice::where('user_id', $medic_id)->where('status', 1)->whereDate('created_at', Carbon::now()->toDateString());
-        $totalInvoices = $invoices->sum('total');
-        $countInvoices = $invoices->count();
-
-        if ($countInvoices == 0) {
-            flash('No hay Facturas nuevas para ejecutar un cierre', 'error');
-
-            return Redirect()->back();
-        }
-
-        $balance = Balance::create([
-            'user_id' => $medic_id,
-            'invoices' => $countInvoices,
-            'total' => $totalInvoices
-            ]);
+        $this->invoiceRepo->balance($medic_id);
+        
 
         flash('Se ha ejecutado el cierre correctamente', 'success');
 
         return Redirect()->back();
-    }
+    }*/
 }
