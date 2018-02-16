@@ -100,8 +100,9 @@ class FacturaElectronicaController extends Controller
         // ];
 
        $notification = HaciendaNotification::create([
-            "title" => 'Factura con estado ' . $resp['ind-estado'],
-            "body" => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura ' . $resp['clave'] . ' tiene estado de ' . $resp['ind-estado'] . ' .Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
+            "title" => 'Factura ' . $resp['ind-estado'],
+            "body" => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura ' . $invoice->consecutivo . ' tiene estado de ' . $resp['ind-estado'] . ' por parte de hacienda. Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
+            "callback" => env('APP_URL')."/medic/invoices",
             "user_id" => $invoice->user_id,
             "office_id" => $invoice->office_id,
         ]);

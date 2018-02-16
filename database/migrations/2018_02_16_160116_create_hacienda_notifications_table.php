@@ -19,6 +19,7 @@ class CreateHaciendaNotificationsTable extends Migration
             $table->integer('office_id')->unsigned()->index();
             $table->string('title');
             $table->text('body');
+            $table->string('callback')->nullable();
             $table->tinyInteger('viewed')->default(0); //0 no vista desde el panel de notificaciones
             $table->tinyInteger('viewed_assistant')->default(0); //0 no vista desde el panel de notificaciones del asistente
             $table->timestamps();
