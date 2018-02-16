@@ -155,8 +155,8 @@
                 Echo.private(`users.${this.userId}.hacienda`)
                     .listen('HaciendaResponse', (e) => {
 
+                        console.log(e)
                         this.mensajes.push(JSON.parse(e.resp));
-                         console.log(e)
                          audio.play()
                     
                     })
