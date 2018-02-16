@@ -8,6 +8,7 @@ use App\Repositories\FacturaElectronicaRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\InvoiceRepository;
 use App\Invoice;
+use App\Events\HaciendaResponse;
 
 class FacturaElectronicaController extends Controller
 {
@@ -78,12 +79,10 @@ class FacturaElectronicaController extends Controller
     {
         $resp = request()->all();
 
+        event(new HaciendaResponse(json_encode($resp)));
+
         \Log::info('results of Hacienda: ' . json_encode($resp));
-       
-        flash('No hay Facturas nuevas para ejecutar un cierre', 'error');
-        //actualizar el status_fe del invoice
-        //mostrar mensaje de recibido por parte de hacieda
-        return $resp;
+      
     }
 
      public function recepcionInvoice($id)

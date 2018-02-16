@@ -33,5 +33,8 @@ class BroadcastServiceProvider extends ServiceProvider
         Broadcast::channel('adminclinic.{id}.notifications', function ($user, $id) {
             return (int) $user->id === (int) $id;
         });
+        Broadcast::channel('users.{id}.hacienda', function ($user, $id) {
+            return (int)$user->id === (int)$id;
+        });
     }
 }

@@ -68,6 +68,7 @@ Vue.component('table-subscriptions', require('./components/TableSubscriptions.vu
 Vue.component('table-pending-payments', require('./components/TablePendingPayments.vue'));
 Vue.component('clinic-notifications', require('./components/ClinicNotifications.vue'));
 Vue.component('test-conexion-hacienda', require('./components/TestConexionHacienda.vue'));
+Vue.component('hacienda-notifications', require('./components/HaciendaNotifications.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 
@@ -194,6 +195,11 @@ $(window).scroll(function () {
         e.stopPropagation();
       }
   });
+$('.messages-menu .dropdown-menu').on({
+    "click": function (e) {
+        e.stopPropagation();
+    }
+});
 $('.form-update-location').on('submit', function (e) {
    e.preventDefault();
    var form = $(this);

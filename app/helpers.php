@@ -126,11 +126,13 @@ function existsCertFile($user)
 {
     $resp = false;
 
+    $cert = (env('FE_ENV') == 'test') ? 'test' : 'cert';
+
     if (!$user->configFactura) {
         return false;
     }
 
-    if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/cert.p12')) {
+    if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/'. $cert .'.p12')) {
         $resp = true;
     }
 
