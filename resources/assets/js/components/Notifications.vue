@@ -1,5 +1,5 @@
 <template>
-	<li class="dropdown notifications-menu">
+	<li class="dropdown notifications-menu" title="Notificaciones de consultas">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <span class="label label-warning" v-show="total()"> 

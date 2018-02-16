@@ -1,8 +1,8 @@
 <template>
-    <li class="dropdown messages-menu">
+    <li class="dropdown messages-menu" title="Mensajes de Ministerio de hacienda">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>
-            <span class="label label-success">4</span>
+            <span class="label label-danger" v-show="total()">{{ total() }}</span>
         </a>
         <ul class="dropdown-menu">
              <li class="header">Tienes {{ total() }} mensajes de hacienda</li>
@@ -191,19 +191,8 @@
         created() {
           
           this.listen()
-          let tempData = [
-              {
-                  title:'Factura Rechazada',
-                  body:'La Factura fue rechaza por que el consecutivo ya lo tenemos en nuestra base de datos',
-                  created_at:'2018-02-07 22:25:00'
-              },
-               {
-                  title:'Factura Aprobada',
-                  body:'',
-                  created_at:'2018-02-07 22:25:00'
-              }
-          ]
-	      this.mensajes = tempData
+          
+	      this.mensajes = this.messagesHacienda
 	     
 	      
 	    }

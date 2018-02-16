@@ -15,17 +15,17 @@ class HaciendaResponse implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $resp;
+    public $notification;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($resp)
+    public function __construct($notification)
     {
      
-        $this->resp = $resp;
+        $this->notification = $notification;
        
     }
 
@@ -36,6 +36,6 @@ class HaciendaResponse implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('users.'.$this->resp['medic_id'].'.hacienda');
+        return new PrivateChannel('users.'.$this->notification->user_id.'.hacienda');
     }
 }

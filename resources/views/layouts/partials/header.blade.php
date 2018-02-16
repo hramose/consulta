@@ -30,7 +30,9 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <hacienda-notifications :messages-hacienda="[]" :total="0" :user-id="{{ auth()->id() }}"></hacienda-notifications>
+          @if(auth()->user()->fe)
+          <hacienda-notifications :messages-hacienda="{{ $newHaciendaNotifications }}" :total="{{ $newHaciendaNotifications->count() }}" :user-id="{{ auth()->id() }}"></hacienda-notifications>
+          @endif
           <notifications :appointments="{{ $newAppointments }}" :total="{{ $newAppointments->count() }}" :user-id="{{ auth()->id() }}"></notifications>
           
           <!-- <li class="dropdown notifications-menu">

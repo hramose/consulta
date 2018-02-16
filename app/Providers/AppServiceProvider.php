@@ -30,6 +30,14 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.app', function ($view) {
             $appointments = \App\Appointment::with('user', 'patient')->where('user_id', auth()->id())->where('status', 0)->where('patient_id', '<>', 0)->where('viewed', 0)->limit(10);
+            
+            $newHaciendaNotifications = [];
+
+            if(auth()->user()->fe){
+                
+                $haciendaNotifications = \App\HaciendaNotification::where('user_id', auth()->id())->where('viewed', 0)->limit(10);
+                $newHaciendaNotifications = $haciendaNotifications->get();
+            }
 
             $newAppointments = $appointments->get();
 
@@ -42,7 +50,9 @@ class AppServiceProvider extends ServiceProvider
             $view->with('newAppointments', $newAppointments)
                  ->with('monthlyCharge', $monthlyCharge)
                  ->with('userOffices', $userOffices)
-                 ->with('userOfficesindependientes', $userOfficesindependientes);
+                 ->with('userOfficesindependientes', $userOfficesindependientes)
+                ->with('newHaciendaNotifications', $newHaciendaNotifications);
+                 
         });
         
         view()->composer('medic.account', function ($view) {
