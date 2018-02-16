@@ -31,17 +31,22 @@
                        
                         <div class="widget-user-image">
                         
-                        <!-- <img class="profile-user-img img-responsive img-circle" v-bind:src="mensajeSelected.patient.photo" alt="User profile picture">   -->
+                        <img class="profile-user-img img-responsive img-circle" src="/img/default-avatar.jpg" alt="User profile picture">  
                         
                         </div>
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">
                             {{ mensajeSelected.title }} </h3>
-                        <h5 class="widget-user-desc">{{ mensajeSelected.body }}</h5>
+                        <!-- <h5 class="widget-user-desc">{{ mensajeSelected.body }}</h5> -->
                     </div>
                     <div class="box-footer no-padding">
                         
-                        
+                        <ul class="nav nav-stacked">
+                                
+                                <li><a href="#"><div style="color:#444;">{{ mensajeSelected.body }}</div></a></li>
+                               
+                             
+                            </ul>
                         
                         
                             
@@ -157,7 +162,7 @@
 
                         console.log(e)
                         this.mensajes.push(e.resp);
-                         audio.play()
+                        audio.play()
                     
                     })
                     
@@ -167,7 +172,7 @@
                 Echo.private(`offices.${this.officeId}.hacienda`)
                     .listen('HaciendaResponseToAssistant', (e) => {
 
-                        this.mensajes.push(JSON.parse(e.resp));
+                        this.mensajes.push(e.resp);
                          audio.play()
                     
                     })
