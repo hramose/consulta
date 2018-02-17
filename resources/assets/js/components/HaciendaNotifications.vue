@@ -106,7 +106,7 @@
 	      },
 	      
         methods: {
-            excerpt(text, limit = 36){
+            excerpt(text, limit = 38){
                 return text.substr(0, limit) + '...'
             },
             formatDate(date){
