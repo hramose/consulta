@@ -37,7 +37,7 @@
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">
                             {{ mensajeSelected.title }} </h3>
-                        <!-- <h5 class="widget-user-desc">{{ mensajeSelected.body }}</h5> -->
+                        <h5 class="widget-user-desc"></h5>
                     </div>
                     <div class="box-footer no-padding">
                         
