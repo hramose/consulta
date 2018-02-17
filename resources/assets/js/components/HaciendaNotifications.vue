@@ -12,7 +12,7 @@
             <ul class="menu">
                 <li v-for="mensaje in mensajes" class="appointment-li">
                     <a href="#">
-                         <span @click="viewed(mensaje)" v-show="!read" class="pull-left"> <input type="checkbox" name="viewed"  />   </span>
+                         <span @click="viewed(mensaje)" v-show="!read" class="pull-left"> <i class="fa fa-trash"></i>   </span>
                          <h4><span @click="toggleDetails(mensaje)" style="padding: 2rem 0;"> {{ mensaje.title }}</span>  <small><i class="fa fa-clock-o"></i> {{ formatDate(mensaje.created_at) }} </small>    </h4>
                        <p>{{ mensaje.body }}</p>
                     </a>
