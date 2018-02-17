@@ -23,7 +23,7 @@ class FacturaElectronicaRepository extends DbRepository
                 $this->clientId = 'api-prod';
                 break;
             case 'test':
-                $this->baseUrl = 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1/';
+                $this->baseUrl = 'https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v/';
                 $this->authUrl = 'https://idp.comprobanteselectronicos.go.cr/auth/realms/rut-stag/protocol/openid-connect/token';
                 $this->clientId = 'api-stag';
                 break;
@@ -32,7 +32,7 @@ class FacturaElectronicaRepository extends DbRepository
         $this->refreshToken = null;
 
         $this->client = new Client([
-            'timeout'  => 60,
+            'timeout' => 60,
         ]);
     }
 

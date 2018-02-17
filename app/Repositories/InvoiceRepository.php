@@ -37,7 +37,7 @@ class InvoiceRepository extends DbRepository
         $invoice->bill_to = ($user->fe) ? 'M' : $data['bill_to'];
         $invoice->office_type = $data['office_type'];
 
-         $consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
+        $consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
 
         /*if ($data['office_type'] == 'Consultorio Independiente') {
             $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
@@ -133,7 +133,7 @@ class InvoiceRepository extends DbRepository
 
         $invoiceXML = $factura->generateXML($user, $invoice);
 
-        $signedinvoiceXML = $factura->signXML($user, env('FE_ENV') == 'test' ? true : false ); //true por que es de prueba
+        $signedinvoiceXML = $factura->signXML($user, env('FE_ENV') == 'test' ? true : false); //true por que es de prueba
 
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 
@@ -152,36 +152,43 @@ class InvoiceRepository extends DbRepository
 
         if ($invoice->fe && !$invoice->status_fe) {
             $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
-            $invoice->status_fe = $respHacienda->{'ind-estado'};
 
-            // if (isset($respHacienda->{'respuesta-xml'})) {
-            //     $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
-            // }
+            if (isset($respHacienda->{'ind-estado'})) {
+                $invoice->status_fe = $respHacienda->{'ind-estado'};
 
-            $invoice->save();
+                // if (isset($respHacienda->{'respuesta-xml'})) {
+                //     $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
+                // }
+
+                $invoice->save();
+            }
         }
 
         return $invoice;
     }
+
     public function recepcionHacienda($id)
     {
         $invoice = $this->findById($id);
 
         $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
 
-        $invoice->status_fe = $respHacienda->{'ind-estado'};
+        if (isset($respHacienda->{'ind-estado'})) {
+            $invoice->status_fe = $respHacienda->{'ind-estado'};
 
-        if (isset($respHacienda->{'respuesta-xml'})) {
-            $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
+            if (isset($respHacienda->{'respuesta-xml'})) {
+                $invoice->resp_hacienda = json_encode($this->feRepo->decodeRespuestaXML($respHacienda->{'respuesta-xml'}));
+            }
+
+            $invoice->save();
         }
-
-        $invoice->save();
 
         return $invoice;
     }
+
     public function balance($medic_id)
     {
-       $invoices = $this->model->where('user_id', $medic_id)->where('status', 1)->whereDate('created_at', Carbon::now()->toDateString());
+        $invoices = $this->model->where('user_id', $medic_id)->where('status', 1)->whereDate('created_at', Carbon::now()->toDateString());
         $totalInvoices = $invoices->sum('total');
         $countInvoices = $invoices->count();
 
@@ -190,7 +197,6 @@ class InvoiceRepository extends DbRepository
 
             return Redirect()->back();
         }
-        
 
         $balance = Balance::create([
             'user_id' => $medic_id,
@@ -198,6 +204,7 @@ class InvoiceRepository extends DbRepository
             'total' => $totalInvoices
             ]);
     }
+
     /**
      * Find all the appointments by Doctor
      * @internal param $username

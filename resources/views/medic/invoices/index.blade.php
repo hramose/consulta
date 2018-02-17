@@ -81,7 +81,17 @@
                                 @endif
                             </td> -->
                              @if($medic->fe)
-                            <td>{{ title_case($invoice->status_fe) }}  @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif</td>
+                            <td>
+                              @if($invoice->clave_fe && $invoice->status_fe)
+                                <span class="label label-success">{{ title_case($invoice->status_fe) }}</span>   @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif
+                              @else
+                                  <span class="label label-danger">No enviado por error de conexion</span>
+                                  <form action="/medic/invoices/{{ $invoice->id }}" method="POST">
+                                       {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                                      <button type="submit" class="btn btn-sm btn-success">Reenviar</button>
+                                  </form>
+                              @endif
+                            </td>
                             @endif
                             <td>
                               @if($invoice->status)
