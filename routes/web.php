@@ -25,6 +25,7 @@ Route::get('/users/{id}/fe/comprobantes', 'FacturaElectronicaController@comproba
 
 Route::get('/invoices/{id}/recepcion', 'FacturaElectronicaController@recepcionInvoice');
 Route::put('/hacienda/messages/{id}/viewed', 'FacturaElectronicaController@haciendaNotificationViewed');
+Route::put('/assistant/hacienda/messages/{id}/viewed', 'FacturaElectronicaController@haciendaNotificationViewedByAssistant');
 
 Route::get('/', 'HomeController@index');
 Route::post('/changeoffice', 'HomeController@changeOffice');

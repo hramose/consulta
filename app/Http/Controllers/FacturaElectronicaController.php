@@ -11,6 +11,7 @@ use App\Invoice;
 use App\Events\HaciendaResponse;
 use Carbon\Carbon;
 use App\HaciendaNotification;
+use App\Events\HaciendaResponseToAssistant;
 
 class FacturaElectronicaController extends Controller
 {
@@ -79,13 +80,14 @@ class FacturaElectronicaController extends Controller
 
     public function haciendaResponse()
     {
-       
         $resp = request()->all();
-        
+
         $invoice = Invoice::where('clave_fe', $resp['clave'])->first();
 
-        if(!$invoice) return false;
-        
+        if (!$invoice) {
+            return false;
+        }
+
         // $data = [
         //     "clave" => $resp['clave'],
         //     "fecha" => $resp['fecha'],
@@ -98,24 +100,25 @@ class FacturaElectronicaController extends Controller
         //     "created_at" => Carbon::now()->toDateString()
 
         // ];
-       $invoice->status_fe = $resp['ind-estado'];
-       $invoice->save();
+        $invoice->status_fe = $resp['ind-estado'];
+        $invoice->save();
 
-       $notification = HaciendaNotification::create([
-            "title" => 'Factura ' . $resp['ind-estado'],
-            "body" => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura ' . $invoice->consecutivo . ' tiene estado de ' . $resp['ind-estado'] . ' por parte de hacienda. Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
-            "callback" => env('APP_URL')."/medic/invoices",
-            "user_id" => $invoice->user_id,
-            "office_id" => $invoice->office_id,
+        $notification = HaciendaNotification::create([
+            'title' => 'Factura ' . $resp['ind-estado'],
+            'body' => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura ' . $invoice->consecutivo . ' tiene estado de ' . $resp['ind-estado'] . ' por parte de hacienda. Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
+            'callback' => env('APP_URL') . '/medic/invoices',
+            'user_id' => $invoice->user_id,
+            'office_id' => $invoice->office_id,
         ]);
 
         event(new HaciendaResponse($notification));
 
+        event(new HaciendaResponseToAssistant($notification));
+
         \Log::info('results of Hacienda: ' . json_encode($notification));
-      
     }
 
-     public function recepcionInvoice($id)
+    public function recepcionInvoice($id)
     {
         $invoice = $this->invoiceRepo->recepcionHacienda($id);
 
@@ -127,6 +130,15 @@ class FacturaElectronicaController extends Controller
         $notification = \DB::table('hacienda_notifications')
             ->where('id', $id)
             ->update(['viewed' => 1]); //vista desde el panel de notificacion
+
+        return 'viewed';
+    }
+
+    public function haciendaNotificationViewedByAssistant($id)
+    {
+        $notification = \DB::table('hacienda_notifications')
+            ->where('id', $id)
+            ->update(['viewed_assistant' => 1]); //vista desde el panel de notificacion
 
         return 'viewed';
     }

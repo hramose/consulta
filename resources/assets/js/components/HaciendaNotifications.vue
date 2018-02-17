@@ -43,7 +43,7 @@
                         
                         <ul class="nav nav-stacked">
                                 
-                                <li><a :href="mensajeSelected.callback ? mensajeSelected.callback : '#'"><div style="color:#444;">{{ mensajeSelected.body }}</div></a></li>
+                                <li><a :href=" view_assistant ? '/assistant/invoices' : mensajeSelected.callback"><div style="color:#444;">{{ mensajeSelected.body }}</div></a></li>
                                
                              
                             </ul>
@@ -98,8 +98,6 @@
 	          mensajes:[],
 	          loader:false,
               mensajeSelected:{
-                  user:{},
-                  patient:{}
               },
               showDetails:false
              

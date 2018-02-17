@@ -16,6 +16,9 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+         
+          <hacienda-notifications :messages-hacienda="{{ $newHaciendaNotifications }}" :total="{{ $newHaciendaNotifications->count() }}" :view_assistant="true" :office-id="{{  auth()->user()->clinicsAssistants->first()->id }}" url="/assistant/hacienda/messages" ></hacienda-notifications>
+         
           <notifications :appointments="{{ $newAppointments }}" url="/assistant/appointments"  :view_assistant="true" :office-id="{{  auth()->user()->clinicsAssistants->first()->id }}" ></notifications>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">

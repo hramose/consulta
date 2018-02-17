@@ -30,12 +30,11 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.app', function ($view) {
             $appointments = \App\Appointment::with('user', 'patient')->where('user_id', auth()->id())->where('status', 0)->where('patient_id', '<>', 0)->where('viewed', 0)->limit(10);
-            
+
             $newHaciendaNotifications = [];
 
-            if(auth()->user()->fe){
-
-                $haciendaNotifications = \App\HaciendaNotification::where('user_id', auth()->id())->where('viewed', 0)->orderBy('created_at','DESC')->limit(10);
+            if (auth()->user()->fe) {
+                $haciendaNotifications = \App\HaciendaNotification::where('user_id', auth()->id())->where('viewed', 0)->orderBy('created_at', 'DESC')->limit(10);
                 $newHaciendaNotifications = $haciendaNotifications->get();
             }
 
@@ -52,11 +51,9 @@ class AppServiceProvider extends ServiceProvider
                  ->with('userOffices', $userOffices)
                  ->with('userOfficesindependientes', $userOfficesindependientes)
                 ->with('newHaciendaNotifications', $newHaciendaNotifications);
-                 
         });
-        
+
         view()->composer('medic.account', function ($view) {
-           
             $userOffices = auth()->user()->offices->count();
 
             $view->with('userOffices', $userOffices);
@@ -69,7 +66,11 @@ class AppServiceProvider extends ServiceProvider
 
             $newAppointments = $appointments->get();
 
-            $view->with('newAppointments', $newAppointments);
+            $haciendaNotifications = \App\HaciendaNotification::where('office_id', $office->id)->where('viewed_assistant', 0)->orderBy('created_at', 'DESC')->limit(10);
+            $newHaciendaNotifications = $haciendaNotifications->get();
+
+            $view->with('newAppointments', $newAppointments)
+                 ->with('newHaciendaNotifications', $newHaciendaNotifications);
         });
 
         view()->composer('layouts.app-clinic', function ($view) {
@@ -112,14 +113,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('clinicsUser'));
         });
 
-        view()->composer(['medic.appointments.index','medic.patients.index','medic.patients.edit'], function ($view) {
+        view()->composer(['medic.appointments.index', 'medic.patients.index', 'medic.patients.edit'], function ($view) {
             $monthlyCharge = auth()->user()->monthlyCharge();
 
             $view->with(compact('monthlyCharge'));
         });
-        
-      
-
 
         /* \DB::listen(function ($query) {
             var_dump($query->sql);
