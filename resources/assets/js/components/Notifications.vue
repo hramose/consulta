@@ -15,7 +15,7 @@
                   
                   <li v-for="appointment in citas" class="appointment-li">
                     <a href="#">
-                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ (appointment.patient) ? appointment.patient.first_name : 'Paciente eliminado' }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right"> <input type="checkbox" name="viewed"  />   </span>   </h5>
+                        <h5><span @click="toggleDetails(appointment)" style="padding: 2rem 0;"> {{ (appointment.patient) ? appointment.patient.first_name : 'Paciente eliminado' }} -  {{ formatDate(appointment.start) }}</span> <span @click="viewed(appointment)" v-show="!read" class="pull-right">  <i class="fa fa-trash"></i>   </span>   </h5>
                       
                     </a>
                     
