@@ -5,7 +5,7 @@
             <span class="label label-danger" v-show="total()">{{ total() }}</span>
         </a>
         <ul class="dropdown-menu">
-             <li class="header">Tienes {{ total() }} mensajes de hacienda</li>
+             <li class="header">Tienes {{ total() }} mensaje(s) de hacienda</li>
             <li>
             <!-- inner menu: contains the actual data -->
             
