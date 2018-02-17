@@ -14,7 +14,7 @@
                     <a href="#">
                          <span @click="viewed(mensaje)" v-show="!read" class="pull-left"> <i class="fa fa-trash"></i>   </span>
                          <h4><span @click="toggleDetails(mensaje)" style="padding: 2rem 0;"> {{ mensaje.title }}</span>  <small><i class="fa fa-clock-o"></i> {{ formatDate(mensaje.created_at) }} </small>    </h4>
-                       <p>{{ mensaje.body }}</p>
+                       <p>{{ excerpt(mensaje.body) }}</p>
                     </a>
                     
                 </li>
@@ -106,6 +106,9 @@
 	      },
 	      
         methods: {
+            excerpt(text, limit = 36){
+                return text.substr(0, limit) + '...'
+            },
             formatDate(date){
                return moment(date).fromNow();
            },
