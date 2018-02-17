@@ -103,19 +103,21 @@ class FacturaElectronicaController extends Controller
         $invoice->status_fe = $resp['ind-estado'];
         $invoice->save();
 
-        $notification = HaciendaNotification::create([
-            'title' => 'Factura ' . $resp['ind-estado'],
-            'body' => ($resp['ind-estado'] == 'aceptada') ? 'Factura Aceptada' : 'La Factura ' . $invoice->consecutivo . ' tiene estado de ' . $resp['ind-estado'] . ' por parte de hacienda. Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
-            'callback' => env('APP_URL') . '/medic/invoices',
-            'user_id' => $invoice->user_id,
-            'office_id' => $invoice->office_id,
-        ]);
+        if ($resp['ind-estado'] != 'aceptado') {
+            $notification = HaciendaNotification::create([
+                'title' => 'Factura ' . $resp['ind-estado'],
+                'body' => 'La Factura ' . $invoice->consecutivo . ' tiene estado de ' . $resp['ind-estado'] . ' por parte de hacienda. Verfica por que situación ocurrio entrando en facturacion y verficando el estado',
+                'callback' => env('APP_URL') . '/medic/invoices',
+                'user_id' => $invoice->user_id,
+                'office_id' => $invoice->office_id,
+            ]);
 
-        event(new HaciendaResponse($notification));
+            event(new HaciendaResponse($notification));
 
-        event(new HaciendaResponseToAssistant($notification));
+            event(new HaciendaResponseToAssistant($notification));
 
-        \Log::info('results of Hacienda: ' . json_encode($notification));
+            \Log::info('results of Hacienda: ' . json_encode($notification));
+        }
     }
 
     public function recepcionInvoice($id)
