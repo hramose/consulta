@@ -110,6 +110,7 @@
                 return text.substr(0, limit) + '...'
             },
             formatDate(date){
+                moment.locale('es');
                return moment(date).fromNow();
            },
             total(){
