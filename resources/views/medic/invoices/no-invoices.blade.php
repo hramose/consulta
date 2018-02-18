@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('css')
  
-
+<link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.min.css">
+  <link rel="stylesheet" href="/js/plugins/fullcalendar/fullcalendar.print.css" media="print">
+  <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
 @endsection
 @section('content')
     <div id="infoBox" class="alert"></div> 
@@ -18,6 +20,24 @@
          
           <h2>Consultas No Facturadas</h2>
           <div class="box box-default box-calendar">
+              <div class="box-header">
+              <div class="pull-left">
+                  <form action="/medic/no-invoices" method="GET">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                          
+                            
+                            <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
+                            <div class="input-group-btn">
+
+                              <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                          
+                          
+                        </div>
+                      </form>
+              </div>
+            
+            </div>
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
                  <div class="table-responsive">
@@ -77,5 +97,15 @@
    
 @endsection
 @section('scripts')
-
+<script src="/js/plugins/moment/moment.min.js"></script>
+<script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="/js/plugins/fullcalendar/locale/es.js"></script>
+<script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
+<script>
+    $('.date').datetimepicker({
+      format:'YYYY-MM-DD',
+      locale: 'es',
+      
+   });
+</script>
 @endsection
