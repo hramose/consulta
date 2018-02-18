@@ -7,6 +7,7 @@ use App\User;
 use App\InvoiceLine;
 use App\FacturaElectronica\Factura;
 use App\Balance;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceRepository extends DbRepository
 {
@@ -91,11 +92,15 @@ class InvoiceRepository extends DbRepository
         $invoice->client_email = $data['client_email'];
         $invoice->medio_pago = $data['medio_pago'];
 
-        $invoice->save();
-
         if ($user->fe && !$data['send_to_assistant']) {
-            $this->sendToHacienda($invoice);
+            $result = $this->sendToHacienda($invoice);
+            // dd($result);
+            if (!$result) {
+                $invoice->sent_to_hacienda = 1;
+            }
         }
+
+        $invoice->save();
 
         return $invoice->load('clinic');
     }
@@ -105,11 +110,16 @@ class InvoiceRepository extends DbRepository
         $invoice = $this->findById($id);
         $invoice->fill($data);
         $invoice->status = 1;
-        $invoice->save();
 
         if ($invoice->medic->fe) {
-            $this->sendToHacienda($invoice);
+            $result = $this->sendToHacienda($invoice);
+
+            if (!$result) {
+                $invoice->sent_to_hacienda = 1;
+            }
         }
+
+        $invoice->save();
 
         return $invoice;
     }
@@ -118,7 +128,35 @@ class InvoiceRepository extends DbRepository
     {
         $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
 
-        $emisor = $user->configFactura;
+        if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '-signed.xml')) {
+            $invoiceXML = Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '.xml');
+            $facturaXML = new \SimpleXMLElement($invoiceXML);
+
+            $situacionComprobante = ($invoice->sent_to_hacienda) ? '1' : '3';
+
+            $facturaXML->Clave = substr_replace((string) $facturaXML->Clave, $situacionComprobante, 41, 1); // cambiar la situacion del comprobante 1- normal 2- contigencia 3 -no internet
+            Storage::put('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '.xml', $facturaXML->asXML());
+
+            $signedinvoiceXML = $this->feRepo->signXML($user, $invoice->id);
+
+            $invoice->clave_fe = (string) $facturaXML->Clave;
+            $invoice->save();
+        } else {
+            $signedinvoiceXML = $this->createFacturaXML($invoice);
+
+            if ($signedinvoiceXML) {
+                $invoice->created_xml = 1;
+
+                $invoice->save();
+            }
+        }
+
+        return $this->feRepo->sendHacienda($user, $signedinvoiceXML);
+    }
+
+    public function createFacturaXML($invoice)
+    {
+        $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
 
         $numeroCedulaEmisor = $user->configFactura->identificacion;
 
@@ -129,15 +167,17 @@ class InvoiceRepository extends DbRepository
         $fac = $factura->getClave();
 
         $invoice->clave_fe = $fac->clave;
+        $invoice->consecutivo_hacienda = $fac->consecutivoHacienda;
+
         $invoice->save();
 
         $invoiceXML = $factura->generateXML($user, $invoice);
 
-        $signedinvoiceXML = $factura->signXML($user, env('FE_ENV') == 'test' ? true : false); //true por que es de prueba
+        $signedinvoiceXML = $this->feRepo->signXML($user, $invoice->id); //true por que es de prueba
 
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 
-        return $this->feRepo->sendHacienda($user, $signedinvoiceXML, $fac);
+        return $signedinvoiceXML;
     }
 
     public function print($id)

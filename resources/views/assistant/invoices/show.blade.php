@@ -20,15 +20,15 @@
        
         <div class="row">
         
-        <div class="col-md-6">
-         
-          <!-- <form method="POST" action="{{ url('/assistant/medics/'. $medic->id.'/balance') }}" class="form-horizontal">
-                       {{ csrf_field() }}
-                       <button type="submit" class="btn btn-danger">Ejecutar cierre de ventas</button>
-                  </form> -->
-         <h2>Facturas</h2>
+        <div class="col-md-12">
          
         
+         <h2>Facturas</h2>
+         <div>
+           
+            <a href="/assistant/medics/{{ $medic->id }}/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
+           
+         </div>
           <div class="box box-default box-calendar">
             <div class="box-header">
               <div class="pull-left">
@@ -83,7 +83,14 @@
                                 @endif
                             </td> -->
                              @if($medic->fe)
-                            <td>{{ title_case($invoice->status_fe) }}  @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif</td>
+                            <td>
+                              @if($invoice->sent_to_hacienda)
+                                <span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif
+                              @elseif($invoice->status)
+                                  
+                                 <send-to-hacienda :invoice-id="{{ $invoice->id }}" url="/assistant/invoices"></send-to-hacienda>
+                              @endif
+                            </td>
                             @endif
                             <td>
                                 @if($invoice->status)
@@ -120,62 +127,7 @@
           <!-- /. box -->
           
         </div>
-        <div class="col-md-6">
-         
        
-          <h2>Consultas No Facturadas</h2>
-          <div class="box box-default box-calendar">
-            <div class="box-body no-padding">
-              <!-- THE CALENDAR -->
-                 <div class="table-responsive">
-                    <table class="table no-margin">
-                      <thead>
-                      <tr>
-                        <th>#</th>
-                        
-                        <th>Paciente</th>
-                        <th>Consulta</th>
-                        <th>Fecha</th>
-                        <th>De</th>
-                        <th>a</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($noInvoices as $appointment)
-                          <tr>
-                            <td>{{ $appointment->id }}</td>
-                      
-                             <td>
-                             {{ ($appointment->patient) ? $appointment->patient->first_name : 'Paciente Eliminado' }}
-                            </td>
-                           
-                            <td data-title="Motivo">{{ $appointment->title }}</td>
-                            <td data-title="Fecha">{{ \Carbon\Carbon::parse($appointment->date)->toDateString() }}</td>
-                            <td data-title="De">{{ \Carbon\Carbon::parse($appointment->start)->format('h:i:s A') }}</td>
-                            <td data-title="a">{{ \Carbon\Carbon::parse($appointment->end)->format('h:i:s A') }}</td>
-                          </tr>
-                      @endforeach
-                      
-                      </tbody>
-                     
-                      @if ($noInvoices)
-                        <tfoot>
-                            <tr>
-                              <td  colspan="5" class="pagination-container">{!!$noInvoices->appends(['q' => $searchDate])->render()!!}</td>
-                            </tr>
-                            
-                        </tfoot>
-                      @endif
-                    </table>
-                  </div>
-               
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
-          
-        </div>
-        <!-- /.col -->
       </div>
       <!-- /.row -->
 

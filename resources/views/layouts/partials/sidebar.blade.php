@@ -35,6 +35,7 @@
         <li><a href="{{ url('/')}}"><i class="fa fa-home"></i> <span>Home</span></a></li>
         <li><a href="{{ url('/medic/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
         <li><a href="{{ url('/medic/appointments')}}"><i class="fa fa-calendar"></i> <span>Consultas</span></a></li>
+        <li><a href="{{ url('/medic/no-invoices')}}"><i class="fa fa-money"></i> <span>Consultas No Facturadas</span></a></li>
         <li><a href="{{ url('/medic/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
         <li><a href="{{ url('/medic/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
         <li><a href="#" data-toggle="modal" data-target="#contact-modal" data-user="{{ auth()->user()->email }}"><i class="fa fa-phone"></i> <span>Contácto / Soporte</span></a></li>

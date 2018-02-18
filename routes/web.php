@@ -177,6 +177,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::delete('/invoices/services/{id}', 'Medic\InvoiceController@deleteService');
 
     Route::get('/invoices', 'Medic\InvoiceController@index');
+    Route::get('/no-invoices', 'Medic\InvoiceController@noInvoices');
+
     Route::post('/balance', 'Medic\InvoiceController@balance');
     Route::put('/invoices/{id}', 'Medic\InvoiceController@update');
     Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
@@ -312,6 +314,8 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
     Route::get('/invoices/{id}/print', 'Assistant\InvoiceController@print');
     Route::get('/invoices/{id}/ticket', 'Assistant\InvoiceController@ticket');
     Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
+    Route::get('/medics/{medic}/no-invoices', 'Assistant\InvoiceController@noInvoices');
+
     Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
     Route::get('/invoices/balance', 'Assistant\InvoiceController@generalBalance');
     Route::get('/patients/{patient}/invoices', 'Assistant\InvoiceController@patientInvoices');

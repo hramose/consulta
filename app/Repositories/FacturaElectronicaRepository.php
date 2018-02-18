@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\User;
 use GuzzleHttp\Client;
+use App\FacturaElectronica\Common;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class FacturaElectronicaRepository extends DbRepository
 {
@@ -34,6 +36,7 @@ class FacturaElectronicaRepository extends DbRepository
         $this->client = new Client([
             'timeout' => 60,
         ]);
+        $this->type = $type;
     }
 
     public function get_token($username, $password)
@@ -97,18 +100,19 @@ class FacturaElectronicaRepository extends DbRepository
         return $token; //return a json object whith token and refresh token*/
     }
 
-    public function sendHacienda($user, $signedinvoiceXML, $encabezadoFactura)
+    public function sendHacienda($user, $signedinvoiceXML)
     {
         $invoice64String = $this->parseBase64($signedinvoiceXML);
+        $invoiceXML = new \SimpleXMLElement($signedinvoiceXML);
 
         $authToken = $this->get_token($user->configFactura->atv_user, $user->configFactura->atv_password);
 
         $body = [
-            'clave' => $encabezadoFactura->clave,
-            'fecha' => Carbon::createFromFormat('dmy', $encabezadoFactura->fechaEmision)->toAtomString(),
+            'clave' => (string) $invoiceXML->Clave, //encabezadoFactura->clave, //$invoiceXML->Clave,
+            'fecha' => (string) $invoiceXML->FechaEmision, //Carbon::createFromFormat('dmy', $encabezadoFactura->fechaEmision)->toAtomString(), //$invoiceXML->FechaEmision,
             'emisor' => [
-                'tipoIdentificacion' => $user->configFactura->tipo_identificacion,
-                'numeroIdentificacion' => $encabezadoFactura->emisor
+                'tipoIdentificacion' => (string) $invoiceXML->Emisor->Identificacion->Tipo, //$user->configFactura->tipo_identificacion, //$invoiceXML->Emisor->Identificacion->Tipo,
+                'numeroIdentificacion' => (string) Common::validarId($invoiceXML->Emisor->Identificacion->Numero), //$encabezadoFactura->emisor, //Common::validarId($invoiceXML->Emisor->Identificacion->Numero),
             ],
             // 'receptor' => [
             //     'tipoIdentificacion' => $encabezadoFactura->tipo_identificacion_receptor,
@@ -165,9 +169,11 @@ class FacturaElectronicaRepository extends DbRepository
             $body = $response->getBody();
             $content = $body->getContents();
             $result = json_decode($content);
+            //dd($result);
 
             return $result;//json_encode($this->decodeRespuestaXML($result->{'respuesta-xml'}));
         } catch (\GuzzleHttp\Exception\ClientException $e) {
+            // dd($e->getResponse());
             return \GuzzleHttp\Psr7\str($e->getResponse());
         }
     }
@@ -213,5 +219,25 @@ class FacturaElectronicaRepository extends DbRepository
         //parse byte_array to base64
         $base64 = base64_encode($invoice);
         return $base64;
+    }
+
+    public function signXML($user, $invoiceGPS_id)
+    {
+        $cert = ($this->type == 'test') ? 'test' : 'cert';
+        $pin = ($this->type == 'test') ? $user->configFactura->pin_certificado_test : $user->configFactura->pin_certificado;
+
+        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml'));
+
+        \Log::info('results of xadessignercr: ' . json_encode($salida));
+
+        /*$salida2 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' send https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 '. storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');
+
+        $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
+
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml');
+        } else {
+            dd('Error al firmar el xml de la factura. Ponte en contacto con el proveedor');
+        }
     }
 }

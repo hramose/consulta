@@ -69,6 +69,7 @@ Vue.component('table-pending-payments', require('./components/TablePendingPaymen
 Vue.component('clinic-notifications', require('./components/ClinicNotifications.vue'));
 Vue.component('test-conexion-hacienda', require('./components/TestConexionHacienda.vue'));
 Vue.component('hacienda-notifications', require('./components/HaciendaNotifications.vue'));
+Vue.component('send-to-hacienda', require('./components/SendToHacienda.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

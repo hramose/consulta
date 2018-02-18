@@ -35,6 +35,9 @@ class CreateInvoicesTable extends Migration
             $table->text('resp_hacienda')->nullable();
             $table->char('medio_pago', 2)->default('01');
             $table->tinyInteger('fe')->default(0); //1 utiliza factura electronica
+            $table->tinyInteger('sent_to_hacienda')->default(0); //1 si ha sido enviado a hacienda para su aprobacio o rechazo
+            $table->tinyInteger('created_xml')->default(0);
+
             $table->timestamps();
         });
     }

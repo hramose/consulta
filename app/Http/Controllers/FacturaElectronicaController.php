@@ -57,7 +57,7 @@ class FacturaElectronicaController extends Controller
         $invoiceXML = $factura1->generateXML($user, $invoiceGPS);
         $signedinvoiceXML = $factura1->signXML($user, true);
 
-        return $this->feRepo->sendHacienda($user, $signedinvoiceXML, $fac);
+        return $this->feRepo->sendHacienda($user, $signedinvoiceXML);
     }
 
     public function recepcion($user_id, $clave)
@@ -66,7 +66,7 @@ class FacturaElectronicaController extends Controller
 
         $result = $this->feRepo->recepcion($user, $clave);
 
-        return $result;
+        return json_encode($this->feRepo->decodeRespuestaXML($result->{'respuesta-xml'}));
     }
 
     public function comprobante($user_id, $clave)

@@ -119,6 +119,7 @@ class Factura
      */
     public $establecimiento;
     public $pos;
+    public $consecutivoHacienda;
 
     public function __construct($emisorId, $receptorId = null, $numeroConsecutivo, $fechaEmision = '')
     {
@@ -138,12 +139,13 @@ class Factura
      * @param string $fechaComprobante Fecha en que se generó la factura electrónica (dd-mm-yyyy)
      * @return stting
      */
-    public function getClave($establecimiento = '1', $pos = '1')
+    public function getClave($situacionComprobante = '1', $establecimiento = '1', $pos = '1')
     {
         $this->establecimiento = $establecimiento;
         $this->pos = $pos;
-        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo, '1', getUniqueNumber(8), $this->establecimiento, $this->pos);
-        
+        $this->clave = Common::generarClave($this->fechaEmision, $this->emisor, Common::FACTURA, $this->numeroConsecutivo, $situacionComprobante, getUniqueNumber(8), $this->establecimiento, $this->pos);
+        $this->consecutivoHacienda = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo, $this->establecimiento, $this->pos);
+
         return $this;
     }
 
@@ -153,7 +155,7 @@ class Factura
 
         $facturaXML = new \SimpleXMLElement($facuraBase);
         $facturaXML->Clave = $this->clave;
-        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo,$this->establecimiento, $this->pos); //$this->numeroConsecutivo;
+        $facturaXML->NumeroConsecutivo = $this->consecutivoHacienda; //$this->numeroConsecutivo;
         $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
 
         $facturaXML->Emisor->Nombre = $user->configFactura->nombre;
@@ -231,10 +233,10 @@ class Factura
         $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
         $facturaXML->Otros->OtroTexto = 'Id y Consecutivo Sistema Interno: ' . $invoiceGPS->id . '-' . $invoiceGPS->consecutivo;
 
-        Storage::put('facturaelectronica/' . $user->id . '/file.xml', $facturaXML->asXML());
+        Storage::put('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml', $facturaXML->asXML());
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/file.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/file.xml');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml');
         } else {
             dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
         }
@@ -246,7 +248,7 @@ class Factura
 
         $facturaXML = new \SimpleXMLElement($facuraBase);
         $facturaXML->Clave = $this->clave;
-        $facturaXML->NumeroConsecutivo = Common::generarConsecutivo(Common::FACTURA, $this->numeroConsecutivo); //$this->numeroConsecutivo;
+        $facturaXML->NumeroConsecutivo = $this->consecutivoHacienda; //$this->numeroConsecutivo;
         $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
 
         $facturaXML->Emisor->Nombre = $user->configFactura->nombre;
@@ -322,12 +324,12 @@ class Factura
         }
     }
 
-    public function signXML($user, $test = false)
+    public function signXML($user, $invoiceGPS_id, $test = false)
     {
         $cert = ($test) ? 'test' : 'cert';
         $pin = ($test) ? $user->configFactura->pin_certificado_test : $user->configFactura->pin_certificado;
 
-        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/file.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/out.xml'));
+        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml'));
 
         \Log::info('results of xadessignercr: ' . json_encode($salida));
 
@@ -335,8 +337,8 @@ class Factura
 
         $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/out.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/out.xml');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml');
         } else {
             dd('Error al firmar el xml de la factura. Ponte en contacto con el proveedor');
         }
