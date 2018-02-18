@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
 
-
 class InvoiceController extends Controller
 {
     public function __construct(InvoiceRepository $invoiceRepo)
@@ -48,6 +47,7 @@ class InvoiceController extends Controller
 
         return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'searchDate'));
     }
+
     public function noInvoices()
     {
         $searchDate = Carbon::now()->toDateString();
@@ -57,14 +57,12 @@ class InvoiceController extends Controller
         }
 
         $medic = auth()->user();
-        
+
         $offices = auth()->user()->offices()->pluck('offices.id');
 
-         $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
+        $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
-          return view('medic.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
-
-
+        return view('medic.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
     }
 
     /**
@@ -72,6 +70,14 @@ class InvoiceController extends Controller
      */
     public function store()
     {
+        if (!existsCertFile(auth()->user())) {
+            $errors = [
+                'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
+            ];
+
+            return response()->json(['errors' => $errors], 422, []);
+        }
+
         $invoice = $this->invoiceRepo->store(request()->all());
 
         return $invoice;
@@ -82,10 +88,17 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
+        if (!existsCertFile(auth()->user())) {
+            $errors = [
+                'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
+            ];
+
+            return response()->json(['errors' => $errors], 422, []);
+        }
+
         $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
-      
     }
 
     /**
@@ -152,7 +165,7 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = $this->invoiceRepo->print($id);
-        
+
         return view('medic.invoices.print', compact('invoice'));
     }
 
@@ -162,21 +175,20 @@ class InvoiceController extends Controller
     public function ticket($id)
     {
         $invoice = $this->invoiceRepo->print($id);
-       
 
         return view('medic.invoices.ticket', compact('invoice'));
     }
 
-   /*
-    public function balance()
-    {
-        $medic_id = auth()->id();
+    /*
+     public function balance()
+     {
+         $medic_id = auth()->id();
 
-        $this->invoiceRepo->balance($medic_id);
-        
+         $this->invoiceRepo->balance($medic_id);
 
-        flash('Se ha ejecutado el cierre correctamente', 'success');
 
-        return Redirect()->back();
-    }*/
+         flash('Se ha ejecutado el cierre correctamente', 'success');
+
+         return Redirect()->back();
+     }*/
 }

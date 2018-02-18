@@ -4,7 +4,7 @@
           <div class="modal-header">
           
          
-            <h4 class="modal-title">Parece que no tienes una <b>subscripción</b> todavia! Selecciona una para continuar con el proceso</h4>
+            <h4 class="modal-title">Parece que no tienes una <b>subscripción</b> todavia o esta se encuentra vencidad! Selecciona una para continuar con el proceso de cambio o compra</h4>
           </div>
           <div class="modal-body" >
               

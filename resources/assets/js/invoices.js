@@ -41,6 +41,7 @@ $(function () {
          var medic_id = $(this).attr('data-medic');
         
       $('.loader').show();
+      $('#modalInvoice').find('.callout').addClass('hidden');
         $.ajax({
             type: 'PUT',
             url: '/medic/invoices/'+invoice_id,
@@ -80,9 +81,12 @@ $(function () {
               
                 
             },
-            error: function () {
-              console.log('error get details');
+            error: function (resp) {
               $('.loader').hide();
+              if(resp.responseJSON.errors){
+                $('#modalInvoice').find('.error-certificate').text(resp.responseJSON.errors.certificate[0]);
+                $('#modalInvoice').find('.callout').removeClass('hidden');
+              }
             }
         });
      
@@ -153,6 +157,7 @@ $(function () {
       var medic_id = button.attr('data-medic')  
       var table_details = modal.find('#table-details')
       var detailsHtml = '';
+       modal.find('.callout').addClass('hidden');
      
       modal.find('.btn-facturar').attr('data-invoice', invoice_id);
       modal.find('.btn-facturar').attr('data-medic', medic_id);

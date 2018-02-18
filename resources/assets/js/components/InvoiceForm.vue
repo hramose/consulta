@@ -1,7 +1,15 @@
 <template>
 	<div class="form-horizontal">
   
-      
+        <form-error v-if="errors.certificate" :errors="errors">
+           
+            <div class="callout callout-danger">
+              <h4>Información importante!</h4>
+
+              <p> {{ errors.certificate[0] }}</p>
+            </div>
+        </form-error>
+        
       <div class="form-invoice-service" v-show="!newService && !updateService">
           <div class="box box-info">
                 <div class="box-header with-border">
@@ -176,12 +184,13 @@
                   
                 </div>
                 <!-- /.box-footer -->
+               
                 <div class="form-group">
                   <div class="col-sm-12">
                     <div class="pull-right">
                         <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                     </div>
-                    
+                   
                   </div>
                 </div>
           </div>
@@ -394,7 +403,7 @@
 		              }, (response) => {
 		                  console.log('error al agregar servicio')
 		                  this.loader = false;
-		                   this.errors = response.data;
+		                   this.errors = response.data.errors;
 		              });
 		        
 		           
@@ -418,7 +427,7 @@
                         console.log(response.data)
                         this.loader = false;
                         this.loader_message ="Error al guardar cambios";
-                        this.errors = response.data;
+                        this.errors = response.data.errors;
                     });
               
                   
@@ -520,8 +529,9 @@
                        this.loader = false;
                   }, (response) => {
                       console.log('error al facturar o enviar factura')
+                      console.log(response)
                        this.loader = false;
-                       this.errors = response.data;
+                       this.errors = response.data.errors;
                        this.invoiceHere = false;
                   });
 

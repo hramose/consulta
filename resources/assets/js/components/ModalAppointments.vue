@@ -6,7 +6,7 @@
         <div class="modal-header">
         
           <h4 class="modal-title" id="myModalLabel"  v-show="!showPackages && !showPendingPayment">Crear cita</h4>
-          <h4 v-show="showPackages">Parece que no tienes una <b>subscripción</b> todavia! Selecciona una para continuar con el proceso</h4>
+          <h4 v-show="showPackages">Parece que no tienes una <b>subscripción</b> todavia o esta se encuentra vencida! Selecciona una para continuar con el proceso</h4>
            <h4 v-show="showPendingPayment">Tienes pagos pendientes!. Haz el pago para poder continuar</h4>
         </div>
         <div class="modal-body" data-modaldate data-modaldate-end data-office data-officename>

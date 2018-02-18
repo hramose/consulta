@@ -11,6 +11,11 @@
             </div>
 
             <div class="modal-body">
+               <div class="callout callout-danger hidden">
+                <h4>Información importante!</h4>
+
+                <p class="error-certificate"></p>
+              </div>
                <div class="form-horizontal">
                     <div class="form-group">
                       <label for="service" class="col-sm-2 control-label">A nombre de:</label>

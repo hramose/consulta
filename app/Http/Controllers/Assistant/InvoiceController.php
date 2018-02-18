@@ -87,7 +87,7 @@ class InvoiceController extends Controller
         return view('assistant.invoices.show', compact('medic', 'invoices', 'totalInvoicesAmount', 'searchDate'));
     }
 
-     public function noInvoices($medic_id)
+    public function noInvoices($medic_id)
     {
         $medic = $this->medicRepo->findById($medic_id);
         $searchDate = Carbon::now()->toDateString();
@@ -96,16 +96,11 @@ class InvoiceController extends Controller
             $searchDate = request('q');
         }
 
-        
         $office = auth()->user()->clinicsAssistants->first();
 
+        $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
-          $noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
-
-
-          return view('assistant.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
-
-
+        return view('assistant.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
     }
 
     /**
@@ -143,6 +138,16 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
+        $invoice = $this->invoiceRepo->findById($id);
+
+        if (!existsCertFile($invoice->medic)) {
+            $errors = [
+                        'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
+                    ];
+
+            return response()->json(['errors' => $errors], 422, []);
+        }
+
         $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
