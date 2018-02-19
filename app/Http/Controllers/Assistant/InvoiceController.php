@@ -140,7 +140,7 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->findById($id);
 
-        if (!existsCertFile($invoice->medic)) {
+        if ($invoice->medic->fe && !existsCertFile($invoice->medic)) {
             $errors = [
                         'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
                     ];

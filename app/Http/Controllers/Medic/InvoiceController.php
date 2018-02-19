@@ -70,7 +70,7 @@ class InvoiceController extends Controller
      */
     public function store()
     {
-        if (!existsCertFile(auth()->user())) {
+        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];
@@ -88,7 +88,7 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
-        if (!existsCertFile(auth()->user())) {
+        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];
