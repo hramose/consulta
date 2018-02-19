@@ -149,7 +149,7 @@ class Factura
         return $this;
     }
 
-    public function generateXML($user, $invoiceGPS)
+    public function generateXML($user, $invoice)
     {
         $facuraBase = Storage::get('facturaelectronica/factura.xml');
 
@@ -183,11 +183,11 @@ class Factura
 
         $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
 
-        if ($invoiceGPS->client_name) {
-            $facturaXML->Receptor->Nombre = $invoiceGPS->client_name;
+        if ($invoice->client_name) {
+            $facturaXML->Receptor->Nombre = $invoice->client_name;
 
-            if ($invoiceGPS->client_email) {
-                $facturaXML->Receptor->CorreoElectronico = $invoiceGPS->client_email;
+            if ($invoice->client_email) {
+                $facturaXML->Receptor->CorreoElectronico = $invoice->client_email;
             } else {
                 unset($facturaXML->Receptor->CorreoElectronico);
             }
@@ -196,11 +196,11 @@ class Factura
         }
 
         $facturaXML->CondicionVenta = '01'; //contado
-        $facturaXML->MedioPago = $invoiceGPS->medio_pago; //01 efectivo 02 tarjeta
+        $facturaXML->MedioPago = $invoice->medio_pago; //01 efectivo 02 tarjeta
 
         //$facturaXML->DetalleServicio;
 
-        foreach ($invoiceGPS->lines as $key => $detail) {
+        foreach ($invoice->lines as $key => $detail) {
             $detalle = $facturaXML->DetalleServicio->addChild('LineaDetalle');
             $detalle->addChild('NumeroLinea', $key + 1);
             $codigo = $detalle->addChild('Codigo');
@@ -220,23 +220,23 @@ class Factura
         $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
         $facturaXML->ResumenFactura->TipoCambio = '1.00000';
         $facturaXML->ResumenFactura->TotalServGravados = '0.00000';
-        $facturaXML->ResumenFactura->TotalServExentos = numberFE($invoiceGPS->subtotal, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalServExentos = numberFE($invoice->subtotal, $decimals = 5);
         $facturaXML->ResumenFactura->TotalGravado = '0.00000';
-        $facturaXML->ResumenFactura->TotalExento = numberFE($invoiceGPS->subtotal, $decimals = 5);
-        $facturaXML->ResumenFactura->TotalVenta = numberFE($invoiceGPS->subtotal, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalExento = numberFE($invoice->subtotal, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalVenta = numberFE($invoice->subtotal, $decimals = 5);
         $facturaXML->ResumenFactura->TotalDescuentos = '0.00000';
-        $facturaXML->ResumenFactura->TotalVentaNeta = numberFE($invoiceGPS->total, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalVentaNeta = numberFE($invoice->total, $decimals = 5);
         $facturaXML->ResumenFactura->TotalImpuesto = '0.00000';
-        $facturaXML->ResumenFactura->TotalComprobante = numberFE($invoiceGPS->total, $decimals = 5);
+        $facturaXML->ResumenFactura->TotalComprobante = numberFE($invoice->total, $decimals = 5);
 
         $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
         $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
-        $facturaXML->Otros->OtroTexto = 'Id y Consecutivo Sistema Interno: ' . $invoiceGPS->id . '-' . $invoiceGPS->consecutivo;
+        $facturaXML->Otros->OtroTexto = 'Id y Consecutivo Sistema Interno: ' . $invoice->id . '-' . $invoice->consecutivo;
 
-        Storage::put('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml', $facturaXML->asXML());
+        Storage::put('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS->id . '.xml');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml');
         } else {
             dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
         }
@@ -321,26 +321,6 @@ class Factura
             return Storage::get('facturaelectronica/' . $user->id . '/file.xml');
         } else {
             dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
-        }
-    }
-
-    public function signXML($user, $invoiceGPS_id, $test = false)
-    {
-        $cert = ($test) ? 'test' : 'cert';
-        $pin = ($test) ? $user->configFactura->pin_certificado_test : $user->configFactura->pin_certificado;
-
-        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml'));
-
-        \Log::info('results of xadessignercr: ' . json_encode($salida));
-
-        /*$salida2 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' send https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 '. storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');
-
-        $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
-
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml');
-        } else {
-            dd('Error al firmar el xml de la factura. Ponte en contacto con el proveedor');
         }
     }
 

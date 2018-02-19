@@ -221,12 +221,12 @@ class FacturaElectronicaRepository extends DbRepository
         return $base64;
     }
 
-    public function signXML($user, $invoiceGPS_id)
+    public function signXML($user, $invoice)
     {
         $cert = ($this->type == 'test') ? 'test' : 'cert';
         $pin = ($this->type == 'test') ? $user->configFactura->pin_certificado_test : $user->configFactura->pin_certificado;
 
-        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml'));
+        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml'));
 
         \Log::info('results of xadessignercr: ' . json_encode($salida));
 
@@ -234,8 +234,8 @@ class FacturaElectronicaRepository extends DbRepository
 
         $salida3 = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' query https://api.comprobanteselectronicos.go.cr/recepcion-sandbox/v1 ' . storage_path('app/facturaelectronica/out.xml') . ' cpf-02-0553-0597@stag.comprobanteselectronicos.go.cr ":w:Kc.}(Og@7w}}y!c]Q" ');*/
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoiceGPS_id . '-signed.xml');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
+            return Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml');
         } else {
             dd('Error al firmar el xml de la factura. Ponte en contacto con el proveedor');
         }

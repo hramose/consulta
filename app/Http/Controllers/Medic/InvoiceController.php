@@ -179,6 +179,12 @@ class InvoiceController extends Controller
         return view('medic.invoices.ticket', compact('invoice'));
     }
 
+    public function downloadXml($id)
+    {
+        return $this->invoiceRepo->xml($id);
+        ;
+    }
+
     /*
      public function balance()
      {

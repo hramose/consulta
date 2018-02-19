@@ -61,6 +61,11 @@
                         <th>Total</th>
                         @if($medic->fe)
                         <th>Estado Hacienda</th>
+                        <th>Generar NC</th>
+                        <th>Generar ND</th>
+                        <th>Ver XML</th>
+                        <th>Ver PDF</th>
+                        <th>Enviar por</th>
                         @endif
                         <th></th>
                       </tr>
@@ -93,6 +98,23 @@
                                   
                                  <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
                               @endif
+                            </td>
+                            <td>
+                              <a href="#">Generar Nota Crédito</a>
+                            </td>
+                            <td>
+                              <a href="#">Generar Nota Débito</a>
+                            </td>
+                            <td>
+                              @if($invoice->status)
+                              <a href="/medic/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                              @endif
+                            </td>
+                            <td>
+                              <!-- <a href="#">PDF</a> -->
+                            </td>
+                            <td>
+                              <!-- <a href="#">Correo</a> -->
                             </td>
                             @endif
                             <td>

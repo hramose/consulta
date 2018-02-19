@@ -128,16 +128,16 @@ class InvoiceRepository extends DbRepository
     {
         $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
 
-        if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '-signed.xml')) {
-            $invoiceXML = Storage::get('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '.xml');
+        if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
+            $invoiceXML = Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml');
             $facturaXML = new \SimpleXMLElement($invoiceXML);
 
             $situacionComprobante = ($invoice->sent_to_hacienda) ? '1' : '3';
 
             $facturaXML->Clave = substr_replace((string) $facturaXML->Clave, $situacionComprobante, 41, 1); // cambiar la situacion del comprobante 1- normal 2- contigencia 3 -no internet
-            Storage::put('facturaelectronica/' . $user->id . '/invoice-' . $invoice->id . '.xml', $facturaXML->asXML());
+            Storage::put('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
 
-            $signedinvoiceXML = $this->feRepo->signXML($user, $invoice->id);
+            $signedinvoiceXML = $this->feRepo->signXML($user, $invoice);
 
             $invoice->clave_fe = (string) $facturaXML->Clave;
             $invoice->save();
@@ -173,7 +173,7 @@ class InvoiceRepository extends DbRepository
 
         $invoiceXML = $factura->generateXML($user, $invoice);
 
-        $signedinvoiceXML = $this->feRepo->signXML($user, $invoice->id); //true por que es de prueba
+        $signedinvoiceXML = $this->feRepo->signXML($user, $invoice); //true por que es de prueba
 
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 
@@ -205,6 +205,21 @@ class InvoiceRepository extends DbRepository
         }
 
         return $invoice;
+    }
+
+    public function xml($id)
+    {
+        $invoice = $this->findById($id);
+
+        $pathToFile = storage_path('app/facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml');
+
+        if (!Storage::disk('local')->exists($pathToFile)) {
+            flash('Archivo no encontrado', 'danger');
+
+            return back();
+        }
+
+        return response()->download($pathToFile);
     }
 
     public function recepcionHacienda($id)
