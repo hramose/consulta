@@ -43,23 +43,21 @@ class RegisterClinicController extends Controller
     {
         $this->middleware('guest');
         $this->userRepo = $userRepo;
-        $this->administrators = User::whereHas('roles', function ($query){
-                        $query->where('name',  'administrador');
-                    })->get();
+        $this->administrators = User::whereHas('roles', function ($query) {
+            $query->where('name', 'administrador');
+        })->get();
     }
 
-     /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /**
+    * Show the application registration form.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function showRegistrationForm()
     {
-
         return view('auth.register-clinic');
     }
 
-    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -71,7 +69,7 @@ class RegisterClinicController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|confirmed'
         ]);
     }
 
@@ -96,36 +94,22 @@ class RegisterClinicController extends Controller
 
         $user = $this->userRepo->store($data);
 
-        if(isset($data['office']))
-        {
+        if (isset($data['office'])) {
             $office = Office::findOrFail($data['office']);
-            
+
             $user->offices()->save($office);
 
             //$office->active = 1;
 
             //$office->save();
 
-              try {
-                        
-                    \Mail::to($this->administrators)->send(new NewClinic($user,$office));
-                    
-                }catch (\Swift_TransportException $e)  //Swift_RfcComplianceException
-                {
-                    \Log::error($e->getMessage());
-                }
-
-          
-
+            try {
+                \Mail::to($this->administrators)->send(new NewClinic($user, $office));
+            } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                \Log::error($e->getMessage());
+            }
         }
 
-    
-        
-      
         return $user;
-        
-
-
-
     }
 }
