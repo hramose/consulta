@@ -211,13 +211,13 @@ class InvoiceRepository extends DbRepository
     {
         $invoice = $this->findById($id);
 
-        $pathToFile = storage_path('app/facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml');
-
-        if (!Storage::disk('local')->exists($pathToFile)) {
+        if (!Storage::disk('local')->exists('facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
             flash('Archivo no encontrado', 'danger');
 
             return back();
         }
+
+        $pathToFile = storage_path('app/facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml');
 
         return response()->download($pathToFile);
     }
