@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInvoiceLinesTable extends Migration
+class CreateDocumentoReferenciasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateInvoiceLinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_lines', function (Blueprint $table) {
+        Schema::create('documento_referencias', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('invoice_id')->unsigned()->index();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
-            $table->string('name');
-            $table->double('amount')->default(0);
-            $table->double('quantity')->default(0);
-            $table->double('total_line')->default(0);
+            $table->char('tipo_documento', 2);
+            $table->string('numero_documento');
+            $table->dateTime('fecha_emision');
+            $table->char('codigo_referencia', 2);
+            $table->text('razon');
+
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateInvoiceLinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_lines');
+        Schema::dropIfExists('documento_referencias');
     }
 }

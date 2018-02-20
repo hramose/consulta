@@ -8,6 +8,8 @@ use App\InvoiceLine;
 use App\FacturaElectronica\Factura;
 use App\Balance;
 use Illuminate\Support\Facades\Storage;
+use App\DocumentoReferencia;
+use App\FacturaElectronica\NotaCredito;
 
 class InvoiceRepository extends DbRepository
 {
@@ -76,7 +78,7 @@ class InvoiceRepository extends DbRepository
         $totalInvoice = 0;
         foreach ($data['services'] as $service) {
             $line = new InvoiceLine;
-            $line->service = $service['name'];
+            $line->name = $service['name'];
             $line->amount = $service['amount'];
             $line->quantity = 1;
             $line->total_line = $line->quantity * $line->amount;
@@ -149,6 +151,7 @@ class InvoiceRepository extends DbRepository
 
                 $invoice->save();
             }
+            
         }
 
         return $this->feRepo->sendHacienda($user, $signedinvoiceXML);
@@ -161,8 +164,16 @@ class InvoiceRepository extends DbRepository
         $numeroCedulaEmisor = $user->configFactura->identificacion;
 
         $miNumeroConsecutivo = $invoice->consecutivo;
+        if ($invoice->tipo_documento == '01') {
+            $factura = new Factura($numeroCedulaEmisor, null, $miNumeroConsecutivo);
+        }
+        if ($invoice->tipo_documento == '02') {
+            $factura = new NotaDebito($numeroCedulaEmisor, null, $miNumeroConsecutivo);
+        }
+        if ($invoice->tipo_documento == '03') {
+            $factura = new NotaCredito($numeroCedulaEmisor, null, $miNumeroConsecutivo);
+        }
 
-        $factura = new Factura($numeroCedulaEmisor, null, $miNumeroConsecutivo);
 
         $fac = $factura->getClave();
 
@@ -258,6 +269,85 @@ class InvoiceRepository extends DbRepository
             'invoices' => $countInvoices,
             'total' => $totalInvoices
             ]);
+    }
+
+    /**
+     * save a appointment
+     * @param $data
+     */
+    public function notaCreditoDebito($data, $invoice_id)
+    {
+       
+        $invoice = $this->findById($invoice_id);
+        $user = $invoice->medic;
+
+        $notaDC = $this->model;
+        $notaDC->appointment_id =  $invoice->appointment_id;
+        $notaDC->office_id = $invoice->office_id;
+        $notaDC->patient_id = $invoice->patient_id;
+        $notaDC->bill_to = $invoice->bill_to;
+        $notaDC->office_type = $invoice->office_type;
+        $notaDC->tipo_documento = $data['type'];
+
+        $consecutivo = Invoice::where('user_id', $user->id)->where('tipo_documento', $data['type'])->max('consecutivo');
+
+
+        if ($user->fe) {
+            $consecutivo_inicio = $user->configFactura->consecutivo_inicio;
+            $notaDC->fe = 1;
+        } else {
+            $consecutivo_inicio = 1;
+        }
+
+        $notaDC->consecutivo = ($consecutivo) ? $consecutivo += 1 : 1;
+
+        $notaDC->status = 1;
+
+        $notaDC = $user->invoices()->save($notaDC);
+
+        $totalInvoice = 0;
+        foreach ($data['services'] as $service) {
+            $line = new InvoiceLine;
+            $line->name = $service['name'];
+            $line->amount = $service['amount'];
+            $line->quantity = 1;
+            $line->total_line = $line->quantity * $line->amount;
+
+            $totalInvoice += $line->total_line;
+
+            $notaDC->lines()->save($line);
+        }
+
+        $notaDC->subtotal = $totalInvoice;
+        $notaDC->total = $totalInvoice;
+        $notaDC->client_name = $invoice->client_name;
+        $notaDC->client_email = $invoice->client_email;
+        $notaDC->medio_pago = $invoice->medio_pago;
+
+        foreach ($data['referencias'] as $ref) {
+            $documento_ref = new DocumentoReferencia;
+            $documento_ref->tipo_documento = $ref['tipo_documento'];
+            $documento_ref->numero_documento = $ref['numero_documento'];
+            $documento_ref->fecha_emision = $ref['fecha_emision'];
+            $documento_ref->codigo_referencia = $ref['codigo_referencia'];
+            $documento_ref->razon = $ref['razon'];
+
+
+            $notaDC->documentosReferencia()->save($documento_ref);
+        }
+
+
+        if ($user->fe) {
+            $result = $this->sendToHacienda($notaDC);
+          
+            if (!$result) {
+                $notaDC->sent_to_hacienda = 1;
+            }
+        }
+
+        $notaDC->save();
+
+        return $notaDC->load('clinic');
     }
 
     /**

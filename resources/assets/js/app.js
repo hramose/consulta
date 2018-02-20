@@ -70,6 +70,7 @@ Vue.component('clinic-notifications', require('./components/ClinicNotifications.
 Vue.component('test-conexion-hacienda', require('./components/TestConexionHacienda.vue'));
 Vue.component('hacienda-notifications', require('./components/HaciendaNotifications.vue'));
 Vue.component('send-to-hacienda', require('./components/SendToHacienda.vue'));
+Vue.component('nota-credito-debito-form', require('./components/NotaCreditoDebitoForm.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

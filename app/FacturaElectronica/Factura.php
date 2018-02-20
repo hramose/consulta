@@ -209,7 +209,7 @@ class Factura
             $detalle->addChild('Cantidad', numberFE(1, $decimals = 3));
             $detalle->addChild('UnidadMedida', 'Unid');
             $detalle->addChild('UnidadMedidaComercial', '');
-            $detalle->addChild('Detalle', $detail->service);
+            $detalle->addChild('Detalle', $detail->name);
             $detalle->addChild('PrecioUnitario', numberFE($detail->amount, $decimals = 5));
             $detalle->addChild('MontoTotal', numberFE($detail->total_line, $decimals = 5));
             //$detalle->addChild('NaturalezaDescuento', '');

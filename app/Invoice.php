@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $fillable = [
-        'client_name', 'client_email', 'discount', 'subtotal', 'total', 'status', 'pay_with', 'change', 'clave_fe', 'status_fe', 'medio_pago', 'resp_hacienda', 'fe', 'sent_to_hacienda', 'consecutivo_hacienda', 'created_xml'
+        'client_name', 'client_email', 'discount', 'subtotal', 'total', 'status', 'pay_with', 'change', 'clave_fe', 'status_fe', 'medio_pago', 'resp_hacienda', 'fe', 'sent_to_hacienda', 'consecutivo_hacienda', 'created_xml','tipo_documento'
     ];
 
     public function lines()
     {
         return $this->hasMany(InvoiceLine::class);
+    }
+    
+    public function documentosReferencia()
+    {
+        return $this->hasMany(DocumentoReferencia::class);
     }
 
     public function medic()

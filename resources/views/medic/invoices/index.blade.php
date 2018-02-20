@@ -100,10 +100,12 @@
                               @endif
                             </td>
                             <td>
-                              <a href="#">Generar Nota Crédito</a>
+                              <a href="/medic/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                              
                             </td>
                             <td>
-                              <a href="#">Generar Nota Débito</a>
+                             <a href="/medic/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                            
                             </td>
                             <td>
                               @if($invoice->status)
@@ -161,6 +163,7 @@
 
    @if($medic->fe)
         @include('medic/invoices/partials/status-hacienda-modal')
+       
     @endif
 @endsection
 @section('scripts')

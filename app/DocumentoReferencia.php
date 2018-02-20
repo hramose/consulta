@@ -4,11 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceLine extends Model
+class DocumentoReferencia extends Model
 {
-    protected $fillable = [
-        'name', 'amount', 'quantity', 'total_line'
-    ];
+     protected $guarded = [];
 
     public function invoice()
     {
