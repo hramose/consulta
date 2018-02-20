@@ -128,6 +128,7 @@ class InvoiceRepository extends DbRepository
 
     public function sendToHacienda($invoice)
     {
+        $invoice = $this->findById($invoice->id);
         $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
 
         if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
@@ -144,6 +145,7 @@ class InvoiceRepository extends DbRepository
             $invoice->clave_fe = (string) $facturaXML->Clave;
             $invoice->save();
         } else {
+           
             $signedinvoiceXML = $this->createFacturaXML($invoice);
 
             if ($signedinvoiceXML) {
@@ -164,7 +166,9 @@ class InvoiceRepository extends DbRepository
         $numeroCedulaEmisor = $user->configFactura->identificacion;
 
         $miNumeroConsecutivo = $invoice->consecutivo;
+       
         if ($invoice->tipo_documento == '01') {
+            
             $factura = new Factura($numeroCedulaEmisor, null, $miNumeroConsecutivo);
         }
         if ($invoice->tipo_documento == '02') {
