@@ -16,6 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('consecutivo')->unsigned(); // medico
+            $table->string('consecutivo_hacienda')->nullable(); // con hacienda
             $table->integer('user_id')->unsigned()->index(); // medico
             $table->integer('appointment_id')->unsigned()->index(); // consulta
             $table->integer('office_id')->unsigned()->index(); // clinica
