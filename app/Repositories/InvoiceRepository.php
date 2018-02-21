@@ -40,9 +40,9 @@ class InvoiceRepository extends DbRepository
         $invoice->bill_to = ($user->fe) ? 'M' : $data['bill_to'];
         $invoice->office_type = $data['office_type'];
 
-        $consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
+        //$consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
 
-        /*if ($data['office_type'] == 'Consultorio Independiente') {
+        if ($data['office_type'] == 'Consultorio Independiente') {
             $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
         } else {
             if ($data['bill_to'] == 'M') {
@@ -53,7 +53,7 @@ class InvoiceRepository extends DbRepository
             } else {
                 $consecutivo = Invoice::where('user_id', $user->id)->where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('bill_to', 'C')->max('consecutivo');
             }
-        }*/
+        }
 
         if ($user->fe) {
             $consecutivo_inicio = $user->configFactura->consecutivo_inicio;
@@ -145,7 +145,6 @@ class InvoiceRepository extends DbRepository
             $invoice->clave_fe = (string) $facturaXML->Clave;
             $invoice->save();
         } else {
-           
             $signedinvoiceXML = $this->createFacturaXML($invoice);
 
             if ($signedinvoiceXML) {
@@ -153,7 +152,6 @@ class InvoiceRepository extends DbRepository
 
                 $invoice->save();
             }
-            
         }
 
         return $this->feRepo->sendHacienda($user, $signedinvoiceXML);
@@ -166,9 +164,8 @@ class InvoiceRepository extends DbRepository
         $numeroCedulaEmisor = $user->configFactura->identificacion;
 
         $miNumeroConsecutivo = $invoice->consecutivo;
-       
+
         if ($invoice->tipo_documento == '01') {
-            
             $factura = new Factura($numeroCedulaEmisor, null, $miNumeroConsecutivo);
         }
         if ($invoice->tipo_documento == '02') {
@@ -177,7 +174,6 @@ class InvoiceRepository extends DbRepository
         if ($invoice->tipo_documento == '03') {
             $factura = new NotaCredito($numeroCedulaEmisor, null, $miNumeroConsecutivo);
         }
-
 
         $fac = $factura->getClave();
 
@@ -281,12 +277,11 @@ class InvoiceRepository extends DbRepository
      */
     public function notaCreditoDebito($data, $invoice_id)
     {
-       
         $invoice = $this->findById($invoice_id);
         $user = $invoice->medic;
 
         $notaDC = $this->model;
-        $notaDC->appointment_id =  $invoice->appointment_id;
+        $notaDC->appointment_id = $invoice->appointment_id;
         $notaDC->office_id = $invoice->office_id;
         $notaDC->patient_id = $invoice->patient_id;
         $notaDC->bill_to = $invoice->bill_to;
@@ -294,7 +289,6 @@ class InvoiceRepository extends DbRepository
         $notaDC->tipo_documento = $data['type'];
 
         $consecutivo = Invoice::where('user_id', $user->id)->where('tipo_documento', $data['type'])->max('consecutivo');
-
 
         if ($user->fe) {
             $consecutivo_inicio = $user->configFactura->consecutivo_inicio;
@@ -336,14 +330,12 @@ class InvoiceRepository extends DbRepository
             $documento_ref->codigo_referencia = $ref['codigo_referencia'];
             $documento_ref->razon = $ref['razon'];
 
-
             $notaDC->documentosReferencia()->save($documento_ref);
         }
 
-
         if ($user->fe) {
             $result = $this->sendToHacienda($notaDC);
-          
+
             if (!$result) {
                 $notaDC->sent_to_hacienda = 1;
             }
