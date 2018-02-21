@@ -216,7 +216,6 @@ class NotaCredito
             $detalle->addChild('SubTotal', numberFE($detail->total_line, $decimals = 5));
             $detalle->addChild('MontoTotalLinea', numberFE($detail->total_line, $decimals = 5));
         }
-        
 
         $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
         $facturaXML->ResumenFactura->TipoCambio = '1.00000';
@@ -231,17 +230,13 @@ class NotaCredito
         $facturaXML->ResumenFactura->TotalComprobante = numberFE($invoice->total, $decimals = 5);
 
         foreach ($invoice->documentosReferencia as $key => $doc) {
-            $InformacionReferencia =  $facturaXML->InformacionReferencia;
+            $InformacionReferencia = $facturaXML->InformacionReferencia;
             $InformacionReferencia->addChild('TipoDoc', $doc->tipo_documento);
             $InformacionReferencia->addChild('Numero', $doc->numero_documento);
             $InformacionReferencia->addChild('FechaEmision', Carbon::parse($doc->fecha_emision)->toAtomString());
             $InformacionReferencia->addChild('Codigo', $doc->codigo_referencia);
             $InformacionReferencia->addChild('Razon', $doc->razon);
-            
-
-            
         }
-
 
         $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
         $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
@@ -251,88 +246,6 @@ class NotaCredito
 
         if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
             return Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml');
-        } else {
-            dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
-        }
-    }
-
-    public function generateTestXML($user)
-    {
-        $facuraBase = Storage::get('facturaelectronica/nota_credito.xml');
-
-        $facturaXML = new \SimpleXMLElement($facuraBase);
-        $facturaXML->Clave = $this->clave;
-        $facturaXML->NumeroConsecutivo = $this->consecutivoHacienda; //$this->numeroConsecutivo;
-        $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
-
-        $facturaXML->Emisor->Nombre = $user->configFactura->nombre;
-        $facturaXML->Emisor->Identificacion->Tipo = $user->configFactura->tipo_identificacion;
-        $facturaXML->Emisor->Identificacion->Numero = $user->configFactura->identificacion;//'205530597';
-        $facturaXML->Emisor->NombreComercial = $user->configFactura->nombre_comercial;
-        $facturaXML->Emisor->Ubicacion->Provincia = $user->configFactura->provincia;
-        $facturaXML->Emisor->Ubicacion->Canton = $user->configFactura->canton; //bagaces
-        $facturaXML->Emisor->Ubicacion->Distrito = $user->configFactura->distrito;//'03'; //guayabo mogote
-        //$facturaXML->Emisor->Ubicacion->Barrio = '';
-        $facturaXML->Emisor->Ubicacion->OtrasSenas = $user->configFactura->otras_senas;
-        //$facturaXML->Emisor->Telefono->CodigoPais = $user->configFactura->codigo_pais_tel;
-        // $facturaXML->Emisor->Telefono->NumTelefono = $user->configFactura->telefono;
-        $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
-
-        $facturaXML->Receptor->Nombre = 'Alo';
-        $facturaXML->Receptor->CorreoElectronico = 'Alo@test.com';
-        // $facturaXML->Receptor->Identificacion->Tipo = '01';
-        // $facturaXML->Receptor->Identificacion->Numero = '503600224';
-        // $facturaXML->Receptor->NombreComercial = '';
-        // $facturaXML->Receptor->Ubicacion->Provincia = '5';
-        // $facturaXML->Receptor->Ubicacion->Canton = '01';
-        // $facturaXML->Receptor->Ubicacion->Distrito = '01';
-        // //$facturaXML->Receptor->Ubicacion->Barrio = '';
-        // $facturaXML->Receptor->Ubicacion->OtrasSenas = 'test';
-        // $facturaXML->Receptor->Telefono->CodigoPais = 506;
-        // $facturaXML->Receptor->Telefono->NumTelefono = 89679098;
-        // $facturaXML->Receptor->CorreoElectronico = 'alonso@avotz.com';
-
-        $facturaXML->CondicionVenta = '01';
-        //$facturaXML->PlazoCredito = '';
-        $facturaXML->MedioPago = '01';
-
-        //$facturaXML->DetalleServicio;
-
-        $detalle = $facturaXML->DetalleServicio->addChild('LineaDetalle');
-        $detalle->addChild('NumeroLinea', '1');
-        $codigo = $detalle->addChild('Codigo');
-        $codigo->addChild('Tipo', '04');
-        $codigo->addChild('Codigo', '1');
-        $detalle->addChild('Cantidad', '1.000');
-        $detalle->addChild('UnidadMedida', 'Unid');
-        $detalle->addChild('UnidadMedidaComercial', '');
-        $detalle->addChild('Detalle', 'test');
-        $detalle->addChild('PrecioUnitario', '1000.00000');
-        $detalle->addChild('MontoTotal', '1000.00000');
-        //$detalle->addChild('NaturalezaDescuento', '');
-        $detalle->addChild('SubTotal', '1000.00000');
-        $detalle->addChild('MontoTotalLinea', '1000.00000');
-
-        $facturaXML->ResumenFactura->CodigoMoneda = 'CRC';
-        $facturaXML->ResumenFactura->TipoCambio = '1.00000';
-        $facturaXML->ResumenFactura->TotalServGravados = '0.00000';
-        $facturaXML->ResumenFactura->TotalServExentos = '1000.00000';
-        $facturaXML->ResumenFactura->TotalGravado = '0.00000';
-        $facturaXML->ResumenFactura->TotalExento = '1000.00000';
-        $facturaXML->ResumenFactura->TotalVenta = '1000.00000';
-        $facturaXML->ResumenFactura->TotalDescuentos = '0.00000';
-        $facturaXML->ResumenFactura->TotalVentaNeta = '1000.00000';
-        $facturaXML->ResumenFactura->TotalImpuesto = '0.00000';
-        $facturaXML->ResumenFactura->TotalComprobante = '1000.00000';
-
-        $facturaXML->Normativa->NumeroResolucion = 'DGT-R-48-2016';
-        $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
-        $facturaXML->Otros->OtroTexto = '';
-
-        Storage::put('facturaelectronica/' . $user->id . '/file.xml', $facturaXML->asXML());
-
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/file.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/file.xml');
         } else {
             dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
         }
