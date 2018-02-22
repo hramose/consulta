@@ -186,9 +186,12 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
     Route::get('/invoices/{id}/recepcion', 'Medic\InvoiceController@recepcion');
     Route::get('/invoices/{id}/download/xml', 'Medic\InvoiceController@downloadXml');
-    Route::get('/invoices/{id}/notacredito', 'Medic\InvoiceController@notaCredito');
-    Route::get('/invoices/{id}/notadebito', 'Medic\InvoiceController@notaDebito');
-    Route::post('/invoices/{id}/notacreditodebito', 'Medic\InvoiceController@NotaCreditoDebito');
+
+    Route::get('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@create');
+    Route::post('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@store');
+    
+    Route::get('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@create');
+    Route::post('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@store');
 
     Route::resource('invoices', 'Medic\InvoiceController');
 

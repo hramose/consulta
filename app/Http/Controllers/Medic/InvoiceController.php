@@ -184,30 +184,7 @@ class InvoiceController extends Controller
         return $this->invoiceRepo->xml($id);
     }
 
-     public function notaCredito($id)
-    {
-        $invoice = $this->invoiceRepo->findById($id);
-        $typeDocument = '03';
-        
-        return view('medic.invoices.nota-credito-debito', compact('invoice','typeDocument'));
-
-    }
-     public function notaDebito($id)
-    {
-        
-        $invoice = $this->invoiceRepo->findById($id);
-        $typeDocument = '02';
-
-        return view('medic.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
-
-    }
-
-    public function notaCreditoDebito($id)
-    {
-        
-        return $this->invoiceRepo->notaCreditoDebito(request()->all(), $id);
-    }
-
+     
     /*
      public function balance()
      {

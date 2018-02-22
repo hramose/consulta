@@ -182,17 +182,39 @@
   </div>
 
   <div class="form-group">
-    <label for="consecutivo_inicio" class="col-sm-2 control-label">Consecutivo inicio</label>
+    <label for="consecutivo_inicio" class="col-sm-2 control-label">Consecutivos de inicio</label>
 
-      <div class="col-sm-10">
-      <input type="number" class="form-control" name="consecutivo_inicio" placeholder="Consecutivo Facturas" value="{{ isset($user->configFactura) ? $user->configFactura->consecutivo_inicio : old('consecutivo_inicio','1') }}" required min="1">
-       @if ($errors->has('consecutivo_inicio'))
+      <div class="col-sm-3">
+       
+            <label for="consecutivo_inicio" class="control-label">Facturas</label>
+            <input type="number" class="form-control" name="consecutivo_inicio" placeholder="Consecutivo Facturas" value="{{ isset($user->configFactura) ? $user->configFactura->consecutivo_inicio : old('consecutivo_inicio','1') }}" required min="1">
+            @if ($errors->has('consecutivo_inicio'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('consecutivo_inicio') }}</strong>
+                </span>
+            @endif
+        
+      </div>
+      <div class="col-sm-3">
+      <label for="consecutivo_inicio_ND" class="control-label">Notas Débito</label>
+      <input type="number" class="form-control" name="consecutivo_inicio_ND" placeholder="Consecutivo Notas de débito" value="{{ isset($user->configFactura) ? $user->configFactura->consecutivo_inicio_ND : old('consecutivo_inicio_ND','1') }}" required min="1">
+       @if ($errors->has('consecutivo_inicio_ND'))
           <span class="help-block">
-              <strong>{{ $errors->first('consecutivo_inicio') }}</strong>
+              <strong>{{ $errors->first('consecutivo_inicio_ND') }}</strong>
+          </span>
+      @endif
+      </div>
+      <div class="col-sm-3">
+       <label for="consecutivo_inicio_NC" class="control-label">Notas Crédito</label>
+      <input type="number" class="form-control" name="consecutivo_inicio_NC" placeholder="Consecutivo Notas de crédito" value="{{ isset($user->configFactura) ? $user->configFactura->consecutivo_inicio_NC : old('consecutivo_inicio_NC','1') }}" required min="1">
+       @if ($errors->has('consecutivo_inicio_NC'))
+          <span class="help-block">
+              <strong>{{ $errors->first('consecutivo_inicio_NC') }}</strong>
           </span>
       @endif
       </div>
   </div>
+  
   
 <div class="form-group">
     <label for="atv_user" class="col-sm-2 control-label">ATV usuario </label>

@@ -34,6 +34,8 @@ class CreateConfigFacturasTable extends Migration
             $table->string('otras_senas');
             $table->string('email');
             $table->integer('consecutivo_inicio')->default(1);
+            $table->integer('consecutivo_inicio_ND')->default(1);
+            $table->integer('consecutivo_inicio_NC')->default(1);
             $table->string('atv_user');
             $table->string('atv_password');
             $table->string('pin_certificado');

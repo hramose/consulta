@@ -651,11 +651,13 @@
                             });
                     return;
                 }
+
+                let urlNota = (this.type == '02') ? 'notadebito' : 'notacredito';
                 
                 
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices/'+ this.originalInvoice.id +'/notacreditodebito', { invoice:this.originalInvoice, services: this.servicesToInvoice, type:this.type, referencias:this.documentosReferencia }).then((response) => {
+                this.$http.post('/medic/invoices/'+ this.originalInvoice.id +'/'+ urlNota, { invoice:this.originalInvoice, services: this.servicesToInvoice, type:this.type, referencias:this.documentosReferencia }).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
