@@ -233,7 +233,7 @@ class NotaDebito
             $InformacionReferencia = $facturaXML->InformacionReferencia;
             $InformacionReferencia->addChild('TipoDoc', $doc->tipo_documento);
             $InformacionReferencia->addChild('Numero', $doc->numero_documento);
-            $InformacionReferencia->addChild('FechaEmision', $doc->fecha_emision);
+            $InformacionReferencia->addChild('FechaEmision', Carbon::parse($doc->fecha_emision)->toAtomString());
             $InformacionReferencia->addChild('Codigo', $doc->codigo_referencia);
             $InformacionReferencia->addChild('Razon', $doc->razon);
         }

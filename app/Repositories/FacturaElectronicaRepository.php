@@ -37,6 +37,10 @@ class FacturaElectronicaRepository extends DbRepository
             'timeout' => 60,
         ]);
         $this->type = $type;
+
+        $this->schema_factura = 'https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/facturaElectronica';
+        $this->schema_nota_credito = 'https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/notaCreditoElectronica';
+        $this->schema_nota_debito = 'https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/notaDebitoElectronica';
     }
 
     public function get_token($username, $password)
@@ -226,7 +230,23 @@ class FacturaElectronicaRepository extends DbRepository
         $cert = ($this->type == 'test') ? 'test' : 'cert';
         $pin = ($this->type == 'test') ? $user->configFactura->pin_certificado_test : $user->configFactura->pin_certificado;
 
-        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercr.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml'));
+        switch ($invoice->tipo_documento) {
+            case '01':
+                $schema = $this->schema_factura;
+                break;
+            case '02':
+                $schema = $this->schema_nota_debito;
+                break;
+            case '03':
+                $schema = $this->schema_nota_credito;
+                break;
+
+            default:
+                $schema = $this->schema_factura;
+                break;
+        }
+
+        $salida = exec('java -jar ' . storage_path('app/facturaelectronica/xadessignercrv2.jar') . ' sign ' . storage_path('app/facturaelectronica/' . $user->id . '/' . $cert . '.p12') . ' ' . $pin . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml') . ' ' . storage_path('app/facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml') . ' ' . $schema);
 
         \Log::info('results of xadessignercr: ' . json_encode($salida));
 

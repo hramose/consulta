@@ -669,6 +669,24 @@
                           this.errors = [];
                           this.loader = false;
 
+                           swal({
+                              title: 'Documento creado',
+                              text: "La Nota de crédito o débito fue creada correctamente",
+                              type: 'success',
+                              //showCancelButton: true,
+                              confirmButtonColor: '#d33',
+                              cancelButtonColor: '#3085d6',
+                              confirmButtonText: 'Si',
+                              cancelButtonText: 'No'
+                            }).then(function () {
+
+                              window.location.href = $vm.url;
+
+                            }, function(dismiss) {
+                               window.location.href = $vm.url;
+                            });
+            
+
                           
                           
 

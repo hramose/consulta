@@ -10,6 +10,7 @@ use App\Balance;
 use Illuminate\Support\Facades\Storage;
 use App\DocumentoReferencia;
 use App\FacturaElectronica\NotaCredito;
+use App\FacturaElectronica\NotaDebito;
 
 class InvoiceRepository extends DbRepository
 {
@@ -53,17 +54,16 @@ class InvoiceRepository extends DbRepository
         // } else {
         //      $consecutivo = Invoice::where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('tipo_documento', '01')->max('consecutivo');
 
-            // if ($data['bill_to'] == 'M') {
-            //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
-            //     $last_office = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->orderBy('id', 'desc')->first();
-            //     $invoice->office_id = $last_office->office_id; // se guarda el id de la office del ultimo registro de consultorios independientes
-            //     $invoice->office_type = $last_office->office_type; // se guarda el tipo de la office del ultimo registro de consultorios independientes
-            // } else {
-            //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('bill_to', 'C')->max('consecutivo');
-            // }
+        // if ($data['bill_to'] == 'M') {
+        //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
+        //     $last_office = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->orderBy('id', 'desc')->first();
+        //     $invoice->office_id = $last_office->office_id; // se guarda el id de la office del ultimo registro de consultorios independientes
+        //     $invoice->office_type = $last_office->office_type; // se guarda el tipo de la office del ultimo registro de consultorios independientes
+        // } else {
+        //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('bill_to', 'C')->max('consecutivo');
+        // }
         //}
 
-       
         if (isset($data['pay_with'])) {
             $invoice->pay_with = $data['pay_with'];
         }
@@ -109,31 +109,29 @@ class InvoiceRepository extends DbRepository
 
     public function crearConsecutivo($user, $tipo_documento, $office_id, $office_type)
     {
-       
-
         if ($office_type == 'consultorio-independiente') {
             $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->where('tipo_documento', $tipo_documento)->max('consecutivo');
         } else {
             $consecutivo = Invoice::where('office_id', $office_id)->where('office_type', 'Clínica Privada')->where('tipo_documento', $tipo_documento)->max('consecutivo');
-
         }
 
         if ($user->fe) {
-            if($tipo_documento == '01')
+            if ($tipo_documento == '01') {
                 $consecutivo_inicio = $user->configFactura->consecutivo_inicio;
+            }
 
-            if($tipo_documento == '02')
+            if ($tipo_documento == '02') {
                 $consecutivo_inicio = $user->configFactura->consecutivo_inicio_ND;
+            }
 
-            if($tipo_documento == '03')
+            if ($tipo_documento == '03') {
                 $consecutivo_inicio = $user->configFactura->consecutivo_inicio_NC;
-
+            }
         } else {
             $consecutivo_inicio = 1;
         }
 
         return ($consecutivo) ? $consecutivo += 1 : $consecutivo_inicio;
-
     }
 
     public function update($id, $data)
@@ -269,7 +267,6 @@ class InvoiceRepository extends DbRepository
         $respHacienda = $this->feRepo->recepcion($invoice->medic, $invoice->clave_fe);
 
         if (isset($respHacienda->{'ind-estado'})) {
-           
             $invoice->status_fe = $respHacienda->{'ind-estado'};
 
             if (isset($respHacienda->{'respuesta-xml'})) {
@@ -318,12 +315,11 @@ class InvoiceRepository extends DbRepository
         $notaDC->office_type = $invoice->office_type;
         $notaDC->tipo_documento = $data['type'];
 
-       
-         if ($user->fe) {
+        if ($user->fe) {
             $invoice->fe = 1;
         }
 
-        $notaDC->consecutivo = $this->crearConsecutivo($user, $data['type'], $data['office_id'], str_slug($data['office_type'], '-'));
+        $notaDC->consecutivo = $this->crearConsecutivo($user, $data['type'], $invoice->office_id, str_slug($invoice->office_type, '-'));
 
         $notaDC->status = 1;
 

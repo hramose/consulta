@@ -8,7 +8,7 @@ use App\Repositories\InvoiceRepository;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
 
-class NotaCreditoController extends Controller
+class NotaDebitoController extends Controller
 {
     public function __construct(InvoiceRepository $invoiceRepo)
     {
