@@ -249,13 +249,13 @@ class InvoiceRepository extends DbRepository
     {
         $invoice = $this->findById($id);
 
-        if (!Storage::disk('local')->exists('facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
+        if (!Storage::disk('local')->exists('facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
             flash('Archivo no encontrado', 'danger');
 
             return back();
         }
 
-        $pathToFile = storage_path('app/facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '.xml');
+        $pathToFile = storage_path('app/facturaelectronica/' . $invoice->medic->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml');
 
         return response()->download($pathToFile);
     }
@@ -316,7 +316,7 @@ class InvoiceRepository extends DbRepository
         $notaDC->tipo_documento = $data['type'];
 
         if ($user->fe) {
-            $invoice->fe = 1;
+            $notaDC->fe = 1;
         }
 
         $notaDC->consecutivo = $this->crearConsecutivo($user, $data['type'], $invoice->office_id, str_slug($invoice->office_type, '-'));

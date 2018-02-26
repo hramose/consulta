@@ -19,7 +19,13 @@ class NotaCreditoController extends Controller
 
     public function create($invoice_id)
     {
+
         $invoice = $this->invoiceRepo->findById($invoice_id);
+
+        if ($invoice->user_id != auth()->id()) {
+            return redirect('/');
+        } //verifica que la factura es del medico q la solicita
+
         $typeDocument = '03';
 
         return view('medic.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
@@ -43,11 +49,5 @@ class NotaCreditoController extends Controller
         return $notaCredito;
     }
 
-    public function notaDebito($id)
-    {
-        $invoice = $this->invoiceRepo->findById($id);
-        $typeDocument = '02';
-
-        return view('medic.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
-    }
+   
 }

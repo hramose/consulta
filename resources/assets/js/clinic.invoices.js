@@ -172,7 +172,7 @@ $(function () {
 
                $.each(resp.lines, function( index, item ) {
                    
-                   detailsHtml +='<tr><td>'+ item.quantity +'</td><td>'+ item.service +'</td><td>'+ money(item.amount) +'</td><td>'+ money(item.total_line) +'</td></tr>'
+                   detailsHtml +='<tr><td>'+ item.quantity +'</td><td>'+ item.name +'</td><td>'+ money(item.amount) +'</td><td>'+ money(item.total_line) +'</td></tr>'
 
                 });
 

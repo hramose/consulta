@@ -60,12 +60,14 @@
                         <th>Paciente</th>
                         <th>Total</th>
                         @if($medic->fe)
+                        <th>Tipo Doc</th>
+                        <th>Num. Consecutivo</th>
                         <th>Estado Hacienda</th>
                         <th>Generar NC</th>
                         <th>Generar ND</th>
                         <th>Ver XML</th>
-                        <th>Ver PDF</th>
-                        <th>Enviar por</th>
+                        <!-- <th>Ver PDF</th> -->
+                      
                         @endif
                         <th></th>
                       </tr>
@@ -74,6 +76,7 @@
                         @foreach($invoices as $invoice)
                           <tr>
                             <td>{{ $invoice->consecutivo }}</td>
+                        
                             <td>
                              {{ $invoice->created_at }}
                             </td>
@@ -90,10 +93,18 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                             @if($medic->fe)
+                            @if($medic->fe)
+                           
+                              <td>
+                                {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}
+                                
+                              </td>
+                              <td>
+                                {{ $invoice->consecutivo_hacienda }}
+                              </td>
                             <td>
                               @if($invoice->sent_to_hacienda)
-                                <span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif
+                                <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a> 
                                @elseif($invoice->status)
                                   
                                  <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
@@ -112,12 +123,7 @@
                               <a href="/medic/invoices/{{ $invoice->id }}/download/xml">XML</a>
                               @endif
                             </td>
-                            <td>
-                              <!-- <a href="#">PDF</a> -->
-                            </td>
-                            <td>
-                              <!-- <a href="#">Correo</a> -->
-                            </td>
+                            
                             @endif
                             <td>
                               @if($invoice->status)

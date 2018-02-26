@@ -59,7 +59,12 @@
                         <th>Paciente</th>
                         <th>Total</th>
                          @if($medic->fe)
+                        <th>Tipo Doc</th>
+                        <th>Num. Consecutivo</th>
                         <th>Estado Hacienda</th>
+                        <th>Generar NC</th>
+                        <th>Generar ND</th>
+                        <th>Ver XML</th>
                         @endif
                         
                         <th></th>
@@ -83,14 +88,35 @@
                                 @endif
                             </td> -->
                              @if($medic->fe)
+                              <td>
+                                {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}
+                                
+                              </td>
+                              <td>
+                                {{ $invoice->consecutivo_hacienda }}
+                              </td>
                             <td>
                               @if($invoice->sent_to_hacienda)
-                                <span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   @if($invoice->clave_fe) - <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado</b></a> @endif
-                              @elseif($invoice->status)
+                                <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a> 
+                               @elseif($invoice->status)
                                   
                                  <send-to-hacienda :invoice-id="{{ $invoice->id }}" url="/assistant/invoices"></send-to-hacienda>
                               @endif
                             </td>
+                            <td>
+                              <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                              
+                            </td>
+                            <td>
+                             <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                            
+                            </td>
+                            <td>
+                              @if($invoice->status)
+                              <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                              @endif
+                            </td>
+                            
                             @endif
                             <td>
                                 @if($invoice->status)

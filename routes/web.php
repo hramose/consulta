@@ -186,6 +186,8 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
     Route::get('/invoices/{id}/recepcion', 'Medic\InvoiceController@recepcion');
     Route::get('/invoices/{id}/download/xml', 'Medic\InvoiceController@downloadXml');
+    Route::get('/invoices/{id}/download/pdf', 'Medic\InvoiceController@downloadPdf');
+    Route::post('/invoices/{id}/pdf', 'Medic\InvoiceController@pdf');
 
     Route::get('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@create');
     Route::post('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@store');
@@ -314,14 +316,26 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
     Route::get('/medics/list', 'Assistant\MedicController@getMedics');
     Route::resource('medics', 'Assistant\MedicController');
 
-    //Route::get('/invoices/services/list', 'Assistant\InvoiceController@getServices');
-    //Route::post('/invoices/services', 'Assistant\InvoiceController@saveService');
+    Route::get('/invoices/services/list', 'Assistant\InvoiceController@getServices');
+    Route::post('/invoices/services', 'Assistant\InvoiceController@saveService');
+    Route::put('/invoices/services/{id}', 'Medic\InvoiceController@updateService');
+    Route::delete('/invoices/services/{id}', 'Medic\InvoiceController@deleteService');
+
     Route::put('/invoices/{id}', 'Assistant\InvoiceController@update');
     Route::get('/invoices/{id}/details', 'Assistant\InvoiceController@getDetails');
     Route::get('/invoices/{id}/print', 'Assistant\InvoiceController@print');
     Route::get('/invoices/{id}/ticket', 'Assistant\InvoiceController@ticket');
     Route::get('/medics/{medic}/invoices', 'Assistant\InvoiceController@show');
     Route::get('/medics/{medic}/no-invoices', 'Assistant\InvoiceController@noInvoices');
+    Route::get('/invoices/{id}/download/xml', 'Assistant\InvoiceController@downloadXml');
+    Route::get('/invoices/{id}/download/pdf', 'Assistant\InvoiceController@downloadPdf');
+    Route::post('/invoices/{id}/pdf', 'Assistant\InvoiceController@pdf');
+
+    Route::get('/invoices/{id}/notadebito', 'Assistant\NotaDebitoController@create');
+    Route::post('/invoices/{id}/notadebito', 'Assistant\NotaDebitoController@store');
+
+    Route::get('/invoices/{id}/notacredito', 'Assistant\NotaCreditoController@create');
+    Route::post('/invoices/{id}/notacredito', 'Assistant\NotaCreditoController@store');
 
     Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
     Route::get('/invoices/balance', 'Assistant\InvoiceController@generalBalance');

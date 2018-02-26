@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceService extends Model
 {
      protected $fillable = [
-        'name','amount'
+        'user_id','name','amount'
     ];
 
     protected $appends = array('name_price');

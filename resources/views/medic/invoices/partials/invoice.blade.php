@@ -67,15 +67,27 @@
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
+          @if($invoice->fe)
           <div class="invoice-number">
-            <h3>Nro. Factura:</h3>
-            <h4>{{$invoice->consecutivo }}</h4>
+            <h5>{{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}:</h5>
+            <h6>{{$invoice->consecutivo_hacienda }}</h6>
             
           </div>
-          <div> <span>Contado</span>  </div>
+          <div> <span>{{ $invoice->clave_fe }}</span>  </div>
+          <div> <span><b>Condicion venta:</b> {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}</span>  </div>
+          <div> <span><b>Medio Pago:</b> {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}</span>  </div>
+          @else
+            <div class="invoice-number">
+              <h3>Nro. Factura:</h3>
+              <h4>{{$invoice->consecutivo }}</h4>
+              
+            </div>
+             <div> <span><b>Condicion venta:</b> {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}</span>  </div>
+             <div> <span><b>Medio Pago:</b> {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}</span>  </div>
+          @endif
          
           <div class="invoice-date">
-          <b>Fecha:</b> {{ $invoice->created_at }}
+          <b>Fecha emisión:</b> {{ $invoice->created_at }}
           </div>
           
           
@@ -118,7 +130,7 @@
             @foreach($invoice->lines as $line)
             <tr>
               <td>{{ $line->quantity }}</td>
-              <td>{{ $line->service }}</td>
+              <td>{{ $line->name }}</td>
               <td>{{ money($line->amount) }}</td>
               <td>{{ money($line->total_line) }}</td>
              
@@ -136,7 +148,9 @@
         <!-- accepted payments column -->
         <div class="col-xs-6">
           
-        
+          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+            Autorizada mediante resolución Nº DGT-R-48-2016 del 7 de octubre de 2016
+          </p>
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
@@ -163,3 +177,4 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+     

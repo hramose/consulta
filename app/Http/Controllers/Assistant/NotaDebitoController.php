@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Medic;
+namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
 use App\Invoice;
@@ -12,7 +12,7 @@ class NotaDebitoController extends Controller
 {
     public function __construct(InvoiceRepository $invoiceRepo)
     {
-        $this->middleware('auth');
+        $this->middleware('authByRole:asistente');
         $this->invoiceRepo = $invoiceRepo;
         $this->feRepo = new FacturaElectronicaRepository('test');
     }
@@ -20,14 +20,15 @@ class NotaDebitoController extends Controller
     public function create($invoice_id)
     {
         $invoice = $this->invoiceRepo->findById($invoice_id);
+        $office = auth()->user()->clinicsAssistants->first();
 
-        if ($invoice->user_id != auth()->id()) {
+        if ($invoice->office_id != $office->id) {
             return redirect('/');
         } //verifica que la factura es del medico q la solicita
         
         $typeDocument = '02';
 
-        return view('medic.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
+        return view('assistant.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
     }
 
     /**
@@ -35,7 +36,9 @@ class NotaDebitoController extends Controller
      */
     public function store($invoice_id)
     {
-        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
+        $invoice = $this->invoiceRepo->findById($invoice_id);
+
+        if ($invoice->medic->fe && !existsCertFile($invoice->medic)) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];

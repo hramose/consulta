@@ -14,6 +14,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -156,20 +157,28 @@ class InvoiceController extends Controller
     /**
      * Lista de todas las citas de un doctor sin paginar
      */
-    /* public function getServices()
+     public function getServices()
      {
-
-         $services = InvoiceService::where('name', 'like', '%'. request('q').'%')->get();
+       
+         $services = InvoiceService::where('user_id', request('user_id'))->where('name', 'like', '%'. request('q').'%')->get();
 
          return $services;
 
      }
      public function saveService()
      {
+        $this->validate(request(), [
+            'name' => 'required',
+            'amount' => 'required|numeric',
+        ]);
+
+        $data = request()->all();
+        $data['user_id'] = request('user_id');
+
          $service = InvoiceService::create(request()->all());
 
           return $service;
-     }*/
+     }
 
     /**
     * Lista de todas las citas de un doctor sin paginar
@@ -203,6 +212,40 @@ class InvoiceController extends Controller
 
         return view('assistant.invoices.ticket', compact('invoice'));
     }
+
+    public function downloadXml($id)
+    {
+        return $this->invoiceRepo->xml($id);
+    }
+
+    public function downloadPdf($id)
+    {
+        //return $this->invoiceRepo->pdf($id);
+        $invoice = $this->invoiceRepo->findById($id);
+
+        return view('medic.invoices.pdf', compact('invoice'));
+    }
+
+
+    /**
+     * imprime resumen de la consulta
+     */
+    public function pdf($id)
+    {
+        $invoice = $this->invoiceRepo->findById($id);
+
+        $html = request('htmltopdf');
+        $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
+
+        $pdf::SetFont('helvetica', '', 9);
+
+        $pdf::SetTitle('Expediente Clínico');
+        $pdf::AddPage('L', 'A4');
+        $pdf::writeHTML($html, true, false, true, false, '');
+
+        $pdf::Output('gpsm_' . $invoice->clave_fe . '.pdf');
+    }
+
 
     /**
     * Lista de todas las citas de un doctor sin paginar

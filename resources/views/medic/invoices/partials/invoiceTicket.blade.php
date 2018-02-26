@@ -33,7 +33,7 @@
       <div class="row invoice-info">
         <div class="col-sm-12 ">
           
-          <address>
+          <address style="word-wrap: break-word;">
             <strong>{{ $invoice->clinic->name }}</strong><br>
             @if($invoice->fe)
               Ced: {{ $invoice->medic->configFactura->identificacion }}<br>
@@ -61,8 +61,21 @@
             @endif
             {{ $invoice->clinic->address }}<br>
             Tel: {{ $invoice->clinic->phone }}<br>
-            Factura Contado #{{$invoice->consecutivo }}<br>
-            Fecha: {{ \Carbon\Carbon::now() }}<br>
+             @if($invoice->fe)
+            
+              {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}:<br>
+              {{$invoice->consecutivo_hacienda }}
+              
+            
+            {{ $invoice->clave_fe }}<br>
+            Condicion venta:{{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}<br>
+            Medio Pago: {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}<br>
+            @else
+             Nro. Factura: {{$invoice->consecutivo }}<br>
+             Condicion venta: {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}<br>
+             Medio Pago: {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}<br>
+            @endif
+            Fecha emisión: {{ $invoice->created_at }}<br>
             Cliente: {{ $invoice->client_name }}<br>
             Médico: {{ $invoice->medic->name }}<br>
           </address>
@@ -89,7 +102,7 @@
             @foreach($invoice->lines as $line)
             <tr>
               <td>{{ $line->quantity }}</td>
-              <td>{{ $line->service }}</td>
+              <td>{{ $line->name }}</td>
               <td>{{ money($line->amount) }}</td>
               <td>{{ money($line->total_line) }}</td>
              
@@ -130,3 +143,13 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+       <div class="row">
+        <!-- accepted payments column -->
+        
+        <div class="col-xs-12">
+          
+          <p> Autorizada mediante resolución Nº DGT-R-48-2016 del 7 de octubre de 2016</p>
+          
+        </div>
+        <!-- /.col -->
+      </div>

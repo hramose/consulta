@@ -454,9 +454,10 @@
             loading(true)
            
            let queryParam = {
-                ['q']: search
+                ['q']: search,
+                ['user_id']: this.originalInvoice.user_id
               }
-            this.$http.get('/medic/invoices/services/list', {params: Object.assign(queryParam, this.data)})
+            this.$http.get(this.url + '/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                
                this.services = resp.data
@@ -473,7 +474,7 @@
                     return
 
 		              this.loader = true;
-		              this.$http.post('/medic/invoices/services', {name: this.new_service, amount: this.amount}).then((response) => {
+		              this.$http.post(this.url + '/services', {name: this.new_service, amount: this.amount, user_id:this.originalInvoice.user_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if(response.status == 200 && response.data)
@@ -501,7 +502,7 @@
                   return
 
                 this.loader = true;
-                 var resource = this.$resource('/medic/invoices/services/'+ this.service.id);
+                 var resource = this.$resource(this.url + '/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
                         
@@ -526,7 +527,7 @@
                 return
 
               this.loader = true;
-              this.$http.delete('/medic/invoices/services/'+this.service.id).then((response) => {
+              this.$http.delete(this.url + '/services/'+this.service.id).then((response) => {
                     
                     if(response.status == 200 && response.data == 'ok')
                     {
@@ -657,7 +658,7 @@
                 
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices/'+ this.originalInvoice.id +'/'+ urlNota, { invoice:this.originalInvoice, services: this.servicesToInvoice, type:this.type, referencias:this.documentosReferencia }).then((response) => {
+                this.$http.post(this.url + '/' +this.originalInvoice.id +'/'+ urlNota, { invoice:this.originalInvoice, services: this.servicesToInvoice, type:this.type, referencias:this.documentosReferencia }).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
@@ -676,7 +677,7 @@
                               //showCancelButton: true,
                               confirmButtonColor: '#d33',
                               cancelButtonColor: '#3085d6',
-                              confirmButtonText: 'Si',
+                              confirmButtonText: 'Ok',
                               cancelButtonText: 'No'
                             }).then(function () {
 
