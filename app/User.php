@@ -230,9 +230,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Subscription::class);
     }
+    // public function configFactura()
+    // {
+    //     return $this->hasOne(ConfigFactura::class);
+    // }
     public function configFactura()
     {
-        return $this->hasOne(ConfigFactura::class);
+        return $this->morphMany(ConfigFactura::class, 'facturable');
     }
     /**
      * create a setting to user

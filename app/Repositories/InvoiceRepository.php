@@ -33,36 +33,30 @@ class InvoiceRepository extends DbRepository
     public function store($data, $user_id = null)
     {
         $user = ($user_id) ? User::find($user_id) : auth()->user();
+        $obligadoTributario = (Office::find($office_id)->administrator()) ? Office::find($office_id)->administrator() : $user;
 
         $invoice = $this->model;
-        $invoice->appointment_id = $data['appointment_id'];
-        $invoice->office_id = $data['office_id'];
-        $invoice->patient_id = $data['patient_id'];
-        $invoice->bill_to = ($user->fe) ? 'M' : $data['bill_to'];
+        $invoice->appointment_id = isset($data['appointment_id']) ? $data['appointment_id'] : 0;
+        $invoice->office_id = isset($data['office_id']) ? $data['office_id'] : $user->offices()->where('office_type', 'Consultorio Independiente')->first()->id;
+        $invoice->patient_id = isset($data['patient_id']) ? $data['patient_id'] : 0;
+        $invoice->obligado_tributario_id = $obligadoTributario->id;
+        $invoice->bill_to = ($obligadoTributario->fe) ? 'M' : $data['bill_to'];
         $invoice->office_type = $data['office_type'];
 
-        if ($user->fe) {
+        if ($obligadoTributario->fe) {
+
             $invoice->fe = 1;
+            
+            $invoice->consecutivo = $this->crearConsecutivo($obligadoTributario, '01', $invoice->office_id, str_slug($invoice->office_type, '-'));
+
+        }else{
+            
+            $consecutivo = Invoice::where('user_id', $obligadoTributario->id)->where('tipo_documento', $tipo_documento)->max('consecutivo');
+
+            $invoice->consecutivo = ($consecutivo) ? $consecutivo += 1 : 1;
+
         }
-
-        $invoice->consecutivo = $this->crearConsecutivo($user, '01', $data['office_id'], str_slug($data['office_type'], '-'));
-
-        //$consecutivo = Invoice::where('user_id', $user->id)->max('consecutivo');
-
-        // if ($data['office_type'] == 'Consultorio Independiente') {
-        //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->where('tipo_documento', '01')->max('consecutivo');
-        // } else {
-        //      $consecutivo = Invoice::where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('tipo_documento', '01')->max('consecutivo');
-
-        // if ($data['bill_to'] == 'M') {
-        //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->max('consecutivo');
-        //     $last_office = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->orderBy('id', 'desc')->first();
-        //     $invoice->office_id = $last_office->office_id; // se guarda el id de la office del ultimo registro de consultorios independientes
-        //     $invoice->office_type = $last_office->office_type; // se guarda el tipo de la office del ultimo registro de consultorios independientes
-        // } else {
-        //     $consecutivo = Invoice::where('user_id', $user->id)->where('office_id', $data['office_id'])->where('office_type', 'Clínica Privada')->where('bill_to', 'C')->max('consecutivo');
-        // }
-        //}
+      
 
         if (isset($data['pay_with'])) {
             $invoice->pay_with = $data['pay_with'];
@@ -94,22 +88,48 @@ class InvoiceRepository extends DbRepository
         $invoice->client_email = $data['client_email'];
         $invoice->medio_pago = $data['medio_pago'];
 
-        if ($user->fe && !$data['send_to_assistant']) {
-            $result = $this->sendToHacienda($invoice);
-            // dd($result);
-            if (!$result) {
-                $invoice->sent_to_hacienda = 1;
+       
+        if ($obligadoTributario->fe && !$data['send_to_assistant']) {
+                $result = $this->sendToHacienda($invoice);
+         
+                if (!$result) {
+                    $invoice->sent_to_hacienda = 1;
+                }
             }
-        }
+        
+       
 
         $invoice->save();
 
         return $invoice->load('clinic');
     }
+    
 
-    public function crearConsecutivo($user, $tipo_documento, $office_id, $office_type)
+    public function crearConsecutivo($obligadoTributario, $tipo_documento, $office_id, $office_type)
     {
-        if ($office_type == 'consultorio-independiente') {
+        $consecutivo_inicio = 1;
+
+        $consecutivo = Invoice::where('obligado_tributario_id', $obligadoTributario->configFactura->id)->where('tipo_documento', $tipo_documento)->max('consecutivo');
+
+      
+        if ($tipo_documento == '01') {
+            $consecutivo_inicio = $obligadoTributario->configFactura->consecutivo_inicio;
+        }
+
+        if ($tipo_documento == '02') {
+            $consecutivo_inicio = $obligadoTributario->configFactura->consecutivo_inicio_ND;
+        }
+
+        if ($tipo_documento == '03') {
+            $consecutivo_inicio = $obligadoTributario->configFactura->consecutivo_inicio_NC;
+        }
+        
+
+        return ($consecutivo) ? $consecutivo += 1 : $consecutivo_inicio;
+        
+
+
+       /* if ($office_type == 'consultorio-independiente') {
             $consecutivo = Invoice::where('user_id', $user->id)->where('office_type', 'Consultorio Independiente')->where('tipo_documento', $tipo_documento)->max('consecutivo');
         } else {
             $consecutivo = Invoice::where('office_id', $office_id)->where('office_type', 'Clínica Privada')->where('tipo_documento', $tipo_documento)->max('consecutivo');
@@ -131,7 +151,7 @@ class InvoiceRepository extends DbRepository
             $consecutivo_inicio = 1;
         }
 
-        return ($consecutivo) ? $consecutivo += 1 : $consecutivo_inicio;
+        return ($consecutivo) ? $consecutivo += 1 : $consecutivo_inicio;*/
     }
 
     public function update($id, $data)
@@ -140,7 +160,7 @@ class InvoiceRepository extends DbRepository
         $invoice->fill($data);
         $invoice->status = 1;
 
-        if ($invoice->medic->fe) {
+        if ($invoice->fe) {
             $result = $this->sendToHacienda($invoice);
 
             if (!$result) {
@@ -153,26 +173,26 @@ class InvoiceRepository extends DbRepository
         return $invoice;
     }
 
-    public function sendToHacienda($invoice)
+    public function sendToHacienda($invoice, $userFactura = null)
     {
         $invoice = $this->findById($invoice->id);
-        $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
+        $configFactura = ($userFactura) ? $userFactura : $invoice->medic->configFactura->first();//$this->userRepo->findById($invoice->user_id);
 
-        if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
-            $invoiceXML = Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml');
+        if ($invoice->created_xml && Storage::disk('local')->exists('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '_signed.xml')) {
+            $invoiceXML = Storage::get('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '.xml');
             $facturaXML = new \SimpleXMLElement($invoiceXML);
 
             $situacionComprobante = ($invoice->sent_to_hacienda) ? '1' : '3';
 
             $facturaXML->Clave = substr_replace((string) $facturaXML->Clave, $situacionComprobante, 41, 1); // cambiar la situacion del comprobante 1- normal 2- contigencia 3 -no internet
-            Storage::put('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
+            Storage::put('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
 
-            $signedinvoiceXML = $this->feRepo->signXML($user, $invoice);
+            $signedinvoiceXML = $this->feRepo->signXML($configFactura, $invoice);
 
             $invoice->clave_fe = (string) $facturaXML->Clave;
             $invoice->save();
         } else {
-            $signedinvoiceXML = $this->createFacturaXML($invoice);
+            $signedinvoiceXML = $this->createFacturaXML($configFactura, $invoice);
 
             if ($signedinvoiceXML) {
                 $invoice->created_xml = 1;
@@ -181,14 +201,14 @@ class InvoiceRepository extends DbRepository
             }
         }
 
-        return $this->feRepo->sendHacienda($user, $signedinvoiceXML);
+        return $this->feRepo->sendHacienda($configFactura, $signedinvoiceXML);
     }
 
-    public function createFacturaXML($invoice)
+    public function createFacturaXML($configFactura, $invoice)
     {
-        $user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
+        //$user = $invoice->medic;//$this->userRepo->findById($invoice->user_id);
 
-        $numeroCedulaEmisor = $user->configFactura->identificacion;
+        $numeroCedulaEmisor = $configFactura->identificacion;
 
         $miNumeroConsecutivo = $invoice->consecutivo;
 
@@ -209,9 +229,9 @@ class InvoiceRepository extends DbRepository
 
         $invoice->save();
 
-        $invoiceXML = $factura->generateXML($user, $invoice);
+        $invoiceXML = $factura->generateXML($configFactura, $invoice);
 
-        $signedinvoiceXML = $this->feRepo->signXML($user, $invoice); //true por que es de prueba
+        $signedinvoiceXML = $this->feRepo->signXML($configFactura, $invoice); //true por que es de prueba
 
         \Log::info('results of invoiceXML: ' . json_encode($signedinvoiceXML));
 

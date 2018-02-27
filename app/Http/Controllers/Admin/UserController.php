@@ -78,7 +78,9 @@ class UserController extends Controller
         $plans = Plan::all();
         $subscription = $user->subscription;
 
-        return view('admin.users.edit', compact('user', 'plans', 'subscription'));
+        $configFactura = $user->configFactura->first();
+
+        return view('admin.users.edit', compact('user', 'plans', 'subscription', 'configFactura'));
     }
 
     /**
@@ -295,7 +297,7 @@ class UserController extends Controller
 
         $user = $this->userRepo->findById($user_id);
 
-        $user->configFactura()->create(request()->all());
+        $config = $user->configFactura()->create(request()->all());
 
         $mimes = ['p12'];
         $fileUploaded = 'error';
@@ -306,7 +308,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
             }
         }
 
@@ -316,7 +318,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
             }
         }
 
@@ -360,7 +362,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
             }
         }
 
@@ -370,7 +372,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
             }
         }
 
@@ -385,12 +387,14 @@ class UserController extends Controller
     public function deleteConfigFactura($user_id)
     {
         $user = $this->userRepo->findById($user_id);
+        $config = $user->configFactura->first();
 
-        $user->configFactura->delete();
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user_id . '/cert.p12')) {
-            Storage::deleteDirectory('facturaelectronica/' . $user_id . '/');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/cert.p12')) {
+            Storage::deleteDirectory('facturaelectronica/' . $config->id . '/');
         }
+
+        $config->delete();
 
         flash('Configuracion Eliminada', 'success');
 

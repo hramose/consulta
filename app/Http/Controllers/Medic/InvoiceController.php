@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
 use PDF;
+use App\Office;
 
 class InvoiceController extends Controller
 {
@@ -66,11 +67,19 @@ class InvoiceController extends Controller
         return view('medic.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
     }
 
+    public function create()
+    {
+
+        return view('medic.invoices.create');
+
+    }
+
     /**
      * Guardar consulta(cita)
      */
     public function store()
     {
+       
         if (auth()->user()->fe && !existsCertFile(auth()->user())) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']

@@ -35,8 +35,11 @@ class UserController extends Controller
        $user = auth()->user();
     
        $assistants = auth()->user()->assistants()->with('clinicsAssistants')->get();
+       $clinic = auth()->user()->offices->first();
 
-    	return view('clinic.profile.edit',compact('user','assistants','tab'));
+       $configFactura = $clinic->configFactura->first();
+
+    	return view('clinic.profile.edit',compact('user','assistants','tab', 'configFactura'));
 
     }
 
@@ -293,6 +296,135 @@ class UserController extends Controller
         $specialities = Speciality::where('name', 'like', '%' . $search['q'] . '%')->get();
 
         return $specialities;
+    }
+
+    /**
+     * Guardar paciente
+     */
+    public function addConfigFactura($office_id)
+    {
+
+        $this->validate(request(), [
+            'nombre' => 'required',
+            'tipo_identificacion' => 'required',
+            'identificacion' => 'required',
+            'sucursal' => 'required|numeric',
+            'pos' => 'required|numeric',
+            'provincia' => 'required',
+            'canton' => 'required',
+            'distrito' => 'required',
+            'otras_senas' => 'required',
+            'email' => 'required|email',
+            'atv_user' => 'required',
+            'atv_password' => 'required',
+            'pin_certificado' => 'required',
+            //'certificado' => 'required',
+        ]);
+
+        $office = $this->officeRepo->findbyId($office_id);
+
+        $config = $office->configFactura()->create(request()->all());
+
+        $mimes = ['p12'];
+        $fileUploaded = 'error';
+
+        if (request()->file('certificado')) {
+            $file = request()->file('certificado');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
+            }
+        }
+
+        if (request()->file('certificado_test')) {
+            $file = request()->file('certificado_test');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
+            }
+        }
+
+        flash('Configuracion de factura electronica Creada', 'success');
+
+        return Redirect('clinic/account/edit?tab=fe');
+    }
+
+    /**
+     * Actualizar Paciente
+     */
+    public function updateConfigFactura($office_id)
+    {
+        $this->validate(request(), [
+            'nombre' => 'required',
+            'tipo_identificacion' => 'required',
+            'identificacion' => 'required',
+            'sucursal' => 'required|numeric',
+            'pos' => 'required|numeric',
+            'provincia' => 'required',
+            'canton' => 'required',
+            'distrito' => 'required',
+            'otras_senas' => 'required',
+            'email' => 'required|email',
+            'atv_user' => 'required',
+            'atv_password' => 'required',
+            'pin_certificado' => 'required',
+        ]);
+
+        $office = $this->officeRepo->findbyId($office_id);
+        $config = $office->configFactura->first();
+        $config->fill(request()->all());
+        $config->save();
+
+        $mimes = ['p12'];
+        $fileUploaded = 'error';
+
+        if (request()->file('certificado')) {
+            $file = request()->file('certificado');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
+            }
+        }
+
+        if (request()->file('certificado_test')) {
+            $file = request()->file('certificado_test');
+
+            $ext = $file->guessClientExtension();
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
+            }
+        }
+
+        flash('Configuracion de factura electronica Actualizada', 'success');
+
+        return Redirect('medic/account/edit?tab=fe');
+    }
+
+    /**
+     * Eliminar consulta(cita)
+     */
+    public function deleteConfigFactura($office_id)
+    {
+        $office = $this->officeRepo->findbyId($office_id);
+        $config = $office->configFactura->first();
+        
+
+        if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/cert.p12')) {
+            Storage::deleteDirectory('facturaelectronica/' . $config->id . '/');
+        }
+
+        $config->delete();
+
+        flash('Configuracion Eliminada', 'success');
+
+        return back();
     }
 
 

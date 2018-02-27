@@ -34,6 +34,7 @@ class CreateOfficesTable extends Migration
             $table->string('address_map')->nullable();
             $table->tinyInteger('active')->default(0);
             $table->char('bill_to', 2)->default('C');
+            $table->tinyInteger('fe')->default(0);
             $table->timestamps();
         });
 

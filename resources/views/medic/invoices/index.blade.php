@@ -27,6 +27,7 @@
           <div>
            
             <a href="/medic/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
+            <a href="/medic/invoices/create" class="btn btn-success">Crear Factura</a>
            
          </div>
           <div class="box box-default box-calendar">
@@ -84,7 +85,11 @@
                              {{ $invoice->clinic->name }}
                             </td>
                              <td>
+                             @if($invoice->appointment)
                              {{ $invoice->appointment->patient->first_name }}
+                             @else 
+                              --
+                             @endif
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
@@ -104,7 +109,11 @@
                               </td>
                             <td>
                               @if($invoice->sent_to_hacienda)
-                                <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a> 
+                                @if($invoice->status_fe)
+                                  <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                @else
+                                  <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                @endif
                                @elseif($invoice->status)
                                   
                                  <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>

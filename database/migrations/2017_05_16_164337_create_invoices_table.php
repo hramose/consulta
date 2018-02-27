@@ -21,6 +21,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('appointment_id')->unsigned()->index(); // consulta
             $table->integer('office_id')->unsigned()->index(); // clinica
             $table->integer('patient_id')->unsigned()->index(); // paciente
+            $table->integer('obligado_tributario_id')->unsigned()->index(); // el que factura a hacienda
             $table->string('office_type'); // office type
             $table->string('client_name')->nullable();
             $table->string('client_email')->nullable();

@@ -122,23 +122,23 @@ function getLogo($clinic)
 
     return $url;
 }
-function existsCertFile($user)
+function existsCertFile($config)
 {
     $resp = false;
 
     $cert = (env('FE_ENV') == 'test') ? 'test' : 'cert';
 
-    if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/' . $cert . '.p12')) {
+    if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/' . $cert . '.p12')) {
         $resp = true;
     }
 
     return $resp;
 }
-function existsCertTestFile($user)
+function existsCertTestFile($config)
 {
     $resp = false;
 
-    if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/test.p12')) {
+    if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/test.p12')) {
         $resp = true;
     }
 

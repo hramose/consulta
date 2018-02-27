@@ -479,7 +479,7 @@
 
               <div class="{{ isset($tab) ? ($tab =='fe') ? 'active' : '' : '' }} tab-pane" id="fe">
                 
-                  @if($user->configFactura)
+                  @if($configFactura)
                   <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
                     @include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
@@ -1838,14 +1838,14 @@
 
 	});
 
-	@if($user->configFactura)
+	@if($configFactura)
 	  	setTimeout(function(){
 
-                $('#provincia option[value="{{ $user->configFactura->provincia }}"]').attr("selected", true);
+                $('#provincia option[value="{{ $configFactura->provincia }}"]').attr("selected", true);
                 $('#provincia').change();
-                $('#canton option[value="{{ $user->configFactura->canton }}"]').attr("selected", true);
+                $('#canton option[value="{{ $configFactura->canton }}"]').attr("selected", true);
 				$('#canton').change();
-				 $('#distrito option[value="{{ $user->configFactura->distrito }}"]').attr("selected", true);
+				 $('#distrito option[value="{{ $configFactura->distrito }}"]').attr("selected", true);
             }, 100);
 	@endif
 

@@ -39,4 +39,8 @@ class Invoice extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+    public function obligadoTributario()
+    {
+        return $this->belongsTo(ConfigFactura::class, 'obligado_tributario_id');
+    }
 }

@@ -32,7 +32,7 @@ class UserController extends Controller
         $tab = request('tab');
         $user = auth()->user();
         $assistants = auth()->user()->assistants()->with('clinicsAssistants')->get();
-
+        
         $specialities = Speciality::all();
 
         $incomes = Income::where('user_id', auth()->id())->where(function ($query) {
@@ -40,7 +40,10 @@ class UserController extends Controller
                 ->orWhere('type', 'MS'); // por subscripcion de paquete
         })->where('paid', 1)->get();
 
-        return view('medic.account', compact('user', 'specialities', 'assistants', 'tab', 'incomes'));
+        $configFactura = $user->configFactura->first();
+       // dd(($configFactura) ? ($configFactura->provincia == '1' ? 'selected' : '') : '');
+
+        return view('medic.account', compact('user', 'specialities', 'assistants', 'tab', 'incomes', 'configFactura'));
     }
 
     /**
@@ -228,7 +231,7 @@ class UserController extends Controller
      */
     public function addConfigFactura($user_id)
     {
-        //validamos que en users no hay email que va a registrase como paciente
+       
         $this->validate(request(), [
             'nombre' => 'required',
             'tipo_identificacion' => 'required',
@@ -248,7 +251,7 @@ class UserController extends Controller
 
         $user = $this->userRepo->findById($user_id);
 
-        $user->configFactura()->create(request()->all());
+        $config = $user->configFactura()->create(request()->all());
 
         $mimes = ['p12'];
         $fileUploaded = 'error';
@@ -259,7 +262,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
             }
         }
 
@@ -269,7 +272,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
             }
         }
 
@@ -300,7 +303,7 @@ class UserController extends Controller
         ]);
 
         $user = $this->userRepo->findById($user_id);
-        $config = $user->configFactura;
+        $config = $user->configFactura->first();
         $config->fill(request()->all());
         $config->save();
 
@@ -313,7 +316,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'cert.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'cert.' . $ext, 'local');
             }
         }
 
@@ -323,7 +326,7 @@ class UserController extends Controller
             $ext = $file->guessClientExtension();
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('facturaelectronica/' . $user->id, 'test.' . $ext, 'local');
+                $fileUploaded = $file->storeAs('facturaelectronica/' . $config->id, 'test.' . $ext, 'local');
             }
         }
 
@@ -338,12 +341,14 @@ class UserController extends Controller
     public function deleteConfigFactura($user_id)
     {
         $user = $this->userRepo->findById($user_id);
+        $config = $user->configFactura->first();
+       
 
-        $user->configFactura->delete();
-
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user_id . '/cert.p12')) {
-            Storage::deleteDirectory('facturaelectronica/' . $user_id . '/');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/cert.p12')) {
+            Storage::deleteDirectory('facturaelectronica/' . $config->id . '/');
         }
+
+        $config->delete();
 
         flash('Configuracion Eliminada', 'success');
 

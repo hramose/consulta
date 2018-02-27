@@ -179,6 +179,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/invoices', 'Medic\InvoiceController@index');
     Route::get('/no-invoices', 'Medic\InvoiceController@noInvoices');
 
+    Route::get('/invoices/create', 'Medic\InvoiceController@create');
     Route::post('/balance', 'Medic\InvoiceController@balance');
     Route::put('/invoices/{id}', 'Medic\InvoiceController@update');
     Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
@@ -238,6 +239,11 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
     Route::post('/account/avatars', 'Clinic\UserController@avatars');
     Route::post('/account/offices', 'Clinic\UserController@updateClinic');
     Route::put('/account/offices/{id}/notification', 'Clinic\OfficeController@updateOfficeNotification');
+    
+    Route::post('/account/offices/{id}/configfactura', 'Clinic\UserController@addConfigFactura');
+    Route::put('/account/offices/{id}/configfactura', 'Clinic\UserController@updateConfigFactura');
+    Route::delete('/offices/{id}/configfactura', 'Clinic\UserController@deleteConfigFactura');
+    
     //Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
     Route::get('/specialities/list', 'Clinic\UserController@getSpecialities');
     //Route::post('/account/patients', 'UserController@storePatient');

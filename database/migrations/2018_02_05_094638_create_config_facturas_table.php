@@ -15,8 +15,8 @@ class CreateConfigFacturasTable extends Migration
     {
         Schema::create('config_facturas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('facturable_id')->unsigned()->index();
+            $table->string('facturable_type');
             $table->string('nombre');
             $table->string('nombre_comercial');
             $table->char('tipo_identificacion', 2);

@@ -10,8 +10,13 @@ class ConfigFactura extends Model
 
     public $timestamps = false;
 
-    public function user()
+    public function facturable()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
+
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }

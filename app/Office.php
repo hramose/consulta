@@ -12,7 +12,7 @@ class Office extends Model
     const DISTANCE_UNIT_MILES      = 69.0;
 
     protected $fillable = [
-        'type','name','address','province','canton','district','city','phone','ide','ide_name','bill_to','lat','lon','address_map','notification','notification_date','active'
+        'type','name','address','province','canton','district','city','phone','ide','ide_name','bill_to','lat','lon','address_map','notification','notification_date','active','fe'
     ];
 
     protected $appends = ['notification_datetime','notification_hour','name_address'];
@@ -194,11 +194,22 @@ class Office extends Model
                              
                     })->where('active', 1)->get();
     }
+    public function administrator()
+    {
+        return $this->users()->whereHas('roles', function ($query) {
+            $query->where('name', 'clinica');
+
+        })->where('active', 1)->first();
+    }
     public function assistants()
     {
         return $this->users()->whereHas('roles', function ($query){
                         $query->where('name',  'asistente');
                           
                     })->where('active', 1)->get();
+    }
+    public function configFactura()
+    {
+        return $this->morphMany(ConfigFactura::class, 'facturable');
     }
 }

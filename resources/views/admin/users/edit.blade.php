@@ -41,7 +41,7 @@
 								
 							</div>
 							<div class="box-body">
-								@if($user->configFactura)
+								@if($configFactura)
 								<form method="POST" action="{{ url('/admin/users/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
 									{{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
 									@include('admin/users/partials/config-factura',['buttonText' => 'Actualizar'])
@@ -141,7 +141,7 @@
 						</div>
 						@endif
 
-						@if($user->hasRole('medico') && $user->configFactura)
+						@if($user->hasRole('medico') && $configFactura)
 						  <div class="box box-solid box-medics">
 							<div class="box-header with-border">
 								<h4 class="box-title">Prueba Factura Eléctronica (Ambiente de Pruebas Hacienda)</h4>
@@ -149,7 +149,7 @@
 							</div>
 							<div class="box-body">
 								
-								@if(existsCertTestFile($user))
+								@if(existsCertTestFile($configFactura))
 
 								<test-conexion-hacienda user-id="{{ $user->id }}"></test-conexion-hacienda>
 								@else 
@@ -1294,14 +1294,14 @@
 
 	});
 
-	@if($user->configFactura)
+	@if($configFactura)
 	  	setTimeout(function(){
 
-                $('#provincia option[value="{{ $user->configFactura->provincia }}"]').attr("selected", true);
+                $('#provincia option[value="{{ $configFactura->provincia }}"]').attr("selected", true);
                 $('#provincia').change();
-                $('#canton option[value="{{ $user->configFactura->canton }}"]').attr("selected", true);
+                $('#canton option[value="{{ $configFactura->canton }}"]').attr("selected", true);
 				$('#canton').change();
-				 $('#distrito option[value="{{ $user->configFactura->distrito }}"]').attr("selected", true);
+				 $('#distrito option[value="{{ $configFactura->distrito }}"]').attr("selected", true);
             }, 100);
 	@endif
 
