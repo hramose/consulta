@@ -27,8 +27,9 @@
           <div>
            
             <a href="/medic/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
+            @if(auth()->user()->hasRole('medico') && auth()->user()->offices()->where('type', 'Clínica Privada')->count())
             <a href="/medic/invoices/create" class="btn btn-success">Crear Factura</a>
-           
+            @endif
          </div>
           <div class="box box-default box-calendar">
           <div class="box-header">

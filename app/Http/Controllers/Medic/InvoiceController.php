@@ -69,6 +69,9 @@ class InvoiceController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->hasRole('medico') || !auth()->user()->offices()->where('type', 'Clínica Privada')->count())
+            return redirect('/medic/invoices');
+
         return view('medic.invoices.create');
     }
 
