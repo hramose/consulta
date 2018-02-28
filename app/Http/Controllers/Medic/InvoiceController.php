@@ -41,10 +41,10 @@ class InvoiceController extends Controller
         $medic = auth()->user();
 
         //$offices = auth()->user()->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
-        $offices = auth()->user()->offices()->pluck('offices.id');//first();
+        //$offices = auth()->user()->offices()->pluck('offices.id');//first();
 
-        $invoices = $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at', $searchDate)->orderBy('created_at', 'DESC')->paginate(20);
-        $totalInvoicesAmount = $medic->invoices()->whereIn('office_id', $offices)->whereDate('created_at', $searchDate)->sum('total');
+        $invoices = $medic->invoices()->whereDate('created_at', $searchDate)->orderBy('created_at', 'DESC')->paginate(20);
+        $totalInvoicesAmount = $medic->invoices()->whereDate('created_at', $searchDate)->sum('total');
         //$noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
         return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'searchDate'));
@@ -69,9 +69,7 @@ class InvoiceController extends Controller
 
     public function create()
     {
-
         return view('medic.invoices.create');
-
     }
 
     /**
@@ -79,8 +77,18 @@ class InvoiceController extends Controller
      */
     public function store()
     {
-       
-        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
+        $office = Office::find(request('office_id'));
+        $fe = 0;
+
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+            $fe = $office->fe;
+        } else {
+            $config = auth()->user()->configFactura->first();
+            $fe = auth()->user()->fe;
+        }
+
+        if ($fe && !existsCertFile($config)) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];
@@ -98,7 +106,18 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
-        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
+        $invoice = $this->invoiceRepo->findById($id);
+        $office = $invoice->clinic;
+        
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+          
+        } else {
+            $config = $invoice->medic->configFactura->first();
+           
+        }
+
+        if ($invoice->fe && !existsCertFile($config)) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];
@@ -177,8 +196,21 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = $this->invoiceRepo->print($id);
+        $office = $invoice->clinic;
 
-        return view('medic.invoices.print', compact('invoice'));
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $configFactura = $office->configFactura->first();
+
+        } else {
+            $configFactura = $invoice->medic->configFactura->first();
+
+        }
+
+        if(!$invoice->appointment){
+            return view('medic.invoices.print-general', compact('invoice', 'configFactura'));
+        }
+
+        return view('medic.invoices.print', compact('invoice', 'configFactura'));
     }
 
     /**
@@ -203,7 +235,6 @@ class InvoiceController extends Controller
 
         return view('medic.invoices.pdf', compact('invoice'));
     }
-   
 
     /**
      * imprime resumen de la consulta
@@ -221,10 +252,9 @@ class InvoiceController extends Controller
         $pdf::AddPage('L', 'A4');
         $pdf::writeHTML($html, true, false, true, false, '');
 
-        $pdf::Output('gpsm_' .$invoice->clave_fe . '.pdf');
+        $pdf::Output('gpsm_' . $invoice->clave_fe . '.pdf');
     }
 
-     
     /*
      public function balance()
      {

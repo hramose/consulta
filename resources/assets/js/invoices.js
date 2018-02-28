@@ -180,10 +180,10 @@ $(function () {
               var consecutivo = resp.consecutivo;
 
                modal.find('#modal-label-medic').text(resp.medic.name);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-              $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : resp.appointment.patient.fullname);
-              $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : resp.appointment.patient.email);
+              modal.find('#modal-label-patient').text((resp.appointment) ? resp.appointment.patient.fullname : '');
+              
+              $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : ((resp.appointment) ? resp.appointment.patient.fullname : ''));
+              $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : ((resp.appointment) ?resp.appointment.patient.email: ''));
               $('input[name="medio_pago"]').val(resp.medio_pago);
                $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
                $('input[name="change"]').val(resp.change);

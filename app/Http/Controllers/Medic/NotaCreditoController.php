@@ -36,7 +36,18 @@ class NotaCreditoController extends Controller
      */
     public function store($invoice_id)
     {
-        if (auth()->user()->fe && !existsCertFile(auth()->user())) {
+        $invoice = $this->invoiceRepo->findById($invoice_id);
+        $office = $invoice->clinic;
+
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+
+        } else {
+            $config = auth()->user()->configFactura->first();
+
+        }
+
+        if ($invoice->fe && !existsCertFile($config)) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];

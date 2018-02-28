@@ -31,20 +31,21 @@
         </div>
         <!-- /.col -->
         <div class="col-sm-4 invoice-col">
-          <h2>{{ $invoice->clinic->name }}</h2>
+          <h2>{{ $configFactura->nombre_comercial }}</h2>
           <address>
-          {{ $invoice->clinic->type }}<br>
-          {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
-          {{ $invoice->clinic->address }}<br>
-          <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
+         
           @if($invoice->fe)
+          
+            {{ $configFactura->canton }}, {{ $configFactura->provincia }}<br>
+            {{ $configFactura->otras_senas }}<br>
+            <b>Tel:</b> {{ $configFactura->telefono }}<br>
             <b>Ced:</b> {{ $configFactura->identificacion }}<br>
             <b>Nombre:</b> {{ $configFactura->nombre }}
           @else 
                @if($invoice->clinic->type == 'Consultorio Independiente')
-                  @if($invoice->clinic->bill_to == 'C')
-                   <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
-                   <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
+                  @if($clinic->bill_to == 'C')
+                   <b>Ced. Jurídica:</b> {{ $clinic->ide }}<br>
+                   <b>Nombre:</b> {{ $clinic->ide_name }}
                   @else 
                    <b>Ced:</b> {{ $invoice->medic->ide }}<br>
                     <b>Nombre:</b> {{ $invoice->medic->name }}
@@ -99,8 +100,8 @@
       <hr>
       <div class="row invoice-patient">
         <div class="col-xs-4 invoice-col invoice-left">     
-            <b>Paciente:</b> {{ $invoice->appointment->patient->fullname }}<br>
-            {{ $invoice->appointment->patient->address }}<br>
+            <b>Cliente:</b> {{ $invoice->client_name }}<br>
+            
         </div>
         <div class="col-xs-4 invoice-col invoice-right">
             
@@ -163,14 +164,7 @@
                 <th>Total:</th>
                 <td>{{ money($invoice->total) }}</td>
               </tr>
-              <tr>
-                <th>Pago con:</th>
-                <td>{{ money($invoice->pay_with) }}</td>
-              </tr>
-              <tr>
-                <th>Vuelto:</th>
-                <td>{{ money($invoice->change) }}</td>
-              </tr>
+              
             </table>
           </div>
         </div>

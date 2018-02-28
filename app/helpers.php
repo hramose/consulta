@@ -114,7 +114,7 @@ function getLogo($clinic)
 {
     $url = '';
 
-    if (Storage::disk('public')->exists('offices/' . $clinic->id . '/photo.jpg')) {
+    if ($clinic && Storage::disk('public')->exists('offices/' . $clinic->id . '/photo.jpg')) {
         $url = Storage::url('offices/' . $clinic->id . '/photo.jpg');
     } else {
         $url = '/img/logo.png';

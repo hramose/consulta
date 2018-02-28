@@ -12,6 +12,16 @@ return [
         'rechazado' => 'danger',
         'error' => 'danger'
     ],
+    'tipo_documento_color' => [
+        '01' => 'success',
+        '02' => 'warning',
+        '03' => 'danger',
+        '04' => 'info',
+        '05' => 'info',
+        '06' => 'info',
+        '07' => 'info',
+        '08' => 'info'
+    ],
     'tipo_documento' => [
         '01' => 'Factura electrónica',
         '02' => 'Nota débito eléctronica',

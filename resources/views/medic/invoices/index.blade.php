@@ -58,7 +58,7 @@
                         <th>#</th>
                         <th>Fecha</th>
                         <th>Clínica</th>
-                        <th>Paciente</th>
+                        <th>Cliente</th>
                         <th>Total</th>
                         @if($medic->fe)
                         <th>Tipo Doc</th>
@@ -82,14 +82,16 @@
                              {{ $invoice->created_at }}
                             </td>
                             <td>
-                             {{ $invoice->clinic->name }}
-                            </td>
-                             <td>
-                             @if($invoice->appointment)
-                             {{ $invoice->appointment->patient->first_name }}
+                              @if($invoice->appointment)
+                                {{ $invoice->clinic->name }}
                              @else 
                               --
                              @endif
+                           
+                            </td>
+                            <td>
+                             {{ $invoice->client_name }}
+                            
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
@@ -101,7 +103,8 @@
                             @if($medic->fe)
                            
                               <td>
-                                {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}
+                               
+                                <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
                                 
                               </td>
                               <td>

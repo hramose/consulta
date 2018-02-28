@@ -149,7 +149,7 @@ class NotaCredito
         return $this;
     }
 
-    public function generateXML($user, $invoice)
+    public function generateXML($configFactura, $invoice)
     {
         $facuraBase = Storage::get('facturaelectronica/nota_credito.xml');
 
@@ -158,30 +158,30 @@ class NotaCredito
         $facturaXML->NumeroConsecutivo = $this->consecutivoHacienda; //$this->numeroConsecutivo;
         $facturaXML->FechaEmision = Carbon::createFromFormat('dmy', $this->fechaEmision)->toAtomString();
 
-        $facturaXML->Emisor->Nombre = $user->configFactura->nombre;
-        $facturaXML->Emisor->Identificacion->Tipo = $user->configFactura->tipo_identificacion;
-        $facturaXML->Emisor->Identificacion->Numero = $user->configFactura->identificacion;//'205530597';
-        $facturaXML->Emisor->NombreComercial = $user->configFactura->nombre_comercial;
-        $facturaXML->Emisor->Ubicacion->Provincia = $user->configFactura->provincia;
-        $facturaXML->Emisor->Ubicacion->Canton = $user->configFactura->canton; //bagaces
-        $facturaXML->Emisor->Ubicacion->Distrito = $user->configFactura->distrito;//'03'; //guayabo mogote
+        $facturaXML->Emisor->Nombre = $configFactura->nombre;
+        $facturaXML->Emisor->Identificacion->Tipo = $configFactura->tipo_identificacion;
+        $facturaXML->Emisor->Identificacion->Numero = $configFactura->identificacion;//'205530597';
+        $facturaXML->Emisor->NombreComercial = $configFactura->nombre_comercial;
+        $facturaXML->Emisor->Ubicacion->Provincia = $configFactura->provincia;
+        $facturaXML->Emisor->Ubicacion->Canton = $configFactura->canton; //bagaces
+        $facturaXML->Emisor->Ubicacion->Distrito = $configFactura->distrito;//'03'; //guayabo mogote
         //$facturaXML->Emisor->Ubicacion->Barrio = '';
-        $facturaXML->Emisor->Ubicacion->OtrasSenas = $user->configFactura->otras_senas;
+        $facturaXML->Emisor->Ubicacion->OtrasSenas = $configFactura->otras_senas;
 
-        if ($user->configFactura->codigo_pais_tel && $user->configFactura->telefono) {
-            $facturaXML->Emisor->Telefono->CodigoPais = $user->configFactura->codigo_pais_tel;
-            $facturaXML->Emisor->Telefono->NumTelefono = $user->configFactura->telefono;
+        if ($configFactura->codigo_pais_tel && $configFactura->telefono) {
+            $facturaXML->Emisor->Telefono->CodigoPais = $configFactura->codigo_pais_tel;
+            $facturaXML->Emisor->Telefono->NumTelefono = $configFactura->telefono;
         } else {
             unset($facturaXML->Emisor->Telefono);
         }
-        if ($user->configFactura->codigo_pais_fax && $user->configFactura->fax) {
-            $facturaXML->Emisor->Fax->CodigoPais = $user->configFactura->codigo_pais_fax;
-            $facturaXML->Emisor->Fax->NumTelefono = $user->configFactura->fax;
+        if ($configFactura->codigo_pais_fax && $configFactura->fax) {
+            $facturaXML->Emisor->Fax->CodigoPais = $configFactura->codigo_pais_fax;
+            $facturaXML->Emisor->Fax->NumTelefono = $configFactura->fax;
         } else {
             unset($facturaXML->Emisor->Fax);
         }
 
-        $facturaXML->Emisor->CorreoElectronico = $user->configFactura->email;
+        $facturaXML->Emisor->CorreoElectronico = $configFactura->email;
 
         if ($invoice->client_name) {
             $facturaXML->Receptor->Nombre = $invoice->client_name;
@@ -242,10 +242,10 @@ class NotaCredito
         $facturaXML->Normativa->FechaResolucion = Carbon::now()->format('d-m-Y h:i:s');//->toDateTimeString();
         $facturaXML->Otros->OtroTexto = 'Id y Consecutivo Sistema Interno: ' . $invoice->id . '-' . $invoice->consecutivo;
 
-        Storage::put('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
+        Storage::put('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '.xml', $facturaXML->asXML());
 
-        if (Storage::disk('local')->exists('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
-            return Storage::get('facturaelectronica/' . $user->id . '/gpsm_' . $invoice->clave_fe . '.xml');
+        if (Storage::disk('local')->exists('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '.xml')) {
+            return Storage::get('facturaelectronica/' . $configFactura->id . '/gpsm_' . $invoice->clave_fe . '.xml');
         } else {
             dd('Error al generar el xml de la factura. Ponte en contacto con el proveedor');
         }
