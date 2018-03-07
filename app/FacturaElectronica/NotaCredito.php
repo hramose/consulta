@@ -195,7 +195,8 @@ class NotaCredito
             unset($facturaXML->Receptor);
         }
 
-        $facturaXML->CondicionVenta = '01'; //contado
+       $facturaXML->CondicionVenta = $invoice->condicion_venta; //'01' //contado 02 credito
+
         $facturaXML->MedioPago = $invoice->medio_pago; //01 efectivo 02 tarjeta
 
         //$facturaXML->DetalleServicio;

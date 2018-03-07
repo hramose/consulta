@@ -438,16 +438,16 @@
       ],
       onEnd: function () {
        
-       // localStorage.setItem("tour_viewed", 1)
+        localStorage.setItem("tour_crear_cita_viewed", 1)
 
       }
 
     };
 
-    //if(!localStorage.getItem("tour_viewed"))
-    //{
+    if(!localStorage.getItem("tour_crear_cita_viewed"))
+    {
       hopscotch.startTour(tour);
-   // }
+    }
    
     
 

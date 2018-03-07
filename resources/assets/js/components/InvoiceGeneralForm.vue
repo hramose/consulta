@@ -133,76 +133,12 @@
            <div class="form-group">
             <div class="col-sm-12">
               <div class="pull-right">
-                  <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
-                  <button type="submit" class="btn btn-success" @click="invoiceHere = true">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
+                  <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
               </div>
              
             </div>
           </div>
-          <div v-show="invoiceHere">
-              <div class="box-footer clearfix" >
-                 
-                  <div class="row" v-show="!fe && office_type == 'Clínica Privada'">
-                    <div class="col-md-6">
-                      <div class="">
-                        <div class="radio radio-facturar">
-                          <label>
-                            <input type="radio" name="bill_to"  value="M" v-model="bill_to">
-                            Facturar a nombre del médico
-                          </label>
-                        </div>
-                        
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                       <div class="">
-                         <div class="radio radio-facturar">
-                            <label>
-                              <input type="radio" name="bill_to"  value="C"  v-model="bill_to">
-                              Facturar a nombre de la clínica
-                            </label>
-                          </div>
-                       </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                        <label for="">Pago con</label> ₡<span class="pay_with_label"></span>
-                          <div class="input-group pay_with-field">
-                          
-                            <span class="input-group-addon">₡</span>
-                            <input type="text" name="pay_with" class="form-control" placeholder="0" v-model="pay_with" @keyup="calculateChange()">
-                          
-                          
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="">Vuelto</label> ₡<span class="change_label"></span>
-                          <div class="input-group change-field">
-                            
-                              <span class="input-group-addon">₡</span>
-                              <input type="text" name="change" class="form-control" placeholder="0" readonly  v-model="change">
-                            
-                            
-                          </div>
-                    </div>
-                  </div>
-                   
-                 
-                   
-                  
-                </div>
-                <!-- /.box-footer -->
-               
-                <div class="form-group">
-                  <div class="col-sm-12">
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
-                    </div>
-                   
-                  </div>
-                </div>
-          </div>
+          
           
               
           </div>
@@ -249,18 +185,18 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['appointment_id', 'office_id','patient_id','office_type','facturar_a','nombre_cliente','correo_cliente','usa_fe'],
+        props:['office_id','nombre_cliente','correo_cliente','usa_fe'],
         data () {
 	        return {
 	 
-	          services: [],
+	        services: [],
             servicesToInvoice: [],
-	          loader:false,
-	          new_service: "",
+	        loader:false,
+	        new_service: "",
             amount: 0,
             pay_with:0,
             change:0,
-	          errors: [],
+	        errors: [],
             newService:false,
             updateService:false,
             service:null,
@@ -283,22 +219,16 @@
 	       
 	      },
         methods: {
-          calculateChange(){
-              let payWith = parseFloat((this.pay_with) ? this.pay_with : 0);
-            let total =  this.getTotalInvoice()
-            let change = 0;
-            change = ((payWith - total) < 0) ? 0 : payWith - total;
-            this.change = change
-          },
+         
             money(n, currency) {
                 return n.toLocaleString();//toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
             },
-        		cancel() {
-		          this.new_service = "";
-              this.amount = 0;
-		          this.newService = false;
-		          this.updateService = false;
-		        },
+            cancel() {
+                this.new_service = "";
+                this.amount = 0;
+                this.newService = false;
+                this.updateService = false;
+            },
              createService(){
              
               this.newService = !this.newService
@@ -374,23 +304,9 @@
           
 
         }, 500),
-          /*  getServices(search, loading) {
          
-            loading(true)
-           
-           let queryParam = {
-                ['q']: search
-              }
-            this.$http.get('/medic/invoices/services/list', {params: Object.assign(queryParam, this.data)})
-            .then(resp => {
-               
-               this.services = resp.data
-               loading(false)
-            })
-            
-          },*/
           
-		        save() {
+		    save() {
               
                 if(this.loader)
                     return
@@ -475,32 +391,26 @@
                 a.href = url;
                 a.click();
             },
-	          invoice(here){
+	          invoice(){
                 let $vm = this;
 
                 if(this.loader)
                    return
 
-                let status = 0;
-                let pay_with = 0;
-                let change = 0;
-                let sendToAssistant = 1;
-                
-                if(here) {
+    
 
-                  status = 1;
-                  change = this.change
-                  pay_with = this.pay_with
-                  sendToAssistant = 0;
-                }
+                let status = 1;
+                let sendToAssistant = 0;
+                 
+                
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { appointment_id:this.appointment_id, office_id:this.office_id, patient_id:this.patient_id, services: this.servicesToInvoice, status: status, pay_with:pay_with, change: change, bill_to: this.bill_to, office_type: this.office_type, client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago, condicion_venta: this.condicion_venta, send_to_assistant: sendToAssistant }).then((response) => {
+                this.$http.post('/medic/invoices', { office_id:this.office_id, services: this.servicesToInvoice, status: status,  client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago, condicion_venta: this.condicion_venta, send_to_assistant: sendToAssistant }).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {
                       
-                          bus.$emit('alert', (here) ? 'Servicio facturado' : 'Enviado a asistente','success');
+                          bus.$emit('alert', 'Servicio facturado','success');
                           bus.$emit('addToInvoiceList', response.data); 
                           this.service = null;
                           this.servicesToInvoice = [];
@@ -508,11 +418,9 @@
                           this.invoiceHere = false;
                           this.loader = false;
 
-                          if(here){
-
-                            swal({
+                          swal({
                               title: 'Factura Guardada',
-                              text: "¿Deseas imprimir la factura?",
+                              text: "¿Deseas regresar a facturación ?",
                               type: 'success',
                               showCancelButton: true,
                               confirmButtonColor: '#d33',
@@ -521,20 +429,13 @@
                               cancelButtonText: 'No'
                             }).then(function () {
 
-                              window.location.href = "/medic/invoices/"+response.data.id+"/print";
+                              window.location.href = "/medic/invoices/";
 
                             }, function(dismiss) {
                               
                             });
-            
 
-
-
-                            //window.location.href = "/medic/invoices/"+response.data.id+"/print";
-    
-                            //this.openInNewTab("/medic/invoices/"+response.data.id+"/print");
-                          }
-
+                          
                         }
                        this.loader = false;
                   }, (response) => {
@@ -553,7 +454,7 @@
        },
        created(){
             //if(this.office_type == 'Consultorio Independiente')
-               this.bill_to = this.facturar_a;
+               
                this.client_name = this.nombre_cliente
                this.client_email = this.correo_cliente
                this.fe = this.usa_fe

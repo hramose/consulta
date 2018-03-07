@@ -104,7 +104,7 @@
                    <tr>
 
                     @if ($appointments)
-                        <td  colspan="7" class="pagination-container">{!!$appointments->appends(['q' => $search])->render()!!}</td>
+                        <td  colspan="7" class="pagination-container">{!!$appointments->appends(['q' => $search['q']])->render()!!}</td>
                     @endif
 
 

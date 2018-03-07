@@ -28,7 +28,7 @@
             </div>
             <div class="box-body ">
              
-               <invoice-form  office_type="Consultorio Independiente" facturar_a="M" nombre_cliente="" correo_cliente="" :usa_fe="{{ auth()->user()->fe }}"></invoice-form>
+               <invoice-general-form  nombre_cliente="" correo_cliente="" :usa_fe="{{ auth()->user()->fe }}"></invoice-general-form>
                
             </div>
             <!-- /.box-body -->
