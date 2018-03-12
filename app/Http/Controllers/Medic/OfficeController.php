@@ -161,6 +161,11 @@ class OfficeController extends Controller
         }
 
         $office = auth()->user()->offices()->save($office);
+
+        if (!session()->has('office_id') || session('office_id') == '') {
+            session(['office_id' => $office->id]);
+        }
+        
         $medic = auth()->user();
 
         event(new MedicRequest($medic, $office->administrators()));

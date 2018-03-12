@@ -37,6 +37,23 @@
     </div>
 
 </div>
+
+ <div class="form-group">
+    <label for="fe" class="col-sm-2 control-label">Factura eléctronica</label>
+
+    <div class="col-sm-10">
+      <select class="form-control select2" style="width: 100%;" name="fe" required>
+        <option value="0" {{ isset($user) ? $user->fe == '0' ? 'selected' : '' : '' }}>No</option>
+        <option value="1" {{ isset($user) ? $user->fe == '1' ? 'selected' : '' : '' }}>Si</option>
+      </select>
+     
+       @if ($errors->has('fe'))
+          <span class="help-block">
+              <strong>{{ $errors->first('fe') }}</strong>
+          </span>
+      @endif
+    </div>
+  </div>
   
  @if(!isset($read))
   <div class="form-group">

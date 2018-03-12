@@ -48,12 +48,12 @@
                       Nombre: {{ $invoice->medic->name }}
                     @endif
                 @else
-                    @if($invoice->bill_to == 'C')
-                      Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
-                      Nombre: {{ $invoice->clinic->ide_name }}
+                    @if($invoice->bill_to == 'M')
+                    Ced: {{ $invoice->medic->ide }}<br>
+                    Nombre: {{ $invoice->medic->name }}
                     @else 
-                      Ced: {{ $invoice->medic->ide }}<br>
-                      Nombre: {{ $invoice->medic->name }}
+                    Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                    Nombre: {{ $invoice->clinic->ide_name }}
                     @endif
                     
                 @endif
@@ -147,9 +147,9 @@
         <!-- accepted payments column -->
         
         <div class="col-xs-12">
-          
-          <p> Autorizada mediante resolución Nº DGT-R-48-2016 del 7 de octubre de 2016</p>
-          
+            @if($invoice->fe)
+            <p>@include('medic.invoices.partials.notaHacienda')</p>
+           @endif
         </div>
         <!-- /.col -->
       </div>

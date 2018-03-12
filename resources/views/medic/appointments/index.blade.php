@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('css')
+  <link rel="stylesheet" href="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"> 
+@endsection
 @section('content')
      
      @include('layouts/partials/header-pages',['page'=>'Consultas (Pacientes de día)'])
@@ -13,9 +15,20 @@
                  @include('layouts/partials/buttons-agenda-clinic')
                 <div class="box-tools">
                   <form action="/medic/appointments" method="GET">
+                    <div class="input-group input-group-sm  pull-right" style="width: 150px;">
+                          
+                            
+                            <input type="text" name="date" class="date form-control " placeholder="Fecha..." value="{{ isset($search) ? $search['date'] : '' }}">
+                            <div class="input-group-btn">
+
+                              <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                          
+                          
+                        </div>
                     <div class="input-group input-group-sm" style="width: 150px;">
                       
-                        
+                       
                         <input type="text" name="q" class="form-control pull-right" placeholder="Buscar..." value="{{ isset($search) ? $search['q'] : '' }}">
                         <div class="input-group-btn">
                         
@@ -104,7 +117,7 @@
                    <tr>
 
                     @if ($appointments)
-                        <td  colspan="7" class="pagination-container">{!!$appointments->appends(['q' => $search['q']])->render()!!}</td>
+                        <td  colspan="7" class="pagination-container">{!!$appointments->appends(['q' => $search['q'], 'date' => $search['date']])->render()!!}</td>
                     @endif
 
 
@@ -130,5 +143,14 @@
 </form>
 @endsection
 @section('scripts')
-
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
+<script>
+   $(".dropdown-toggle").dropdown();
+  $('.date').datetimepicker({
+      format:'YYYY-MM-DD',
+      locale: 'es',
+      
+   });
+</script>
 @endsection

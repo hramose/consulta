@@ -113,16 +113,18 @@
         }
         
       ],
-      onEnd: function () {
+     onEnd: function () {
        
-       // localStorage.setItem("tour_viewed", 1)
+        localStorage.setItem("tour_crear_cita_paciente_viewed", 1)
 
       }
 
     };
 
- 
-    hopscotch.startTour(tour);
+    if(!localStorage.getItem("tour_crear_cita_paciente_viewed"))
+    {
+      hopscotch.startTour(tour);
+    }
 
    
     

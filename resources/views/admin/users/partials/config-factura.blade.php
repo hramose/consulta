@@ -266,33 +266,6 @@
     </div>
 
 </div>
-<div class="form-group">
-    <label for="certificado_test" class="col-sm-2 control-label">Certificado de pruebas .p12 </label>
-
-
-    <div class="col-sm-10">
-        <input type="file" class="form-control" name="certificado_test" placeholder="Certificado ATV">
-        
-        @if(isset($configFactura) && existsCertTestFile($configFactura))
-            <h4 class="label label-success">Certificado Instalado</h4>
-        @else 
-            <h4 class="label label-danger">Certificado No Instalado</h4>
-        @endif
-    </div>
-</div>
-<div class="form-group">
-    <label for="pin_certificado_test" class="col-sm-2 control-label">PIN certificado de pruebas</label>
-    <div class="col-sm-10">
-        <input type="text" class="form-control" name="pin_certificado_test" placeholder="PIN del certificado" value="{{ isset($configFactura) ? $configFactura->pin_certificado_test : old('pin_certificado_test') }}">
-        @if ($errors->has('pin_certificado_test'))
-          <span class="help-block">
-              <strong>{{ $errors->first('pin_certificado_test') }}</strong>
-          </span>
-      @endif
-    </div>
-
-</div>
-  
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

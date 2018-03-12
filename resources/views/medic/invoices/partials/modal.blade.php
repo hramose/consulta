@@ -32,10 +32,18 @@
                     <div class="form-group">
                       <label for="service" class="col-sm-2 control-label">Medio de pago:</label>
 
-                      <div class="col-sm-10">
+                      <div class="col-sm-5">
                         <select name="medio_pago" id="medio_pago" class="form-control">
                           <option value="01">Efectivo</option>
                           <option value="02">Tarjeta</option>
+                        </select>
+                      
+                      </div>
+
+                         <div class="col-sm-5">
+                        <select name="condicion_venta" id="condicion_venta" class="form-control">
+                          <option value="01">Contado</option>
+                          <option value="02">Credito</option>
                         </select>
                       
                       </div>

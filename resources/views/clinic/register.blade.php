@@ -12,7 +12,7 @@
   </div>
    
   <div class="register-box-body">
-    <div class="callout callout-info"><h4>Ya casi terminas!</h4> <p>Agrega los siguientes datos de la clínica para finalizar el rergistro.</p></div>
+    <div class="callout callout-info"><h4>Ya casi terminas!</h4> <p>Agrega los siguientes datos de la clínica para finalizar el registro.</p></div>
     <form method="POST" action="{{ url('/clinic/register/office') }}" class="form-horizontal register-patient"  enctype="multipart/form-data">
          {{ csrf_field() }}
          

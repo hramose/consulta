@@ -221,6 +221,22 @@
                           </div>
                     </div>
                 </div>
+                <div class="form-group">
+                <label for="fe" class="col-sm-2 control-label">Factura eléctronica</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control select2" style="width: 100%;" name="fe" required>
+                    <option value="0" {{ isset($user) ? $user->fe == '0' ? 'selected' : '' : '' }}>No</option>
+                    <option value="1" {{ isset($user) ? $user->fe == '1' ? 'selected' : '' : '' }}>Si</option>
+                  </select>
+                
+                  @if ($errors->has('fe'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('fe') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
                  
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -478,17 +494,25 @@
                </div>
 
               <div class="{{ isset($tab) ? ($tab =='fe') ? 'active' : '' : '' }} tab-pane" id="fe">
-                
-                  @if($configFactura)
-                  <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
-                    {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                    @include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
-                   </form>
-                  @else 
-                  <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    @include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
-                  </form>
+                @if($user->fe)
+                      @if($configFactura)
+                      <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+                        {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                        @include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
+                      </form>
+                      @else 
+                      <form method="POST" action="{{ url('/medic/account/'.$user->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        @include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
+                      </form>
+                      @endif
+                  @else
+                     <div class="callout callout-warning">
+                        <h4>Información importante!</h4>
+                       
+                            <p>Parece que no tienes activado la factura electronica todavia</a>              </p>
+                      </div>
+
                   @endif
                </div>
              

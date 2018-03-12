@@ -142,7 +142,7 @@
           <div v-show="invoiceHere">
               <div class="box-footer clearfix" >
                  
-                  <div class="row" v-show="!fe && office_type == 'Clínica Privada'">
+                  <!-- <div class="row" v-show="!fe && office_type == 'Clínica Privada'">
                     <div class="col-md-6">
                       <div class="">
                         <div class="radio radio-facturar">
@@ -164,7 +164,7 @@
                           </div>
                        </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col-md-6">
                         <label for="">Pago con</label> ₡<span class="pay_with_label"></span>

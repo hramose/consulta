@@ -31,20 +31,30 @@
          </div>
           <div class="box box-default box-calendar">
             <div class="box-header">
-              <div class="pull-left">
-                  <form action="/assistant/medics/{{ $medic->id }}/invoices" method="GET">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                          
-                            
-                            <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
-                            <div class="input-group-btn">
+              <div class="">
+                 <form action="/assistant/medics/{{ $medic->id }}/invoices" method="GET" class="form-horizontal">
+                       <div class="form-group">
+                       
 
-                              <button type="submit" class="btn btn-default">Buscar</button>
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="date" class="date form-control" placeholder="Fecha..." value="{{ isset($search) ? $search['date'] : '' }}">
+                                <div class="input-group-btn">
+
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
                             </div>
-                          
-                          
-                        </div>
+                           
+                          </div>
+                            
+                      </div>
+                      
                       </form>
+                 
               </div>
             <div class="pull-right"><span class="label label-success label-lg">Total: {{ money($totalInvoicesAmount) }}</span>    </div> 
             </div>
@@ -58,7 +68,7 @@
                         <th>Fecha</th>
                         <th>Paciente</th>
                         <th>Total</th>
-                         @if($medic->fe)
+                         @if($fe)
                         <th>Tipo Doc</th>
                         <th>Num. Consecutivo</th>
                         <th>Estado Hacienda</th>
@@ -87,35 +97,44 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                             @if($medic->fe)
+                             @if($fe)
                               <td>
-                                {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}
-                                
+                                  @if($invoice->fe)
+                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
+                                  @endif
                               </td>
                               <td>
                                 {{ $invoice->consecutivo_hacienda }}
                               </td>
-                            <td>
-                              @if($invoice->sent_to_hacienda)
-                                <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a> 
-                               @elseif($invoice->status)
-                                  
-                                 <send-to-hacienda :invoice-id="{{ $invoice->id }}" url="/assistant/invoices"></send-to-hacienda>
-                              @endif
-                            </td>
-                            <td>
-                              <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
-                              
-                            </td>
-                            <td>
-                             <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
-                            
-                            </td>
-                            <td>
-                              @if($invoice->status)
-                              <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
-                              @endif
-                            </td>
+                              <td>
+                                @if($invoice->fe)
+                                    @if($invoice->sent_to_hacienda)
+                                      @if($invoice->status_fe)
+                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                      @else
+                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                      @endif
+                                    @elseif($invoice->status)
+                                        
+                                      <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                    @endif
+                                @endif
+                              </td>
+                              <td>
+                                 @if($invoice->fe && $invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                                  @endif
+                              </td>
+                              <td>
+                                 @if($invoice->fe && $invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                                 @endif
+                              </td>
+                              <td>
+                                @if($invoice->fe && $invoice->status)
+                                <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                                @endif
+                              </td>
                             
                             @endif
                             <td>
@@ -139,7 +158,7 @@
                       @if ($invoices)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['q' => $searchDate])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date' => $search['date']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>
@@ -161,7 +180,7 @@
 
     @include('medic/invoices/partials/modal')
   
- @if($medic->fe)
+ @if($medic->fe || $office->fe)
     @include('medic/invoices/partials/status-hacienda-modal')
  @endif
 

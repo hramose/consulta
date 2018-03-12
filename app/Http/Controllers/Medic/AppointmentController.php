@@ -34,10 +34,12 @@ class AppointmentController extends Controller
     {
         $search['q'] = request('q');
         $search['office'] = Session::get('office_id');
+        $search['date'] = request('date') ? request('date') : Carbon::now()->toDateTimeString();
+
         $clinic_id = Session::get('office_id');
-        
+
         $appointments = $this->appointmentRepo->findAllByDoctor(auth()->id(), $search);
-       
+
         if ($search['office']) {
             return view('medic.appointments.index', compact('appointments', 'search'));
         } else {
@@ -138,7 +140,7 @@ class AppointmentController extends Controller
         if ($appointment->user_id != auth()->id()) {
             return redirect('/');
         } //verifica que la cita es del medico q la solicita
-        
+
         $appointment = $this->appointmentRepo->update_status($id, 1);
 
         $patient = $this->patientRepo->findById($appointment->patient->id);
@@ -150,7 +152,7 @@ class AppointmentController extends Controller
 
         $tab = request('tab');
 
-        return view('medic.appointments.edit', compact('appointment', 'files', 'history', 'appointments','patient', 'tab'));
+        return view('medic.appointments.edit', compact('appointment', 'files', 'history', 'appointments', 'patient', 'tab'));
     }
 
     /**

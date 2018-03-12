@@ -27,27 +27,33 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        /*$search['q'] = request('q');
-
-    	$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
-
-        return view('medic.invoices.index',compact('invoices','search'));*/
-        $searchDate = Carbon::now()->toDateString();
-
-        if (request('q')) {
-            $searchDate = request('q');
-        }
-
+        $fe = 0;
+        $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
+        $search['clinic'] = request('clinic') ? request('clinic') : '';
         $medic = auth()->user();
 
-        //$offices = auth()->user()->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
-        //$offices = auth()->user()->offices()->pluck('offices.id');//first();
+        if($medic->fe || $medic->offices()->where('fe', 1)->count())
+        {
+            $fe = 1;
+        }
 
-        $invoices = $medic->invoices()->whereDate('created_at', $searchDate)->orderBy('created_at', 'DESC')->paginate(20);
-        $totalInvoicesAmount = $medic->invoices()->whereDate('created_at', $searchDate)->sum('total');
+
+        $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
+
+        if($search['clinic']){
+            $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
+            $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
+        }elseif($search['clinic'] == 0){
+            $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
+            $totalInvoicesAmount = $invoices->sum('total');
+        }else{
+            $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
+            $totalInvoicesAmount = $invoices->sum('total');
+        }
+        
         //$noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
-        return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'searchDate'));
+        return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
     }
 
     public function noInvoices()
@@ -223,7 +229,17 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->print($id);
 
-        return view('medic.invoices.ticket', compact('invoice'));
+        $office = $invoice->clinic;
+
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $configFactura = $office->configFactura->first();
+
+        } else {
+            $configFactura = $invoice->medic->configFactura->first();
+
+        }
+
+        return view('medic.invoices.ticket', compact('invoice', 'configFactura'));
     }
 
     public function downloadXml($id)

@@ -33,19 +33,37 @@
          </div>
           <div class="box box-default box-calendar">
           <div class="box-header">
-              <div class="pull-left">
-                  <form action="/medic/invoices" method="GET">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                          
-                            
-                            <input type="text" name="q" class="date form-control" placeholder="Fecha..." value="{{ isset($searchDate) ? $searchDate : '' }}">
-                            <div class="input-group-btn">
+              <div class="">
+                  <form action="/medic/invoices" method="GET" class="form-horizontal">
+                       <div class="form-group">
+                       
 
-                              <button type="submit" class="btn btn-primary">Buscar</button>
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="date" class="date form-control" placeholder="Fecha..." value="{{ isset($search) ? $search['date'] : '' }}">
+                                <div class="input-group-btn">
+
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
                             </div>
+                           
+                          </div>
+                            <div class="col-sm-3">
+                              <select name="clinic" id="clinic" class="form-control">
+                                <option value="">Todas</option>
+                              @foreach(auth()->user()->offices as $userClinic)
+                                <option value="{{  $userClinic->id }}" {{ (isset($search) && $search['clinic'] == $userClinic->id) ? 'selected' : '' }}>{{  $userClinic->name }}</option>
+                              @endforeach
+                              <option value="0">Por servicios a clínicas privadas</option>
+                            </select>
                           
-                          
-                        </div>
+                          </div>
+                      </div>
+                      
                       </form>
               </div>
             <div class="pull-right"><span class="label label-success label-lg">Total: {{ money($totalInvoicesAmount) }}</span>    </div> 
@@ -61,7 +79,7 @@
                         <th>Clínica</th>
                         <th>Cliente</th>
                         <th>Total</th>
-                        @if($medic->fe)
+                        @if($fe)
                         <th>Tipo Doc</th>
                         <th>Num. Consecutivo</th>
                         <th>Estado Hacienda</th>
@@ -101,38 +119,42 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                            @if($medic->fe)
+                            @if($fe)
                            
                               <td>
-                               
+                                @if($invoice->fe)
                                 <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
-                                
+                                @endif
                               </td>
                               <td>
                                 {{ $invoice->consecutivo_hacienda }}
                               </td>
                             <td>
-                              @if($invoice->sent_to_hacienda)
-                                @if($invoice->status_fe)
-                                  <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
-                                @else
-                                  <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
-                                @endif
-                               @elseif($invoice->status)
-                                  
-                                 <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                              @if($invoice->fe)
+                                  @if($invoice->sent_to_hacienda)
+                                    @if($invoice->status_fe)
+                                      <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                    @else
+                                      <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                    @endif
+                                  @elseif($invoice->status)
+                                      
+                                    <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                  @endif
                               @endif
                             </td>
                             <td>
-                              <a href="/medic/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
-                              
+                              @if($invoice->fe && $invoice->status)
+                                <a href="/medic/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                               @endif
                             </td>
                             <td>
-                             <a href="/medic/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
-                            
+                              @if($invoice->fe && $invoice->status)
+                              <a href="/medic/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                             @endif
                             </td>
                             <td>
-                              @if($invoice->status)
+                              @if($invoice->fe && $invoice->status)
                               <a href="/medic/invoices/{{ $invoice->id }}/download/xml">XML</a>
                               @endif
                             </td>
@@ -157,7 +179,7 @@
                       @if ($invoices)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['q' => $searchDate])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date' => $search['date'], 'clinic' => $search['clinic']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>

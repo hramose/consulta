@@ -126,7 +126,7 @@ function existsCertFile($config)
 {
     $resp = false;
 
-    $cert = (env('FE_ENV') == 'test') ? 'test' : 'cert';
+    $cert = 'cert';
 
     if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/' . $cert . '.p12')) {
         $resp = true;

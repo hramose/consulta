@@ -34,7 +34,7 @@
 	        </div>
 	          <!-- /.nav-tabs-custom -->
 
-			  @if($user->hasRole('medico'))
+			  @if($user->hasRole('medico') && $user->fe)
 						  <div class="box box-solid box-medics">
 							<div class="box-header with-border">
 								<h4 class="box-title">Factura Eléctronica</h4>
@@ -56,7 +56,7 @@
 							</div>
 							<!-- /.box-body -->
 						</div>
-						@endif
+				@endif
 			
 			
 		</div>
@@ -162,6 +162,22 @@
 						</div>
 						@endif
 
+
+			@if($user->hasRole('clinica'))
+			<div class="box box-solid box-medics">
+				<div class="box-header with-border">
+					<h4 class="box-title">Clínica</h4>
+					
+				</div>
+				<div class="box-body">
+					
+				<clinic :clinic="{{ $user->offices->first() }}" :url="'/admin/users/6'"></clinic>
+					
+				</div>
+				<!-- /.box-body -->
+			</div>
+			 
+			@endif
 				   
 	       
 			

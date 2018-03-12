@@ -26,7 +26,7 @@
           <div class="box box-default box-calendar">
                <div class="box-header">
               <div class="pull-left">
-                  <form action="/assistant/no-invoices" method="GET">
+                  <form action="/assistant/medics/{{ $medic->id }}/no-invoices" method="GET">
                         <div class="input-group input-group-sm" style="width: 150px;">
                           
                             

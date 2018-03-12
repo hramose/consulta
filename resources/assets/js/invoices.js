@@ -15,6 +15,13 @@ $(function () {
       
    });
 
+  $('#clinic').on('change', function (e) {
+
+
+    $(this).parents('form').submit();
+
+  });
+
    $('input[name="pay_with"]').keypress(function (e) {
     //if the letter is not digit then display error and don't type anything
     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -45,7 +52,7 @@ $(function () {
         $.ajax({
             type: 'PUT',
             url: '/medic/invoices/'+invoice_id,
-          data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val() },
+          data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), condicion_venta: $('select[name="condicion_venta"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val() },
             success: function (resp) {
             
               $('.loader').hide();
@@ -184,7 +191,8 @@ $(function () {
               
               $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : ((resp.appointment) ? resp.appointment.patient.fullname : ''));
               $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : ((resp.appointment) ?resp.appointment.patient.email: ''));
-              $('input[name="medio_pago"]').val(resp.medio_pago);
+              $('select[name="medio_pago"]').val(resp.medio_pago);
+              $('select[name="condicion_venta"]').val(resp.condicion_venta);
                $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
                $('input[name="change"]').val(resp.change);
                
@@ -202,12 +210,13 @@ $(function () {
                $('input[name="total"]').val(resp.total);
 
                if(resp.status){
-                
-                modal.find('.btn-print').focus();
-                modal.find('.btn-facturar').hide();
+                 modal.find('.btn-print').show();
+                 modal.find('.btn-print').focus();
+                 modal.find('.btn-facturar').hide();
                  $('input[name="client_name"]').attr('disabled', true)
                  $('input[name="client_email"]').attr('disabled', true)
                  $('select[name="medio_pago"]').attr('disabled', true)
+                 $('select[name="condicion_venta"]').attr('disabled', true)
                 $('.pay_with_label').html( money(resp.pay_with));
                 $('.change_label').html( money(resp.change));
                 $('.pay_with-field').remove();
@@ -216,6 +225,7 @@ $(function () {
               }else{
                 $('input[name="pay_with"]').focus();
                  modal.find('.btn-print').hide();
+                 modal.find('.btn-facturar').show();
                }
                 
             },

@@ -92,7 +92,7 @@ $(function () {
           $.ajax({
             type: 'PUT',
             url: '/clinic/invoices/'+invoice_id,
-            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), condicion_venta: $('select[name="condicion_venta"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
             
 
@@ -166,6 +166,8 @@ $(function () {
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                $('input[name="client_name"]').val(resp.appointment.patient.fullname);
+              $('select[name="medio_pago"]').val(resp.medio_pago);
+              $('select[name="condicion_venta"]').val(resp.condicion_venta);
                $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
                $('input[name="change"]').val(resp.change);
             
@@ -185,6 +187,7 @@ $(function () {
                if(resp.status){
                 modal.find('.btn-print').focus();
                 modal.find('.btn-facturar').hide();
+                 $('select[name="condicion_venta"]').attr('disabled', true)
                 $('.pay_with_label').html( money(resp.pay_with));
                 $('.change_label').html( money(resp.change));
                 $('.pay_with-field').remove();

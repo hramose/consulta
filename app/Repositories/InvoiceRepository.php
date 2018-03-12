@@ -45,10 +45,15 @@ class InvoiceRepository extends DbRepository
             if ($tipo_documento == '03') {
                 $consecutivo_inicio = $config->consecutivo_inicio_NC;
             }
+
+           
         }
-
-        $consecutivo = Invoice::where('user_id', $user->id)->where('tipo_documento', $tipo_documento)->where('fe', $user->fe)->max('consecutivo');
-
+        
+        $consecutivo = Invoice::whereHas('clinic', function ($q) {
+            $q->where('offices.type', '<>', 'Clínica Privada');
+        })->where('user_id', $user->id)->where('tipo_documento', $tipo_documento)->where('fe', $user->fe)->max('consecutivo');
+       
+        
         return ($consecutivo) ? $consecutivo += 1 : $consecutivo_inicio;
     }
 
@@ -251,10 +256,19 @@ class InvoiceRepository extends DbRepository
         $invoice->load('medic');
         $invoice->load('clinic');
         $invoice->load('appointment.patient');
-        $config = $invoice->medic->configFactura->first();
+        $office = $invoice->clinic;
+
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+
+        } else {
+            $config = $invoice->medic->configFactura->first();
+
+        }
+        
         $respHacienda = null;
 
-        if ($invoice->fe && !$invoice->status_fe) {
+        if ($invoice->fe && $config && !$invoice->status_fe) {
             $respHacienda = $this->feRepo->recepcion($config, $invoice->clave_fe);
 
             if (isset($respHacienda->{'ind-estado'})) {
@@ -296,7 +310,16 @@ class InvoiceRepository extends DbRepository
     public function recepcionHacienda($id)
     {
         $invoice = $this->findById($id);
-        $config = $invoice->medic->configFactura->first();
+        $office = $invoice->clinic;
+
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+
+        } else {
+            $config = $invoice->medic->configFactura->first();
+
+        }
+      
         $respHacienda = $this->feRepo->recepcion($config, $invoice->clave_fe);
 
         if (isset($respHacienda->{'ind-estado'})) {

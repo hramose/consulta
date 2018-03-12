@@ -404,6 +404,9 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::put('/users/{id}/configfactura', 'Admin\UserController@updateConfigFactura');
     Route::delete('/users/{id}/configfactura', 'Admin\UserController@deleteConfigFactura');
 
+    Route::post('/users/{id}/offices', 'Admin\UserController@updateClinic');
+  
+
     Route::resource('plans', 'Admin\PlanController');
     Route::resource('reports', 'Admin\ReportsController');
     Route::resource('users', 'Admin\UserController');

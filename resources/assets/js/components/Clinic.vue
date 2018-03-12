@@ -110,6 +110,20 @@
                 </form-error> 
               </div>
             </div>
+            <div class="form-group">
+                <label for="fe" class="col-sm-2 control-label">Utiliza Factura eléctronica</label>
+
+                <div class="col-sm-10">
+                <select class="form-control" style="width: 100%;" name="fe" required v-model="office.fe">
+                    <option value="0">No</option>
+                    <option value="1">Si</option>
+                </select>
+                 <form-error v-if="errors.fe" :errors="errors" style="float:right;">
+                    {{ errors.fe[0] }}
+                </form-error> 
+               
+                </div>
+            </div>
         
            <div class="form-group">
             <label for="lat" class="col-sm-2 control-label">Coordenadas (Para Google Maps y Waze)</label>
@@ -289,8 +303,17 @@
     import FormError from './FormError.vue';
 
     export default {
-      props: ['clinic'],
-     
+      //props: ['clinic'],
+      props: {
+        clinic: {
+          type: Object
+        },
+        url:{
+          type:String,
+          default: '/clinic/account'
+        },
+       
+      },
       data () {
         return {
           
@@ -679,7 +702,8 @@
             notification_datetime: '',
             notification_hour: '',
             ide:'',
-            ide_name:''
+            ide_name:'',
+            fe:0
           },
           selectedOffice:null,
           allOffices: [],
@@ -818,12 +842,16 @@
                     this.loader_message ="Error al guardar cambios";
                     this.errors = response.data;
                 });*/
-                this.$http.post('/clinic/account/offices', form, config).then(response => {
+                this.$http.post(this.url+'/offices', form, config).then(response => {
                     bus.$emit('alert', 'Consultorio Actualizado','success');
                      this.loader = false;
                      this.errors = [];
                      //this.office = {};
                      this.newOffice = false;
+
+                    window.location.href = this.url +"/edit?tab=clinics";
+                   
+
                 }, response => {
                        console.log(response.data)
                     this.loader = false;

@@ -15,14 +15,16 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\FacturaElectronicaRepository;
+use App\Repositories\OfficeRepository;
 
 class UserController extends Controller
 {
-    public function __construct(UserRepository $userRepo, FacturaElectronicaRepository $feRepo)
+    public function __construct(UserRepository $userRepo, FacturaElectronicaRepository $feRepo, OfficeRepository $officeRepo)
     {
         $this->middleware('auth');
         $this->userRepo = $userRepo;
         $this->feRepo = $feRepo;
+        $this->officeRepo = $officeRepo;
     }
 
     public function index()
@@ -66,7 +68,7 @@ class UserController extends Controller
 
         flash('Usuario Creado', 'success');
 
-        return Redirect('/admin/users');
+        return Redirect('/admin/users/' . $user->id . '/edit');
     }
 
     /**
@@ -97,7 +99,7 @@ class UserController extends Controller
 
         flash('Usuario Actualizado', 'success');
 
-        return Redirect('/admin/users');
+        return Redirect('/admin/users/' . $id . '/edit');
     }
 
     public function medicRequests()
@@ -196,6 +198,51 @@ class UserController extends Controller
         flash('Subscripción Eliminado', 'success');
 
         return back();
+    }
+
+    /**
+     * Actualizar datos de consultorio
+     */
+    public function updateClinic()
+    {
+
+        $this->validate(request(), [
+            'type' => 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'province' => 'required',
+            'canton' => 'required',
+            'district' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $data = request()->all();
+
+        if (isset($data['id']) && $data['id']) { // update
+
+            $office = $this->officeRepo->update($data['id'], $data);
+
+            $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
+            $fileUploaded = "error";
+
+            if (request()->file('file')) {
+
+                $file = request()->file('file');
+
+                $ext = $file->guessClientExtension();
+
+                if (in_array($ext, $mimes))
+                    $fileUploaded = $file->storeAs("offices/" . $office->id, "photo.jpg", 'public');
+            }
+
+
+            return $office;
+
+        }
+
+
+
+
     }
 
     /**
@@ -388,7 +435,6 @@ class UserController extends Controller
     {
         $user = $this->userRepo->findById($user_id);
         $config = $user->configFactura->first();
-
 
         if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/cert.p12')) {
             Storage::deleteDirectory('facturaelectronica/' . $config->id . '/');

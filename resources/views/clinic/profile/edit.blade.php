@@ -106,17 +106,25 @@
                   
               </div>
               <div class="{{ isset($tab) ? ($tab =='fe') ? 'active' : '' : '' }} tab-pane" id="fe">
-                
-                  @if($configFactura)
-                  <form method="POST" action="{{ url('/clinic/account/offices/'.$user->offices->first()->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
-                    {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                    @include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
-                   </form>
-                  @else 
-                  <form method="POST" action="{{ url('/clinic/account/offices/'.$user->offices->first()->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    @include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
-                  </form>
+                 @if($user->offices->first()->fe)
+						@if($configFactura)
+						<form method="POST" action="{{ url('/clinic/account/offices/'.$user->offices->first()->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+							{{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+							@include('admin/users/partials/config-factura',['buttonText' => 'Actualizar','read'=> true])
+						</form>
+						@else 
+						<form method="POST" action="{{ url('/clinic/account/offices/'.$user->offices->first()->id.'/configfactura') }}" class="form-horizontal" enctype="multipart/form-data">
+							{{ csrf_field() }}
+							@include('admin/users/partials/config-factura',['buttonText' => 'Guardar'])
+						</form>
+						@endif
+				   @else
+                     <div class="callout callout-warning">
+                        <h4>Información importante!</h4>
+                       
+                            <p>Parece que no tienes activado la factura electronica todavia</a>              </p>
+                      </div>
+
                   @endif
                </div>
              

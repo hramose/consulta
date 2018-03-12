@@ -227,8 +227,8 @@ class FacturaElectronicaRepository extends DbRepository
 
     public function signXML($configFactura, $invoice)
     {
-        $cert = ($this->type == 'test') ? 'test' : 'cert';
-        $pin = ($this->type == 'test') ? $configFactura->pin_certificado_test : $configFactura->pin_certificado;
+        $cert = 'cert';
+        $pin = $configFactura->pin_certificado;
 
         switch ($invoice->tipo_documento) {
             case '01':

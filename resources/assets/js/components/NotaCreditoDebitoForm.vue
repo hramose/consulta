@@ -13,7 +13,7 @@
       <div class="form-invoice-service" v-show="!newService && !updateService">
           <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">{{ (type == 2) ? 'Nota de débito' : 'Nota de crédito'}}</h3>
+                  <h3 class="box-title">{{ (type == 2) ? 'Nota de débito' : 'Nota de crédito'}} de la factura: </h3>
 
                   <div class="box-tools pull-right">
                     
@@ -40,13 +40,22 @@
                      <div class="form-group">
                        <label for="service" class="col-sm-2 control-label">Medio de pago:</label>
 
-                        <div class="col-sm-10">
+                        <div class="col-sm-5">
                           <select name="medio_pago" id="medio_pago" v-model="originalInvoice.medio_pago" class="form-control">
                             <option value="01">Efectivo</option>
                             <option value="02">Tarjeta</option>
                           </select>
                           <form-error v-if="errors.medio_pago" :errors="errors" style="float:right;">
                               {{ errors.medio_pago[0] }}
+                          </form-error>
+                        </div>
+                        <div class="col-sm-5">
+                          <select name="condicion_venta" id="condicion_venta" v-model="originalInvoice.condicion_venta" class="form-control">
+                            <option value="01">Contado</option>
+                            <option value="02">Crédito</option>
+                          </select>
+                          <form-error v-if="errors.condicion_venta" :errors="errors" style="float:right;">
+                              {{ errors.condicion_venta[0] }}
                           </form-error>
                         </div>
                          

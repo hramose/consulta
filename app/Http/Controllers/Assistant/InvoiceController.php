@@ -64,28 +64,20 @@ class InvoiceController extends Controller
     public function show($medic_id)
     {
         $medic = $this->medicRepo->findById($medic_id);
-        $searchDate = Carbon::now()->toDateString();
-
-        if (request('q')) {
-            $searchDate = request('q');
-        }
-
-        /*$assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-
-        if(auth()->user()->isMedicAssistant($assistants_users->user_id))
-            $offices = User::find($assistants_users->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
-        if(auth()->user()->isClinicAssistant($assistants_users->user_id))
-            $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');*/
+        $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
 
         $office = auth()->user()->clinicsAssistants->first();
 
-        $invoices = $medic->invoices()->where('office_id', $office->id)->whereDate('created_at', $searchDate)->orderBy('created_at', 'DESC')->paginate(20);
-        $totalInvoicesAmount = $medic->invoices()->where('office_id', $office->id)->whereDate('created_at', $searchDate)->sum('total');
-        //$noInvoices = $medic->appointments()->where('office_id', $office->id)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
+        if ($medic->fe || $office->fe) {
+            $fe = 1;
+        }
 
-        //$invoices =$this->invoiceRepo->findAllByDoctor(auth()->id(), $search);
 
-        return view('assistant.invoices.show', compact('medic', 'invoices', 'totalInvoicesAmount', 'searchDate'));
+        $invoices = $medic->invoices()->where('office_id', $office->id)->whereDate('created_at', $search['date'])->orderBy('created_at', 'DESC')->paginate(20);
+        $totalInvoicesAmount = $medic->invoices()->where('office_id', $office->id)->whereDate('created_at', $search['date'])->sum('total');
+       
+
+        return view('assistant.invoices.show', compact('medic', 'invoices', 'totalInvoicesAmount', 'search', 'office','fe'));
     }
 
     public function noInvoices($medic_id)
@@ -140,8 +132,18 @@ class InvoiceController extends Controller
     public function update($id)
     {
         $invoice = $this->invoiceRepo->findById($id);
+        $office = $invoice->clinic;
 
-        if ($invoice->medic->fe && !existsCertFile($invoice->medic)) {
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $config = $office->configFactura->first();
+
+        } else {
+            $config = $invoice->medic->configFactura->first();
+
+        }
+
+        if ($invoice->fe && !existsCertFile($config)) {
+
             $errors = [
                         'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
                     ];
@@ -199,8 +201,17 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = $this->invoiceRepo->print($id);
+        $office = $invoice->clinic;
 
-        return view('assistant.invoices.print', compact('invoice'));
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $configFactura = $office->configFactura->first();
+
+        } else {
+            $configFactura = $invoice->medic->configFactura->first();
+
+        }
+
+        return view('assistant.invoices.print', compact('invoice', 'configFactura'));
     }
 
     /**
@@ -209,8 +220,17 @@ class InvoiceController extends Controller
     public function ticket($id)
     {
         $invoice = $this->invoiceRepo->print($id);
+        $office = $invoice->clinic;
 
-        return view('assistant.invoices.ticket', compact('invoice'));
+        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+            $configFactura = $office->configFactura->first();
+
+        } else {
+            $configFactura = $invoice->medic->configFactura->first();
+
+        }
+
+        return view('assistant.invoices.ticket', compact('invoice', 'configFactura'));
     }
 
     public function downloadXml($id)
