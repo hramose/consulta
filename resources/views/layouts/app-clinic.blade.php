@@ -82,9 +82,17 @@
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
 
     @endif
-    
+
+     
 
      @foreach(auth()->user()->offices as $office)
+      @if($office->fe && !$office->configFactura->first())
+          <div class="notification-app alert-warning">
+               
+
+                <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/clinic/account/edit?tab=fe" title="Ir a configurar Factura Electrónica"><b>Configurar Factura Electrónica</b></a></p>
+          </div>
+        @endif
        @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
          <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
           <form method="POST" action="{{ url('/clinic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location" data-role="clinic">
@@ -95,6 +103,8 @@
           </form>
          </div>
         @endif 
+        
+       
      @endforeach
     @if(auth()->user()->active)
       @yield('content')

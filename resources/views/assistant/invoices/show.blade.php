@@ -16,6 +16,7 @@
           @else
             @include('layouts/partials/header-pages',['page'=>'Facturación'])
           @endif
+         
     <section class="content">
        
         <div class="row">
@@ -27,6 +28,7 @@
          <div>
            
             <a href="/assistant/medics/{{ $medic->id }}/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
+              <a href="/assistant/invoices/create" class="btn btn-success">Crear Factura</a>
            
          </div>
           <div class="box box-default box-calendar">
@@ -66,7 +68,7 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
-                        <th>Paciente</th>
+                        <th>Cliente</th>
                         <th>Total</th>
                          @if($fe)
                         <th>Tipo Doc</th>
@@ -88,7 +90,7 @@
                              {{ $invoice->created_at }}
                             </td>
                              <td>
-                             {{ $invoice->appointment->patient->first_name }}
+                             {{ $invoice->client_name }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
@@ -180,7 +182,7 @@
 
     @include('medic/invoices/partials/modal')
   
- @if($medic->fe || $office->fe)
+ @if($fe)
     @include('medic/invoices/partials/status-hacienda-modal')
  @endif
 

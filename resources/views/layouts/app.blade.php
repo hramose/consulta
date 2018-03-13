@@ -19,7 +19,7 @@
       <!-- Theme style -->
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
        <link href="/js/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
-       <!-- <link rel="stylesheet" href="/js/plugins/hopscotch/css/hopscotch.min.css">  -->
+    
 
        @yield('css')
       
@@ -90,8 +90,7 @@
 
     @endif
      
-       <!-- <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/medic/appointments" title="Ir a citas">Aquí</a> !</div>  -->
-    
+   
     {{-- @if(!$userOffices)
        <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
      @endif --}}
@@ -162,62 +161,10 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- <div class="modal fade" id="modalSelectClinic" role="dialog" aria-labelledby="modalSelectClinic">
-      <div class="modal-dialog " role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-          
-          <h4 class="modal-title" id="modalSelectClinicLabel">Selección de clínica</h4>
-          </div>
-          <div class="modal-body" >
-              
-            <table class="table table-bordered">
-                <tbody>
-                <tr>
-         
-                  <th>Clinica</th>
-                  <th>Acción</th>
-                 
-                </tr>
-                {{--  @foreach(auth()->user()->offices()->get() as $office) --}}
-                    
-                    <tr>
-                      
-                    {{--  <td><a href="/medic/appointments?clinic={{ $office->id }}">{{ $office->name }}</a></td>
-                      <td>
-                        <a href="/medic/appointments?clinic={{ $office->id }}" class="btn btn-success">Seleccionar</a>
-                      </td>--}}
-                      
-                    </tr>
-                {{-- @endforeach--}}
-                
-               
-              </tbody>
-              </table>
-         
-              
-              
-                
-          </div>
-            <div class="modal-footer" >
-            
-            
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            
-          </div>
-        </div>
-      </div>
-    </div> -->
 
   @include('layouts/partials/footer')
 
-  <!-- Control Sidebar -->
-  <!--<aside class="control-sidebar control-sidebar-dark">
-    
-  </aside>-->
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
+ 
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
@@ -237,10 +184,7 @@
 
  @yield('scripts')
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
+
 </body>
 </html>
 

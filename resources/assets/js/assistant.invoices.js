@@ -14,6 +14,12 @@ $(function () {
       locale: 'es',
       
    });
+  $('#medic').on('change', function (e) {
+
+
+    $(this).parents('form').submit();
+
+  });
    $('input[name="pay_with"]').keypress(function (e) {
     //if the letter is not digit then display error and don't type anything
     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -171,9 +177,8 @@ $(function () {
                table_details.find('tbody').html('');
               
               var consecutivo = resp.consecutivo;
-               modal.find('#modal-label-medic').text(resp.medic.name);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
+              modal.find('#modal-label-medic').text(resp.medic.name);
+              modal.find('#modal-label-patient').text((resp.appointment) ? resp.appointment.patient.fullname : '');
               $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : resp.appointment.patient.fullname);
               $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : resp.appointment.patient.email);
               $('select[name="medio_pago"]').val(resp.medio_pago);

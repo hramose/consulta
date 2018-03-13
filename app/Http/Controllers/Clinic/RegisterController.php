@@ -70,6 +70,7 @@ class RegisterController extends Controller
     protected function registerOffice()
     {
         $this->validate(request(), [
+                'fe' => 'required',
                 'name' => 'required',
                 'address' => 'required',
                 'province' => 'required',

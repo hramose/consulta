@@ -98,19 +98,36 @@
       <!-- /.row -->
       <hr>
       <div class="row invoice-patient">
-        <div class="col-xs-4 invoice-col invoice-left">     
-            <b>Paciente:</b> {{ $invoice->appointment->patient->fullname }}<br>
-            {{ $invoice->appointment->patient->address }}<br>
-        </div>
-        <div class="col-xs-4 invoice-col invoice-right">
-            
-        </div>
-        <div class="col-xs-4 invoice-col invoice-right">
-            <b>Médico:</b> {{ $invoice->medic->name }}<br>
-            @foreach($invoice->medic->specialities as $speciality)
-              {{ $speciality->name }} 
-            @endforeach
-        </div>
+        @if($invoice->appointment)     
+          <div class="col-xs-4 invoice-col invoice-left">
+              
+              <b>Paciente:</b> {{ $invoice->appointment->patient->fullname }}<br>
+              {{ $invoice->appointment->patient->address }}<br>
+          </div>
+          <div class="col-xs-4 invoice-col invoice-right">
+              
+          </div>
+          <div class="col-xs-4 invoice-col invoice-right">
+              <b>Médico:</b> {{ $invoice->medic->name }}<br>
+              @foreach($invoice->medic->specialities as $speciality)
+                {{ $speciality->name }} 
+              @endforeach
+          </div>
+        @else 
+
+           <div class="col-xs-4 invoice-col invoice-left">
+              
+              <b>Cliente:</b> {{ $invoice->client_name }}<br>
+              {{ $invoice->client_email }}<br>
+          </div>
+          <div class="col-xs-4 invoice-col invoice-right">
+              
+          </div>
+          <div class="col-xs-4 invoice-col invoice-right">
+           
+          </div>
+
+        @endif
       </div>
       <hr>
 

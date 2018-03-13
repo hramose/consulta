@@ -32,25 +32,23 @@ class InvoiceController extends Controller
         $search['clinic'] = request('clinic') ? request('clinic') : '';
         $medic = auth()->user();
 
-        if($medic->fe || $medic->offices()->where('fe', 1)->count())
-        {
+        if ($medic->fe || $medic->offices()->where('fe', 1)->count()) {
             $fe = 1;
         }
 
-
         $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
 
-        if($search['clinic']){
+        if ($search['clinic']) {
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
-        }elseif($search['clinic'] == 0){
+        } elseif ($search['clinic'] == 0) {
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
-        }else{
+        } else {
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
         }
-        
+
         //$noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
         return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
@@ -75,8 +73,9 @@ class InvoiceController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->hasRole('medico') || !auth()->user()->offices()->where('type', 'Clínica Privada')->count())
+        if (!auth()->user()->hasRole('medico') || !auth()->user()->offices()->where('type', 'Clínica Privada')->count()) {
             return redirect('/medic/invoices');
+        }
 
         return view('medic.invoices.create');
     }
@@ -117,13 +116,11 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->findById($id);
         $office = $invoice->clinic;
-        
+
         if ($office && str_slug($office->type, '-') == 'clinica-privada') {
             $config = $office->configFactura->first();
-          
         } else {
             $config = $invoice->medic->configFactura->first();
-           
         }
 
         if ($invoice->fe && !existsCertFile($config)) {
@@ -157,7 +154,7 @@ class InvoiceController extends Controller
      */
     public function getServices()
     {
-        $services = InvoiceService::where('user_id', auth()->id())->where('name', 'like', '%' . request('q') . '%')->get();
+        $services = InvoiceService::where('user_id', auth()->id())->where('office_id', request('office_id'))->where('name', 'like', '%' . request('q') . '%')->get();
 
         return $services;
     }
@@ -170,6 +167,7 @@ class InvoiceController extends Controller
             ]);
         $data = request()->all();
         $data['user_id'] = auth()->id();
+        $data['office_id'] = request('office_id');
 
         $service = InvoiceService::create($data);
 
@@ -209,13 +207,11 @@ class InvoiceController extends Controller
 
         if ($office && str_slug($office->type, '-') == 'clinica-privada') {
             $configFactura = $office->configFactura->first();
-
         } else {
             $configFactura = $invoice->medic->configFactura->first();
-
         }
 
-        if(!$invoice->appointment){
+        if (!$invoice->appointment) {
             return view('medic.invoices.print-general', compact('invoice', 'configFactura'));
         }
 
@@ -233,10 +229,8 @@ class InvoiceController extends Controller
 
         if ($office && str_slug($office->type, '-') == 'clinica-privada') {
             $configFactura = $office->configFactura->first();
-
         } else {
             $configFactura = $invoice->medic->configFactura->first();
-
         }
 
         return view('medic.invoices.ticket', compact('invoice', 'configFactura'));

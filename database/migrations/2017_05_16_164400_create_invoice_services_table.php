@@ -16,6 +16,7 @@ class CreateInvoiceServicesTable extends Migration
         Schema::create('invoice_services', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
+            $table->integer('office_id')->unsigned()->index();
             $table->string('name');
             $table->double('amount')->default(0);
             $table->timestamps();

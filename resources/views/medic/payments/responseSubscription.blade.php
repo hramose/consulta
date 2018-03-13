@@ -19,7 +19,7 @@
 @endif
    
     <section class="invoice">
-      @if(auth()->user()->fe && !auth()->user()->configFactura)  
+      @if(auth()->user()->fe && !auth()->user()->configFactura->first())  
         <div class="row">
           <div class="col-xs-12">
           

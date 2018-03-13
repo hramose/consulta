@@ -464,7 +464,7 @@
            
            let queryParam = {
                 ['q']: search,
-                ['user_id']: this.originalInvoice.user_id
+                ['office_id']: this.originalInvoice.office_id
               }
             this.$http.get(this.url + '/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
@@ -483,7 +483,7 @@
                     return
 
 		              this.loader = true;
-		              this.$http.post(this.url + '/services', {name: this.new_service, amount: this.amount, user_id:this.originalInvoice.user_id}).then((response) => {
+		              this.$http.post(this.url + '/services', {name: this.new_service, amount: this.amount, office_id:this.originalInvoice.office_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if(response.status == 200 && response.data)

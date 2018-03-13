@@ -101,7 +101,7 @@
                              {{ $invoice->created_at }}
                             </td>
                             <td>
-                              @if($invoice->appointment)
+                              @if($invoice->clinic)
                                 {{ $invoice->clinic->name }}
                              @else 
                               --

@@ -5,8 +5,8 @@
             <div class="modal-header">
             
             <h4 class="modal-title" id="modalInvoiceLabel">Facturación</h4>
-            <span class="label label-info pull-right">Médico: <span id="modal-label-medic"></span></span>
-             <span class="label label-success pull-left">Paciente: <span id="modal-label-patient"></span></span>
+            <span class="label label-info pull-right"><span id="modal-label-medic"></span></span>
+             <span class="label label-success pull-left"><span id="modal-label-patient"></span></span>
             <input type="hidden" name="client_name" />
             </div>
 

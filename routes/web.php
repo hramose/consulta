@@ -192,7 +192,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
 
     Route::get('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@create');
     Route::post('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@store');
-    
+
     Route::get('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@create');
     Route::post('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@store');
 
@@ -239,11 +239,11 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
     Route::post('/account/avatars', 'Clinic\UserController@avatars');
     Route::post('/account/offices', 'Clinic\UserController@updateClinic');
     Route::put('/account/offices/{id}/notification', 'Clinic\OfficeController@updateOfficeNotification');
-    
+
     Route::post('/account/offices/{id}/configfactura', 'Clinic\UserController@addConfigFactura');
     Route::put('/account/offices/{id}/configfactura', 'Clinic\UserController@updateConfigFactura');
     Route::delete('/offices/{id}/configfactura', 'Clinic\UserController@deleteConfigFactura');
-    
+
     //Route::put('/account/offices/{id}', 'Clinic\UserController@updateClinic');
     Route::get('/specialities/list', 'Clinic\UserController@getSpecialities');
     //Route::post('/account/patients', 'UserController@storePatient');
@@ -346,6 +346,8 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
     Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
     Route::get('/invoices/balance', 'Assistant\InvoiceController@generalBalance');
     Route::get('/patients/{patient}/invoices', 'Assistant\InvoiceController@patientInvoices');
+    
+
     Route::resource('invoices', 'Assistant\InvoiceController');
 });
 
@@ -405,7 +407,6 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::delete('/users/{id}/configfactura', 'Admin\UserController@deleteConfigFactura');
 
     Route::post('/users/{id}/offices', 'Admin\UserController@updateClinic');
-  
 
     Route::resource('plans', 'Admin\PlanController');
     Route::resource('reports', 'Admin\ReportsController');

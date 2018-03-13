@@ -146,7 +146,7 @@
 					                    <p>No se puede facturar en consultas pasadas o finalizadas... para ver todas tus facturas, ingresa al modulo facturación</p>
 					                </div>
 
-								@elseif( auth()->user()->fe && !auth()->user()->configFactura )
+								@elseif( auth()->user()->fe && !auth()->user()->configFactura->first() )
 									<div class="callout callout-danger">
 					                    <h4>Información importante!</h4>
 

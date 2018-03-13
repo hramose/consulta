@@ -18,7 +18,7 @@
           <h2>Crear Factura</h2>
           <div>
            
-            <a href="/medic/invoices" class="btn btn-info">Regresar a facturación</a>
+            <a href="/assistant/invoices" class="btn btn-info">Regresar a facturación</a>
            
          </div>
           <div class="box box-default box-calendar">
@@ -27,16 +27,10 @@
            
             </div>
             <div class="box-body ">
-                @if( auth()->user()->fe && auth()->user()->configFactura->first() )
-                    <invoice-general-form  nombre_cliente="" correo_cliente="" :usa_fe="{{ auth()->user()->fe }}"></invoice-general-form>
+             
+                    <invoice-general-form  :office_id="{{ $office->id }}" nombre_cliente="" correo_cliente="" :usa_fe="{{ $fe }}" url="/assistant/invoices"></invoice-general-form>
 									
-                @else
-                    <div class="callout callout-danger">
-                        <h4>Información importante!</h4>
-
-                        <p>No tienes configurado los parametros para la factura electronica. Por favor configuralos para poder continuar. <a href="/medic/account/edit?tab=fe" title="Ir a configurar Factura Electronica"><b>Configurar Factura Electrónica</b></a></p>
-                    </div>
-               @endif
+                
             </div>
             <!-- /.box-body -->
           </div>

@@ -97,9 +97,15 @@
 					<tr>
 							<td>
 									  
-							<div class="col-xs-4 invoice-col invoice-left" style="text-align: left;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">     
+							<div class="col-xs-4 invoice-col invoice-left" style="text-align: left;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">
+                             @if($invoice->appointment)         
 							 <b>Paciente:</b> {{ $invoice->appointment->patient->fullname }}<br>
                             {{ $invoice->appointment->patient->address }}<br>
+                            @else 
+                              <b>Cliente:</b> {{ $invoice->client_name }}<br>
+                                {{ $invoice->client_email }}<br>
+                            @endif
+
 					</div>
 								
 							</td>
@@ -109,10 +115,12 @@
 							<td>
 								
 							<div class="col-xs-4 invoice-col invoice-right" style="text-align: right;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">
-							<b>Médico:</b> {{ $invoice->medic->name }}<br>
-                            @foreach($invoice->medic->specialities as $speciality)
-                            {{ $speciality->name }} 
-                            @endforeach
+                              @if($invoice->appointment)   
+                                <b>Médico:</b> {{ $invoice->medic->name }}<br>
+                                @foreach($invoice->medic->specialities as $speciality)
+                                {{ $speciality->name }} 
+                                @endforeach
+                             @endif
 					</div>
 							</td>
 					</tr>

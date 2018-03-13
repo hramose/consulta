@@ -34,7 +34,7 @@ class AppointmentController extends Controller
     {
         $search['q'] = request('q');
         $search['office'] = Session::get('office_id');
-        $search['date'] = request('date') ? request('date') : Carbon::now()->toDateTimeString();
+        $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
 
         $clinic_id = Session::get('office_id');
 

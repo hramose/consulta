@@ -10,87 +10,79 @@
 @section('content')
     <div id="infoBox" class="alert"></div> 
     
-     @if($medic)
-       @include('layouts/partials/header-pages',['page'=>'Facturas del medico '. $medic->name ])
-    @else
-       @include('layouts/partials/header-pages',['page'=>'Facturación'])
-    @endif
-     
     
+  
+    @include('layouts/partials/header-pages',['page'=>'Facturación'])
+    
+         
     <section class="content">
        
         <div class="row">
-        <div class="col-md-4">
-          
-          
-       
-                
-       
-          <div class="box box-solid box-medics">
-            <div class="box-header with-border">
-              <h4 class="box-title">Médicos </h4>
-              <div><small>(Haz click en un medico para ver sus facturas)</small></div>
-            </div>
-            <div class="box-body">
-              <!-- the events -->
-              <div id="external-medics">
-                <ul class="medic-list medic-list-in-box">
-                  @foreach($medics as $doctor)
-                    <li class="item {{ (isset($medic) && $doctor->id == $medic->id) ? 'medic-list-selected': '' }}">
-                      <div class="medic-img">
-                      <!--/img/default-50x50.gif-->
-                        
-                         <img src="{{ getAvatar($doctor) }}" alt="Medic Image" width="50" height="50">
-                      </div>
-                      <div class="medic-info">
-                        <a href="/assistant/medics/{{$doctor->id }}/invoices" class="medic-title">{{ $doctor->name }}
-                          </a>
-                         
-                           
-                            <a href="/assistant/medics/{{$doctor->id }}/invoices" class="label  label-info pull-right">Ver Facturas</a>
-                           
-                         
-                            <span class="medic-description">
-                              E: {{ $doctor->email }}, T: {{ $doctor->phone }}
-                            </span>
-                      </div>
-                    </li>
-                   
-                  @endforeach
-                  
-                </ul>
-                @if ($medics)
-                        <div  class="pagination-container">{!!$medics->render()!!}</div>
-                    @endif
-               
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-       
-          
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-md-8">
+        
+        <div class="col-md-12">
          
-          @if($invoices)
+         <div>
+           
+            <a href="/assistant/invoices" class="btn btn-info">Regresar</a>
+            <a href="/assistant/invoices/create" class="btn btn-success">Crear Factura</a>
+           
+         </div>
           <div class="box box-default box-calendar">
             <div class="box-header">
-               <strong> Ultimas Facturas</strong> 
+              <div class="">
+                  <form action="/assistant/invoices" method="GET" class="form-horizontal">
+                       <div class="form-group">
+                       
+
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="date" class="date form-control" placeholder="Fecha..." value="{{ isset($search) ? $search['date'] : '' }}">
+                                <div class="input-group-btn">
+
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
+                            </div>
+                           
+                          </div>
+                            <div class="col-sm-3">
+                              <select name="medic" id="medic" class="form-control">
+                                <option value="">Todas</option>
+                              @foreach($medics as $medic)
+                                <option value="{{  $medic->id }}" {{ (isset($search) && $search['medic'] == $medic->id) ? 'selected' : '' }}>{{  $medic->name }}</option>
+                              @endforeach
+                              
+                            </select>
+                          
+                          </div>
+                      </div>
+                      
+                      </form>
+                 
+              </div>
+            <div class="pull-right"><span class="label label-success label-lg">Total: {{ money($totalInvoicesAmount) }}</span>    </div> 
             </div>
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
-
                  <div class="table-responsive">
                     <table class="table no-margin">
                       <thead>
                       <tr>
                         <th>#</th>
-                        <th>Médico</th>
-                        <th>Paciente</th>
                         <th>Fecha</th>
+                        <th>Cliente</th>
                         <th>Total</th>
+                         @if($fe)
+                        <th>Tipo Doc</th>
+                        <th>Num. Consecutivo</th>
+                        <th>Estado Hacienda</th>
+                        <th>Generar NC</th>
+                        <th>Generar ND</th>
+                        <th>Ver XML</th>
+                        @endif
                         
                         <th></th>
                       </tr>
@@ -99,10 +91,11 @@
                         @foreach($invoices as $invoice)
                           <tr>
                             <td>{{ $invoice->consecutivo }}</td>
-                             <td>{{ $invoice->medic->name }}</td>
-                             <td>{{ $invoice->appointment->patient->first_name }}</td>
                             <td>
                              {{ $invoice->created_at }}
+                            </td>
+                             <td>
+                             {{ $invoice->client_name }}
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
@@ -111,17 +104,72 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                            <td>
+                             @if($fe)
+                              <td>
+                                  @if($invoice->fe)
+                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
+                                  @endif
+                              </td>
+                              <td>
+                                {{ $invoice->consecutivo_hacienda }}
+                              </td>
+                              <td>
+                                @if($invoice->fe)
+                                    @if($invoice->sent_to_hacienda)
+                                      @if($invoice->status_fe)
+                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                      @else
+                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                      @endif
+                                    @elseif($invoice->status)
+                                        
+                                      <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                    @endif
+                                @endif
+                              </td>
+                              <td>
+                                 @if($invoice->fe && $invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                                  @endif
+                              </td>
+                              <td>
+                                 @if($invoice->fe && $invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                                 @endif
+                              </td>
+                              <td>
+                                @if($invoice->fe && $invoice->status)
+                                <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                                @endif
+                              </td>
                             
-                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $invoice->user_id }}">
-                                  <i class="fa fa-eye"></i> Facturar
-                                </button>
+                            @endif
+                            <td>
+                                @if($invoice->status)
+                                  
+                                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" >
+                                    <i class="fa fa-eye"></i> Detalle  
+                                  </button>
+                                @else
+                                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" >
+                                    <i class="fa fa-eye"></i> Facturar
+                                  </button>
+                                @endif
+                               
                             </td>
                           </tr>
                       @endforeach
                       
                       </tbody>
                      
+                      @if ($invoices)
+                        <tfoot>
+                            <tr>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date' => $search['date'], 'medic' => $search['medic']])->render()!!}</td>
+                            </tr>
+                            
+                        </tfoot>
+                      @endif
                     </table>
                   </div>
                
@@ -129,39 +177,27 @@
             <!-- /.box-body -->
           </div>
           <!-- /. box -->
-          @else
-            <div class="box box-default box-calendar">
-            <div class="box-body ">
-              <!-- THE CALENDAR -->
-               <div class="callout callout-info">
-                    <h4>Información importante!</h4>
-
-                    <p>Selecciona un Médico para ver sus facturas</p>
-                </div>
-                
-                
-
-        
-            </div>
-            <!-- /.box-body -->
-          </div>
-          @endif
+          
         </div>
-        <!-- /.col -->
+       
       </div>
       <!-- /.row -->
 
     </section>
 
-     @include('medic/invoices/partials/modal')
+    @include('medic/invoices/partials/modal')
   
-
+ @if($fe)
+    @include('medic/invoices/partials/status-hacienda-modal')
+ @endif
 
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/plugins/moment/moment.min.js"></script>
+<script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
-
+  <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

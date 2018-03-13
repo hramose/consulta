@@ -15,6 +15,25 @@
     <div class="callout callout-info"><h4>Ya casi terminas!</h4> <p>Agrega los siguientes datos de la clínica para finalizar el registro.</p></div>
     <form method="POST" action="{{ url('/clinic/register/office') }}" class="form-horizontal register-patient"  enctype="multipart/form-data">
          {{ csrf_field() }}
+
+           <div class="form-group">
+         
+            <div class="col-sm-12">
+              <select class="form-control select2" style="width: 100%;" name="fe" id="fe" required>
+                <option value="" style="color: #c3c3c3">¿Utiliza factura electrónica?</option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+    
+              </select>
+              
+              
+               @if ($errors->has('fe'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('fe') }}</strong>
+                  </span>
+              @endif
+            </div>
+          </div>
          
          <div class="form-group">
            

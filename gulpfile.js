@@ -76,6 +76,10 @@ elixir(mix => {
     mix.scripts([
         'modalRespHacienda.js'
     ], 'public/js/modalRespHacienda.min.js', 'resources/assets/js');
+
+    mix.scripts([
+        'ubicaciones.js'
+    ], 'public/js/ubicaciones.min.js', 'resources/assets/js');
      
     mix.version([
         'public/js/app.js',
@@ -93,6 +97,7 @@ elixir(mix => {
         'public/js/assistant.invoices.min.js',
         'public/js/invoices.min.js',
         'public/js/modalRespHacienda.min.js',
+        'public/js/ubicaciones.min.js',
         'public/css/app.css',
         
     

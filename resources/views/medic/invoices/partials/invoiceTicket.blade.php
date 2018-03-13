@@ -77,7 +77,9 @@
             @endif
             Fecha emisión: {{ $invoice->created_at }}<br>
             Cliente: {{ $invoice->client_name }}<br>
-            Médico: {{ $invoice->medic->name }}<br>
+            @if($invoice->appointment)    
+              Médico: {{ $invoice->medic->name }}<br>
+            @endif
           </address>
         </div>
         <!-- /.col -->

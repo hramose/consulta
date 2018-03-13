@@ -13,11 +13,9 @@
         <div class="col-xs-12">
           <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Imprimir</a>
 
-          <a href="/assistant/invoices" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas general
+          <a href="/assistant/invoices" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturación
           </a>
 
-          <a href="/assistant/medics/{{$invoice->medic->id }}/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas del médico
-          </a>
          
         </div>
       </div>

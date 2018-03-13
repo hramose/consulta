@@ -185,7 +185,30 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-        props:['office_id','nombre_cliente','correo_cliente','usa_fe'],
+       // props:['office_id','nombre_cliente','correo_cliente','usa_fe'],
+       props: {
+         office_id: {
+          type: Number
+          
+        },
+         nombre_cliente: {
+          type: String,
+        
+          
+        },
+        correo_cliente: {
+          type: String
+          
+        },
+        url:{
+          type:String,
+          default: '/medic/invoices'
+        },
+         usa_fe:{
+          type:Boolean,
+          default: false
+        }
+       },
         data () {
 	        return {
 	 
@@ -293,9 +316,10 @@
             loading(true)
            
            let queryParam = {
-                ['q']: search
+                ['q']: search,
+                ['office_id']: this.office_id
               }
-            this.$http.get('/medic/invoices/services/list', {params: Object.assign(queryParam, this.data)})
+            this.$http.get(this.url +'/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                
                this.services = resp.data
@@ -312,7 +336,7 @@
                     return
 
 		              this.loader = true;
-		              this.$http.post('/medic/invoices/services', {name: this.new_service, amount: this.amount}).then((response) => {
+		              this.$http.post(this.url +'/services', {name: this.new_service, amount: this.amount, office_id: this.office_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if(response.status == 200 && response.data)
@@ -340,7 +364,7 @@
                   return
 
                 this.loader = true;
-                 var resource = this.$resource('/medic/invoices/services/'+ this.service.id);
+                 var resource = this.$resource(this.url +'/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
                         
@@ -365,7 +389,7 @@
                 return
 
               this.loader = true;
-              this.$http.delete('/medic/invoices/services/'+this.service.id).then((response) => {
+              this.$http.delete(this.url +'/services/'+this.service.id).then((response) => {
                     
                     if(response.status == 200 && response.data == 'ok')
                     {
@@ -405,7 +429,7 @@
                 
                
                 this.loader = true; 
-                this.$http.post('/medic/invoices', { office_id:this.office_id, services: this.servicesToInvoice, status: status,  client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago, condicion_venta: this.condicion_venta, send_to_assistant: sendToAssistant }).then((response) => {
+                this.$http.post(this.url, { office_id:this.office_id, services: this.servicesToInvoice, status: status,  client_name: this.client_name, client_email: this.client_email, medio_pago: this.medio_pago, condicion_venta: this.condicion_venta, send_to_assistant: sendToAssistant }).then((response) => {
                        
                         if(response.status == 200 && response.data)
                         {

@@ -36,8 +36,6 @@
          
           @if($invoice->fe)
           
-            {{ $configFactura->canton }}, {{ $configFactura->provincia }}<br>
-            {{ $configFactura->otras_senas }}<br>
             <b>Tel:</b> {{ $configFactura->telefono }}<br>
             <b>Ced:</b> {{ $configFactura->identificacion }}<br>
             <b>Nombre:</b> {{ $configFactura->nombre }}
@@ -101,7 +99,7 @@
       <div class="row invoice-patient">
         <div class="col-xs-4 invoice-col invoice-left">     
             <b>Cliente:</b> {{ $invoice->client_name }}<br>
-            
+              {{ $invoice->client_email }}<br>
         </div>
         <div class="col-xs-4 invoice-col invoice-right">
             
