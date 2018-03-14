@@ -271,7 +271,7 @@
 
                 resource.update({id: this.history.patient_id}, {data: JSON.stringify(this.dataHistories)}).then((response) => {
                      
-                      if(response.status === 200)
+                      if(response.status === 200 || response.status === 201)
                       {
                         bus.$emit('alert', response.data,'success');
                         bus.$emit('actSummaryHistory', this.dataHistories);
