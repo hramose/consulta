@@ -147,7 +147,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/labresults', form, config).then((response) => {
     
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.dataResults.unshift(response.data);
                     bus.$emit('alert', 'Resultado Agregado','success');
@@ -177,7 +177,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/labresults/'+item.id,{ body: { file: fileToDelete }}).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataResults.indexOf(item)
                     this.dataResults.splice(index, 1);

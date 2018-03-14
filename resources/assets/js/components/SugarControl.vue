@@ -162,7 +162,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/sugars', {glicemia: glicemia, date_control:date, time_control:time}).then((response) => {
     
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.dataSugars.unshift(response.data);
                     bus.$emit('alert', 'Control de Azúcar Agregado','success');
@@ -185,7 +185,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/sugars/'+item.id).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataSugars.indexOf(item)
                     this.dataSugars.splice(index, 1);

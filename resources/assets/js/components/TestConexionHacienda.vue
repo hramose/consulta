@@ -123,7 +123,7 @@
                   console.log(response);
                   
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     if(response.data.access_token)
                         this.result = 'Conexion Exitosa'
@@ -155,7 +155,7 @@
                   console.log(response);
                   
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      //this.fe = response.data;
                      this.fe = response.data;
@@ -189,7 +189,7 @@
                   console.log(response);
                   
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      this.respRecepcion = response.data;
                     
@@ -219,7 +219,7 @@
                   console.log(response);
                   
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                       this.respComprobante = response.data;
                     

@@ -72,7 +72,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/allergies', {name: allergy}).then((response) => {
     
-                  if(response.status == 200)
+                  if(response.status == 200 || response.status == 201)
                   {
                     this.dataAllergies.unshift(response.data);
                     bus.$emit('alert', 'Alergia Agregado','success');
@@ -94,7 +94,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/allergies/'+item.id).then((response) => {
 
-                  if(response.status == 200)
+                  if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataAllergies.indexOf(item)
                     this.dataAllergies.splice(index, 1);

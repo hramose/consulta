@@ -174,7 +174,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/pressures', {ps: ps, pd:pd, date_control:date, time_control:time}).then((response) => {
     
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.dataPressures.unshift(response.data);
                     bus.$emit('alert', 'Control de Presion Agregado','success');
@@ -197,7 +197,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/pressures/'+item.id).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataPressures.indexOf(item)
                     this.dataPressures.splice(index, 1);
