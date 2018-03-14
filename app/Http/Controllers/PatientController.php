@@ -11,6 +11,9 @@ use App\Sugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
+use App\Patient;
+use Illuminate\Support\Facades\Log;
+use App\Mail\NewMarketing;
 
 class PatientController extends Controller
 {
@@ -291,5 +294,100 @@ class PatientController extends Controller
 
         return  $data;
  
+     }
+
+     public function marketing()
+     {
+        $emailsUsers = [];
+        $tokensUsers = [];
+
+        $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
+        $fileUploaded = 'error';
+
+        if (request()->file('file')) {
+
+            $file = request()->file('file');
+            $name = $file->getClientOriginalName();
+            $ext = $file->guessClientExtension();
+            $onlyName = str_slug(pathinfo($name)['filename'], '-');
+
+            if (in_array($ext, $mimes)) {
+            
+                $fileUploaded = $file->storeAs('clinics/' . auth()->id() . '/marketing','ad.'. $ext, 'public');
+
+            
+                $patients = Patient::with(['user' => function ($query) {
+
+                    $query->whereHas('roles', function ($q) {
+                        $q->where('name', 'paciente');
+                    });
+
+                }])->whereIn('id', request('patients'))->get();
+
+                foreach ($patients as $patient) {
+                    if ($email = $patient->user->first()->email) {
+                        $emailsUsers[] = $email;
+                    }
+                    if ($token = $patient->user->first()->push_token) {
+                        $tokensUsers[] = $token;
+                    }
+                }
+
+                if (count($tokensUsers)) {
+                   
+                    $push = new PushNotification('fcm');
+                /*$response = $push->setMessage([
+                       'title'=>'Nueva Cita Reservada',
+                       'body'=>'Para el '.  Carbon::parse($appointment->start)->toDateTimeString(),
+                       'badge' => '1'
+                   ])->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                    ->setDevicesToken($medic->push_token)
+                    ->send()
+                    ->getFeedback();
+                    
+                    Log::info('Mensaje Push code: '.$response->success);
+                     */
+                    $response = $push->setMessage([
+                        'notification' => [
+                            'title' => 'Nuevo Anuncio!!',
+                            'body' => 'Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones!!',
+                            'sound' => 'default'
+                        ],
+                        'data' => [
+                            'tipo' => 'marketing',
+                            'media' => 'storage/'.$fileUploaded,
+
+                        ]
+
+                    ])->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                        ->setDevicesToken($tokensUsers)
+                        ->send()
+                        ->getFeedback();
+
+                    Log::info('Mensaje Push code: ' . $response->success);
+
+
+                }
+
+                // if ($emailsUsers) {
+                //     try {
+                //         \Mail::to($emailsUsers)->send(new NewMarketing([]));
+                //     } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
+                //         Log::error($e->getMessage());
+                //     }
+                // }
+
+                flash('Anuncio enviado', 'success');
+            }
+
+            
+            return back();
+        }
+
+    
+
+
+       
+
      }
 }

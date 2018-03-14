@@ -110,7 +110,7 @@ Route::post('/medics/{medic}/polls', 'PollController@store');
 //Route::put('/medics/{medic}/polls/{poll}', 'PollController@update');
 Route::post('/polls/send', 'PollController@sendPolls');
 Route::resource('polls', 'PollController');
-
+Route::post('/patients/marketing', 'PatientController@marketing');
 //Route::group(['as'=>'medic.','prefix' => 'medic', 'middleware'=>'authByRole:medico'], function ()
 Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/account/edit', 'Medic\UserController@edit');

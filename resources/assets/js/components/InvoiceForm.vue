@@ -73,7 +73,7 @@
               </form-error>
             </div>
             <div class="col-sm-5">
-                <button type="submit" class="btn btn-default" @click="addToInvoice()">Agregar a Factura</button>
+                <button type="submit" class="btn btn-info" @click="addToInvoice()">Agregar a Factura</button>
                 <button type="submit" class="btn btn-default" @click="editService()" v-show="service">Modificar Servicio</button>
                 <button type="submit" class="btn btn-default" @click="createService()">Crear Servicio</button>
             </div>

@@ -31,8 +31,19 @@
                       
                     </div>
                   </form>
+                   
+                    
+                 
                 </div>
               </div>
+             
+              <form action="/patients/marketing" method="POST" id="send-marketing" enctype="multipart/form-data">
+                    @csrf
+                    <div class="marketing-file">
+                      <input type="file" name="file">
+                      <button type="submit" class="btn-multiple btn btn-danger btn-sm " data-action="send-marketing" title="Enviar"><i class="fa fa-edit"></i></button>
+                    </div>
+                    
               <!-- /.box-header -->
               <div class="box-body table-responsive no-padding" id="no-more-tables">
                 <table class="table table-hover">
@@ -44,6 +55,10 @@
                       <th>Email</th>
                       <th>Dirección</th>
                       <th></th>
+                      <th>Marketing <input type="checkbox" name="select_all_patients" id="select_all_patients"/> 
+                      <input type="hidden" name="select_action" id="select_action"/> 
+                     
+                      </th>
                     </tr>
                   </thead>
                   @foreach($patients as $patient)
@@ -72,12 +87,16 @@
                        
                        
                       </td>
+                       <td data-title="Marketing">
+                          <input type="checkbox" name="patients[]" value="{{ $patient->id }}" class="chk-item">
+                       </td>
                     </tr>
                   @endforeach
                     @if ($patients)
                         <td  colspan="6" class="pagination-container">{!!$patients->appends(['q' => $search['q']])->render()!!}</td>
                     @endif
                 </table>
+                 </form>
               </div>
               <!-- /.box-body -->
             </div>
@@ -104,4 +123,48 @@
   <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
   <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script> 
   <script src="{{ elixir('/js/clinic.patients.min.js') }}"></script>
+  <script>
+
+      var chkItem = $('.chk-item'),
+          chkSelectAll = $('#select_all_patients');
+
+      chkSelectAll.on('click', function (e) {
+         var c = this.checked;
+         $(':checkbox').prop('checked',c);
+      });
+
+    $('.btn-multiple').on('click',function(e) {
+
+        var action = $(this).data('action');
+
+        chkSelectAll.val(action);
+        $('#select-action').val(action);
+        (verificaChkActivo(chkItem)) ? $('#send-marketing').submit() : alert('Seleccione un registro de la lista');
+
+
+        e.preventDefault();
+
+    });
+
+    function verificaChkActivo(chks) {
+        var state = false;
+
+        chks.each(function(){
+
+            if(this.checked)
+            {
+
+                state = true;
+
+
+            }
+
+        });
+
+        return state;
+    }
+
+      
+
+  </script>
 @endsection
