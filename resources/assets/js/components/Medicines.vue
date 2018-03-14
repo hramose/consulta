@@ -81,7 +81,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/medicines', {name: medicine}).then((response) => {
     
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.dataMedicines.unshift(response.data);
                     bus.$emit('alert', 'Medicamento Agregado','success');
@@ -106,7 +106,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/medicines/'+item.id).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataMedicines.indexOf(item)
                     this.dataMedicines.splice(index, 1);

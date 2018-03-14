@@ -100,7 +100,7 @@
                   console.log(response);
                   
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.dataTreatments.push(response.data);
                  
@@ -126,7 +126,7 @@
                   console.log(response);
         
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index = this.dataTreatments.indexOf(item)
                     this.dataTreatments.splice(index, 1);

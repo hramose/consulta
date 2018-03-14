@@ -137,7 +137,7 @@
             
               this.$http.post(this.url +'/'+ this.patient_id +'/labexams', form).then((response) => {
                  
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                    
                     bus.$emit('alert', 'Examen Agregado','success');
@@ -165,7 +165,7 @@
             this.loader = true;
             this.$http.delete(this.url +'/labexams/'+item.id, { body: { appointment_id: this.appointment_id }}).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                     this.loadResults();
                     bus.$emit('alert', 'Examen Eliminado','success');

@@ -1155,7 +1155,7 @@
 
             $vm.$http.delete('/medic/account/offices/'+item.id).then((response) => {
 
-                  if(response.status == 200)
+                   if(response.status == 200 || response.status == 201)
                   {
                      var index =$vm.consultorios.indexOf(item)
                     $vm.consultorios.splice(index, 1);
