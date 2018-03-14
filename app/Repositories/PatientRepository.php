@@ -202,7 +202,7 @@ class PatientRepository extends DbRepository{
            $patients = auth()->user()->patients();
         }
 
-        if (! count($search) > 0) return $patients->with('appointments')->paginate($this->limit);
+        if (!$search) return $patients->with('appointments')->paginate($this->limit);
 
         if (isset($search['q']) && trim($search['q']))
         {

@@ -442,7 +442,7 @@ class InvoiceRepository extends DbRepository
 
         $invoices = $this->model->where('user_id', $id);
 
-        if (!count($search) > 0) {
+        if (!$search) {
             return $invoices->with('user', 'appointment')->orderBy('invoices.' . $order, $dir)->paginate($limit);
         }
 

@@ -38,7 +38,7 @@ class ClinicRepository extends DbRepository{
         $order = 'distance';
         $dir = 'desc';
 
-        if (! count($search) > 0) return $this->model->paginate($this->limit);
+        if (!$search) return $this->model->paginate($this->limit);
 
         if (isset($search['q']) && trim($search['q']))
         {
@@ -216,7 +216,7 @@ class ClinicRepository extends DbRepository{
 
         $offices = $this->model;
 
-        if (! count($search) > 0) return $offices->get();
+        if (!$search) return $offices->get();
 
         if (isset($search['q']) && trim($search['q']))
         {

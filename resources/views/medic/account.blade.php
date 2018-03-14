@@ -598,7 +598,7 @@
     $("#UploadPhoto").ajaxUpload({
       url : $("#UploadPhoto").data('url'),
       name: "photo",
-      data: {patient_id: {{ isset($patient->id) ? $patient->id : '0' }} },
+      data: {},
       onSubmit: function() {
           $('#infoBox').html('Uploading ... ');
 

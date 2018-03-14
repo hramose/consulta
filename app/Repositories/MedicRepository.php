@@ -36,7 +36,7 @@ class MedicRepository extends DbRepository{
         $order = 'created_at';
         $dir = 'desc';
 
-        if (! count($search) > 0) return $this->model->whereHas('roles', function($q){
+        if (!$search) return $this->model->whereHas('roles', function($q){
                                                     $q->where('name', 'medico');
                                                 })->paginate($this->limit);
 

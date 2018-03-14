@@ -86,7 +86,7 @@ class OfficeRepository extends DbRepository{
 
         $offices = $medic->offices();
 
-        if (! count($search) > 0) return $offices->get();
+        if (!$search) return $offices->get();
 
         if (isset($search['q']) && trim($search['q']))
         {
@@ -121,7 +121,7 @@ class OfficeRepository extends DbRepository{
 
         $offices = $medic->offices();
 
-        if (! count($search) > 0) return $offices->get();
+        if (!$search) return $offices->get();
 
         if (isset($search['q']) && trim($search['q']))
         {
@@ -156,7 +156,7 @@ class OfficeRepository extends DbRepository{
 
         $offices = $this->model->where('type','<>','Consultorio Independiente');
 
-        if (! count($search) > 0) return $offices->get();
+        if (!$search) return $offices->get();
 
         if (isset($search['q']) && trim($search['q']))
         {

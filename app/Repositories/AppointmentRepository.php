@@ -205,10 +205,10 @@ class AppointmentRepository extends DbRepository{
     {
         $order = 'date';
         $dir = 'desc';
-
+        
         $appointments = $this->model->where('user_id', $id)->where('patient_id','<>',0);
        
-        if (! count($search) > 0) return $appointments->with('user','patient','notes')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
+        if (!$search) return $appointments->with('user','patient','notes')->orderBy('appointments.'.$order , $dir)->orderBy('appointments.start', $dir)->paginate($limit);
 
         if (isset($search['q']) && trim($search['q'] != ""))
         {
@@ -257,7 +257,7 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('user_id', $id);
 
-        if (! count($search) > 0) return $appointments->with('patient','user','office')->get();
+        if (!$search) return $appointments->with('patient','user','office')->get();
 
         if (isset($search['q']) && trim($search['q']))
         {
@@ -316,7 +316,7 @@ class AppointmentRepository extends DbRepository{
 
         $appointments = $this->model->where('patient_id', $id);
 
-        if (! count($search) > 0) return $appointments->with('user')->paginate($this->limit);
+        if (!$search) return $appointments->with('user')->paginate($this->limit);
 
         if (isset($search['q']) && trim($search['q']))
         {

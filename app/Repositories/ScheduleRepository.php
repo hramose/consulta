@@ -86,7 +86,7 @@ class ScheduleRepository extends DbRepository
 
         $schedules = $this->model->where('user_id', $id);
 
-        if (!count($search) > 0) {
+        if (!$search) {
             return $schedules->with('user', 'office')->orderBy('schedules.' . $order, $dir)->paginate($limit);
         }
 
@@ -121,7 +121,7 @@ class ScheduleRepository extends DbRepository
 
         $schedules = $this->model->has('office')->where('user_id', $id);
 
-        if (!count($search) > 0) {
+        if (!$search) {
             return $schedules->with('office', 'user')->get();
         }
 

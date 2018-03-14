@@ -80,7 +80,7 @@ class IncomeRepository extends DbRepository
 
         $incomes = $this->model->where('user_id', $id);
 
-        if (!count($search) > 0) {
+        if (!$search) {
             return $incomes->with('user', 'appointment')->orderBy('incomes.' . $order, $dir)->paginate($limit);
         }
 
