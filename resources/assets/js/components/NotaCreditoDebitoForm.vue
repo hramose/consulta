@@ -486,7 +486,7 @@
 		              this.$http.post(this.url + '/services', {name: this.new_service, amount: this.amount, office_id:this.originalInvoice.office_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
-		                    if(response.status == 200 && response.data)
+		                    if((response.status == 200 || response.status == 201) && response.data)
 		                    {
 		                  
 		                      bus.$emit('alert', 'Servicio Agregado','success');
@@ -538,7 +538,7 @@
               this.loader = true;
               this.$http.delete(this.url + '/services/'+this.service.id).then((response) => {
                     
-                    if(response.status == 200 && response.data == 'ok')
+                    if((response.status == 200 || response.status == 201) && response.data == 'ok')
                     {
                        var index = this.services.indexOf(this.service)
                       this.services.splice(index, 1);
@@ -669,7 +669,7 @@
                 this.loader = true; 
                 this.$http.post(this.url + '/' +this.originalInvoice.id +'/'+ urlNota, { invoice:this.originalInvoice, services: this.servicesToInvoice, type:this.type, referencias:this.documentosReferencia }).then((response) => {
                        
-                        if(response.status == 200 && response.data)
+                        if((response.status == 200 || response.status == 201) && response.data)
                         {
                       
                           bus.$emit('alert', 'Nota de credito o debito creada');

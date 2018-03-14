@@ -52,7 +52,7 @@
 
 	            this.$http.delete('/account/patients/'+item.id).then((response) => {
 	                  
-	                  if(response.status == 200 && response.data == 'ok')
+	                  if((response.status == 200 || response.status == 201) && response.data == 'ok')
 	                  {
 	                     var index = this.pacientes.indexOf(item)
 	                    this.pacientes.splice(index, 1);

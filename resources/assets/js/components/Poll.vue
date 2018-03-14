@@ -52,7 +52,7 @@
              var resource = this.$resource('/polls/'+this.encuesta.id);
                 
                 resource.update({rate: this.rate, question: question.id}).then((response) => {
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                      
                      bus.$emit('alert', 'Respuesta Enviada','success');

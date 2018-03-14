@@ -56,7 +56,7 @@
                     
                      
                          this.loader = false;
-                        if(response.status == 200 && response.data)
+                        if((response.status == 200 || response.status == 201) && response.data)
                         {
                             if(response.data.sent_to_hacienda)
                             {

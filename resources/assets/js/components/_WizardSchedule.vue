@@ -119,7 +119,7 @@
            this.$http.post('/medic/appointments', this.appointment).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                       //this.appointment = response.data;
                       this.errors = [];

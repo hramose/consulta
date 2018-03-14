@@ -146,7 +146,7 @@
               this.$http.post('/patients', this.paciente).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                       this.paciente = response.data;
                       this.errors = [];

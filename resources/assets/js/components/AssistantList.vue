@@ -66,7 +66,7 @@
 	        	this.loader = true;
 	            this.$http.delete(this.url +'/'+item.id).then((response) => {
 	                  
-	                  if(response.status == 200 && response.data == 'ok')
+	                  if((response.status == 200 || response.status == 201) && response.data == 'ok')
 	                  {
 	                     var index = this.asistentes.indexOf(item)
 	                    this.asistentes.splice(index, 1);

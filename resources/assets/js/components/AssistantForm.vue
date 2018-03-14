@@ -144,7 +144,7 @@
 		              this.$http.post(this.url, this.asistente).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
-		                    if(response.status == 200 && response.data)
+		                    if((response.status == 200 || response.status == 201) && response.data)
 		                    {
 		                      
 		                      bus.$emit('addToAssistantList', response.data); //this.pacientes.push(response.data);

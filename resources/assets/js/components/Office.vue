@@ -975,7 +975,7 @@
                 this.$http.post('/medic/account/offices/'+ this.office.id+'/assign', this.office).then((response) => {
                       console.log(response.status);
                       console.log(response.data);
-                      if(response.status == 200 && response.data)
+                      if((response.status == 200 || response.status == 201) && response.data)
                       {
                       
                         if(response.data.id)
@@ -1058,7 +1058,7 @@
               this.$http.post('/medic/account/offices', form, config).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                       this.consultorios.push(response.data);
                       if(this.office.type != 'Consultorio Independiente')
@@ -1101,7 +1101,7 @@
               this.$http.post('/medic/account/offices/requests', this.inteOffice).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                       
                       

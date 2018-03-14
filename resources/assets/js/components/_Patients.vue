@@ -196,7 +196,7 @@
               this.$http.post('/account/patients', this.paciente).then((response) => {
                     console.log(response.status);
                     console.log(response.data);
-                    if(response.status == 200 && response.data)
+                    if((response.status == 200 || response.status == 201) && response.data)
                     {
                       this.pacientes.push(response.data);
                       bus.$emit('alert', 'Paciente Agregado','success');
@@ -220,7 +220,7 @@
 
             this.$http.delete('/account/patients/'+item.id).then((response) => {
                   
-                  if(response.status == 200 && response.data == 'ok')
+                  if((response.status == 200 || response.status == 201) && response.data == 'ok')
                   {
                      var index = this.pacientes.indexOf(item)
                     this.pacientes.splice(index, 1);

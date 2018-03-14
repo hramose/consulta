@@ -176,7 +176,7 @@
            this.$http.post('/medic/patients/'+ this.patient_id +'/appointments/'+this.appointment_id+ '/signs', this.vital_signs).then((response) => {
                   console.log(response.status);
                   console.log(response.data);
-                  if(response.status == 200 && response.data)
+                  if((response.status == 200 || response.status == 201) && response.data)
                   {
                     this.loader_message ="Cambios Guardados";
                     this.loader = false;
