@@ -356,7 +356,7 @@ class PatientController extends Controller
                         ],
                         'data' => [
                             'tipo' => 'marketing',
-                            'media' => 'storage/'.$fileUploaded,
+                            //'media' => 'storage/'.$fileUploaded,
 
                         ]
 
@@ -366,8 +366,9 @@ class PatientController extends Controller
                         ->getFeedback();
 
                     Log::info('Mensaje Push code: ' . $response->success);
-
-
+                    Log::info('tokens: ' . $tokensUsers);
+                    Log::info('file: ' . $fileUploaded);
+                    
                 }
 
                 // if ($emailsUsers) {
