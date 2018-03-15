@@ -23,26 +23,21 @@ class PatientController extends Controller
      *
      * @return void
      */
-    public function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo )
+    public function __construct(PatientRepository $patientRepo, AppointmentRepository $appointmentRepo)
     {
         $this->middleware('auth');
         $this->patientRepo = $patientRepo;
         $this->appointmentRepo = $appointmentRepo;
-
-        
     }
-
 
     /**
      * Guardar paciente
      */
     public function create()
     {
-        
         $user = auth()->user();
-        
-        return view('user.register')->with('user');
 
+        return view('user.register')->with('user');
     }
 
     /**
@@ -50,17 +45,14 @@ class PatientController extends Controller
      */
     public function register(PatientRequest $request)
     {
-        $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+        $this->validate(request(), [ //se valida que no exista en user el correo q quiere cambiar
                 'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
-        
-        $patient =$this->patientRepo->store($request->all());
 
+        $patient = $this->patientRepo->store($request->all());
 
-
-       return Redirect('/');
-
+        return Redirect('/');
     }
 
     /**
@@ -68,17 +60,14 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-        $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+        $this->validate(request(), [ //se valida que no exista en user el correo q quiere cambiar
                 'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
-        
-        $patient =$this->patientRepo->store($request->all());
 
-
+        $patient = $this->patientRepo->store($request->all());
 
         return $patient;
-
     }
 
     /**
@@ -86,55 +75,48 @@ class PatientController extends Controller
      */
     public function update($id)
     {
-       
-         $this->validate(request(),[
+        $this->validate(request(), [
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'address' => 'required',  
-                'province' => 'required',  
-                'city' => 'required', 
-                'phone' => ['required', Rule::unique('patients')->ignore($id) ],
-                'email' => ['email', Rule::unique('patients')->ignore($id) ]//'required|email|max:255|unique:patients',   
+                'address' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'phone' => ['required', Rule::unique('patients')->ignore($id)],
+                'email' => ['email', Rule::unique('patients')->ignore($id)]//'required|email|max:255|unique:patients',
         ]);
 
-         $this->validate(request(),[ //se valida que no exista en user el correo q quiere cambiar
+        $this->validate(request(), [ //se valida que no exista en user el correo q quiere cambiar
                 'phone' => ['required', Rule::unique('users')->ignore(auth()->id())],
                 'email' => ['email', Rule::unique('users')->ignore(auth()->id())]
         ]);
 
         $patient = $this->patientRepo->update($id, request()->all());
-        
 
         return $patient;
-
     }
 
-     /**
-     * Actualizar Paciente
-     */
+    /**
+    * Actualizar Paciente
+    */
     public function expedient($id)
     {
-       
         $patient = $this->patientRepo->findById($id);
 
-        if(!auth()->user()->hasPatient($patient->id)) // verifica que el paciente es del usuario logueado
+        if (!auth()->user()->hasPatient($patient->id)) { // verifica que el paciente es del usuario logueado
             return redirect('/');
-        
+        }
 
         return view('user.expedient', compact('patient'));
-
     }
 
-     /**
-     * Agregar medicamentos a pacientes
-     */
+    /**
+    * Agregar medicamentos a pacientes
+    */
     public function medicines($id)
     {
-    
-       $medicine = $this->patientRepo->addMedicine($id, request()->all());
-        
-       return  $medicine;
+        $medicine = $this->patientRepo->addMedicine($id, request()->all());
 
+        return  $medicine;
     }
 
     /**
@@ -142,16 +124,14 @@ class PatientController extends Controller
      */
     public function deleteMedicines($id)
     {
-      
         $medicine = $this->patientRepo->deleteMedicine($id);
-        
-        return '';
 
+        return '';
     }
 
-     /**
-     * Agregar medicamentos a pacientes
-     */
+    /**
+    * Agregar medicamentos a pacientes
+    */
     public function allergies($id)
     {
         $patient = $this->patientRepo->findById($id);
@@ -162,14 +142,11 @@ class PatientController extends Controller
         $data['user_id'] = auth()->id();
 
         $data['history_id'] = $history->id;
-       
+
         $allergy = Allergy::create($data);
         $allergy->load('user.roles');
-     
-        return $allergy;
-    
-   
 
+        return $allergy;
     }
 
     /**
@@ -177,38 +154,27 @@ class PatientController extends Controller
      */
     public function deleteAllergies($id)
     {
-      
-       $allergy = Allergy::findOrFail($id)->delete($id);
+        $allergy = Allergy::findOrFail($id)->delete($id);
 
-     
-      
-        
         return '';
-
     }
 
-      /**
+    /**
      * Agregar medicamentos a pacientes
      */
     public function pressures($id)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'ps' => 'required|numeric',
                 'pd' => 'required|numeric',
                 'date_control' => 'required',
                 'time_control' => 'required'
-                
             ]);
 
         $patient = $this->patientRepo->findById($id);
         $pressures = $patient->pressures()->create(request()->all());
 
-       
-     
         return $pressures;
-    
-   
-
     }
 
     /**
@@ -216,37 +182,26 @@ class PatientController extends Controller
      */
     public function deletePressures($id)
     {
-      
-       $allergy = Pressure::findOrFail($id)->delete($id);
+        $allergy = Pressure::findOrFail($id)->delete($id);
 
-     
-      
-        
         return '';
-
     }
 
-       /**
+    /**
      * Agregar medicamentos a pacientes
      */
     public function sugars($id)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
                 'glicemia' => 'required|numeric',
                 'date_control' => 'required',
                 'time_control' => 'required'
-                
             ]);
 
         $patient = $this->patientRepo->findById($id);
         $sugars = $patient->sugars()->create(request()->all());
 
-       
-     
         return $sugars;
-    
-   
-
     }
 
     /**
@@ -254,31 +209,26 @@ class PatientController extends Controller
      */
     public function deleteSugars($id)
     {
-      
-       $sugar = Sugar::findOrFail($id)->delete($id);
+        $sugar = Sugar::findOrFail($id)->delete($id);
 
-     
-      
-        
         return '';
-
     }
-     /**
-     * Agregar medicamentos a pacientes
-     */
-     public function getLabExams($id)
-     {
-        if(request('appointment_id')){
-            $appointment =  $this->appointmentRepo->findById(request('appointment_id'));
-        
-            $labexams = $appointment->labexams()->where('patient_id',$id)->get();
-            
-        }else{
-            $patient =  $this->patientRepo->findById($id);
+
+    /**
+    * Agregar medicamentos a pacientes
+    */
+    public function getLabExams($id)
+    {
+        if (request('appointment_id')) {
+            $appointment = $this->appointmentRepo->findById(request('appointment_id'));
+
+            $labexams = $appointment->labexams()->where('patient_id', $id)->get();
+        } else {
+            $patient = $this->patientRepo->findById($id);
             $labexams = $patient->labexams()->get();
         }
 
-        $labexams = $labexams->groupBy(function($exam) {
+        $labexams = $labexams->groupBy(function ($exam) {
             return $exam->date;
         })->toArray();
 
@@ -286,19 +236,16 @@ class PatientController extends Controller
         $exam = [];
 
         foreach ($labexams as $key => $value) {
-        
             $exam['date'] = $key;
             $exam['exams'] = $value;
-            $data[]= $exam;
+            $data[] = $exam;
         }
 
-
         return  $data;
- 
-     }
+    }
 
-     public function marketing()
-     {
+    public function marketing()
+    {
         $emailsUsers = [];
         $tokensUsers = [];
 
@@ -306,23 +253,18 @@ class PatientController extends Controller
         $fileUploaded = 'error';
 
         if (request()->file('file')) {
-
             $file = request()->file('file');
             $name = $file->getClientOriginalName();
             $ext = $file->guessClientExtension();
             $onlyName = str_slug(pathinfo($name)['filename'], '-');
 
             if (in_array($ext, $mimes)) {
-            
-                $fileUploaded = $file->storeAs('clinics/' . auth()->id() . '/marketing','ad.'. $ext, 'public');
+                $fileUploaded = $file->storeAs('clinics/' . auth()->id() . '/marketing', 'ad.' . $ext, 'public');
 
-            
                 $patients = Patient::with(['user' => function ($query) {
-
                     $query->whereHas('roles', function ($q) {
                         $q->where('name', 'paciente');
                     });
-
                 }])->whereIn('id', request('patients'))->get();
 
                 foreach ($patients as $patient) {
@@ -335,9 +277,8 @@ class PatientController extends Controller
                 }
 
                 if (count($tokensUsers)) {
-                   
                     $push = new PushNotification('fcm');
-              
+
                     $response = $push->setMessage([
                         'notification' => [
                             'title' => 'Nuevo Anuncio!!',
@@ -346,20 +287,14 @@ class PatientController extends Controller
                         ],
                         'data' => [
                             'tipo' => 'marketing',
-                            'media' => 'storage/'.$fileUploaded,
-
+                            'media' => 'storage/' . $fileUploaded,
                         ]
-
                     ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
                         ->setDevicesToken($tokensUsers)
                         ->send()
                         ->getFeedback();
 
                     Log::info('Mensaje Push code: ' . $response->success);
-                    
-                    
-                    
-                    
                 }
 
                 // if ($emailsUsers) {
@@ -373,14 +308,7 @@ class PatientController extends Controller
                 flash('Anuncio enviado', 'success');
             }
 
-            
             return back();
         }
-
-    
-
-
-       
-
-     }
+    }
 }

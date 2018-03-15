@@ -31,6 +31,9 @@
 		  display: none;
 	  }
   }
+  .notification-app{
+	  display: none;
+  }
   
 }
 
@@ -583,7 +586,7 @@ td.fc-day.fc-past{
 	z-index: -1;
 }
 .inputfile + label{
-	max-width: 80%;
+	max-width: 100%;
 	text-overflow: ellipsis;
 	cursor: pointer !important;
 	font-size: 1em !important;
@@ -592,7 +595,7 @@ td.fc-day.fc-past{
 	color: white !important;
 	background-color: $brand-primary !important;
 	display: inline-block !important;
-	padding: 0.625rem 1.25rem;
+	padding: .5rem 1.25rem;//0.625rem 1.25rem;
 	overflow: hidden;
 	white-space: nowrap;
 }
@@ -617,6 +620,13 @@ td.fc-day.fc-past{
 .inputfile:focus + label{
 	outline: 1px dotted #000;
 	outline: -webkit-focus-ring-color auto 5px;
+}
+div.marketing {
+	margin-bottom: 1rem;
+	padding: 0 .8rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: start;
 }
 #infoBox{
 	display:none;

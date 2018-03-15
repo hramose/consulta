@@ -56,7 +56,7 @@ $(function () {
         $.ajax({
             type: 'PUT',
             url: '/clinic/invoices/'+invoice_id,
-            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+          data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), condicion_venta: $('select[name="condicion_venta"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
             success: function (resp) {
               $('.loader').hide();
 
@@ -65,10 +65,29 @@ $(function () {
               { 
                 infoBox.removeClass('alert-success').hide();
               },3000);
+
+              swal({
+                title: 'Factura procesada!!!',
+                text: "¿Deseas imprimir la factura?",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Si'
+              }).then(function () {
+
+                if ($("#rd_ticket").is(":checked"))
+                  window.location.href = "/clinic/invoices/" + invoice_id + '/ticket';
+                else
+                  window.location.href = "/clinic/invoices/" + invoice_id + '/print';
+
+              }, function (dismiss) {
+
+                window.location.href = "/clinic/" + patient_id +"/invoices";
+
+              });
               
-              
-             
-              window.location.href = "/clinic/patients/"+patient_id+'/invoices'
+            
                 
             },
             error: function () {
@@ -86,42 +105,42 @@ $(function () {
     
       var invoice_id = $(this).attr('data-invoice');
      
-     var show =  $(this).attr('data-show');
-       if(show != '1'){
+    //  var show =  $(this).attr('data-show');
+    //    if(show != '1'){
 
-          $.ajax({
-            type: 'PUT',
-            url: '/clinic/invoices/'+invoice_id,
-            data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), condicion_venta: $('select[name="condicion_venta"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
-            success: function (resp) {
+    //       $.ajax({
+    //         type: 'PUT',
+    //         url: '/clinic/invoices/'+invoice_id,
+    //         data: { client_name: $('input[name="client_name"]').val(), client_email: $('input[name="client_email"]').val(), medio_pago: $('select[name="medio_pago"]').val(), condicion_venta: $('select[name="condicion_venta"]').val(), pay_with: $('input[name="pay_with"]').val(), change: $('input[name="change"]').val()},
+    //         success: function (resp) {
             
 
-              infoBox.addClass('alert-success').html('Factura procesada!!!').show();
-              setTimeout(function()
-              { 
-                infoBox.removeClass('alert-success').hide();
-              },3000);
+    //           infoBox.addClass('alert-success').html('Factura procesada!!!').show();
+    //           setTimeout(function()
+    //           { 
+    //             infoBox.removeClass('alert-success').hide();
+    //           },3000);
               
           
-              if($("#rd_ticket").is(":checked"))
-                window.location.href = "/clinic/invoices/"+invoice_id+'/ticket';
-              else
-                window.location.href = "/clinic/invoices/"+invoice_id+'/print';
+    //           if($("#rd_ticket").is(":checked"))
+    //             window.location.href = "/clinic/invoices/"+invoice_id+'/ticket';
+    //           else
+    //             window.location.href = "/clinic/invoices/"+invoice_id+'/print';
               
               
                 
-            },
-            error: function () {
-              console.log('error get details');
+    //         },
+    //         error: function () {
+    //           console.log('error get details');
 
-            }
-        });
-    }else{
+    //         }
+    //     });
+    // }else{
       if($("#rd_ticket").is(":checked"))
         window.location.href = "/clinic/invoices/"+invoice_id+'/ticket';
       else
         window.location.href = "/clinic/invoices/"+invoice_id+'/print';
-    }
+   // }
       /* if($("#rd_ticket").is(":checked"))
         window.location.href = "/clinic/invoices/"+invoice_id+'/ticket';
       else
@@ -162,14 +181,15 @@ $(function () {
                table_details.find('tbody').html('');
               
               var consecutivo = resp.consecutivo;
-               modal.find('#modal-label-medic').text(resp.medic.name);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-               modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
-               $('input[name="client_name"]').val(resp.appointment.patient.fullname);
+              modal.find('#modal-label-medic').text(resp.medic.name);
+              modal.find('#modal-label-patient').text((resp.appointment) ? resp.appointment.patient.fullname : '');
+
+              $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : ((resp.appointment) ? resp.appointment.patient.fullname : ''));
+              $('input[name="client_email"]').val((resp.client_email) ? resp.client_email : ((resp.appointment) ? resp.appointment.patient.email : ''));
               $('select[name="medio_pago"]').val(resp.medio_pago);
               $('select[name="condicion_venta"]').val(resp.condicion_venta);
-               $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
-               $('input[name="change"]').val(resp.change);
+              $('input[name="pay_with"]').val((resp.pay_with) ? resp.pay_with : '');
+              $('input[name="change"]').val(resp.change);
             
 
                $.each(resp.lines, function( index, item ) {
@@ -185,16 +205,22 @@ $(function () {
                $('input[name="total"]').val(resp.total);
 
                if(resp.status){
-                modal.find('.btn-print').focus();
-                modal.find('.btn-facturar').hide();
+                 modal.find('.btn-print').show();
+                 modal.find('.btn-print').focus();
+                 modal.find('.btn-facturar').hide();
+                 $('input[name="client_name"]').attr('disabled', true)
+                 $('input[name="client_email"]').attr('disabled', true)
+                 $('select[name="medio_pago"]').attr('disabled', true)
                  $('select[name="condicion_venta"]').attr('disabled', true)
-                $('.pay_with_label').html( money(resp.pay_with));
-                $('.change_label').html( money(resp.change));
-                $('.pay_with-field').remove();
-                $('.change-field').remove();
-                modal.find('.btn-print').attr('data-show','1');
+                 $('.pay_with_label').html(money(resp.pay_with));
+                 $('.change_label').html(money(resp.change));
+                 $('.pay_with-field').remove();
+                 $('.change-field').remove();
+                 modal.find('.btn-print').attr('data-show', '1');
                }else{
-                $('input[name="pay_with"]').focus();
+                 $('input[name="pay_with"]').focus();
+                 modal.find('.btn-print').hide();
+                 modal.find('.btn-facturar').show();
                }
             },
             error: function () {

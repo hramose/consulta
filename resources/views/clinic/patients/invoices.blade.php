@@ -120,7 +120,7 @@
 
     </section>
 
-    @include('clinic/invoices/partials/modal')
+    @include('medic/invoices/partials/modal')
   
 
 
