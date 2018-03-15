@@ -356,18 +356,19 @@ class PatientController extends Controller
                         ],
                         'data' => [
                             'tipo' => 'marketing',
-                            //'media' => 'storage/'.$fileUploaded,
+                            'media' => 'storage/'.$fileUploaded,
 
                         ]
 
-                    ])->setApiKey(env('API_WEB_KEY_FIREBASE_MEDICS'))
+                    ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
                         ->setDevicesToken($tokensUsers)
                         ->send()
                         ->getFeedback();
 
                     Log::info('Mensaje Push code: ' . $response->success);
-                    Log::info('tokens: ' . json_encode($tokensUsers));
-                    Log::info('file: ' . $fileUploaded);
+                    
+                    
+                    
                     
                 }
 
