@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Edujugon\PushNotification\PushNotification;
 use App\Allergy;
 use App\Http\Requests\PatientRequest;
 use App\Pressure;
