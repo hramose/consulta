@@ -366,7 +366,7 @@ class PatientController extends Controller
                         ->getFeedback();
 
                     Log::info('Mensaje Push code: ' . $response->success);
-                    Log::info('tokens: ' . $tokensUsers);
+                    Log::info('tokens: ' . json_encode($tokensUsers));
                     Log::info('file: ' . $fileUploaded);
                     
                 }
