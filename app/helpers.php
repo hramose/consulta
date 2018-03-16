@@ -127,9 +127,10 @@ function existsCertFile($config)
     $resp = false;
 
     $cert = 'cert';
-
-    if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/' . $cert . '.p12')) {
-        $resp = true;
+    if($config){
+        if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/' . $cert . '.p12')) {
+            $resp = true;
+        }
     }
 
     return $resp;
@@ -137,9 +138,10 @@ function existsCertFile($config)
 function existsCertTestFile($config)
 {
     $resp = false;
-
-    if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/test.p12')) {
-        $resp = true;
+    if ($config) {
+        if (Storage::disk('local')->exists('facturaelectronica/' . $config->id . '/test.p12')) {
+            $resp = true;
+        }
     }
 
     return $resp;
