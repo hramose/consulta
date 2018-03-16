@@ -35,11 +35,7 @@ class HomeController extends Controller
 
         if (auth()->user()->hasRole('administrador')) {
 
-            $urlFactura = '';
-            $urlNotaDebito = '';
-            $urlNotaCredito = '';
-            
-            return view('admin.home', compact('urlFactura', 'urlNotaDebito', 'urlNotaCredito'));
+            return view('admin.home');
         }
 
         if (auth()->user()->hasRole('paciente')) {
