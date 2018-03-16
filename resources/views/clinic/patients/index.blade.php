@@ -139,6 +139,31 @@
                                 </div>
                         
                         </div>
+                        <div class="marketing-info">
+                            <div class="form-group">
+                           
+                              <div class="col-sm-3">
+                                
+                                
+                                      
+                                  <input type="text" name="title" class="form-control" placeholder="Titulo: Nuevo anuncio..." value="">
+                                      
+                                    
+                                    
+                                  
+                              </div>
+                              <div class="col-sm-8">
+                                
+                                
+                                      
+                                  <input type="text" name="body" class="form-control" placeholder="Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones!!" value="">
+                                      
+                                    
+                                    
+                                  
+                              </div>
+                        </div>
+
 
                     </div>
                     

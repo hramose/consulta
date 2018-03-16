@@ -248,6 +248,8 @@ class PatientController extends Controller
     {
         $emailsUsers = [];
         $tokensUsers = [];
+        $title = request('title') ? request('title') : 'Nueva Información!!';
+        $body = request('body') ? request('body') : 'Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones !!';
 
         $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
         $fileUploaded = 'error';
@@ -281,8 +283,8 @@ class PatientController extends Controller
 
                     $response = $push->setMessage([
                         'notification' => [
-                            'title' => 'Nuevo Anuncio!!',
-                            'body' => 'Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones!!',
+                            'title' => $title,
+                            'body' => $body,
                             'sound' => 'default'
                         ],
                         'data' => [
