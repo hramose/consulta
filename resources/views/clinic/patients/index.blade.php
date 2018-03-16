@@ -139,7 +139,7 @@
                                 
                                 
                                       
-                                  <input type="text" name="body" class="form-control" placeholder="Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones!!" value="">
+                                  <input type="text" name="body" class="form-control" placeholder="Descripción: Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones!!" value="">
                                       
                                     
                                     
