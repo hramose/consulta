@@ -46,7 +46,7 @@ class InvoiceController extends Controller
 
         $invoices = Invoice::where('office_id', $office->id)->whereDate('created_at', $search['date']);
 
-        if ($search['medic']) {
+        if ($search['medic'] && $search['medic'] !== '') {
             $invoices = $invoices->where('user_id', $search['medic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->where('user_id', $search['medic'])->sum('total');
         

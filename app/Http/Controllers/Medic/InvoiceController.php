@@ -38,7 +38,7 @@ class InvoiceController extends Controller
 
         $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
 
-        if ($search['clinic']) {
+        if ($search['clinic'] && $search['clinic'] !== '') {
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
         } elseif ($search['clinic'] == 0) {
