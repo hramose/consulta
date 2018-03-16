@@ -45,19 +45,9 @@ class InvoiceController extends Controller
         }else{
 
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
+            $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
         }
-        // if ($search['clinic'] && $search['clinic'] != '') {
-        //     $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
-        //     $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
-        // } elseif ($search['clinic'] == 0) {
-        //     $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
-        //     $totalInvoicesAmount = $invoices->sum('total');
-        // } else {
-        //     $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
-        //     $totalInvoicesAmount = $invoices->sum('total');
-        // }
-
-        //$noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
+        
 
         return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
     }
