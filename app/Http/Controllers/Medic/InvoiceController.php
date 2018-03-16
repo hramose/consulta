@@ -29,7 +29,7 @@ class InvoiceController extends Controller
     {
         $fe = 0;
         $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
-        $search['clinic'] = request('clinic') ? request('clinic') : '';
+        $search['clinic'] = request('clinic');
         $medic = auth()->user();
 
         if ($medic->fe || $medic->offices()->where('fe', 1)->count()) {
