@@ -35,19 +35,34 @@ class InvoiceController extends Controller
         if ($medic->fe || $medic->offices()->where('fe', 1)->count()) {
             $fe = 1;
         }
+        //dd(empty($search['clinic']));
 
-        $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
-
-        if ($search['clinic'] && $search['clinic'] != '') {
-            $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
-            $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
-        } elseif ($search['clinic'] == 0) {
+        if ($search['clinic'] == 0) {
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
-        } else {
+        }else{
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
         }
+
+        // $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
+        // if(empty($search['clinic'])){
+        //     $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
+        //     $totalInvoicesAmount = $invoices->sum('total');
+        // }else{
+
+
+        // }
+        // if ($search['clinic'] && $search['clinic'] != '') {
+        //     $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
+        //     $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
+        // } elseif ($search['clinic'] == 0) {
+        //     $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
+        //     $totalInvoicesAmount = $invoices->sum('total');
+        // } else {
+        //     $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
+        //     $totalInvoicesAmount = $invoices->sum('total');
+        // }
 
         //$noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
 
