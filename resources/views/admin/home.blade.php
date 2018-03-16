@@ -29,23 +29,46 @@
       				Cofiguraciones de factura electronica
       			</div>
       			<div class="box-body">
-      				<label>XML base de factura</label>
-      				  <div class="input-group">
-    	                <span class="input-group-addon">@</span>
-    	                <input type="text" class="form-control" placeholder="Url de Registro de un médico" readonly value="{{  $urlFactura }}">
-    	          </div>
-    	              <br>
-                <label>XML base de nota de débito</label>
-                <div class="input-group">
-                  <span class="input-group-addon">@</span>
-                  <input type="text" class="form-control" placeholder="Url de Registro de una clinica y su administrador" readonly value="{{  $urlNotaDebito }}">
-                </div>
-                <br>
-                <label>XML base de nota de crédito</label>
-                <div class="input-group">
-                  <span class="input-group-addon">@</span>
-                  <input type="text" class="form-control" placeholder="Url de Registro de una clinica y su administrador" readonly value="{{  $urlNotaCredito }}">
-                </div>
+              <form action="/admin/configuration/xml" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <label>XML base de factura</label>
+                  <div class="form-group">
+                      
+                        <input type="file" class="form-control" name="xml_factura" placeholder="XML base factura" accept="text/xml">
+          
+                      @if(existsXML('factura'))
+                          <h4 class="label label-success">XML Instalado</h4>
+                      @else 
+                          <h4 class="label label-danger">XML No Instalado</h4>
+                      @endif
+                  </div>
+                      <br>
+                  <label>XML base de nota de débito</label>
+                <div class="form-group">
+                      
+                        <input type="file" class="form-control" name="xml_nota_debito" placeholder="XML base nota débito" accept="text/xml">
+          
+                      @if(existsXML('nota_debito'))
+                          <h4 class="label label-success">XML Instalado</h4>
+                      @else 
+                          <h4 class="label label-danger">XML No Instalado</h4>
+                      @endif
+                  </div>
+                  <br>
+                  <label>XML base de nota de crédito</label>
+                  <div class="form-group">
+                      
+                        <input type="file" class="form-control" name="xml_nota_credito" placeholder="XML base nota crédito" accept="text/xml">
+          
+                      @if(existsXML('nota_credito'))
+                          <h4 class="label label-success">XML Instalado</h4>
+                      @else 
+                          <h4 class="label label-danger">XML No Instalado</h4>
+                      @endif
+                  </div><br>
+                  <button type="submit" class="btn btn-success">Subir</button>
+              </form>
+      				
       			</div>
       		</div>
       </div>

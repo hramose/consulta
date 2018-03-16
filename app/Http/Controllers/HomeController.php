@@ -34,7 +34,12 @@ class HomeController extends Controller
         //dd(Carbon::now()->toDateTimeString());
 
         if (auth()->user()->hasRole('administrador')) {
-            return view('admin.home');
+
+            $urlFactura = '';
+            $urlNotaDebito = '';
+            $urlNotaCredito = '';
+            
+            return view('admin.home', compact('urlFactura', 'urlNotaDebito', 'urlNotaCredito'));
         }
 
         if (auth()->user()->hasRole('paciente')) {

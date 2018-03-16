@@ -122,6 +122,19 @@ function getLogo($clinic)
 
     return $url;
 }
+
+function existsXML($xml ='factura')
+{
+    $resp = false;
+
+  
+    if (Storage::disk('local')->exists('facturaelectronica/' . $xml . '.xml')) {
+            $resp = true;
+        }
+   
+
+    return $resp;
+}
 function existsCertFile($config)
 {
     $resp = false;

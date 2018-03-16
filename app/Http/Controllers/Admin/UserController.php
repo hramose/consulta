@@ -446,4 +446,43 @@ class UserController extends Controller
 
         return back();
     }
+    public function uploadxmlbase()
+    {
+
+        $mimes = ['xml'];
+        $fileUploaded = 'error';
+
+        if ($file = request()->file('xml_factura')) {
+
+            $ext = $file->guessClientExtension() ? $file->guessClientExtension() :'xml';
+         
+            if (in_array($ext, $mimes)) {
+               
+                $fileUploaded = $file->storeAs('facturaelectronica', 'factura.' . $ext, 'local');
+            }
+        }
+        if ($file = request()->file('xml_nota_debito')) {
+
+
+            $ext = $file->guessClientExtension() ? $file->guessClientExtension() : 'xml';
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica', 'nota_debito.' . $ext, 'local');
+            }
+        }
+        if ($file = request()->file('xml_nota_credito')) {
+
+            $ext = $file->guessClientExtension() ? $file->guessClientExtension() : 'xml';
+
+            if (in_array($ext, $mimes)) {
+                $fileUploaded = $file->storeAs('facturaelectronica', 'nota_credito.' . $ext, 'local');
+            }
+        }
+
+        flash('Xml subido(s) correctamente', 'success');
+
+        return back();
+        
+    }
+    
 }

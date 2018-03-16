@@ -359,6 +359,7 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
         ]);
     }
     Route::put('/configuration', 'Admin\UserController@updateConfig');
+    Route::post('/configuration/xml', 'Admin\UserController@uploadxmlbase');
 
     Route::get('/reports/patients', 'Admin\ReportsController@patients');
     Route::get('/reports/patients/generate', 'Admin\ReportsController@generatePatients');
