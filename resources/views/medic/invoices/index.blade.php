@@ -58,7 +58,7 @@
                               @foreach(auth()->user()->offices as $userClinic)
                                 <option value="{{  $userClinic->id }}" {{ (isset($search) && $search['clinic'] == $userClinic->id) ? 'selected' : '' }}>{{  $userClinic->name }}</option>
                               @endforeach
-                              <option value="0">Por servicios a clínicas privadas</option>
+                              <option value="0" {{ (isset($search) && $search['clinic'] == '0') ? 'selected' : '' }}>Por servicios a clínicas privadas</option>
                             </select>
                           
                           </div>
