@@ -623,7 +623,11 @@ td.fc-day.fc-past{
 }
 div.marketing {
 	margin-bottom: 1rem;
-	padding: 0 .8rem;
+	margin-top: 1rem;
+	padding: 0 0rem;
+	
+}
+div.marketing-flex {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: start;
