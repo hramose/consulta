@@ -227,3 +227,8 @@ function getUniqueNumber($length = 9, $id = null)
     $sort = substr($dmtran, 0, $length);
     return $sort;
 }
+
+function is_blank($value)
+{
+    return empty($value) && !is_numeric($value);
+}

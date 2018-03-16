@@ -37,22 +37,15 @@ class InvoiceController extends Controller
         }
         //dd(empty($search['clinic']));
         $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
-        if ($search['clinic'] == 0) {
-            $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
-            $totalInvoicesAmount = $invoices->sum('total');
-        }else{
+        
+
+        if(is_blank($search['clinic'])){
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
+        }else{
+
+            $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
         }
-
-        // $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
-        // if(empty($search['clinic'])){
-        //     $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
-        //     $totalInvoicesAmount = $invoices->sum('total');
-        // }else{
-
-
-        // }
         // if ($search['clinic'] && $search['clinic'] != '') {
         //     $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
         //     $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
