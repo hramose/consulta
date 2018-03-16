@@ -87,19 +87,27 @@ class InvoiceController extends Controller
     {
         $office = Office::find(request('office_id'));
         $fe = 0;
+        $fe_clinica = 0;
 
         if ($office && str_slug($office->type, '-') == 'clinica-privada') {
             $config = $office->configFactura->first();
             $fe = $office->fe;
+            $fe_clinica = 1;
         } else {
             $config = auth()->user()->configFactura->first();
             $fe = auth()->user()->fe;
         }
 
         if ($fe && !existsCertFile($config)) {
-            $errors = [
-                'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
-            ];
+            if($fe_clinica){
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
+                ];
+            }else{
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
+                ];
+            }
 
             return response()->json(['errors' => $errors], 422, []);
         }
@@ -116,17 +124,25 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->findById($id);
         $office = $invoice->clinic;
+        $fe_clinica = 0;
 
         if ($office && str_slug($office->type, '-') == 'clinica-privada') {
             $config = $office->configFactura->first();
+            $fe_clinica = 1;
         } else {
             $config = $invoice->medic->configFactura->first();
         }
 
         if ($invoice->fe && !existsCertFile($config)) {
-            $errors = [
-                'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
-            ];
+            if ($fe_clinica) {
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
+                ];
+            } else {
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
+                ];
+            }
 
             return response()->json(['errors' => $errors], 422, []);
         }
