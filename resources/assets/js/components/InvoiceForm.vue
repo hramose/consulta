@@ -364,7 +364,7 @@
            
            let queryParam = {
                 ['q']: search,
-                ['office_id']: this.office_id
+                ['office_id']: this.office_id ? this.office_id : 0
               }
             this.$http.get('/medic/invoices/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {

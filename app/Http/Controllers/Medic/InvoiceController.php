@@ -183,7 +183,7 @@ class InvoiceController extends Controller
             ]);
         $data = request()->all();
         $data['user_id'] = auth()->id();
-        $data['office_id'] = request('office_id');
+        $data['office_id'] = request('office_id') ? request('office_id') : 0;
 
         $service = InvoiceService::create($data);
 
