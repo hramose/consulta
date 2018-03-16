@@ -46,13 +46,13 @@ class InvoiceController extends Controller
 
         $invoices = Invoice::where('office_id', $office->id)->whereDate('created_at', $search['date']);
 
-        if ($search['medic'] && $search['medic'] != '') {
-            $invoices = $invoices->where('user_id', $search['medic'])->orderBy('created_at', 'DESC')->paginate(20);
-            $totalInvoicesAmount = $invoices->where('user_id', $search['medic'])->sum('total');
-        
-        } else {
+        if (is_blank($search['medic'])) {
+            
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
+        } else {
+            $invoices = $invoices->where('user_id', $search['medic'])->orderBy('created_at', 'DESC')->paginate(20);
+            $totalInvoicesAmount = $invoices->where('user_id', $search['medic'])->sum('total');
         }
 
 
