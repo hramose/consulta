@@ -378,7 +378,6 @@ class InvoiceRepository extends DbRepository
         $notaDC->office_id = $invoice->office_id;
         $notaDC->patient_id = $invoice->patient_id;
         $notaDC->bill_to = $invoice->bill_to;
-        $notaDC->office_type = $invoice->office_type;
         $notaDC->tipo_documento = $data['type'];
 
         $notaDC->status = 1;

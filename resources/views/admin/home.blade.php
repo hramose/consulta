@@ -22,6 +22,31 @@
     	                <input type="text" class="form-control" placeholder="Url de Registro de una clinica y su administrador" readonly value="{{  url('clinic/register') }}">
     	              </div>
       			</div>
+          </div>
+          
+           <div class="box box-info">
+      			<div class="box-header with-border">
+      				Cofiguraciones de factura electronica
+      			</div>
+      			<div class="box-body">
+      				<label>XML base de factura</label>
+      				  <div class="input-group">
+    	                <span class="input-group-addon">@</span>
+    	                <input type="text" class="form-control" placeholder="Url de Registro de un médico" readonly value="{{  $urlFactura }}">
+    	          </div>
+    	              <br>
+                <label>XML base de nota de débito</label>
+                <div class="input-group">
+                  <span class="input-group-addon">@</span>
+                  <input type="text" class="form-control" placeholder="Url de Registro de una clinica y su administrador" readonly value="{{  $urlNotaDebito }}">
+                </div>
+                <br>
+                <label>XML base de nota de crédito</label>
+                <div class="input-group">
+                  <span class="input-group-addon">@</span>
+                  <input type="text" class="form-control" placeholder="Url de Registro de una clinica y su administrador" readonly value="{{  $urlNotaCredito }}">
+                </div>
+      			</div>
       		</div>
       </div>
       <div class="col-xs-12 col-sm-6">
