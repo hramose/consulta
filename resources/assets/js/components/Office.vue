@@ -15,7 +15,7 @@
               <div class="col-xs-12 col-sm-5">
                 <div class="form-group">
                     <div class="col-sm-10">
-                    <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a>
+                    <a href="#" class="btn btn-success " @click="assignToMedic()" v-show="office.id">Agregar</a><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
                    
                     </div>
                 </div>
@@ -970,6 +970,7 @@
         
         },
         assignToMedic() {
+            if(this.loader) return;
 
               this.loader = true;
                 this.$http.post('/medic/account/offices/'+ this.office.id+'/assign', this.office).then((response) => {

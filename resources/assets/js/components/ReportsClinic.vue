@@ -74,7 +74,7 @@
           
         </div>
      </div>
-     <div v-if="dataIncomes.individualByAppointmentAttended">
+     <div v-if="dataIncomes.individualByAppointmentAttended && this.search.type != 'Evaluación de usuario'" >
            <div class="box box-success">
               <div class="box-header">
                  <h3 class="box-title">Comision por Cita atendida - Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
@@ -130,7 +130,7 @@
                 </div>
             </div>
           </div>
-          <div v-if="dataIncomes.individualByInvoiceBilled">
+          <div v-if="dataIncomes.individualByInvoiceBilled && this.search.type != 'Evaluación de usuario'">
            <div class="box box-success">
               <div class="box-header">
                  <h3 class="box-title">Comision por Cita Facturada - Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
@@ -231,67 +231,16 @@
           
          
         </div>
-        <div v-else>
+        <!-- <div v-else>
           <div class="callout callout-info callout-search">
             
             <h4>No hay datos !</h4>
 
             <p>No se encontraron estadisticas con esos parametros!</p>
           </div>
-        </div>
-
-         <!-- <div v-if="data.length">
-           <div class="box box-danger">
-              <div class="box-header">
-                 <h3 class="box-title">Ventas</h3>
-                
-              </div>
-              <div class="box-body">
-
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                              <div class=" col-xs-12" >
-                                   
-                                    <div class="small-box bg-aqua" >
-                                      <div class="inner">
-                                        <h3>₡{{ dataSales.total }}</h3>
-
-                                        <p>Facturas: {{ dataSales.invoices}}</p>
-                                      </div>
-                                      <div class="icon">
-                                        <i class="fa fa-money"></i>
-                                      </div>
-                                      <div class="small-box-footer"></div>
-                         
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class=" col-xs-12" >
-                                   
-                                    <div class="small-box bg-green" >
-                                      <div class="inner">
-                                        <h3>{{ dataPatients }}</h3>
-
-                                        <p>Paciente(s) atendidos</p>
-                                      </div>
-                                      <div class="icon">
-                                        <i class="fa fa-user"></i>
-                                      </div>
-                                      <div class="small-box-footer"></div>
-                         
-                                    </div>
-                            </div> 
-                        </div>
-                      </div>
-                
-              </div>
-          </div>
-         
-          
-         
         </div> -->
-        
+
+       
 
          
       <div v-if="dataReviews.rating_service_cache && this.search.type == 'Evaluación de usuario'" >

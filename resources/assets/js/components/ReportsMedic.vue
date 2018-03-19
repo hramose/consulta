@@ -66,7 +66,7 @@
           
         </div>
      </div>
-     <div v-if="dataIncomes">
+     <div v-if="dataIncomes && this.search.type != 'Evaluación de usuario'">
            <div class="box box-danger">
               <div class="box-header">
                  <h3 class="box-title">Periodo: {{ search.date1 }} - {{ search.date2 }}</h3>
@@ -160,14 +160,14 @@
           
          
         </div>
-        <div v-else>
+        <!-- <div v-else>
           <div class="callout callout-info callout-search">
             
             <h4>No hay datos !</h4>
 
             <p>No se encontraron estadisticas con esos parametros!</p>
           </div>
-        </div>
+        </div> -->
 
          
 

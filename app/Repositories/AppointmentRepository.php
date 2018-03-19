@@ -385,7 +385,7 @@ class AppointmentRepository extends DbRepository{
         {
             $appointments = $appointments->where('user_id', $search['medic']);
             //$balances = $balances->where('user_id', $search['medic']);
-            $medics = User::where('id',$search['medic']);
+            //$medics = User::where('id',$search['medic'])->get();
 
           
             
