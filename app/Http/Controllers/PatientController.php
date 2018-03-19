@@ -289,6 +289,8 @@ class PatientController extends Controller
                         ],
                         'data' => [
                             'tipo' => 'marketing',
+                            'title' => $title,
+                            'body' => $body,
                             'media' => 'storage/' . $fileUploaded,
                         ]
                     ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
