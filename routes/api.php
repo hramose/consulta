@@ -58,6 +58,7 @@ Route::prefix('medic')->group(function ()
 Route::post('/token', 'Api\AuthController@token');
 Route::post('/user/social/register', 'Api\AuthController@registerSocial');
 Route::post('/user/register', 'Api\AuthController@register');
+Route::get('/user/notifications', 'Api\AuthController@notifications')->middleware('auth:api');
 Route::get('/users/{user}/patients', 'Api\AuthController@getPatients')->middleware('auth:api');
 Route::get('/users/{user}/patients/first', 'Api\AuthController@getFirstPatient')->middleware('auth:api');
 Route::get('/account', 'Api\UserController@edit')->middleware('auth:api');

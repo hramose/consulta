@@ -242,6 +242,13 @@ class AuthController extends ApiController
 
     }
 
+    public function notifications()
+    {
+        $user = request()->user();
+
+        return $user->notifications()->latest()->take(10)->get();
+    }
+
    
     
 
