@@ -294,28 +294,30 @@ class PatientController extends Controller
                 }
                
 
-                    // if (count($tokensUsers)) {
-                    //     $push = new PushNotification('fcm');
+                    if (count($tokensUsers)) {
+                        $push = new PushNotification('fcm');
 
-                    //     $response = $push->setMessage([
-                    //         'notification' => [
-                    //             'title' => $title,
-                    //             'body' => $body,
-                    //             'sound' => 'default'
-                    //         ],
-                    //         'data' => [
-                    //             'tipo' => 'marketing',
-                    //             'title' => $title,
-                    //             'body' => $body,
-                    //             'media' => 'storage/' . $fileUploaded,
-                    //         ]
-                    //     ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
-                    //         ->setDevicesToken($tokensUsers)
-                    //         ->send()
-                    //         ->getFeedback();
+                        $response = $push->setMessage([
+                            'notification' => [
+                                'title' => $title,
+                                'body' => $body,
+                                'sound' => 'default'
+                            ],
+                            'data' => [
+                                'tipo' => 'marketing',
+                                'title' => $title,
+                                'body' => $body,
+                                'media' => 'storage/' . $fileUploaded,
+                            ]
+                        ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
+                            ->setDevicesToken($tokensUsers)
+                            ->send()
+                            ->getFeedback();
 
-                    //     Log::info('Mensaje Push code: ' . $response->success);
-                    // }
+                        Log::info('Mensaje Push code: ' . $response->success);
+
+                        
+                    }
 
 
                
