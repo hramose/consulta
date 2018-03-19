@@ -442,5 +442,10 @@ class User extends Authenticatable
     {
         return static::where('phone',$phone)->firstOrFail();
     }
+
+    public function appNotifications()
+    {
+        return $this->hasMany(AppNotification::class);
+    }
   
 }

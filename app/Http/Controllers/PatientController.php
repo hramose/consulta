@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use App\Patient;
 use Illuminate\Support\Facades\Log;
 use App\Mail\NewMarketing;
+use App\AppNotification;
 
 class PatientController extends Controller
 {
@@ -252,16 +253,19 @@ class PatientController extends Controller
         $body = request('body') ? request('body') : 'Te ha llegado una nueva notificacion de informacion de interes, revisala en el panel de notificaciones !!';
 
         $mimes = ['jpg', 'jpeg', 'bmp', 'png'];
-        $fileUploaded = 'error';
+        $fileUploaded = '';
 
-        if (request()->file('file')) {
-            $file = request()->file('file');
-            $name = $file->getClientOriginalName();
-            $ext = $file->guessClientExtension();
-            $onlyName = str_slug(pathinfo($name)['filename'], '-');
+            if (request()->file('file')) {
+                $file = request()->file('file');
+                $name = $file->getClientOriginalName();
+                $ext = $file->guessClientExtension();
+                $onlyName = str_slug(pathinfo($name)['filename'], '-');
 
-            if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('clinics/' . auth()->id() . '/marketing', 'ad.' . $ext, 'public');
+                if (in_array($ext, $mimes)) {
+                    $fileUploaded = 'storage/' . $file->storeAs('clinics/' . auth()->id() . '/marketing', uniqid().'.' . $ext, 'public');
+                }
+
+            }
 
                 $patients = Patient::with(['user' => function ($query) {
                     $query->whereHas('roles', function ($q) {
@@ -270,49 +274,60 @@ class PatientController extends Controller
                 }])->whereIn('id', request('patients'))->get();
 
                 foreach ($patients as $patient) {
-                    if ($email = $patient->user->first()->email) {
-                        $emailsUsers[] = $email;
-                    }
-                    if ($token = $patient->user->first()->push_token) {
-                        $tokensUsers[] = $token;
+                   
+                    $user = $patient->user->first();
+
+                    if ($user && $user->push_token) {
+                    
+                            $tokensUsers[] = $user->push_token;
+
+                            $notificationItem = [
+                                'user_id' => $user->id,
+                                'title' => $title,
+                                'body' => $body,
+                                'media' => $fileUploaded,
+                            ];
+                           // $notificationsList[] = $notificationItem;
+
+                        $user->appNotifications()->create($notificationItem);
                     }
                 }
+               
 
-                if (count($tokensUsers)) {
-                    $push = new PushNotification('fcm');
+                    // if (count($tokensUsers)) {
+                    //     $push = new PushNotification('fcm');
 
-                    $response = $push->setMessage([
-                        'notification' => [
-                            'title' => $title,
-                            'body' => $body,
-                            'sound' => 'default'
-                        ],
-                        'data' => [
-                            'tipo' => 'marketing',
-                            'title' => $title,
-                            'body' => $body,
-                            'media' => 'storage/' . $fileUploaded,
-                        ]
-                    ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
-                        ->setDevicesToken($tokensUsers)
-                        ->send()
-                        ->getFeedback();
+                    //     $response = $push->setMessage([
+                    //         'notification' => [
+                    //             'title' => $title,
+                    //             'body' => $body,
+                    //             'sound' => 'default'
+                    //         ],
+                    //         'data' => [
+                    //             'tipo' => 'marketing',
+                    //             'title' => $title,
+                    //             'body' => $body,
+                    //             'media' => 'storage/' . $fileUploaded,
+                    //         ]
+                    //     ])->setApiKey(env('API_WEB_KEY_FIREBASE_PATIENTS'))
+                    //         ->setDevicesToken($tokensUsers)
+                    //         ->send()
+                    //         ->getFeedback();
 
-                    Log::info('Mensaje Push code: ' . $response->success);
-                }
+                    //     Log::info('Mensaje Push code: ' . $response->success);
+                    // }
 
-                // if ($emailsUsers) {
-                //     try {
-                //         \Mail::to($emailsUsers)->send(new NewMarketing([]));
-                //     } catch (\Swift_TransportException $e) {  //Swift_RfcComplianceException
-                //         Log::error($e->getMessage());
-                //     }
-                // }
 
+               
+                
+
+               
+
+              
                 flash('Anuncio enviado', 'success');
-            }
+           
 
             return back();
-        }
+        
     }
 }

@@ -225,7 +225,7 @@
 
     $('.btn-multiple').on('click',function(e) {
         
-        if($('input[name="file"]').val()){
+        //if($('input[name="file"]').val()){
         
         var action = $(this).data('action');
 
@@ -234,10 +234,10 @@
 
         (verificaChkActivo(chkItem)) ? $('#send-marketing').submit() : alert('Seleccione al menos un paciente de la lista');
         
-        }else {
-          alert('Seleccione un archivo');
+        // }else {
+        //   alert('Seleccione un archivo');
 
-        }
+        // }
 
         e.preventDefault();
 
