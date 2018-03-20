@@ -39,10 +39,10 @@ class NotificationsClear extends Command
      */
     public function handle()
     {
-        $notifications = AppNotification::where('created_at', '>=', Carbon::now()->subMonths(1)->toDateTimeString())->get();
-        //dd(Carbon::now()->subMonths(1)->toDateTimeString());
-        dd($notifications);
-
-      
+        $notifications = AppNotification::where('created_at', '>=', Carbon::now()->subMonth()->toDateTimeString())->get();
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+        //dd($notifications);
     }
 }

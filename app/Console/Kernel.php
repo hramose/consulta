@@ -41,7 +41,10 @@ class Kernel extends ConsoleKernel
                  ->dailyAt('00:05'); //se hace asi por que este no es necesario enviar email
 
         $schedule->command(\App\Console\Commands\MonthlyCharge::class)
-                 ->monthlyOn(1,'00:05'); //se hace asi por que este no es necesario enviar email
+                 ->monthlyOn(1, '00:05'); //se hace asi por que este no es necesario enviar email
+
+        $schedule->command(\App\Console\Commands\NotificationsClear::class)
+                 ->monthly();
 
         //dailyAt
         /*$schedule->command(\App\Console\Commands\ReminderAppointment::class) //hay q verificar si en el nuevo servidor si funciona asi
