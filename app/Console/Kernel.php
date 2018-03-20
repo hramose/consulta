@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ReminderAppointment::class,
         \App\Console\Commands\SendPolls::class,
          \App\Console\Commands\MonthlyCharge::class,
-          \App\Console\Commands\SubscriptionCharge::class
+          \App\Console\Commands\SubscriptionCharge::class,
+          \App\Console\Commands\NotificationsClear::class
     ];
 
     /**
