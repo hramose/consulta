@@ -95,8 +95,25 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.app-pharmacy', function ($view) {
             
-            
-            $notifications = [];
+            // $body = <<<EOD
+            //         ACTUALIZAR UBICACIÓN FARMACIA {{ auth()->user()->pharmacies->first()->name }} 
+            //                 <form method="POST" action="{{ url('/pharmacy/account/pharmacies/'. auth()->user()->pharmacies->first()->id .'/notification') }}" class="form-horizontal form-update-location" data-role="pharmacy">
+            //                         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+            //                         <input type="hidden" name="notification" value="0">
+            //                         <input type="hidden" name="id" value="{{ auth()->user()->pharmacies->first()->id }}">
+            //                     <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
+            //                 </form>
+            //                 EOD;
+            //                 ;
+
+            $notifications = [
+                [
+                    'title' =>'Test',
+                    'body' => 'test'
+                           
+                ]
+            ];
+
           
 
             $view->with('notifications', $notifications);
