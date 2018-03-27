@@ -50,6 +50,14 @@ class HomeController extends Controller
             return view('clinic.home');
         }
 
+         if (auth()->user()->hasRole('farmacia')) {
+            if (!auth()->user()->pharmacies->count()) {
+                return Redirect('/pharmacy/register/pharmacy');
+            }
+
+            return view('pharmacy.home');
+        }
+ 
         if (auth()->user()->hasRole('asistente')) {
             return view('assistant.home');
         }

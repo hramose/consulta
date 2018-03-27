@@ -414,6 +414,44 @@ Route::prefix('admin')->middleware('authByRole:administrador')->group(function (
     Route::resource('users', 'Admin\UserController');
 });
 
+Route::prefix('pharmacy')->middleware('authByRole:farmacia,asistente')->group(function () {
+    Route::get('/account/edit', 'Pharmacy\UserController@edit');
+    Route::put('/account/edit', 'Pharmacy\UserController@update');
+    Route::post('/account/assistant', 'Pharmacy\UserController@addAssistant');
+    Route::put('/account/assistant/{assistant}', 'Pharmacy\UserController@updateAssistant');
+    Route::delete('/account/assistants/{assistant}', 'Pharmacy\UserController@deleteAssistant');
+    Route::get('/account/assistants', 'Pharmacy\UserController@getAssistants');
+
+    //Route::put('/account/settings', 'Clinic\UserController@updateSettings');
+
+    Route::post('/account/avatars', 'Pharmacy\UserController@avatars');
+    Route::post('/account/pharmacies', 'Pharmacy\UserController@updatePharmacy');
+    Route::put('/account/pharmacies/{id}/notification', 'Pharmacy\PharmacyController@updateOfficeNotification');
+
+   
+    Route::post('/patients/photos', 'Pharmacy\PatientController@photos');
+    Route::post('/patients/files', 'Pharmacy\PatientController@files');
+    Route::post('/patients/files/delete', 'Pharmacy\PatientController@deleteFiles');
+    Route::put('/patients/{id}/history', 'Pharmacy\PatientController@history');
+    Route::post('/patients/{id}/medicines', 'Pharmacy\PatientController@medicines');
+    Route::delete('/patients/medicines/{id}', 'Pharmacy\PatientController@deleteMedicines');
+    Route::post('/patients/{id}/labresults', 'Pharmacy\PatientController@labResults');
+    Route::delete('/patients/labresults/{id}', 'Pharmacy\PatientController@deleteLabResults');
+    Route::post('/patients/{id}/add', 'Pharmacy\PatientController@addToYourPatients');
+    Route::get('/patients/list', 'Pharmacy\PatientController@list');
+    Route::get('/patients/verify', 'Pharmacy\PatientController@verifyIsPatient');
+    Route::get('/patients/{patient}/invoices', 'Pharmacy\PatientController@invoices');
+    Route::resource('patients', 'Pharmacy\PatientController');
+    
+    Route::get('/reports', 'Pharmacy\ReportsController@index');
+    Route::get('/reports/generate', 'Pharmacy\ReportsController@generate');
+    Route::get('/reports/incomes/generate', 'Pharmacy\ReportsController@incomes');
+
+    Route::get('/register/pharmacy', 'Pharmacy\RegisterController@showRegistrationPharmacyForm');
+    Route::post('/register/pharmacy', 'Pharmacy\RegisterController@registerPharmacy');
+});
+
+
 Route::get('/register', 'Auth\RegisterPatientController@showRegistrationForm');
 Route::post('/register', 'Auth\RegisterPatientController@register');
 
@@ -423,6 +461,11 @@ Route::post('/medic/register', 'Auth\RegisterController@register');
 Route::get('/clinic/register', 'Clinic\RegisterController@showRegistrationForm');
 Route::post('/clinic/register/admin', 'Clinic\RegisterController@registerAdmin'); // registro nuevo de admin y clinic
 Route::post('/clinic/register', 'Auth\RegisterClinicController@register'); // registro profile temp clinica ya creada
+
+Route::get('/pharmacy/register', 'Pharmacy\RegisterController@showRegistrationForm');
+Route::post('/pharmacy/register/admin', 'Pharmacy\RegisterController@registerAdmin'); // registro nuevo de admin y pharmacy
+Route::post('/pharmacy/register', 'Auth\RegisterPharmacyController@register'); // registro profile temp pharmacy ya creada
+
 
 //login for patient
 Route::get('/user/login', 'Auth\LoginPatientController@login');

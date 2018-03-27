@@ -174,6 +174,38 @@ class PatientRepository extends DbRepository
     }
 
     /**
+    * Find all the patients for the admin panel
+    * @internal param $username
+    * @param null $search
+    * @return mixed
+    */
+    public function findAllOfPharmacy($pharmacy, $search = null)
+    {
+        $order = 'created_at';
+        $dir = 'desc';
+
+        $userIds = $pharmacy->users()->pluck('users.id');
+
+        $patients = $this->model;
+
+        if (isset($search['q']) && trim($search['q'])) {
+            $patients = $patients->Search($search['q']);
+        }
+        if (isset($search['province']) && trim($search['province'])) {
+            $patients = $patients->where('province', $search['province']);
+        }
+
+
+        $patients = $patients->whereHas('user', function ($query) use ($userIds) {
+            $query->whereIn('users.id', $userIds);
+        });
+
+       
+
+        return $patients->with('appointments')->orderBy('patients.' . $order, $dir)->paginate($this->limit);
+    }
+
+    /**
      * Find all the patients for the admin panel
      * @internal param $username
      * @param null $search

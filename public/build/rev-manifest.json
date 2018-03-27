@@ -2,7 +2,7 @@
   "css/app.css": "css/app-c735860066.css",
   "js/admin.min.js": "js/admin-d6764a5b8c.min.js",
   "js/app-theme.min.js": "js/app-theme-211c78ed44.min.js",
-  "js/app.js": "js/app-4c5086d206.js",
+  "js/app.js": "js/app-f67e55118f.js",
   "js/appointments.min.js": "js/appointments-d29d6972f9.min.js",
   "js/assistant.invoices.min.js": "js/assistant-cab77f6a5c.invoices.min.js",
   "js/clinic.appointments.min.js": "js/clinic-1b5b91d166.appointments.min.js",
@@ -13,6 +13,7 @@
   "js/modalRespHacienda.min.js": "js/modalRespHacienda-3e812c9bbc.min.js",
   "js/patient_register.min.js": "js/patient_register-acc7cb6cbb.min.js",
   "js/patients.min.js": "js/patients-5447bd07ca.min.js",
+  "js/pharmacy.patients.min.js": "js/pharmacy-96346246f7.patients.min.js",
   "js/schedule.min.js": "js/schedule-887fc366c1.min.js",
   "js/search.min.js": "js/search-80d18bca9c.min.js",
   "js/ubicaciones.min.js": "js/ubicaciones-29fa32f46c.min.js"

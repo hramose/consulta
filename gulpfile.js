@@ -80,6 +80,10 @@ elixir(mix => {
     mix.scripts([
         'ubicaciones.js'
     ], 'public/js/ubicaciones.min.js', 'resources/assets/js');
+
+    mix.scripts([
+        'pharmacy.patients.js'
+    ], 'public/js/pharmacy.patients.min.js', 'resources/assets/js');
      
     mix.version([
         'public/js/app.js',
@@ -93,6 +97,7 @@ elixir(mix => {
         'public/js/clinic.appointments.min.js',
         'public/js/clinic.dailyagenda.min.js',
         'public/js/clinic.patients.min.js',
+        'public/js/pharmacy.patients.min.js',
         'public/js/clinic.invoices.min.js',
         'public/js/assistant.invoices.min.js',
         'public/js/invoices.min.js',

@@ -72,6 +72,8 @@ Vue.component('hacienda-notifications', require('./components/HaciendaNotificati
 Vue.component('send-to-hacienda', require('./components/SendToHacienda.vue'));
 Vue.component('nota-credito-debito-form', require('./components/NotaCreditoDebitoForm.vue'));
 Vue.component('invoice-general-form', require('./components/InvoiceGeneralForm.vue'));
+Vue.component('pharmacy', require('./components/Pharmacy.vue'));
+Vue.component('assistant-pharmacy-form', require('./components/AssistantPharmacyForm.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Answer;
-use App\Question;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,22 +16,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token','speciality_id','active','phone', 'provider', 'provider_id','commission','medic_code','ide','push_token','fe'
+        'name', 'email', 'password', 'api_token', 'speciality_id', 'active', 'phone', 'provider', 'provider_id', 'commission', 'medic_code', 'ide', 'push_token', 'fe'
     ];
-    protected $appends = array('photo');
-
-
+    protected $appends = ['photo'];
 
     public function getPhotoAttribute()
     {
         return getAvatar($this);
     }
+
     // public function getSlotAttribute()
     // {
     //     return '00:30:00';//($this->settings) ? $this->settings->slotDuration : 0;
     // }
-
-
 
     /**
      * The attributes that should be hidden for arrays.
@@ -41,24 +36,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','api_token'
+        'password', 'remember_token', 'api_token'
     ];
 
     public function scopeSearch($query, $search)
     {
-        return $query->where(function ($query) use ($search)
-        {
+        return $query->where(function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search . '%');
         });
     }
+
     public function scopeActive($query, $search)
     {
-        return $query->where(function ($query) use ($search)
-        {
-            $query->where('active',  $search);
+        return $query->where(function ($query) use ($search) {
+            $query->where('active', $search);
         });
     }
-
 
     /**
      * A user may have multiple roles.
@@ -80,11 +73,9 @@ class User extends Authenticatable
     {
         if (is_object($role)) {
             return $this->roles()->attach($role);
-       
         }
-       
+
         return $this->roles()->sync($role);
-       
     }
 
     /**
@@ -99,9 +90,8 @@ class User extends Authenticatable
             return $this->roles->contains('name', $role);
         }
 
-        return !! $role->intersect($this->roles)->count();
+        return !!$role->intersect($this->roles)->count();
     }
-
 
     public function specialities()
     {
@@ -118,11 +108,9 @@ class User extends Authenticatable
     {
         if (is_object($speciality)) {
             return $this->specialities()->attach($speciality);
-       
         }
-       
+
         return $this->specialities()->sync($speciality);
-       
     }
 
     /**
@@ -136,44 +124,42 @@ class User extends Authenticatable
         if (is_string($speciality)) {
             return $this->specialities->contains('name', $speciality);
         }
-         if (is_numeric($speciality)) {
+        if (is_numeric($speciality)) {
             return $this->specialities->contains('id', $speciality);
         }
 
-        return !! $speciality->intersect($this->specialities)->count();
+        return !!$speciality->intersect($this->specialities)->count();
     }
 
-     /**
-     * Determine if the user has the given role.
-     *
-     * @param  mixed $role
-     * @return boolean
-     */
+    /**
+    * Determine if the user has the given role.
+    *
+    * @param  mixed $role
+    * @return boolean
+    */
     public function hasNotSpeciality($speciality)
     {
         if (is_string($speciality)) {
             return !$this->specialities->contains('name', $speciality);
         }
-         if (is_numeric($speciality)) {
+        if (is_numeric($speciality)) {
             return !$this->specialities->contains('id', $speciality);
         }
 
-        return !! $speciality->intersect($this->specialities)->count();
+        return !!$speciality->intersect($this->specialities)->count();
     }
 
-     /**
-     * Determine if the user has the given role.
-     *
-     * @param  mixed $role
-     * @return boolean
-     */
+    /**
+    * Determine if the user has the given role.
+    *
+    * @param  mixed $role
+    * @return boolean
+    */
     public function hasSubscription($subscription = null)
     {
-        
         if ($this->subscription && $subscription && (is_string($subscription) || is_numeric($subscription))) {
             return $this->subscription->plan_id == $subscription;
         }
-
 
         return  ($this->subscription) ? true : false;
     }
@@ -187,11 +173,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Office::class);
     }
-     public function verifiedOffices()
+
+    public function pharmacies()
     {
-        return $this->belongsToMany(Office::class,'verified_offices');
+        return $this->belongsToMany(Pharmacy::class);
     }
 
+    public function verifiedOffices()
+    {
+        return $this->belongsToMany(Office::class, 'verified_offices');
+    }
 
     public function createOffice($office = null)
     {
@@ -199,37 +190,42 @@ class User extends Authenticatable
 
         return $this->offices()->save($office);
     }
-   
 
     public function getSpecialityName()
     {
         return $this->speciality_id != 0 ? Speciality::find($this->speciality_id)->name : '';
     }
-   
-     public function appointments()
+
+    public function appointments()
     {
         return $this->hasMany(Appointment::class);
     }
-     public function schedules()
+
+    public function schedules()
     {
         return $this->hasMany(Schedule::class);
     }
+
     public function settings()
     {
         return $this->hasOne(Setting::class);
     }
-     public function invoices()
+
+    public function invoices()
     {
         return $this->hasMany(Invoice::class);
     }
-      public function incomes()
+
+    public function incomes()
     {
         return $this->hasMany(Income::class);
     }
+
     public function subscription()
     {
         return $this->hasOne(Subscription::class);
     }
+
     // public function configFactura()
     // {
     //     return $this->hasOne(ConfigFactura::class);
@@ -238,6 +234,7 @@ class User extends Authenticatable
     {
         return $this->morphMany(ConfigFactura::class, 'facturable');
     }
+
     /**
      * create a setting to user
      * @param null $profile
@@ -252,36 +249,29 @@ class User extends Authenticatable
 
     public function appointmentsToday()
     {
-        
-         //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
-        
-        return Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count();
-    } 
+        //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
 
-      public function monthlyCharge()
+        return Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count();
+    }
+
+    public function monthlyCharge()
     {
-        
-         //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
-        
+        //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
+
         return Income::where('user_id', $this->id)->where(function ($query) {
-                $query->where('type', 'M') // por cita atendida
+            $query->where('type', 'M') // por cita atendida
                     ->orWhere('type', 'MS'); // por subscripcion de paquete
-            })->where('paid', 0)->get();
-        
-      
+        })->where('paid', 0)->get();
     }
 
     public function expiredSubscription()
     {
-        
-         //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
+        //dd(Appointment::where('created_by', $this->id)->whereDate('created_at', Carbon::Now()->toDateString())->count());
 
         return Income::where('user_id', $this->id)->where(function ($query) {
             $query->Where('type', 'MS'); // por subscripcion de paquete
         })->where('paid', 0)->get();
-
-
-    } 
+    }
 
     /**
      * Determine if the user has the given role.
@@ -294,9 +284,10 @@ class User extends Authenticatable
         if (is_string($patient) || is_numeric($patient)) {
             return $this->patients->contains('id', $patient);
         }
-        
-        return !! $patient->intersect($this->patients)->count();
+
+        return !!$patient->intersect($this->patients)->count();
     }
+
     /**
      * Determine if the user has the given role.
      *
@@ -308,8 +299,8 @@ class User extends Authenticatable
         if (is_string($office) || is_numeric($office)) {
             return $this->offices->contains('id', $office);
         }
-        
-        return !! $office->intersect($this->offices)->count();
+
+        return !!$office->intersect($this->offices)->count();
     }
 
     /**
@@ -323,8 +314,8 @@ class User extends Authenticatable
         if (is_string($office) || is_numeric($office)) {
             return $this->verifiedOffices->contains('id', $office);
         }
-        
-        return !! $office->intersect($this->verifiedOffices)->count();
+
+        return !!$office->intersect($this->verifiedOffices)->count();
     }
 
     /**
@@ -336,10 +327,10 @@ class User extends Authenticatable
         return $this->hasMany(ReviewService::class);
     }
 
-     /**
-     * Relationship with the Review model
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    /**
+    * Relationship with the Review model
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
     public function reviewsMedic()
     {
         return $this->hasMany(ReviewMedic::class);
@@ -350,14 +341,14 @@ class User extends Authenticatable
         return $this->hasMany(ReviewApp::class);
     }
 
-     /**
-     * Relationship with the Review model
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-     public function requestOffices()
-     {
-         return $this->hasMany(RequestOffice::class);
-     }
+    /**
+    * Relationship with the Review model
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function requestOffices()
+    {
+        return $this->hasMany(RequestOffice::class);
+    }
 
     // The way average rating is calculated (and stored) is by getting an average of all ratings,
     // storing the calculated value in the rating_cache column (so that we don't have to do calculations later)
@@ -366,29 +357,28 @@ class User extends Authenticatable
     public function recalculateRatingService()
     {
         $reviews = $this->reviewsService()->notSpam()->approved();
-        $avgRating= $reviews->avg('rating');
-        $this->rating_service_cache = round($avgRating,1);
+        $avgRating = $reviews->avg('rating');
+        $this->rating_service_cache = round($avgRating, 1);
         $this->rating_service_count = $reviews->count();
 
         $this->save();
     }
 
-     public function recalculateRatingMedic()
+    public function recalculateRatingMedic()
     {
-     
         $reviews = $this->reviewsMedic()->notSpam()->approved();
         $avgRating = $reviews->avg('rating');
-        $this->rating_medic_cache = round($avgRating,1);
+        $this->rating_medic_cache = round($avgRating, 1);
         $this->rating_medic_count = $reviews->count();
 
         $this->save();
     }
+
     public function recalculateRatingApp()
     {
-     
         $reviews = $this->reviewsApp()->notSpam()->approved();
         $avgRating = $reviews->avg('rating');
-        $this->rating_app_cache = round($avgRating,1);
+        $this->rating_app_cache = round($avgRating, 1);
         $this->rating_app_count = $reviews->count();
 
         $this->save();
@@ -398,11 +388,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'assistants_users', 'user_id', 'assistant_id');
     }
-     public function clinicsAssistants()
+
+    public function clinicsAssistants()
     {
         return $this->belongsToMany(Office::class, 'assistants_offices', 'assistant_id', 'office_id');
     }
-    
+     public function pharmaciesAssistants()
+    {
+        return $this->belongsToMany(Pharmacy::class, 'assistants_pharmacies', 'assistant_id', 'pharmacy_id');
+    }
+
     public function addAssistant(User $user)
     {
         $this->assistants()->attach($user->id);
@@ -421,31 +416,27 @@ class User extends Authenticatable
      */
     public function isMedicAssistant($user_id)
     {
- 
         return User::find($user_id)->hasRole('medico');
     }
 
-     /**
-     * Determine if the user has the given role.
-     *
-     * @param  mixed $role
-     * @return boolean
-     */
+    /**
+    * Determine if the user has the given role.
+    *
+    * @param  mixed $role
+    * @return boolean
+    */
     public function isClinicAssistant($user_id)
     {
- 
         return User::find($user_id)->hasRole('clinica');
     }
 
-    
     public static function byPhone($phone)
     {
-        return static::where('phone',$phone)->firstOrFail();
+        return static::where('phone', $phone)->firstOrFail();
     }
 
     public function appNotifications()
     {
         return $this->hasMany(AppNotification::class);
     }
-  
 }

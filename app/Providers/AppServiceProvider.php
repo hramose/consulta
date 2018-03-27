@@ -93,6 +93,16 @@ class AppServiceProvider extends ServiceProvider
             $view->with('newMedicsRequest', $medicsNoVerified);
         });
 
+        view()->composer('layouts.app-pharmacy', function ($view) {
+            
+            
+            $notifications = [];
+          
+
+            $view->with('notifications', $notifications);
+        });
+
+
         view()->composer('layouts.partials.home-boxes-admin', function ($view) {
             $medics = User::whereHas('roles', function ($q) {
                 $q->where('name', 'medico');

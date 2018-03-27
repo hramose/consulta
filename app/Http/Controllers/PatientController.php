@@ -260,7 +260,7 @@ class PatientController extends Controller
             $onlyName = str_slug(pathinfo($name)['filename'], '-');
 
             if (in_array($ext, $mimes)) {
-                $fileUploaded = $file->storeAs('clinics/' . auth()->id() . '/marketing', uniqid() . '.' . $ext, 'public');
+                $fileUploaded = $file->storeAs('marketing/' . auth()->id() , uniqid() . '.' . $ext, 'public');
             }
         }
 

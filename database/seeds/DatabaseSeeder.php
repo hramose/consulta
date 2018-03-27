@@ -10,7 +10,7 @@ use App\Plan;
 class DatabaseSeeder extends Seeder
 {
     private $tables = [
-        'users', 'offices', 'roles', 'role_user', 'specialities', 'speciality_user', 'verified_offices', 'office_user', 'patients', 'patient_user', 'settings', 'histories', 'invoices', 'invoice_services', 'invoice_lines', 'review_services', 'review_medics', 'balances', 'assistants_users', 'assistants_offices', 'pressures', 'sugars', 'allergies', 'appointments', 'diagnostics', 'disease_notes', 'ginecos', 'heredos', 'medicines', 'nopathologicals', 'pathologicals', 'physical_exams', 'reminders', 'schedules', 'treatments', 'vital_signs', 'incomes', 'configurations', 'subscriptions', 'plans', 'reset_codes', 'config_facturas', 'hacienda_notifications', 'documento_referencias', 'app_notifications'
+        'users', 'offices', 'roles', 'role_user', 'specialities', 'speciality_user', 'verified_offices', 'office_user', 'patients', 'patient_user', 'settings', 'histories', 'invoices', 'invoice_services', 'invoice_lines', 'review_services', 'review_medics', 'balances', 'assistants_users', 'assistants_offices', 'pressures', 'sugars', 'allergies', 'appointments', 'diagnostics', 'disease_notes', 'ginecos', 'heredos', 'medicines', 'nopathologicals', 'pathologicals', 'physical_exams', 'reminders', 'schedules', 'treatments', 'vital_signs', 'incomes', 'configurations', 'subscriptions', 'plans', 'reset_codes', 'config_facturas', 'hacienda_notifications', 'documento_referencias', 'app_notifications','pharmacies','pharmacy_user','assistants_pharmacies'
     ];
 
     /**
@@ -38,6 +38,9 @@ class DatabaseSeeder extends Seeder
         ]);
         factory(Role::class, 1)->create([
             'name' => 'asistente',
+        ]);
+        factory(Role::class, 1)->create([
+            'name' => 'farmacia',
         ]);
 
         foreach ($this->specialities as $s) {
