@@ -76,7 +76,7 @@
   
   
 
-     @if($monthlyCharge->count() || $userOfficesindependientes->count())
+     @if($monthlyCharge->count() || $userOfficesindependientes->count() || !auth()->user()->active)
           <div  class="notification-app alert-danger">
               <div class="slider-notifications">
                   
