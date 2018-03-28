@@ -44,7 +44,11 @@ class AppServiceProvider extends ServiceProvider
 
             $userOffices = auth()->user()->offices->count();
 
-            $userOfficesindependientes = auth()->user()->offices()->where('type', 'Consultorio Independiente')->select('offices.id', 'notification', 'notification_date')->get();
+            $userOfficesindependientes = auth()->user()->offices()
+                                        ->where('type', 'Consultorio Independiente')
+                                        ->where('notification', 1)
+                                        ->where('notification_date', '<>', '0000-00-00 00:00:00')
+                                        ->select('offices.id', 'name', 'notification', 'notification_date')->get();
 
             $view->with('newAppointments', $newAppointments)
                  ->with('monthlyCharge', $monthlyCharge)
@@ -69,8 +73,15 @@ class AppServiceProvider extends ServiceProvider
             $haciendaNotifications = \App\HaciendaNotification::where('office_id', $office->id)->where('viewed_assistant', 0)->orderBy('created_at', 'DESC')->limit(10);
             $newHaciendaNotifications = $haciendaNotifications->get();
 
+            $notifications = [];
+
+            if (!auth()->user()->active) {
+                $notifications[] = 'active';
+            }
+
             $view->with('newAppointments', $newAppointments)
-                 ->with('newHaciendaNotifications', $newHaciendaNotifications);
+                 ->with('newHaciendaNotifications', $newHaciendaNotifications)
+                 ->with('notifications', $notifications);
         });
 
         view()->composer('layouts.app-clinic', function ($view) {
@@ -87,38 +98,47 @@ class AppServiceProvider extends ServiceProvider
                 $q->where('offices.id', $office_id);
             })->limit(10)->get();
 
-            //\Log::info('no v:' . $medicsNoVerified);
-            // \Log::info('ver:' . $medicsVerified);
+            $notifications = [];
 
-            $view->with('newMedicsRequest', $medicsNoVerified);
+            if (auth()->user()->offices->first() && auth()->user()->offices->first()->notification && auth()->user()->offices->first()->notification_date != '0000-00-00 00:00:00') {
+                $notifications[] = 'location';
+            }
+
+            if (!auth()->user()->active) {
+                $notifications[] = 'active';
+            }
+
+            $view->with('newMedicsRequest', $medicsNoVerified)
+                  ->with('notifications', $notifications);
         });
 
         view()->composer('layouts.app-pharmacy', function ($view) {
-            
-            // $body = <<<EOD
-            //         ACTUALIZAR UBICACIÓN FARMACIA {{ auth()->user()->pharmacies->first()->name }} 
-            //                 <form method="POST" action="{{ url('/pharmacy/account/pharmacies/'. auth()->user()->pharmacies->first()->id .'/notification') }}" class="form-horizontal form-update-location" data-role="pharmacy">
-            //                         {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-            //                         <input type="hidden" name="notification" value="0">
-            //                         <input type="hidden" name="id" value="{{ auth()->user()->pharmacies->first()->id }}">
-            //                     <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
-            //                 </form>
-            //                 EOD;
-            //                 ;
+            $notifications = [];
 
-            $notifications = [
-                [
-                    'title' =>'Test',
-                    'body' => 'test'
-                           
-                ]
-            ];
+            if (auth()->user()->pharmacies->first() && auth()->user()->pharmacies->first()->notification && auth()->user()->pharmacies->first()->notification_date != '0000-00-00 00:00:00') {
+                $notifications[] = 'location';
+            }
 
-          
+            if (!auth()->user()->active) {
+                $notifications[] = 'active';
+            }
 
             $view->with('notifications', $notifications);
         });
 
+        view()->composer('layouts.app-patient', function ($view) {
+            $notifications = [];
+
+            if (!auth()->user()->patients->count()) {
+                $notifications[] = 'patients';
+            }
+
+            if (!auth()->user()->active) {
+                $notifications[] = 'active';
+            }
+
+            $view->with('notifications', $notifications);
+        });
 
         view()->composer('layouts.partials.home-boxes-admin', function ($view) {
             $medics = User::whereHas('roles', function ($q) {

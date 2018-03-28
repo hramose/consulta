@@ -17,6 +17,7 @@
       <!-- Ionicons -->
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> -->
       <!-- Theme style -->
+      <link href="/js/plugins/slick/slick.css" rel="stylesheet">
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
 
        @yield('css')
@@ -57,7 +58,67 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
     <!-- @include('layouts/partials/flash-message') -->
-     @if(! Request::is('/'))
+    
+    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+    
+    @if (session()->has('flash_message'))
+
+      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+
+    @endif
+
+
+        @if(count($notifications))
+          <div  class="notification-app alert-danger">
+              <div class="slider-notifications">
+                  
+                            @foreach(auth()->user()->offices as $office)
+
+                                  @if($office->fe && !$office->configFactura->first())
+                                    <div class="item notification-app-item">
+                                        
+
+                                          <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/clinic/account/edit?tab=fe" title="Ir a configurar Factura Electrónica"><b>Configurar Factura Electrónica</b></a></p>
+                                    </div>
+                                  @endif
+                              
+                                   @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
+                                    <div  class="item notification-app-item">
+                                      
+                                      <form method="POST" action="{{ url('/clinic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location" data-role="clinic">
+                                            {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                                            ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
+                                            <input type="hidden" name="notification" value="0">
+                                            <input type="hidden" name="id" value="{{ $office->id }}">
+                                        <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
+                                      </form>
+                                    </div>
+                                    @endif 
+                              
+                              @endforeach
+                              
+                        
+                          @if( !auth()->user()->active )
+                             <div class="item notification-app-item ">     
+                                    
+                                Esta cuenta esta inactiva mientras el administrador verifica tus datos!
+                                
+                            </div>
+                          @endif
+                     
+                   
+              </div>
+
+              
+              
+            
+          </div>
+          @endif 
+    
+
+
+
+      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
             <a href="/clinic/appointments" class="btn btn-sm btn-info {{ set_active('clinic/appointments') }}">Agenda</a>
@@ -70,42 +131,8 @@
     @endif 
     <section class="content menu">
         @include('layouts/partials/home-boxes-clinic')  
-      </section> 
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    
-    @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos!</div> 
-     @endif
+    </section> 
 
-    @if (session()->has('flash_message'))
-
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-    @endif
-
-     
-
-     @foreach(auth()->user()->offices as $office)
-      @if($office->fe && !$office->configFactura->first())
-          <div class="notification-app alert-warning">
-               
-
-                <p>Haz seleccionado que vas a utilizar la factura electronica de hacienda. Por favor recuerda que debes configurar los parametros iniciales para funcionar correctamente. Puedes realizarlo desde este link. <a href="/clinic/account/edit?tab=fe" title="Ir a configurar Factura Electrónica"><b>Configurar Factura Electrónica</b></a></p>
-          </div>
-        @endif
-       @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
-         <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
-          <form method="POST" action="{{ url('/clinic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location" data-role="clinic">
-                {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                <input type="hidden" name="notification" value="0">
-                <input type="hidden" name="id" value="{{ $office->id }}">
-            <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
-          </form>
-         </div>
-        @endif 
-        
-       
-     @endforeach
     @if(auth()->user()->active)
       @yield('content')
     @endif
@@ -131,11 +158,21 @@
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
 <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/js/plugins/slick/slick.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
+<script>
+$(document).ready(function(){
 
+  $('.slider-notifications').slick({
+    prevArrow: '<span class="fa fa-angle-left"></span>',
+    nextArrow: '<span class="fa fa-angle-right"></span>'
+  });
+
+});
+</script>
 
  @yield('scripts')
 

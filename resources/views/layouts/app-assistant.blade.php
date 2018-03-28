@@ -57,7 +57,39 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
     <!-- @include('layouts/partials/flash-message') -->
-     @if(! Request::is('/'))
+     
+    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+  
+
+    @if (session()->has('flash_message'))
+
+      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+
+    @endif
+
+     @if(count($notifications))
+          <div  class="notification-app alert-danger">
+              <div class="slider-notifications">
+                  @foreach($notifications as $notification) 
+                      <div class="item notification-app-item ">
+                        
+                          @if($notification === 'active' )
+                                
+                                    
+                                 Esta cuenta esta inactiva mientras el administrador verifica tus datos!
+                                
+                              
+                          @endif
+                      </div>
+                    @endforeach
+              </div>
+              
+              
+            
+          </div>
+        @endif
+
+    @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
             <a href="/assistant/appointments" class="btn btn-sm btn-info {{ set_active('assistant/appointments') }}">Agenda</a>
@@ -71,22 +103,6 @@
     <section class="content menu">
         @include('layouts/partials/home-boxes-assistant')  
       </section> 
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    
-    @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos!</div> 
-     @endif
-
-    
-       <!-- <div  class="notification-app alert-warning" >Tienes Nuevas citas reservadas. Puedes revisarlas  <a href="/assistant/appointments" title="Ir a citas">Aquí</a> !</div>  -->
-    
-
-    @if (session()->has('flash_message'))
-
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-    @endif
-    
     @if(auth()->user()->active)
       @yield('content')
     @endif

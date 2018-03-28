@@ -19,7 +19,7 @@
       <!-- Theme style -->
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
        <link href="/js/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
-    
+      <link href="/js/plugins/slick/slick.css" rel="stylesheet">
 
        @yield('css')
       
@@ -60,6 +60,113 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(2) : 'bg-home' }}">
     <!-- @include('layouts/partials/flash-message') -->
+    
+    
+    
+     
+    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+ 
+
+    @if (session()->has('flash_message'))
+
+      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+
+    @endif
+     
+  
+  
+
+     @if($monthlyCharge->count() || $userOfficesindependientes->count())
+          <div  class="notification-app alert-danger">
+              <div class="slider-notifications">
+                  
+                        @if(! Request::is('medic/payments/create') && ! Request::is('medic/payments/*/create') && ! Request::is('medic/subscriptions/*/change') && ! Request::is('medic/subscriptions/*/buy')) 
+                        
+                            @foreach($monthlyCharge as $charge)
+                                @if($charge->type == 'M')
+                                  <div  class="item notification-app-item" >
+                                    Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail-{{ $charge->id }}">Ver Detalles</a>  
+                                      <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Pagar</a>
+                                     
+                                  </div>
+                                  
+                              
+                                @else 
+
+                                  <div  class="item notification-app-item" >
+                                    Tu subscripción ha vencido!! Renueva o cambia de Plan si deseas continuar..<a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Renovar</a> <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-danger btn-sm">Cambiar de plan</a>
+                                   
+                                  </div>
+                                
+                                @endif
+                              @endforeach
+                            @endif
+                   
+                       
+                              
+                            @foreach($userOfficesindependientes as $office)
+                              
+                                  <div class="item notification-app-item ">
+                                   
+                                    <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
+                                          {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                                           ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
+                                          <input class="form-control" type="hidden" name="notification" value="0">
+                                          <input class="form-control" type="hidden" name="id" value="{{ $office->id }}">
+                                      <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
+                                    </form>
+                                  </div>
+                              
+                              @endforeach
+                              
+                        
+                          @if( !auth()->user()->active )
+                             <div class="item notification-app-item ">     
+                                    
+                            Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class="popup-youtube" href="http://www.youtube.com/watch?v=DrYMxb-7WQI">EMPIECE AQUI!</a>
+                                
+                            </div>
+                          @endif
+                     
+                   
+              </div>
+
+              
+              
+            
+          </div>
+            @foreach($monthlyCharge as $charge)
+                  @if($charge->type == 'M')
+                    <div class="modal fade" id="modalPaymentDetail-{{ $charge->id }}" role="dialog" aria-labelledby="modalPaymentDetail">
+                      <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                          
+                          <h4 class="modal-title" id="modalPaymentDetailLabel">Detalle de Pago</h4>
+                          </div>
+                          <div class="modal-body" >
+                            
+
+                        <payment-details income_id="{{ $charge->id }}" ></payment-detials>
+                            
+                            
+                              
+                          </div>
+                          <div class="modal-footer" >
+                          
+                          
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                          
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                @else
+                    @include('layouts/partials/modal-subscriptions-change',['change' => 1])        
+                @endif
+            @endforeach
+        @endif
+
      @if(! Request::is('/'))
      <div class="menu-fixed">
           <div class="menu-fixed-container">
@@ -72,90 +179,11 @@
        </div>
 
     @endif
-      <section class="content menu">
-        @include('layouts/partials/home-boxes')  
-      </section>
+
+    <section class="content menu">
+      @include('layouts/partials/home-boxes')  
+    </section>
     
-     
-    <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-    
-     {{-- @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos. Puedes seguir editando tus opciones mientras se activa. <a class="popup-youtube" href="http://www.youtube.com/watch?v=DrYMxb-7WQI">EMPIECE AQUI!</a></div> 
-     
-     @endif --}}
-
-    @if (session()->has('flash_message'))
-
-      <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-    @endif
-     
-   
-    {{-- @if(!$userOffices)
-       <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/medic/account/edit?tab=clinics" title="Ir a consultorios">consultorios o clinica</a> para poder ser agregado en el catalogo de busquedas!</div> 
-     @endif --}}
-     
-     @if(! Request::is('medic/payments/create') && ! Request::is('medic/payments/*/create') && ! Request::is('medic/subscriptions/*/change') && ! Request::is('medic/subscriptions/*/buy')) 
-     <div class="notifications-container" >
-        @foreach($monthlyCharge as $charge)
-           @if($charge->type == 'M')
-            <div  class="notification-app alert-warning" >Tienes un monto pendiente de <b>{{ money($charge->amount,'$') }}</b> a pagar por citas atendidas! <a href="#" data-toggle="modal" data-target="#modalPaymentDetail">Ver Detalles</a>  
-            <a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Pagar</a>
-        
-          </div>
-          <div class="modal fade" id="modalPaymentDetail" role="dialog" aria-labelledby="modalPaymentDetail">
-                  <div class="modal-dialog " role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                      
-                      <h4 class="modal-title" id="modalPaymentDetailLabel">Detalle de Pago</h4>
-                      </div>
-                      <div class="modal-body" >
-                         
-
-                     <payment-details income_id="{{ $charge->id }}" ></payment-detials>
-                         
-                         
-                           
-                      </div>
-                       <div class="modal-footer" >
-                       
-                       
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                       
-                      </div>
-                    </div>
-                  </div>
-                </div>
-          @else 
-
-            <div  class="notification-app alert-warning" >Tu subscripción ha vencido!! Renueva o cambia de Plan si deseas continuar..<a href="{{ url('/medic/payments/'. $charge->id .'/create') }}" class="btn btn-info btn-sm">Renovar</a> <a href="#" data-toggle="modal" data-target="#modalSubscriptionChange" class="btn btn-danger btn-sm">Cambiar de plan</a>
-            
-          </div>
-          @include('layouts/partials/modal-subscriptions-change',['change' => 1]) 
-          @endif
-        @endforeach
-
-        @if($monthlyCharge->count())
-          <a href="{{ url('/medic/payments/create') }}" class="btn btn-success btn-sm btn-payall">Pagar todo</a>
-        @endif
-         
-    </div>
-    @endif
-    
-    
-     @foreach($userOfficesindependientes as $office)
-       @if($office->notification && $office->notification_date != '0000-00-00 00:00:00')
-         <div  class="notification-app alert-warning" style="margin-bottom: 1rem;">ACTUALIZAR UBICACIÓN CONSULTORIO {{ $office->name }} 
-          <form method="POST" action="{{ url('/medic/account/offices/'. $office->id .'/notification') }}" class="form-horizontal form-update-location">
-                {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                <input class="form-control" type="hidden" name="notification" value="0">
-                <input class="form-control" type="hidden" name="id" value="{{ $office->id }}">
-            <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
-          </form>
-         </div>
-        @endif 
-     @endforeach
     @yield('content')
     
   </div>
@@ -175,12 +203,22 @@
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
 <script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/slick/slick.min.js"></script>
  <!-- <script src="/js/plugins/hopscotch/js/hopscotch.min.js"></script>  -->
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
+<script>
+$(document).ready(function(){
 
+  $('.slider-notifications').slick({
+    prevArrow: '<span class="fa fa-angle-left"></span>',
+    nextArrow: '<span class="fa fa-angle-right"></span>'
+  });
+
+});
+</script>
 
  @yield('scripts')
 

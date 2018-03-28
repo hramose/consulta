@@ -286,9 +286,14 @@
 }
 .form-changeoffice{
 	float: left;
-	width: 150px;
+	width: 100px;
 	margin-top: 8px;
 
+}
+@media screen and (min-width:640px){
+	.form-changeoffice{
+		width: 150px;
+	}
 }
 .summary-flex{
 	display:flex;
@@ -548,8 +553,18 @@ td.fc-day.fc-past{
 }
 .notification-app{
 	text-align:center;
-	padding: .5rem;
-	margin-bottom: .5rem;
+	margin-bottom: 1rem;
+	
+	position: relative;
+	
+	.notification-app-item, .slider-notifications{
+		height: auto;
+		
+	}
+	.notification-app-item{
+		padding: 1rem 1rem 
+	}
+	
 	a {
 	  text-decoration: underline;
 	  color: white;
@@ -558,6 +573,40 @@ td.fc-day.fc-past{
 	.btn{
 		text-decoration: none;
 	}
+	.slick-arrow{
+		position: absolute;
+		top: 50%;
+		transform: translate(0, -50%);
+		font-size: 3rem;
+		color: white;
+		padding: 1.5rem 1rem;
+		cursor: pointer;
+		z-index: 2;
+	}
+	.fa-angle-left{
+		left: 0;
+	}
+	.fa-angle-right{
+		right: 0;
+	}
+}
+
+@media screen and (min-width:640px){
+	.notification-app{
+	
+		.notification-app-item, .slider-notifications{
+			height: 60px;
+			
+		}
+		.notification-app-item{
+			padding: 1.5rem 3rem 
+		}
+
+		.slick-arrow{
+			background-color: rgba(0, 0, 0, .1);
+		}
+	}
+		
 }
 
 .alert{

@@ -17,6 +17,7 @@
       <!-- Ionicons -->
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> -->
       <!-- Theme style -->
+      <link href="/js/plugins/slick/slick.css" rel="stylesheet">
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
 
        @yield('css')
@@ -61,10 +62,6 @@
    
     <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
     
-    <!-- @if(!auth()->user()->active)
-       <div  class="notification-app alert-danger" >Esta cuenta esta inactiva mientras el administrador verifica tus datos!</div> 
-     @endif -->
-
     @if (session()->has('flash_message'))
 
       <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
@@ -73,42 +70,39 @@
 
      
 
-
-        <div  class="notification-app alert-warning" style="margin-bottom: 1rem; height:60px;">
-             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="height:50px;">
-               
-                <div class="carousel-inner">
-                    
-                    @if( auth()->user()->pharmacies->first() && auth()->user()->pharmacies->first()->notification && auth()->user()->pharmacies->first()->notification_date != '0000-00-00 00:00:00')
-                        <div class="item notification-app-item active">
-                        
-                            ACTUALIZAR UBICACIÓN FARMACIA {{ auth()->user()->pharmacies->first()->name }} 
-                            <form method="POST" action="{{ url('/pharmacy/account/pharmacies/'. auth()->user()->pharmacies->first()->id .'/notification') }}" class="form-horizontal form-update-location" data-role="pharmacy">
-                                    {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
-                                    <input type="hidden" name="notification" value="0">
-                                    <input type="hidden" name="id" value="{{ auth()->user()->pharmacies->first()->id }}">
-                                <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
-                            </form>
-                        </div>
-                   @endif 
-                @if(!auth()->user()->active)
-                        <div class="item notification-app-item">
-                            
-                            Esta cuenta esta inactiva mientras el administrador verifica tus datos!
-                        
-                        </div>
-                   @endif
-                  
-                </div>
-                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                  <span class="fa fa-angle-left"></span>
-                </a>
-                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                  <span class="fa fa-angle-right"></span>
-                </a>
+        @if(count($notifications))
+          <div  class="notification-app alert-danger">
+              <div class="slider-notifications">
+                  @foreach($notifications as $notification) 
+                      <div class="item notification-app-item ">
+                        @if( $notification === 'location' )
+                              
+                                
+                                   
+                                    <form method="POST" action="{{ url('/pharmacy/account/pharmacies/'. auth()->user()->pharmacies->first()->id .'/notification') }}" class="form-horizontal form-update-location" data-role="pharmacy">
+                                            {{ csrf_field() }}<input name="_method" type="hidden" value="PUT">
+                                             ACTUALIZAR UBICACIÓN FARMACIA {{ auth()->user()->pharmacies->first()->name }} 
+                                            <input type="hidden" name="notification" value="0">
+                                            <input type="hidden" name="id" value="{{ auth()->user()->pharmacies->first()->id }}">
+                                        <button type="submit" class="btn btn-success btn-sm">Actualizar con tu ubicación actual</button>
+                                    </form>
+                              
+                          @endif 
+                          @if($notification === 'active' )
+                                
+                                    
+                                    Esta cuenta esta inactiva mientras el administrador verifica tus datos!
+                                
+                              
+                          @endif
+                      </div>
+                    @endforeach
               </div>
-           
-        </div>
+              
+              
+            
+          </div>
+        @endif
         
        
    
@@ -150,11 +144,21 @@
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script> 
 <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/js/plugins/slick/slick.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
+<script>
+$(document).ready(function(){
 
+  $('.slider-notifications').slick({
+    prevArrow: '<span class="fa fa-angle-left"></span>',
+    nextArrow: '<span class="fa fa-angle-right"></span>'
+  });
+
+});
+</script>
 
  @yield('scripts')
 

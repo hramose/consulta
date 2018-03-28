@@ -127,7 +127,6 @@ class PatientController extends Controller
         $search['status'] = 0;
         $scheduledAppointments = $this->appointmentRepo->findAllByPatient($id, $search);
 
-      
         $files = Storage::disk('public')->files('patients/' . $id . '/files');
 
         return view('pharmacy.patients.edit', compact('patient', 'files', 'initAppointments', 'scheduledAppointments'));

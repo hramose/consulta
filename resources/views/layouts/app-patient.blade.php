@@ -17,6 +17,7 @@
       <!-- Ionicons -->
       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> -->
       <!-- Theme style -->
+      <link href="/js/plugins/slick/slick.css" rel="stylesheet">
       <link href="{{ elixir('/css/app.css') }}" rel="stylesheet">
 
        @yield('css')
@@ -50,8 +51,48 @@
   
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper {{ (Request::segment(1)) ? 'bg-'.Request::segment(1) : 'bg-home' }}">
+     @if(count($notifications))
+          <div  class="notification-app alert-danger">
+              <div class="slider-notifications">
+                  @foreach($notifications as $notification) 
+                      <div class="item notification-app-item ">
+                        @if( $notification === 'patients' )
+                              
+                                
+                               Recuerda agregar tus <a href="/account/edit?tab=patients" title="Ir a pacientes">pacientes</a> para poder realizar citas en linea!
+                              
+                          @endif 
+                          @if($notification === 'active' )
+                                
+                                    
+                                    Esta cuenta esta inactiva. Ponte en contacto con el administrador del sitio!
+                                
+                              
+                          @endif
+                      </div>
+                    @endforeach
+              </div>
+              
+              
+            
+          </div>
+        @endif
     <div class="container">
-      @if(! Request::is('/') && ! Request::is('home'))
+      
+        
+        <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
+
+
+        @if (session()->has('flash_message'))
+
+          <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
+
+        @endif
+
+
+        
+
+         @if(! Request::is('/') && ! Request::is('home'))
         <div class="menu-fixed">
             <div class="menu-fixed-container">
               <a href="/" class="btn btn-sm btn-info {{ set_active('/') }}" >Buscar Médico</a>
@@ -67,21 +108,6 @@
           @include('layouts/partials/home-boxes-patient')  
         </section> 
         @endif 
-        
-        <alert :type="message.type" v-show="message.show" >@{{ message.text }}</alert>
-
-         @if(!auth()->user()->active)
-           <div  class="notification-app alert-danger" >Esta cuenta esta inactiva. Ponte en contacto con el administrador del sitio!</div> 
-         @endif
-
-        @if (session()->has('flash_message'))
-
-          <alert type="{!! session()->get('flash_message_level') !!}" >{!! session()->get('flash_message') !!}</alert>
-
-        @endif
-         @if(!auth()->user()->patients->count())
-           <div  class="notification-app alert-warning" >Recuerda agregar tus <a href="/account/edit?tab=patients" title="Ir a pacientes">pacientes</a> para poder realizar citas en linea!</div> 
-         @endif
          
         @yield('content')
     </div>
@@ -107,11 +133,21 @@
 <script src="/js/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script> -->
 <script src="/js/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/js/plugins/slick/slick.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <!--<script src="/js/bootstrap.min.js"></script>-->
 <!-- AdminLTE App -->
 <script src="{{ elixir('js/app-theme.min.js') }}"></script>
+<script>
+$(document).ready(function(){
 
+  $('.slider-notifications').slick({
+    prevArrow: '<span class="fa fa-angle-left"></span>',
+    nextArrow: '<span class="fa fa-angle-right"></span>'
+  });
+
+});
+</script>
 
  @yield('scripts')
 

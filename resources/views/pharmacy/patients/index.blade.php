@@ -6,7 +6,7 @@
 @endsection
 @section('content')
      <div id="infoBox" class="alert"></div>
- 
+
         @include('layouts/partials/header-pages',['page'=>'Pacientes'])
 
   
