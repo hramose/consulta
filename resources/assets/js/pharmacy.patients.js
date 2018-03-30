@@ -49,6 +49,7 @@ $(function () {
 
             
          });
+   
               $('#datetimepicker2').datetimepicker({
                           format: 'HH:mm',
                           stepping: stepping,
@@ -56,11 +57,27 @@ $(function () {
                           //useCurrent: false
                           
                       });
-             $('#datetimepicker3').datetimepicker({
+
+    $('#datetimepicker3').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: 'es',
+        defaultDate: new Date()
+
+
+    });
+             $('#datetimepicker4').datetimepicker({
                   format: 'HH:mm',
                   stepping: stepping,
                   useCurrent: false//Important! See issue #1075
               });
+    
+    $('#datetimepicker5').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: 'es',
+        defaultDate: new Date()
+
+
+    });
 
      $('#initAppointment').on('shown.bs.modal', function (event) {
           //debugger

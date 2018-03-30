@@ -10,10 +10,12 @@ use App\Repositories\UserRepository;
 use App\Mail\NewPatient;
 use App\Role;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Psugar;
+use App\Ppressure;
+use App\Pmedicine;
 
 class PatientController extends Controller
 {
@@ -251,9 +253,15 @@ class PatientController extends Controller
     /**
      * Agregar medicamentos a pacientes
      */
-    public function medicines($id)
+    public function medicines($patient_id)
     {
-        $medicine = $this->patientRepo->addMedicine($id, request()->all());
+        $this->validate(request(), [
+            'name' => 'required',
+            'date_purchase' => 'required',
+        ]);
+
+        $patient = $this->patientRepo->findById($patient_id);
+        $medicine = $patient->pmedicines()->create(request()->all());
 
         return  $medicine;
     }
@@ -261,84 +269,65 @@ class PatientController extends Controller
     /**
      * Eliminar medicamentos a pacientes
      */
-    public function deleteMedicines($id)
+    public function deleteMedicines($patient_id, $id)
     {
-        $medicine = $this->patientRepo->deleteMedicine($id);
+        $medicine = Pmedicine::findOrFail($id)->delete();
 
         return '';
     }
 
     /**
-     * Mostrar lista de pacientes para el formulario de consultas(citas)
+     * Agregar medicamentos a pacientes
      */
-    public function list()
+    public function pressures($patient_id)
     {
-        /*if(auth()->user()->hasRole('asistente'))
-        {
-            $boss_assistant = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
+        $this->validate(request(), [
+            'ps' => 'required|numeric',
+            'pd' => 'required|numeric',
+            'date_control' => 'required',
+            'time_control' => 'required'
+        ]);
 
-            $boss = User::find($boss_assistant->user_id);
-
-            $patients = $this->patientRepo->list(request('q'), $boss);
-
-            return $patients;
-        }*/
-
-        $patients = $this->patientRepo->listForClinics(request('q'));
-
-        return $patients;
-    }
-
-    public function verifyIsPatient()
-    {
-        $patient = $this->patientRepo->findById(request('patient_id'));
-
-        return ($patient->isPatientOf(request('medic_id'))) ? 'yes' : 'no';
-    }
-
-    /**
-     * Guardar paciente
-     */
-    public function addToYourPatients($id)
-    {
-        $id_patient_confirm = request('id_patient_confirm');
-
-        if ($id != $id_patient_confirm) {
-            flash('Id de confirmacion incorrecto', 'danger');
-
-            return back();
-        }
-
-        $patient = auth()->user()->patients()->attach($id);
-
-        flash('Paciente Agregado a tu lista', 'success');
-
-        return Redirect()->back();
-    }
-
-    /**
-    * Mostrar vista de todas las consulta(citas) de un doctor
-    */
-    public function invoices($patient_id)
-    {
         $patient = $this->patientRepo->findById($patient_id);
-        $searchDate['date1'] = Carbon::now()->subMonths(3);
-        $searchDate['date2'] = Carbon::now();
+        $pressures = $patient->ppressures()->create(request()->all());
 
-        if (request('date1')) {
-            $searchDate['date1'] = new Carbon(request('date1'));
-        }
+        return $pressures;
+    }
 
-        if (request('date2')) {
-            $searchDate['date2'] = new Carbon(request('date2'));
-        }
+    /**
+     * Eliminar medicamentos a pacientes
+     */
+    public function deletePressures($patient_id, $id)
+    {
+        $pressure = Ppressure::findOrFail($id)->delete();
 
-        $office = auth()->user()->offices->first();
+        return '';
+    }
 
-        $invoices = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->orderBy('created_at', 'DESC')->paginate(20);
+    /**
+     * Agregar medicamentos a pacientes
+     */
+    public function sugars($patient_id)
+    {
+        $this->validate(request(), [
+            'glicemia' => 'required|numeric',
+            'date_control' => 'required',
+            'time_control' => 'required'
+        ]);
 
-        $totalInvoicesAmount = $patient->invoices()->where('office_id', $office->id)->whereBetween('created_at', [$searchDate['date1']->startOfDay(), $searchDate['date2']->endOfDay()])->sum('total');
+        $patient = $this->patientRepo->findById($patient_id);
+        $sugars = $patient->psugars()->create(request()->all());
 
-        return view('pharmacy.patients.invoices', compact('patient', 'invoices', 'totalInvoicesAmount', 'searchDate'));
+        return $sugars;
+    }
+
+    /**
+     * Eliminar medicamentos a pacientes
+     */
+    public function deleteSugars($patient_id, $id)
+    {
+        $sugar = Psugar::findOrFail($id)->delete();
+
+        return '';
     }
 }

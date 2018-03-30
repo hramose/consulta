@@ -346,7 +346,6 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
     Route::post('/medics/{medic}/balance', 'Assistant\InvoiceController@balance');
     Route::get('/invoices/balance', 'Assistant\InvoiceController@generalBalance');
     Route::get('/patients/{patient}/invoices', 'Assistant\InvoiceController@patientInvoices');
-    
 
     Route::resource('invoices', 'Assistant\InvoiceController');
 });
@@ -428,13 +427,17 @@ Route::prefix('pharmacy')->middleware('authByRole:farmacia,asistente')->group(fu
     Route::post('/account/pharmacies', 'Pharmacy\UserController@updatePharmacy');
     Route::put('/account/pharmacies/{id}/notification', 'Pharmacy\PharmacyController@updateOfficeNotification');
 
-   
     Route::post('/patients/photos', 'Pharmacy\PatientController@photos');
     Route::post('/patients/files', 'Pharmacy\PatientController@files');
     Route::post('/patients/files/delete', 'Pharmacy\PatientController@deleteFiles');
     Route::put('/patients/{id}/history', 'Pharmacy\PatientController@history');
     Route::post('/patients/{id}/medicines', 'Pharmacy\PatientController@medicines');
-    Route::delete('/patients/medicines/{id}', 'Pharmacy\PatientController@deleteMedicines');
+    Route::delete('/patients/{patient_id}/medicines/{id}', 'Pharmacy\PatientController@deleteMedicines');
+    Route::post('/patients/{id}/pressures', 'Pharmacy\PatientController@pressures');
+    Route::delete('/patients/{patient_id}/pressures/{id}', 'Pharmacy\PatientController@deletePressures');
+    Route::post('/patients/{patient_id}/sugars', 'Pharmacy\PatientController@sugars');
+    Route::delete('/patients/{patient_id}/sugars/{id}', 'Pharmacy\PatientController@deleteSugars');
+
     Route::post('/patients/{id}/labresults', 'Pharmacy\PatientController@labResults');
     Route::delete('/patients/labresults/{id}', 'Pharmacy\PatientController@deleteLabResults');
     Route::post('/patients/{id}/add', 'Pharmacy\PatientController@addToYourPatients');
@@ -442,7 +445,7 @@ Route::prefix('pharmacy')->middleware('authByRole:farmacia,asistente')->group(fu
     Route::get('/patients/verify', 'Pharmacy\PatientController@verifyIsPatient');
     Route::get('/patients/{patient}/invoices', 'Pharmacy\PatientController@invoices');
     Route::resource('patients', 'Pharmacy\PatientController');
-    
+
     Route::get('/reports', 'Pharmacy\ReportsController@index');
     Route::get('/reports/generate', 'Pharmacy\ReportsController@generate');
     Route::get('/reports/incomes/generate', 'Pharmacy\ReportsController@incomes');
@@ -450,7 +453,6 @@ Route::prefix('pharmacy')->middleware('authByRole:farmacia,asistente')->group(fu
     Route::get('/register/pharmacy', 'Pharmacy\RegisterController@showRegistrationPharmacyForm');
     Route::post('/register/pharmacy', 'Pharmacy\RegisterController@registerPharmacy');
 });
-
 
 Route::get('/register', 'Auth\RegisterPatientController@showRegistrationForm');
 Route::post('/register', 'Auth\RegisterPatientController@register');
@@ -465,7 +467,6 @@ Route::post('/clinic/register', 'Auth\RegisterClinicController@register'); // re
 Route::get('/pharmacy/register', 'Pharmacy\RegisterController@showRegistrationForm');
 Route::post('/pharmacy/register/admin', 'Pharmacy\RegisterController@registerAdmin'); // registro nuevo de admin y pharmacy
 Route::post('/pharmacy/register', 'Auth\RegisterPharmacyController@register'); // registro profile temp pharmacy ya creada
-
 
 //login for patient
 Route::get('/user/login', 'Auth\LoginPatientController@login');

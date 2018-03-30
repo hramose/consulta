@@ -8,7 +8,7 @@
 	@include('layouts/partials/header-pages',['page'=>'Pacientes'])
 	<div class="row">
 		<div class="col-md-8">
-			
+			 <a href="{{ url('/pharmacy/patients/'.$patient->id .'/appointments/create') }}" class="btn btn-success" style="margin-left: 15px;margin-top: 5px;">Iniciar consulta farmaceutica</a>
 		</div>
 	</div>
 	<section class="content">
@@ -25,7 +25,10 @@
 	            <ul class="nav nav-tabs">
 	              <li class="active"><a href="#basic" data-toggle="tab">Información Básica</a></li>
 	        
-	              <li><a href="#appointments" data-toggle="tab">Consultas</a></li>
+	              <li class=""><a href="#pressure" data-toggle="tab">Control de presión</a></li>
+	              <li class=""><a href="#sugar" data-toggle="tab">Control de azúcar</a></li>
+	              <li class=""><a href="#medicines" data-toggle="tab">Medicamentos</a></li>
+ 				  
 	             
 	              
 	            </ul>
@@ -36,15 +39,44 @@
 					         @include('medic/patients/partials/form',['buttonText' => 'Actualizar Paciente', 'read'=>'true'])
 					    </form>
 
-				    </div>
-				   
-				    <!-- /.tab-pane -->
-				    <div class="tab-pane" id="appointments">
+					</div>
+					<div class="{{ isset($tab) ? ($tab =='pressure') ? 'active' : '' : 'active' }} tab-pane" id="pressure">
 						
-					      @include('medic/patients/partials/appointments', ['read' => 'true'])
+						<pharmacy-pressure-control :pressures="{{ $patient->ppressures()->orderBy('created_at','DESC')->get() }}" :patient="{{ $patient }}" today="{{ Carbon\Carbon::now()->toDateString() }}" time="{{ Carbon\Carbon::now()->toTimeString() }}"></pharmacy-pressure-control>	
+
+				    </div>
+				    <!-- /.tab-pane -->
+				    <div class="{{ isset($tab) ? ($tab =='sugar') ? 'active' : '' : '' }} tab-pane" id="sugar">
+					   <pharmacy-sugar-control :sugars="{{ $patient->psugars()->orderBy('created_at','DESC')->get() }}" :patient="{{ $patient }}" today="{{ Carbon\Carbon::now()->toDateString() }}" time="{{ Carbon\Carbon::now()->toTimeString() }}"></pharmacy-sugar-control>	
+				    </div>
+				    <!-- /.tab-pane -->
+				    <div class="{{ isset($tab) ? ($tab =='medicines') ? 'active' : '' : '' }} tab-pane" id="medicines">
+						
+					     <div class="box box-info">
+
+							    <div class="box-header with-border">
+							      <h3 class="box-title">Medicamentos</h3>
+
+							      <div class="box-tools pull-right">
+							        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+							        </button>
+							      </div>
+							      <!-- /.box-tools -->
+							    </div>
+							    <!-- /.box-header -->
+							    <div class="box-body">
+							     
+							       
+									<pharmacy-medicines :medicines="{{ $patient->pmedicines }}" :patient="{{ $patient }}" today="{{ Carbon\Carbon::now()->toDateString() }}"></pharmacy-medicines>	
+							      
+							        
+							    </div>
+							    <!-- /.box-body -->
+							</div>
 					    
 				    </div>
-				    <!-- /.tab-pane -->
+				   
+				 
 				    
 
 				              
@@ -59,7 +91,7 @@
 	  </div>
 	</section>
 
-	@include('medic/patients/partials/initAppointment')
+	
 
 @endsection
 @section('scripts')

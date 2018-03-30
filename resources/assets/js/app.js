@@ -74,6 +74,9 @@ Vue.component('nota-credito-debito-form', require('./components/NotaCreditoDebit
 Vue.component('invoice-general-form', require('./components/InvoiceGeneralForm.vue'));
 Vue.component('pharmacy', require('./components/Pharmacy.vue'));
 Vue.component('assistant-pharmacy-form', require('./components/AssistantPharmacyForm.vue'));
+Vue.component('pharmacy-sugar-control', require('./components/PharmacySugarControl.vue'));
+Vue.component('pharmacy-pressure-control', require('./components/PharmacyPressureControl.vue'));
+Vue.component('pharmacy-medicines', require('./components/PharmacyMedicines.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 
