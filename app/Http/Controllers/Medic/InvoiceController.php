@@ -9,7 +9,6 @@ use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Repositories\FacturaElectronicaRepository;
 use PDF;
 use App\Office;
 
@@ -19,7 +18,7 @@ class InvoiceController extends Controller
     {
         $this->middleware('auth');
         $this->invoiceRepo = $invoiceRepo;
-        $this->feRepo = new FacturaElectronicaRepository('test');
+       
     }
 
     /**
@@ -27,29 +26,23 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $fe = 0;
+        
         $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
         $search['clinic'] = request('clinic');
         $medic = auth()->user();
 
-        if ($medic->fe || $medic->offices()->where('fe', 1)->count()) {
-            $fe = 1;
-        }
-        //dd(empty($search['clinic']));
+      
         $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
-        
 
-        if(is_blank($search['clinic'])){
+        if (is_blank($search['clinic'])) {
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
-        }else{
-
+        } else {
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
         }
-        
 
-        return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
+        return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search'));
     }
 
     public function noInvoices()
@@ -64,18 +57,20 @@ class InvoiceController extends Controller
 
         $offices = auth()->user()->offices()->pluck('offices.id');
 
-        $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->whereDate('date', $searchDate)->doesntHave('invoices')->orderBy('created_at', 'DESC')->paginate(20);
+        $noInvoices = $medic->appointments()->whereIn('office_id', $offices)->where('status', 1)->where('finished', 1)->where('billed', 0)->whereDate('date', $searchDate)->orderBy('created_at', 'DESC')->paginate(20);
 
         return view('medic.invoices.no-invoices', compact('medic', 'noInvoices', 'searchDate'));
     }
 
     public function create()
     {
-        if (!auth()->user()->hasRole('medico') || !auth()->user()->offices()->where('type', 'Clínica Privada')->count()) {
+        if (!auth()->user()->hasRole('medico')) {
             return redirect('/medic/invoices');
         }
+        $patient = request('p');
 
-        return view('medic.invoices.create');
+        return view('medic.invoices.create', compact('patient'));
+
     }
 
     /**
@@ -83,33 +78,7 @@ class InvoiceController extends Controller
      */
     public function store()
     {
-        $office = Office::find(request('office_id'));
-        $fe = 0;
-        $fe_clinica = 0;
-
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $config = $office->configFactura->first();
-            $fe = $office->fe;
-            $fe_clinica = 1;
-        } else {
-            $config = auth()->user()->configFactura->first();
-            $fe = auth()->user()->fe;
-        }
-
-        if ($fe && !existsCertFile($config)) {
-            if($fe_clinica){
-                $errors = [
-                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
-                ];
-            }else{
-                $errors = [
-                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
-                ];
-            }
-
-            return response()->json(['errors' => $errors], 422, []);
-        }
-
+       
         $invoice = $this->invoiceRepo->store(request()->all());
 
         return $invoice;
@@ -120,31 +89,7 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
-        $invoice = $this->invoiceRepo->findById($id);
-        $office = $invoice->clinic;
-        $fe_clinica = 0;
-
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $config = $office->configFactura->first();
-            $fe_clinica = 1;
-        } else {
-            $config = $invoice->medic->configFactura->first();
-        }
-
-        if ($invoice->fe && !existsCertFile($config)) {
-            if ($fe_clinica) {
-                $errors = [
-                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
-                ];
-            } else {
-                $errors = [
-                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
-                ];
-            }
-
-            return response()->json(['errors' => $errors], 422, []);
-        }
-
+    
         $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
@@ -157,8 +102,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id);
         $invoice->load('lines');
-        $invoice->load('medic');
-        $invoice->load('appointment.patient');
+        $invoice->load('user');
 
         return $invoice;
     }
@@ -217,19 +161,8 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = $this->invoiceRepo->print($id);
-        $office = $invoice->clinic;
-
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
-            $configFactura = $invoice->medic->configFactura->first();
-        }
-
-        if (!$invoice->appointment) {
-            return view('medic.invoices.print-general', compact('invoice', 'configFactura'));
-        }
-
-        return view('medic.invoices.print', compact('invoice', 'configFactura'));
+      
+        return view('medic.invoices.print', compact('invoice'));
     }
 
     /**
@@ -239,59 +172,9 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->print($id);
 
-        $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
-            $configFactura = $invoice->medic->configFactura->first();
-        }
-
-        return view('medic.invoices.ticket', compact('invoice', 'configFactura'));
+        return view('medic.invoices.ticket', compact('invoice'));
     }
 
-    public function downloadXml($id)
-    {
-        return $this->invoiceRepo->xml($id);
-    }
 
-    public function downloadPdf($id)
-    {
-        //return $this->invoiceRepo->pdf($id);
-        $invoice = $this->invoiceRepo->findById($id);
-
-        return view('medic.invoices.pdf', compact('invoice'));
-    }
-
-    /**
-     * imprime resumen de la consulta
-     */
-    public function pdf($id)
-    {
-        $invoice = $this->invoiceRepo->findById($id);
-
-        $html = request('htmltopdf');
-        $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
-
-        $pdf::SetFont('helvetica', '', 9);
-
-        $pdf::SetTitle('Expediente Clínico');
-        $pdf::AddPage('L', 'A4');
-        $pdf::writeHTML($html, true, false, true, false, '');
-
-        $pdf::Output('gpsm_' . $invoice->clave_fe . '.pdf');
-    }
-
-    /*
-     public function balance()
-     {
-         $medic_id = auth()->id();
-
-         $this->invoiceRepo->balance($medic_id);
-
-
-         flash('Se ha ejecutado el cierre correctamente', 'success');
-
-         return Redirect()->back();
-     }*/
 }

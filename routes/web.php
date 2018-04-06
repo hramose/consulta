@@ -23,7 +23,7 @@ Route::get('/users/{id}/fe/recepcion/{clave}', 'FacturaElectronicaController@rec
 Route::get('/users/{id}/fe/comprobantes/{clave}', 'FacturaElectronicaController@comprobante');
 Route::get('/users/{id}/fe/comprobantes', 'FacturaElectronicaController@comprobantes');
 
-Route::get('/invoices/{id}/recepcion', 'FacturaElectronicaController@recepcionInvoice');
+Route::get('/facturas/{id}/recepcion', 'FacturaElectronicaController@recepcionInvoice');
 Route::put('/hacienda/messages/{id}/viewed', 'FacturaElectronicaController@haciendaNotificationViewed');
 Route::put('/assistant/hacienda/messages/{id}/viewed', 'FacturaElectronicaController@haciendaNotificationViewedByAssistant');
 
@@ -166,6 +166,7 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::put('/appointments/{id}/noshows', 'Medic\AppointmentController@noShows');
     Route::put('/appointments/{id}/finished', 'Medic\AppointmentController@finished');
     Route::put('/appointments/{id}/viewed', 'Medic\AppointmentController@viewed');
+    Route::put('/appointments/{id}/billed', 'Medic\AppointmentController@billed');
     Route::get('/appointments/{id}/create', 'Medic\AppointmentController@createFrom');
     //Route::get('/clinics/{clinic}/appointments', 'Medic\AppointmentController@appointmentsFromClinic');
     Route::get('/appointments/calendar', 'Medic\AppointmentController@create');
@@ -178,25 +179,34 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
 
     Route::get('/invoices', 'Medic\InvoiceController@index');
     Route::get('/no-invoices', 'Medic\InvoiceController@noInvoices');
-
     Route::get('/invoices/create', 'Medic\InvoiceController@create');
     Route::post('/balance', 'Medic\InvoiceController@balance');
     Route::put('/invoices/{id}', 'Medic\InvoiceController@update');
     Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
     Route::get('/invoices/{id}/print', 'Medic\InvoiceController@print');
     Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
-    Route::get('/invoices/{id}/recepcion', 'Medic\InvoiceController@recepcion');
-    Route::get('/invoices/{id}/download/xml', 'Medic\InvoiceController@downloadXml');
-    Route::get('/invoices/{id}/download/pdf', 'Medic\InvoiceController@downloadPdf');
-    Route::post('/invoices/{id}/pdf', 'Medic\InvoiceController@pdf');
-
-    Route::get('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@create');
-    Route::post('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@store');
-
-    Route::get('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@create');
-    Route::post('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@store');
-
     Route::resource('invoices', 'Medic\InvoiceController');
+
+
+    Route::get('/facturas', 'Medic\FacturaController@index');
+    Route::get('/facturas/create', 'Medic\FacturaController@create');
+    Route::put('/facturas/{id}', 'Medic\FacturaController@update');
+    Route::get('/facturas/{id}/details', 'Medic\FacturaController@getDetails');
+    Route::get('/facturas/{id}/print', 'Medic\FacturaController@print');
+    Route::get('/facturas/{id}/ticket', 'Medic\FacturaController@ticket');
+    Route::get('/facturas/{id}/recepcion', 'Medic\FacturaController@recepcion');
+    Route::get('/facturas/{id}/download/xml', 'Medic\FacturaController@downloadXml');
+    Route::get('/facturas/{id}/download/pdf', 'Medic\FacturaController@downloadPdf');
+    Route::post('/facturas/{id}/pdf', 'Medic\FacturaController@pdf');
+
+    Route::get('/facturas/{id}/notadebito', 'Medic\NotaDebitoController@create');
+    Route::post('/facturas/{id}/notadebito', 'Medic\NotaDebitoController@store');
+
+    Route::get('/facturas/{id}/notacredito', 'Medic\NotaCreditoController@create');
+    Route::post('/facturas/{id}/notacredito', 'Medic\NotaCreditoController@store');
+
+    Route::resource('facturas', 'Medic\FacturaController');
+
 
     Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
     Route::resource('physicalexams', 'Medic\PhysicalExamController');

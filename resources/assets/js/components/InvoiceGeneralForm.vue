@@ -185,7 +185,7 @@
 	import FormError from './FormError.vue';
   import vSelect from 'vue-select'
     export default {
-       // props:['office_id','nombre_cliente','correo_cliente','usa_fe'],
+     
        props: {
          office_id: {
           type: Number
@@ -204,10 +204,11 @@
           type:String,
           default: '/medic/invoices'
         },
-         usa_fe:{
-          type:Boolean,
-          default: false
+        urlServices:{
+          type:String,
+          default: '/medic/invoices'
         }
+        
        },
         data () {
 	        return {
@@ -229,7 +230,7 @@
             client_email:'',
             medio_pago:'01',
             condicion_venta:'01',
-            fe:0
+            
            
 	         
 	        
@@ -319,7 +320,7 @@
                 ['q']: search,
                 ['office_id']: this.office_id ? this.office_id : 0
               }
-            this.$http.get(this.url +'/services/list', {params: Object.assign(queryParam, this.data)})
+            this.$http.get(this.urlServices +'/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                
                this.services = resp.data
@@ -336,7 +337,7 @@
                     return
 
 		              this.loader = true;
-		              this.$http.post(this.url +'/services', {name: this.new_service, amount: this.amount, office_id: this.office_id}).then((response) => {
+		              this.$http.post(this.urlServices +'/services', {name: this.new_service, amount: this.amount, office_id: this.office_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if((response.status == 200 || response.status == 201) && response.data)
@@ -364,7 +365,7 @@
                   return
 
                 this.loader = true;
-                 var resource = this.$resource(this.url +'/services/'+ this.service.id);
+                 var resource = this.$resource(this.urlServices +'/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
                         
@@ -389,7 +390,7 @@
                 return
 
               this.loader = true;
-              this.$http.delete(this.url +'/services/'+this.service.id).then((response) => {
+              this.$http.delete(this.urlServices +'/services/'+this.service.id).then((response) => {
                     
                     if((response.status == 200 || response.status == 201) && response.data == 'ok')
                     {
@@ -453,7 +454,7 @@
                               cancelButtonText: 'No'
                             }).then(function () {
 
-                              window.location.href = "/medic/invoices/";
+                              window.location.href = this.url;
 
                             }, function(dismiss) {
                               
@@ -481,7 +482,7 @@
                
                this.client_name = this.nombre_cliente
                this.client_email = this.correo_cliente
-               this.fe = this.usa_fe
+            
 
        	    console.log('Component ready. InvoiceForm');
 

@@ -24,8 +24,7 @@
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Imprimir</a>
-          <a href="/medic/appointments/{{ $invoice->appointment->id}}/edit" class="btn btn-success pull-right"><i class="fa fa-edit"></i> Regresar a consulta
-          </a>
+         
 
            <a href="/medic/invoices" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturación
           </a>

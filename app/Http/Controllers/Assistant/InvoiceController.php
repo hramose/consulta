@@ -10,7 +10,6 @@ use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\MedicRepository;
 use App\Repositories\PatientRepository;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
@@ -39,7 +38,6 @@ class InvoiceController extends Controller
         $office = auth()->user()->clinicsAssistants->first();
         $medics = $this->medicRepo->findAllByOffice($office->id);
 
-
         if ($office->fe) {
             $fe = 1;
         }
@@ -47,7 +45,6 @@ class InvoiceController extends Controller
         $invoices = Invoice::where('office_id', $office->id)->whereDate('created_at', $search['date']);
 
         if (is_blank($search['medic'])) {
-            
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->sum('total');
         } else {
@@ -55,46 +52,12 @@ class InvoiceController extends Controller
             $totalInvoicesAmount = $invoices->where('user_id', $search['medic'])->sum('total');
         }
 
-
-
-        return view('assistant.invoices.index', compact('medics','office', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
+        return view('assistant.invoices.index', compact('medics', 'office', 'invoices', 'totalInvoicesAmount', 'search', 'fe'));
     }
-
-    // /**
-    //  * Mostrar vista de todas las consulta(citas) de un doctor
-    //  */
-    // public function index()
-    // {
-    //     $search['q'] = request('q');
-
-    //     /* $assistants_users = \DB::table('assistants_users')->where('assistant_id',auth()->id())->first();
-
-    //      if(auth()->user()->isMedicAssistant($assistants_users->user_id))
-    //          $offices = User::find($assistants_users->user_id)->offices()->where('type','Consultorio Independiente')->pluck('offices.id');//first();
-    //      if(auth()->user()->isClinicAssistant($assistants_users->user_id))
-    //          $offices = User::find($assistants_users->user_id)->offices()->where('type','Clínica Privada')->pluck('offices.id');*/
-
-    //     //$assistant = User::find(auth()->id())->with('clinicsAssistants');
-    //     //    dd( $assistant->all());
-    //     $office = auth()->user()->clinicsAssistants->first();
-
-    //     $medics = $this->medicRepo->findAllByOffice($office->id);
-
-    //     if (request('medic')) {
-    //         $medic = $this->medicRepo->findById(request('medic'));
-    //     } else {
-    //         $medic = null;
-    //     }
-
-    //     $invoices = Invoice::where('office_id', $office->id)->where('status', 0)->orderBy('created_at', 'DESC')->limit(10)->get();
-
-    //     return view('assistant.invoices.index', compact('medics', 'medic', 'search', 'invoices'));
-    // }
 
     /**
      * Mostrar vista de todas las consulta(citas) de un doctor
      */
-   
     public function create()
     {
         // if (!auth()->user()->hasRole('medico') || !auth()->user()->offices()->where('type', 'Clínica Privada')->count())
@@ -202,11 +165,11 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepo->findById($id);
         $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $config = $office->configFactura->first();
-        } else {
-            $config = $invoice->medic->configFactura->first();
-        }
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $config = $office->configFactura->first();
+        // } else {
+        $config = $invoice->medic->configFactura->first();
+        //}
 
         if ($invoice->fe && !existsCertFile($config)) {
             $errors = [
@@ -268,16 +231,15 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepo->print($id);
         $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $configFactura = $office->configFactura->first();
+        // } else {
             $configFactura = $invoice->medic->configFactura->first();
-        }
+       // }
 
         // if (!$invoice->appointment) {
         //     return view('medic.invoices.print-general', compact('invoice', 'configFactura'));
         // }
-
 
         return view('assistant.invoices.print', compact('invoice', 'configFactura'));
     }
@@ -290,11 +252,11 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepo->print($id);
         $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $configFactura = $office->configFactura->first();
+        // } else {
             $configFactura = $invoice->medic->configFactura->first();
-        }
+      //  }
 
         return view('assistant.invoices.ticket', compact('invoice', 'configFactura'));
     }
@@ -331,37 +293,7 @@ class InvoiceController extends Controller
         $pdf::Output('gpsm_' . $invoice->clave_fe . '.pdf');
     }
 
-    /**
-    * Lista de todas las citas de un doctor sin paginar
-    */
-    /*public function balance($medic_id)
-    {
-
-
-        $invoices = Invoice::where('user_id', $medic_id)->where('status', 1)->whereDate('created_at',Carbon::now()->toDateString());
-        $totalInvoices =  $invoices->sum('total');
-        $countInvoices =  $invoices->count();
-
-        if($countInvoices == 0)
-        {
-            flash('No hay Facturas nuevas para ejecutar un cierre','error');
-
-            return Redirect()->back();
-        }
-
-        $balance = Balance::create([
-            'user_id' => $medic_id,
-            'invoices' => $countInvoices,
-            'total' => $totalInvoices
-            ]);
-
-
-        flash('Se ha ejecutado el cierre correctamente','success');
-
-        return Redirect()->back();
-
-
-    }*/
+   
 
     public function generalBalance()
     {

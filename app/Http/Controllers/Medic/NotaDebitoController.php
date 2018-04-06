@@ -3,50 +3,52 @@
 namespace App\Http\Controllers\Medic;
 
 use App\Http\Controllers\Controller;
-use App\Invoice;
-use App\Repositories\InvoiceRepository;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
+use App\Repositories\FacturaRepository;
 
 class NotaDebitoController extends Controller
 {
-    public function __construct(InvoiceRepository $invoiceRepo)
+    public function __construct(FacturaRepository $facturaRepo)
     {
         $this->middleware('auth');
-        $this->invoiceRepo = $invoiceRepo;
+        $this->facturaRepo = $facturaRepo;
         $this->feRepo = new FacturaElectronicaRepository('test');
     }
 
-    public function create($invoice_id)
+    public function create($factura_id)
     {
-        $invoice = $this->invoiceRepo->findById($invoice_id);
+        $factura = $this->facturaRepo->findById($factura_id);
 
-        if ($invoice->user_id != auth()->id()) {
+        if ($factura->user_id != auth()->id()) {
             return redirect('/');
         } //verifica que la factura es del medico q la solicita
         
         $typeDocument = '02';
 
-        return view('medic.invoices.nota-credito-debito', compact('invoice', 'typeDocument'));
+        return view('medic.facturas.nota-credito-debito', compact('factura', 'typeDocument'));
     }
 
     /**
      * Guardar consulta(cita)
      */
-    public function store($invoice_id)
+    public function store($factura_id)
     {
-        $invoice = $this->invoiceRepo->findById($invoice_id);
-        $office = $invoice->clinic;
+        $factura = $this->facturaRepo->findById($factura_id);
+        $office = $factura->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $config = $office->configFactura->first();
+         $config = $factura->obligadoTributario;
 
-        } else {
-            $config = auth()->user()->configFactura->first();
 
-        }
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $config = $office->configFactura->first();
 
-        if ($invoice->fe && !existsCertFile($config)) {
+        // } else {
+        //     $config = auth()->user()->configFactura->first();
+
+        // }
+
+        if (!existsCertFile($config)) {
             $errors = [
                 'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
             ];
@@ -54,7 +56,7 @@ class NotaDebitoController extends Controller
             return response()->json(['errors' => $errors], 422, []);
         }
 
-        $notaDebito = $this->invoiceRepo->notaCreditoDebito(request()->all(), $invoice_id);
+        $notaDebito = $this->facturaRepo->notaCreditoDebito(request()->all(), $factura_id);
 
         return $notaDebito;
     }

@@ -283,6 +283,10 @@
                 type:String,
                 default: '/medic/invoices'
             },
+            urlServices:{
+                type:String,
+                default: '/medic/invoices'
+            },
             type:{
                 type:String,
                 default: '02' // nota de debito
@@ -466,7 +470,7 @@
                 ['q']: search,
                 ['office_id']: this.originalInvoice.office_id
               }
-            this.$http.get(this.url + '/services/list', {params: Object.assign(queryParam, this.data)})
+            this.$http.get(this.urlServices + '/services/list', {params: Object.assign(queryParam, this.data)})
             .then(resp => {
                
                this.services = resp.data
@@ -483,7 +487,7 @@
                     return
 
 		              this.loader = true;
-		              this.$http.post(this.url + '/services', {name: this.new_service, amount: this.amount, office_id:this.originalInvoice.office_id}).then((response) => {
+		              this.$http.post(this.urlServices + '/services', {name: this.new_service, amount: this.amount, office_id:this.originalInvoice.office_id}).then((response) => {
 		                    console.log(response.status);
 		                    console.log(response.data);
 		                    if((response.status == 200 || response.status == 201) && response.data)
@@ -511,7 +515,7 @@
                   return
 
                 this.loader = true;
-                 var resource = this.$resource(this.url + '/services/'+ this.service.id);
+                 var resource = this.$resource(this.urlServices + '/services/'+ this.service.id);
 
                     resource.update({ name:this.new_service, amount: this.amount}).then((response) => {
                         
@@ -536,7 +540,7 @@
                 return
 
               this.loader = true;
-              this.$http.delete(this.url + '/services/'+this.service.id).then((response) => {
+              this.$http.delete(this.urlServices + '/services/'+this.service.id).then((response) => {
                     
                     if((response.status == 200 || response.status == 201) && response.data == 'ok')
                     {

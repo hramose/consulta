@@ -31,7 +31,7 @@
 		               <li><a href="#physical" data-toggle="tab">Examen Fisico</a></li>
 					   <li><a href="#labexam" data-toggle="tab">Pruebas Diagnósticas</a></li>
 		                <li><a href="#diagnostic" data-toggle="tab">Diagnostico y Tratamiento</a></li>
-		                <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li>
+		                <!-- <li><a href="#invoice" data-toggle="tab" class="invoice-tab">Facturar</a></li> -->
 		                
 		            </ul>
 		            <div class="tab-content">
@@ -138,8 +138,8 @@
 			              		</div>
 		              </div>
 		               <!-- /.tab-pane -->
-		                <div class="tab-pane" id="invoice">
-								@if(\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1)
+		                <!-- <div class="tab-pane" id="invoice">
+							{-- 	@if(\Carbon\Carbon::now()->ToDateString() > $appointment->date || $appointment->finished == 1)
 									 <div class="callout callout-danger">
 					                    <h4>Información importante!</h4>
 
@@ -158,15 +158,10 @@
 			              				<invoice-form :appointment_id="{{ $appointment->id }}" :patient_id="{{ $appointment->patient_id }}" :office_id="{{ $appointment->office->id }}" office_type="{{ $appointment->office->type }}" facturar_a="{{ $appointment->office->bill_to }}" nombre_cliente="{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}" correo_cliente="{{ $appointment->patient->email }}" :usa_fe="{{ auth()->user()->fe }}"></invoice-form>
 			              			</div>
 			              		</div>
-			              		<!-- <div class="row">
-									<div class="col-md-12">
-										<h3>Facturas del Día</h3>
-			              				<invoice-list :invoices="{{ auth()->user()->invoices()->with('clinic')->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->orderBy('created_at','DESC')->get() }}" :total="{{ auth()->user()->invoices()->whereDate('created_at',\Carbon\Carbon::now()->ToDateString())->sum('total') }}"></invoice-list>
-			              			</div>
-			              		</div> -->
-			              		@endif
 			              		
-		              </div>
+			              		@endif --}
+			              		
+		              </div> -->
 		               
 		               <!-- /.tab-pane -->
 		            </div>
@@ -268,9 +263,16 @@
 				success: function (resp) {
 					
 					console.log('cita finalizada');
+					
+					var urlFacturacion = '/medic/invoices/create?p={{ $appointment->patient->fullname }}';
+					
+					if(window.Laravel.fe){
+						 urlFacturacion = '/medic/facturas/create?p={{ $appointment->patient->fullname }}'
+					}
+
 					swal({
-						title: 'Terminando Consulta!',
-						text: "Desea agendar un seguimiento a este paciente o volver a la agenda del día?",
+						title: 'Consulta Terminada!',
+						html: "Deseas facturar o agendar un seguimiento a este paciente o volver a la agenda del día? <br><br> <a href='"+ urlFacturacion +"' class='btn btn-success btn-facturar' style='padding: 10px 32px;font-size:17px;'>Facturar</a>",
 						//type: 'info',
 						showCancelButton: true,
 						confirmButtonColor: '#3085d6',
@@ -300,6 +302,37 @@
 				},
 				error: function () {
 					console.log('error finalizando citan');
+
+				}
+
+			});
+				
+        
+	});
+	
+	$('body').on('click','.btn-facturar', function (e) {
+		e.preventDefault()
+
+        $.ajax({
+				type: 'PUT',
+				url: '/medic/appointments/{{ $appointment->id }}/billed',
+				data: {},
+				success: function (resp) {
+					
+					console.log('cita facturada');
+					
+					var urlFacturacion = '/medic/invoices/create?p={{ $appointment->patient->fullname }}';
+					
+					if(window.Laravel.fe){
+						 urlFacturacion = '/medic/facturas/create?p={{ $appointment->patient->fullname }}'
+					}
+
+					window.location = urlFacturacion;
+
+					
+				},
+				error: function () {
+					console.log('error facturando cita');
 
 				}
 

@@ -50,11 +50,11 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepo->print($id);
         $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $configFactura = $office->configFactura->first();
+        // } else {
             $configFactura = $invoice->medic->configFactura->first();
-        }
+       // }
 
         if (!$invoice->appointment) {
             return view('medic.invoices.print-general', compact('invoice', 'configFactura'));
@@ -71,11 +71,11 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepo->print($id);
         $office = $invoice->clinic;
 
-        if ($office && str_slug($office->type, '-') == 'clinica-privada') {
-            $configFactura = $office->configFactura->first();
-        } else {
+        // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
+        //     $configFactura = $office->configFactura->first();
+        // } else {
             $configFactura = $invoice->medic->configFactura->first();
-        }
+        //}
 
         return view('clinic.invoices.ticket', compact('invoice', 'configFactura'));
     }

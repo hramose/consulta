@@ -26,22 +26,19 @@
                             {{ $invoice->clinic->canton }}, {{ $invoice->clinic->province }}<br>
                             {{ $invoice->clinic->address }}<br>
                             <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
-                            @if($invoice->fe)
-                                <b>Ced:</b> {{ $invoice->medic->configFactura->identificacion }}<br>
-                                <b>Nombre:</b> {{ $invoice->medic->configFactura->nombre }}
-                            @else 
+                           
                                 @if($invoice->clinic->type == 'Consultorio Independiente')
                                     @if($invoice->clinic->bill_to == 'C')
                                     <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
                                     <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
                                     @else 
-                                    <b>Ced:</b> {{ $invoice->medic->ide }}<br>
-                                        <b>Nombre:</b> {{ $invoice->medic->name }}
+                                    <b>Ced:</b> {{ $invoice->user->ide }}<br>
+                                        <b>Nombre:</b> {{ $invoice->user->name }}
                                     @endif
                                 @else
                                     @if($invoice->bill_to == 'M')
-                                    <b>Ced:</b> {{ $invoice->medic->ide }}<br>
-                                    <b>Nombre:</b> {{ $invoice->medic->name }}
+                                    <b>Ced:</b> {{ $invoice->user->ide }}<br>
+                                    <b>Nombre:</b> {{ $invoice->user->name }}
                                     @else 
                                     <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
                                     <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
@@ -49,7 +46,7 @@
                                     
                                 @endif
 
-                            @endif
+                           
                             
                             </address>
 						</div>
@@ -58,23 +55,14 @@
 							<td>
 									
 							<div class="col-sm-4 invoice-col" style="text-align: center;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">
-							 @if($invoice->fe)
-                             <div class="invoice-number">
-                                <h3>{{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}:</h3>
-                                <span>{{$invoice->consecutivo_hacienda }}</span>
-                                
-                            </div>
-                             <span>{{ $invoice->clave_fe }}</span> <br> 
-                             <span><b>Condicion venta:</b> {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}</span> <br>  
-                             <span><b>Medio Pago:</b> {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}</span>  <br> 
-                            @else
+							
                                
                                 <h3>Nro. Factura:</h3>
                                 <h4>{{$invoice->consecutivo }}</h4>
                                 
                                  <span><b>Condicion venta:</b> {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}</span> <br>  
                                  <span><b>Medio Pago:</b> {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}</span> <br> 
-                            @endif
+                          
                             
                            
                             <b>Fecha emisión:</b> {{ $invoice->created_at }}<br> 
@@ -116,8 +104,8 @@
 								
 							<div class="col-xs-4 invoice-col invoice-right" style="text-align: right;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">
                               @if($invoice->appointment)   
-                                <b>Médico:</b> {{ $invoice->medic->name }}<br>
-                                @foreach($invoice->medic->specialities as $speciality)
+                                <b>Médico:</b> {{ $invoice->user->name }}<br>
+                                @foreach($invoice->user->specialities as $speciality)
                                 {{ $speciality->name }} 
                                 @endforeach
                              @endif
@@ -169,11 +157,7 @@
                         <td colspan="2">
                             <div class="col-xs-6">
           
-                            @if($invoice->fe)
-                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                @include('medic.invoices.partials.notaHacienda')
-                            </p>
-                            @endif
+                           
                             </div>
                         </td>
                         <td style="padding-top:15px;">

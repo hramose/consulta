@@ -186,7 +186,7 @@ $(function () {
               
               var consecutivo = resp.consecutivo;
 
-               modal.find('#modal-label-medic').text(resp.medic.name);
+               modal.find('#modal-label-medic').text(resp.user.name);
               if (resp.appointment) {
                 modal.find('#modal-label-patient').text(resp.appointment.patient.fullname);
                 $('input[name="client_name"]').val((resp.client_name) ? resp.client_name : resp.appointment.patient.fullname);

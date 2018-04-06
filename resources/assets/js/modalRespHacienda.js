@@ -4,7 +4,7 @@ $(function () {
     $('#modalRespHacienda').on('shown.bs.modal', function (event) {
 
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var invoiceId = button.attr('data-invoice') // Extract info from data-* attributes
+        var facturaId = button.attr('data-factura') // Extract info from data-* attributes
         
         $('.loader').show();
         $("#resp-clave").text('')
@@ -14,7 +14,7 @@ $(function () {
         $("#resp-detalle").text('')
         $.ajax({
             type: 'GET',
-            url: '/invoices/' + invoiceId + '/recepcion',
+            url: '/facturas/' + facturaId + '/recepcion',
             data: { _token: $('meta[name="csrf-token"]').content },
             success: function (resp) {
                 $('.loader').hide();

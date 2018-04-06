@@ -27,9 +27,6 @@
     </section>
     <!-- /.content -->
 		
-@if($invoice->fe)
-    @include('medic/invoices/partials/status-hacienda-modal')
-@endif
 </section>
  @endsection
  @section('scripts')

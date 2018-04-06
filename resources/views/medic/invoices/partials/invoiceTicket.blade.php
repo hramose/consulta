@@ -1,24 +1,4 @@
-    @if($invoice->fe && $invoice->status_fe != 'aceptado')  
-        <div class="row">
-          <div class="col-xs-12">
-          
-              <div class="callout callout-warning">
-                <h4>Información importante!</h4>
-
-                 @if($invoice->status_fe)
-                  <p>Estado: {{ $invoice->status_fe }}. Parece que la factura aun no ha sido aprobada por Hacienda. Puedes verificar desde este enlace por que no ha sido aprobada <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Comprobar estado de factura" data-invoice="{{ $invoice->id }}"><b>Comprobar estado de factura</b></a>
-                @else 
-                    <p>Parece hubo un problema en la conexion con hacienda y la factura no pudo ser enviada. Puedes tratar de reeviarla desde el panel de facturación en el siguiente enlace <a href="/medic/invoices" title="Panel de facturacion"><b>Facturación</b></a>
-                @endif
-              
-              </p>
-              </div>
-              
-          
-          </div>
-          <!-- /.col -->
-        </div>
-       @endif
+    
       
       <div class="row">
         <div class="col-xs-12">
@@ -35,22 +15,19 @@
           
           <address style="word-wrap: break-word;">
             <strong>{{ $invoice->clinic->name }}</strong><br>
-            @if($invoice->fe)
-              Ced: {{ $invoice->medic->configFactura->identificacion }}<br>
-              Nombre: {{ $invoice->medic->configFactura->nombre }}
-            @else 
+           
                 @if($invoice->clinic->type == 'Consultorio Independiente')
                     @if($invoice->clinic->bill_to == 'C')
                       Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
                       Nombre: {{ $invoice->clinic->ide_name }}
                     @else 
-                      Ced: {{ $invoice->medic->ide }}<br>
-                      Nombre: {{ $invoice->medic->name }}
+                      Ced: {{ $invoice->user->ide }}<br>
+                      Nombre: {{ $invoice->user->name }}
                     @endif
                 @else
                     @if($invoice->bill_to == 'M')
-                    Ced: {{ $invoice->medic->ide }}<br>
-                    Nombre: {{ $invoice->medic->name }}
+                    Ced: {{ $invoice->user->ide }}<br>
+                    Nombre: {{ $invoice->user->name }}
                     @else 
                     Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
                     Nombre: {{ $invoice->clinic->ide_name }}
@@ -58,27 +35,18 @@
                     
                 @endif
 
-            @endif
+          
             {{ $invoice->clinic->address }}<br>
             Tel: {{ $invoice->clinic->phone }}<br>
-             @if($invoice->fe)
             
-              {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}:<br>
-              {{$invoice->consecutivo_hacienda }}
-              
-            
-            {{ $invoice->clave_fe }}<br>
-            Condicion venta:{{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}<br>
-            Medio Pago: {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}<br>
-            @else
              Nro. Factura: {{$invoice->consecutivo }}<br>
              Condicion venta: {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}<br>
              Medio Pago: {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}<br>
-            @endif
+           
             Fecha emisión: {{ $invoice->created_at }}<br>
             Cliente: {{ $invoice->client_name }}<br>
             @if($invoice->appointment)    
-              Médico: {{ $invoice->medic->name }}<br>
+              Médico: {{ $invoice->user->name }}<br>
             @endif
           </address>
         </div>
@@ -149,9 +117,7 @@
         <!-- accepted payments column -->
         
         <div class="col-xs-12">
-            @if($invoice->fe)
-            <p>@include('medic.invoices.partials.notaHacienda')</p>
-           @endif
+           
         </div>
         <!-- /.col -->
       </div>

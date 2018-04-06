@@ -27,8 +27,8 @@
           <div>
            
             <a href="/medic/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
-            @if(auth()->user()->hasRole('medico') && auth()->user()->offices()->where('type', 'Clínica Privada')->count())
-            <a href="/medic/invoices/create" class="btn btn-success">Crear Factura por servicios a clínicas privadas</a>
+            @if(auth()->user()->hasRole('medico') && !auth()->user()->fe)
+            <a href="/medic/invoices/create" class="btn btn-success">Crear Factura</a>
             @endif
          </div>
           <div class="box box-default box-calendar">
@@ -58,7 +58,7 @@
                               @foreach(auth()->user()->offices as $userClinic)
                                 <option value="{{  $userClinic->id }}" {{ (isset($search) && $search['clinic'] == $userClinic->id) ? 'selected' : '' }}>{{  $userClinic->name }}</option>
                               @endforeach
-                              <option value="0" {{ (isset($search) && $search['clinic'] == '0') ? 'selected' : '' }}>Por servicios a clínicas privadas</option>
+                              <!-- <option value="0" {{ (isset($search) && $search['clinic'] == '0') ? 'selected' : '' }}>Por servicios a clínicas privadas</option> -->
                             </select>
                           
                           </div>
@@ -79,16 +79,6 @@
                         <th>Clínica</th>
                         <th>Cliente</th>
                         <th>Total</th>
-                        @if($fe)
-                        <th>Tipo Doc</th>
-                        <th>Num. Consecutivo</th>
-                        <th>Estado Hacienda</th>
-                        <th>Generar NC</th>
-                        <th>Generar ND</th>
-                        <th>Ver XML</th>
-                        <!-- <th>Ver PDF</th> -->
-                      
-                        @endif
                         <th></th>
                       </tr>
                       </thead>
@@ -114,52 +104,8 @@
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
-                            <!-- <td>
-                                @if($invoice->status)
-                                  <span class="label label-success">Facturada</span>
-                                @endif
-                            </td> -->
-                            @if($fe)
                            
-                              <td>
-                                @if($invoice->fe)
-                                <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
-                                @endif
-                              </td>
-                              <td>
-                                {{ $invoice->consecutivo_hacienda }}
-                              </td>
-                            <td>
-                              @if($invoice->fe)
-                                  @if($invoice->sent_to_hacienda)
-                                    @if($invoice->status_fe)
-                                      <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
-                                    @else
-                                      <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
-                                    @endif
-                                  @elseif($invoice->status)
-                                      
-                                    <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
-                                  @endif
-                              @endif
-                            </td>
-                            <td>
-                              @if($invoice->fe && $invoice->status)
-                                <a href="/medic/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
-                               @endif
-                            </td>
-                            <td>
-                              @if($invoice->fe && $invoice->status)
-                              <a href="/medic/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
-                             @endif
-                            </td>
-                            <td>
-                              @if($invoice->fe && $invoice->status)
-                              <a href="/medic/invoices/{{ $invoice->id }}/download/xml">XML</a>
-                              @endif
-                            </td>
-                            
-                            @endif
+                           
                             <td>
                               @if($invoice->status)
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
@@ -202,10 +148,6 @@
     @include('medic/invoices/partials/modal')
   
 
-   @if($medic->fe)
-        @include('medic/invoices/partials/status-hacienda-modal')
-       
-    @endif
 @endsection
 @section('scripts')
 <script src="/js/bootstrap.min.js"></script>
@@ -213,7 +155,7 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
- <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{ elixir('/js/invoices.min.js') }}"></script>
- <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
+
 @endsection

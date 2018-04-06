@@ -12,6 +12,7 @@ use App\Events\HaciendaResponse;
 use Carbon\Carbon;
 use App\HaciendaNotification;
 use App\Events\HaciendaResponseToAssistant;
+use App\Repositories\FacturaRepository;
 
 class FacturaElectronicaController extends Controller
 {
@@ -20,12 +21,12 @@ class FacturaElectronicaController extends Controller
      *
      * @return void
      */
-    public function __construct(Client $client, UserRepository $userRepo, InvoiceRepository $invoiceRepo)
+    public function __construct(Client $client, UserRepository $userRepo, FacturaRepository $facturaRepo)
     {
         $this->middleware('auth')->except('haciendaResponse');
         $this->client = $client;
         $this->userRepo = $userRepo;
-        $this->invoiceRepo = $invoiceRepo;
+        $this->facturaRepo = $facturaRepo;
         $this->feRepo = new FacturaElectronicaRepository('test');
     }
 
@@ -122,7 +123,7 @@ class FacturaElectronicaController extends Controller
 
     public function recepcionInvoice($id)
     {
-        $invoice = $this->invoiceRepo->recepcionHacienda($id);
+        $invoice = $this->facturaRepo->recepcionHacienda($id);
 
         return $invoice;
     }
