@@ -27,8 +27,8 @@
                             {{ $factura->clinic->address }}<br>
                             <b>Tel:</b> {{ $factura->clinic->phone }}<br>
                            
-                            <b>Ced:</b> {{ $factura->user->configFactura->identificacion }}<br>
-                            <b>Nombre:</b> {{ $factura->user->configFactura->nombre }}
+                            <b>Ced:</b> {{ $configFactura->identificacion }}<br>
+                            <b>Nombre:</b> {{ $configFactura->nombre }}
                             
                             
                             </address>
@@ -156,14 +156,14 @@
                                     <th><b>Total:</b>   </th>
                                     <td>{{ money($factura->total, '&cent;') }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <th><b>Pago con:</b> </th>
                                     <td>{{ money($factura->pay_with, '&cent;') }}</td>
                                 </tr>
                                 <tr>
                                     <th><b>Vuelto:</b></th>
                                     <td>{{ money($factura->change, '&cent;') }}</td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </td>
                     </tr>

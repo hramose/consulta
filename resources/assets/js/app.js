@@ -77,6 +77,8 @@ Vue.component('assistant-pharmacy-form', require('./components/AssistantPharmacy
 Vue.component('pharmacy-sugar-control', require('./components/PharmacySugarControl.vue'));
 Vue.component('pharmacy-pressure-control', require('./components/PharmacyPressureControl.vue'));
 Vue.component('pharmacy-medicines', require('./components/PharmacyMedicines.vue'));
+Vue.component('invoice-modal', require('./components/InvoiceModal.vue'));
+Vue.component('loading', require('./components/Loading.vue'));
 //Vue.component('wizard-schedule', require('./components/WizardSchedule.vue'));
 /*import VeeValidate from 'vee-validate';
 

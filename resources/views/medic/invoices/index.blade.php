@@ -27,7 +27,7 @@
           <div>
            
             <a href="/medic/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
-            @if(auth()->user()->hasRole('medico') && !auth()->user()->fe)
+            @if(auth()->user()->hasRole('medico'))
             <a href="/medic/invoices/create" class="btn btn-success">Crear Factura</a>
             @endif
          </div>
@@ -37,7 +37,20 @@
                   <form action="/medic/invoices" method="GET" class="form-horizontal">
                        <div class="form-group">
                        
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="q" class="form-control" placeholder="Cliente..." value="{{ isset($search) ? $search['q'] : '' }}">
+                                <div class="input-group-btn">
 
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
+                            </div>
+                           
+                          </div>
                           <div class="col-sm-2">
                             <div class="input-group input-group-sm">
                           
@@ -125,7 +138,7 @@
                       @if ($invoices)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date' => $search['date'], 'clinic' => $search['clinic']])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['q' => $search['q'], 'date' => $search['date'], 'clinic' => $search['clinic']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>
@@ -145,7 +158,7 @@
 
     </section>
 
-    @include('medic/invoices/partials/modal')
+   <invoice-modal></invoice-modal>
   
 
 @endsection

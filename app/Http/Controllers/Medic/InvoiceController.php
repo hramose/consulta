@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Medic;
 
-use App\Balance;
 use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PDF;
-use App\Office;
 
 class InvoiceController extends Controller
 {
@@ -18,7 +15,6 @@ class InvoiceController extends Controller
     {
         $this->middleware('auth');
         $this->invoiceRepo = $invoiceRepo;
-       
     }
 
     /**
@@ -26,13 +22,16 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        
         $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
         $search['clinic'] = request('clinic');
+        $search['q'] = request('q');
         $medic = auth()->user();
 
-      
         $invoices = $medic->invoices()->whereDate('created_at', $search['date']);
+
+        if ($search['q']) {
+            $invoices = $invoices->where('client_name', 'like', '%' . $search['q'] . '%');
+        }
 
         if (is_blank($search['clinic'])) {
             $invoices = $invoices->orderBy('created_at', 'DESC')->paginate(20);
@@ -70,7 +69,6 @@ class InvoiceController extends Controller
         $patient = request('p');
 
         return view('medic.invoices.create', compact('patient'));
-
     }
 
     /**
@@ -78,7 +76,11 @@ class InvoiceController extends Controller
      */
     public function store()
     {
-       
+        $this->validate(request(), [
+            'office_id' => 'required',
+            'client_name' => 'required',
+        ]);
+
         $invoice = $this->invoiceRepo->store(request()->all());
 
         return $invoice;
@@ -89,7 +91,6 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
-    
         $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
@@ -161,7 +162,7 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = $this->invoiceRepo->print($id);
-      
+
         return view('medic.invoices.print', compact('invoice'));
     }
 
@@ -172,9 +173,6 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepo->print($id);
 
-
         return view('medic.invoices.ticket', compact('invoice'));
     }
-
-
 }

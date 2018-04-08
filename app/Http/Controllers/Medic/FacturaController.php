@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Medic;
 
-use App\Balance;
 use App\Http\Controllers\Controller;
 use App\Factura;
 use App\InvoiceService;
@@ -30,9 +29,14 @@ class FacturaController extends Controller
         $fe = 0;
         $search['date'] = request('date') ? request('date') : Carbon::now()->toDateString();
         $search['clinic'] = request('clinic');
+        $search['q'] = request('q');
         $medic = auth()->user();
 
         $facturas = $medic->facturas()->whereDate('created_at', $search['date']);
+
+        if ($search['q']) {
+            $facturas = $facturas->where('client_name', 'like', '%' . $search['q'] . '%');
+        }
 
         if (is_blank($search['clinic'])) {
             $facturas = $facturas->orderBy('created_at', 'DESC')->paginate(20);
@@ -44,8 +48,6 @@ class FacturaController extends Controller
 
         return view('medic.facturas.index', compact('medic', 'facturas', 'totalFacturasAmount', 'search'));
     }
-
-   
 
     public function create()
     {
@@ -64,14 +66,14 @@ class FacturaController extends Controller
     public function store()
     {
         $office = Office::find(request('office_id'));
-      
+
         // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
         //     $config = $office->configFactura->first();
         //     $fe = $office->fe;
         //     $fe_clinica = 1;
         // } else {
         $config = auth()->user()->configFactura->first();
-     
+
         //}
 
         if (!existsCertFile($config)) {
@@ -80,10 +82,10 @@ class FacturaController extends Controller
                     'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
                 ];
             } else {*/
-                $errors = [
+            $errors = [
                     'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
                 ];
-           // }
+            // }
 
             return response()->json(['errors' => $errors], 422, []);
         }
@@ -100,7 +102,6 @@ class FacturaController extends Controller
     {
         $factura = $this->facturaRepo->findById($id);
         $office = $factura->clinic;
-       
 
         // if ($office && str_slug($office->type, '-') == 'clinica-privada') {
         //     $config = $office->configFactura->first();
@@ -115,10 +116,10 @@ class FacturaController extends Controller
             //         'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que la clínica prívada lo tenga configurado en su perfil']
             //     ];
             // } else {
-                $errors = [
+            $errors = [
                     'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
                 ];
-           // }
+            // }
 
             return response()->json(['errors' => $errors], 422, []);
         }
@@ -203,9 +204,9 @@ class FacturaController extends Controller
         $configFactura = $factura->obligadoTributario;
         //}
 
-       /* if (!$factura->appointment) {
-            return view('medic.factura.print-general', compact('factura', 'configFactura'));
-        }*/
+        /* if (!$factura->appointment) {
+             return view('medic.factura.print-general', compact('factura', 'configFactura'));
+         }*/
 
         return view('medic.facturas.print', compact('factura', 'configFactura'));
     }
@@ -259,6 +260,4 @@ class FacturaController extends Controller
 
         $pdf::Output('gpsm_' . $factura->clave_fe . '.pdf');
     }
-
-   
 }

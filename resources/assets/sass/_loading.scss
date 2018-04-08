@@ -11,6 +11,11 @@
     display: none;
 	
 }
+.loader.show {
+
+    display: block !important;
+	
+}
 
 .loader .img {
 	position: absolute;

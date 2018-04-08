@@ -36,7 +36,22 @@
               <div class="">
                   <form action="/medic/facturas" method="GET" class="form-horizontal">
                        <div class="form-group">
-                       
+
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="q" class="form-control" placeholder="Cliente..." value="{{ isset($search) ? $search['q'] : '' }}">
+                                <div class="input-group-btn">
+
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
+                            </div>
+                           
+                          </div>
+
 
                           <div class="col-sm-2">
                             <div class="input-group input-group-sm">
@@ -177,7 +192,7 @@
                       @if ($facturas)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$facturas->appends(['date' => $search['date'], 'clinic' => $search['clinic']])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$facturas->appends(['q' => $search['q'], 'date' => $search['date'], 'clinic' => $search['clinic']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>
@@ -197,8 +212,8 @@
 
     </section>
 
-    @include('medic/facturas/partials/modal')
-  
+   
+    <invoice-modal url="/medic/facturas"></invoice-modal>
 
 
   @include('medic/facturas/partials/status-hacienda-modal')

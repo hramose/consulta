@@ -29,8 +29,7 @@
 
            <a href="/medic/facturas" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturación
           </a>
-          <a href="#" class="btn btn-default btn-finish-appointment pull-right "><i class="fa fa-check"></i> Terminar Consulta
-          </a>
+        
          
          
         </div>

@@ -28,13 +28,10 @@
                 <b>Nombre:</b> {{ $invoice->user->name }}
               @endif
           @else
-              @if($invoice->bill_to == 'M')
+            
                 <b>Ced:</b> {{ $invoice->user->ide }}<br>
                 <b>Nombre:</b> {{ $invoice->user->name }}
-              @else 
-                <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
-                <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
-              @endif
+              
               
           @endif
 
@@ -146,14 +143,14 @@
                 <th>Total:</th>
                 <td>{{ money($invoice->total) }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <th>Pago con:</th>
                 <td>{{ money($invoice->pay_with) }}</td>
               </tr>
               <tr>
                 <th>Vuelto:</th>
                 <td>{{ money($invoice->change) }}</td>
-              </tr>
+              </tr> -->
             </table>
           </div>
         </div>

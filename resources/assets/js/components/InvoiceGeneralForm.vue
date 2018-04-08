@@ -16,11 +16,25 @@
                   <h3 class="box-title">Factura</h3>
 
                   <div class="box-tools pull-right">
-                    
+                      
                   </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                      <div class="form-group">
+                         <label for="office_id" class="col-sm-2 control-label">Consultorio:</label>
+
+                          <div class="col-sm-10">
+                            <select name="office_id" id="office_id" v-model="office_id" class="form-control">
+                             
+                              <option :value="item.id" v-for="item in offices"> {{ item.name }}</option>
+                              
+                            </select>
+                            <form-error v-if="errors.office_id" :errors="errors" style="float:right;">
+                                {{ errors.office_id[0] }}
+                            </form-error>
+                          </div>
+                      </div>
                      <div class="form-group">
                        <label for="service" class="col-sm-2 control-label">A nombre de:</label>
 
@@ -133,6 +147,7 @@
            <div class="form-group">
             <div class="col-sm-12">
               <div class="pull-right">
+                  <button type="submit" class="btn btn-info" @click="invoice()">Enviar a secretaria</button>
                   <button type="submit" class="btn btn-danger" @click="invoice('here')">Facturar</button><img src="/img/loading.gif" alt="Cargando..." v-show="loader">
               </div>
              
@@ -187,8 +202,12 @@
     export default {
      
        props: {
-         office_id: {
+         currentOffice: {
           type: Number
+          
+        },
+        offices: {
+          type: Array
           
         },
          nombre_cliente: {
@@ -213,23 +232,25 @@
         data () {
 	        return {
 	 
-	        services: [],
-            servicesToInvoice: [],
-	        loader:false,
-	        new_service: "",
-            amount: 0,
-            pay_with:0,
-            change:0,
-	        errors: [],
-            newService:false,
-            updateService:false,
-            service:null,
-            invoiceHere: false,
-            bill_to:'M',
-            client_name:'',
-            client_email:'',
-            medio_pago:'01',
-            condicion_venta:'01',
+              services: [],
+              servicesToInvoice: [],
+              loader:false,
+              new_service: "",
+              amount: 0,
+              pay_with:0,
+              change:0,
+              errors: [],
+              newService:false,
+              updateService:false,
+              service:null,
+              invoiceHere: false,
+              bill_to:'M',
+              client_name:'',
+              client_email:'',
+              medio_pago:'01',
+              condicion_venta:'01',
+              office_id: this.currentOffice,
+              
             
            
 	         
@@ -416,7 +437,7 @@
                 a.href = url;
                 a.click();
             },
-	          invoice(){
+	          invoice(here){
                 let $vm = this;
 
                 if(this.loader)
@@ -424,8 +445,14 @@
 
     
 
-                let status = 1;
-                let sendToAssistant = 0;
+                let status = 0;
+                let sendToAssistant = 1;
+                
+                if(here) {
+
+                  status = 1;
+                  sendToAssistant = 0;
+                }
                  
                 
                
@@ -435,17 +462,44 @@
                         if((response.status == 200 || response.status == 201) && response.data)
                         {
                       
-                          bus.$emit('alert', 'Servicio facturado','success');
+                          bus.$emit('alert', (here) ? 'Servicio facturado' : 'Enviado a asistente','success');
                           bus.$emit('addToInvoiceList', response.data); 
                           this.service = null;
                           this.servicesToInvoice = [];
                           this.errors = [];
                           this.invoiceHere = false;
                           this.loader = false;
-
-                          swal({
+                          this.client_name ='';
+                          this.client_email ='';
+                          this.medio_pago ='01';
+                          this.condicion_venta ='01';
+                          
+                          if(here){
+                            
+                            swal({
                               title: 'Factura Guardada',
-                              text: "¿Deseas regresar a facturación ?",
+                              text: "¿Deseas imprimir la factura?",
+                              type: 'success',
+                              showCancelButton: true,
+                              confirmButtonColor: '#d33',
+                              cancelButtonColor: '#3085d6',
+                              confirmButtonText: 'Imprimir',
+                              cancelButtonText: 'Regresar a facturacion'
+                            }).then(function () {
+
+                               window.location.href = $vm.url +"/"+ response.data.id +"/print";
+
+                            }, function(dismiss) {
+                            
+                                if(dismiss == 'cancel')
+                                  window.location.href = $vm.url;
+                            });
+
+                          }else{
+
+                            swal({
+                              title: 'Factura Guardada',
+                              text: "¿Regresar a facturación?",
                               type: 'success',
                               showCancelButton: true,
                               confirmButtonColor: '#d33',
@@ -454,11 +508,16 @@
                               cancelButtonText: 'No'
                             }).then(function () {
 
-                              window.location.href = this.url;
+                               window.location.href = $vm.url //$vm.url +"/"+ response.data.id +"/print";
 
                             }, function(dismiss) {
-                              
+                               // window.location.href = $vm.url + "/create";
                             });
+
+                          }
+                          
+
+                          
 
                           
                         }

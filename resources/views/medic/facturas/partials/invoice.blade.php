@@ -153,14 +153,14 @@
                 <th>Total:</th>
                 <td>{{ money($factura->total) }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <th>Pago con:</th>
                 <td>{{ money($factura->pay_with) }}</td>
               </tr>
               <tr>
                 <th>Vuelto:</th>
                 <td>{{ money($factura->change) }}</td>
-              </tr>
+              </tr> -->
             </table>
           </div>
         </div>

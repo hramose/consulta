@@ -28,7 +28,7 @@
             </div>
             <div class="box-body ">
                
-                    <invoice-general-form  nombre_cliente="{{ $patient }}" correo_cliente="" url="/medic/facturas"></invoice-general-form>
+                    <invoice-general-form  nombre_cliente="{{ $patient }}" correo_cliente="" url="/medic/facturas" :offices="{{ auth()->user()->offices }}" :current-office="{{ session('office_id') }}"></invoice-general-form>
 									
               
             </div>

@@ -100,7 +100,7 @@
                         
                         <div class="btn-group">
                           <a href="{{ url('/clinic/patients/'.$patient->id.'/edit') }}" class="btn btn-info" title="Editar Paciente"><i class="fa fa-edit"></i></a>
-                          <a href="{{ url('/clinic/patients/'.$patient->id.'/invoices') }}" class="btn btn-success" title="Ver Facturado"><i class="fa fa-money"></i> Historial facturación</a>
+                          <!-- <a href="{{ url('/clinic/patients/'.$patient->id.'/invoices') }}" class="btn btn-success" title="Ver Facturado"><i class="fa fa-money"></i> Historial facturación</a> -->
                           <!--<button type="button" class="btn btn-default"><i class="fa fa-align-center"></i></button>-->
                            @if(!$patient->appointments->count() && $patient->isPatientOf(auth()->user()))
                             <button type="submit" class="btn btn-danger" form="form-delete" formaction="{!! url('/clinic/patients/'.$patient->id) !!}" title="Eliminar Paciente"><i class="fa fa-remove"></i></button>

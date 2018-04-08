@@ -71,6 +71,14 @@
         @if(count($notifications))
           <div  class="notification-app alert-danger">
               <div class="slider-notifications">
+
+                              @if( !auth()->user()->active )
+                                <div class="item notification-app-item ">     
+                                        
+                                    Esta cuenta esta inactiva mientras el administrador verifica tus datos!
+                                    
+                                </div>
+                              @endif
                   
                             @foreach(auth()->user()->offices as $office)
 
@@ -98,13 +106,7 @@
                               @endforeach
                               
                         
-                          @if( !auth()->user()->active )
-                             <div class="item notification-app-item ">     
-                                    
-                                Esta cuenta esta inactiva mientras el administrador verifica tus datos!
-                                
-                            </div>
-                          @endif
+                        
                      
                    
               </div>
