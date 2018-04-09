@@ -165,6 +165,8 @@
                                       @elseif($invoice->status)
                                           
                                         <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                      @else 
+                                         --
                                       @endif
                                     @else 
                                       --
