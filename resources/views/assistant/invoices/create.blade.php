@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-assistant')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
 
@@ -28,7 +28,7 @@
             </div>
             <div class="box-body ">
              
-                    <invoice-general-form  :office_id="{{ $office->id }}" nombre_cliente="" correo_cliente="" :usa_fe="{{ $fe }}" url="/assistant/invoices"></invoice-general-form>
+                    <invoice-general-form  nombre_cliente="" correo_cliente=""  url="/assistant/invoices" url-services="/assistant/invoices" :offices="{{ auth()->user()->clinicsAssistants }}" :current-office="{{ $office->id }}"></invoice-general-form>
 									
                 
             </div>

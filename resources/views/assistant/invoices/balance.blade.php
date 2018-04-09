@@ -33,7 +33,7 @@
                       <thead>
                       <tr>
                         <th>Médico</th>
-                        <th>Consultas Atendidas (facturadas)</th>
+                        <th>Facturas</th>
                         <th>Total Facturado</th>
                       
                       </tr>

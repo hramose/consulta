@@ -34,6 +34,7 @@
         <li><a href="{{ url('/clinic/appointments')}}"><i class="fa fa-calendar"></i> <span>Agenda</span></a></li>
          <li><a href="{{ url('/clinic/medics')}}"><i class="fa fa-user-md"></i> <span>Medicos</span></a></li>
         <li><a href="{{ url('/clinic/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
+         <li><a href="{{ url('/clinic/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
          <li><a href="{{ url('/clinic/reports')}}"><i class="fa fa-table"></i> <span>Reportes</span></a></li>
          <li><a href="#" data-toggle="modal" data-target="#contact-modal" data-user="{{ auth()->user()->email }}"><i class="fa fa-phone"></i> <span>Contácto / Soporte</span></a></li>
         

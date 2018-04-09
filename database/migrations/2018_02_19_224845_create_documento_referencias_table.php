@@ -15,8 +15,8 @@ class CreateDocumentoReferenciasTable extends Migration
     {
         Schema::create('documento_referencias', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('factura_id')->unsigned()->index();
-            $table->foreign('factura_id')->references('id')->on('facturas')->onDelete('cascade');
+            $table->integer('invoice_id')->unsigned()->index();
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->char('tipo_documento', 2);
             $table->string('numero_documento');
             $table->dateTime('fecha_emision');

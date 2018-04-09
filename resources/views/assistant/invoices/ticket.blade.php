@@ -8,7 +8,12 @@
 		 <!-- Main content -->
     <section class="invoice invoice-ticket">
       
-       @include('medic/invoices/partials/invoiceTicket')
+      @if($invoice->obligadoTributario)
+         @include('medic/invoices/partials/invoiceTicketHacienda')
+         @include('medic/invoices/partials/status-hacienda-modal')
+      @else
+         @include('medic/invoices/partials/invoiceTicket')
+      @endif
 
       <!-- this row will not appear when printing -->
       <div class="row no-print">
@@ -23,11 +28,6 @@
     </section>
     <!-- /.content -->
 		
-
- 
- @if($invoice->fe)
-    @include('medic/invoices/partials/status-hacienda-modal')
-@endif
 
 
  @endsection

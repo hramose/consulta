@@ -82,6 +82,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('newAppointments', $newAppointments)
                  ->with('newHaciendaNotifications', $newHaciendaNotifications)
                  ->with('notifications', $notifications);
+                 
         });
 
         view()->composer('layouts.app-clinic', function ($view) {

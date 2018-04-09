@@ -16,7 +16,7 @@
              },
              url:{
                 type:String,
-                default: '/medic/invoices'
+                default: '/medic/facturas'
             },
             read:{
                 type:Boolean,

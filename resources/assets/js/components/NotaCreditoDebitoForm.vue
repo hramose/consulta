@@ -25,13 +25,13 @@
                        <label for="service" class="col-sm-2 control-label">A nombre de:</label>
 
                         <div class="col-sm-5">
-                          <input type="text" v-model="originalInvoice.client_name" name="client_name" class="form-control">
+                          <input type="text" v-model="originalInvoice.client_name" name="client_name" class="form-control" disabled>
                           <form-error v-if="errors.client_name" :errors="errors" style="float:right;">
                               {{ errors.client_name[0] }}
                           </form-error>
                         </div>
                           <div class="col-sm-5">
-                          <input type="text" v-model="originalInvoice.client_email" name="client_email" class="form-control" placeholder="Correo electrónico">
+                          <input type="text" v-model="originalInvoice.client_email" name="client_email" class="form-control" placeholder="Correo electrónico" disabled>
                           <form-error v-if="errors.client_email" :errors="errors" style="float:right;">
                               {{ errors.client_email[0] }}
                           </form-error>
@@ -41,7 +41,7 @@
                        <label for="service" class="col-sm-2 control-label">Medio de pago:</label>
 
                         <div class="col-sm-5">
-                          <select name="medio_pago" id="medio_pago" v-model="originalInvoice.medio_pago" class="form-control">
+                          <select name="medio_pago" id="medio_pago" v-model="originalInvoice.medio_pago" class="form-control" disabled>
                             <option value="01">Efectivo</option>
                             <option value="02">Tarjeta</option>
                           </select>
@@ -50,7 +50,7 @@
                           </form-error>
                         </div>
                         <div class="col-sm-5">
-                          <select name="condicion_venta" id="condicion_venta" v-model="originalInvoice.condicion_venta" class="form-control">
+                          <select name="condicion_venta" id="condicion_venta" v-model="originalInvoice.condicion_venta" class="form-control" disabled>
                             <option value="01">Contado</option>
                             <option value="02">Crédito</option>
                           </select>
@@ -374,7 +374,7 @@
                     value: '05'
                 },
                 {
-                    title: 'Otros',
+                    title: 'Otro',
                     value: '99'
                 },
                 
@@ -709,8 +709,23 @@
                   }, (response) => {
                       console.log('error al facturar o enviar nota de credito o debito')
                       console.log(response)
+                   
+                      if(response.body.exception)
+                      {
+                          if(response.body.exception == 'GuzzleHttp\Exception\ConnectException')
+                          {
+                              let errorM = {}
+                               
+                              errorM.certificate = ['Error. No se pudo conectar con hacienda']
+                                    
+                              this.errors = errorM;     
+                                
+                           
+                          }
+                      }else{
+                        this.errors = response.data.errors;
+                      }
                        this.loader = false;
-                       this.errors = response.data.errors;
                        this.invoiceHere = false;
                   });
 
@@ -725,7 +740,7 @@
                this.originalInvoice = this.invoice;
                this.servicesToInvoice = this.invoice.lines
                this.referencia.tipo_documento = this.originalInvoice.tipo_documento
-               this.referencia.numero_documento = this.originalInvoice.consecutivo_hacienda
+               this.referencia.numero_documento = this.originalInvoice.fe ? this.originalInvoice.consecutivo_hacienda : this.originalInvoice.consecutivo
                this.referencia.fecha_emision = this.originalInvoice.created_at
              
 

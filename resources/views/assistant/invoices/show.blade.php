@@ -28,7 +28,7 @@
          <div>
            
             <a href="/assistant/medics/{{ $medic->id }}/no-invoices" class="btn btn-info">Ver consultas no facturadas</a>
-              <a href="/assistant/invoices/create" class="btn btn-success">Crear Factura</a>
+            
            
          </div>
           <div class="box box-default box-calendar">
@@ -66,16 +66,16 @@
                     <table class="table no-margin">
                       <thead>
                       <tr>
-                        <th>#</th>
+                        <th>Consecutivo</th>
                         <th>Fecha</th>
                         <th>Cliente</th>
                         <th>Total</th>
-                         @if($fe)
                         <th>Tipo Doc</th>
-                        <th>Num. Consecutivo</th>
-                        <th>Estado Hacienda</th>
                         <th>Generar NC</th>
                         <th>Generar ND</th>
+                        @if($fe)
+                        <th>Num. Consecutivo</th>
+                        <th>Estado Hacienda</th>
                         <th>Ver XML</th>
                         @endif
                         
@@ -99,14 +99,29 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                             @if($fe)
+                         
                               <td>
-                                  @if($invoice->fe)
-                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
+                                 
+                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ $invoice->tipo_documento_name }}</span>
+                                 
+                              </td>
+                               <td>
+                                 @if($invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
                                   @endif
                               </td>
                               <td>
-                                {{ $invoice->consecutivo_hacienda }}
+                                 @if($invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                                 @endif
+                              </td>
+                              @if($fe)
+                              <td>
+                                @if($invoice->fe)
+                                  {{ $invoice->consecutivo_hacienda }}
+                                @else
+                                 --
+                                @endif
                               </td>
                               <td>
                                 @if($invoice->fe)
@@ -120,21 +135,16 @@
                                         
                                       <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
                                     @endif
+                                @else 
+                                  --
                                 @endif
                               </td>
+                             
                               <td>
-                                 @if($invoice->fe && $invoice->status)
-                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
-                                  @endif
-                              </td>
-                              <td>
-                                 @if($invoice->fe && $invoice->status)
-                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
-                                 @endif
-                              </td>
-                              <td>
-                                @if($invoice->fe && $invoice->status)
+                                @if($invoice->status && $invoice->fe)
                                 <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                                @else 
+                                  --
                                 @endif
                               </td>
                             
@@ -180,7 +190,7 @@
 
     </section>
 
-    @include('medic/invoices/partials/modal')
+   <invoice-modal url="/assistant/invoices"></invoice-modal>
   
  @if($fe)
     @include('medic/invoices/partials/status-hacienda-modal')
@@ -193,6 +203,6 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
-<script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
+<script src="{{ elixir('/js/invoices.min.js') }}"></script>
   <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

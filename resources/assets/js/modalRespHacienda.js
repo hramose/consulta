@@ -4,7 +4,7 @@ $(function () {
     $('#modalRespHacienda').on('shown.bs.modal', function (event) {
 
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var facturaId = button.attr('data-factura') // Extract info from data-* attributes
+        var facturaId = button.attr('data-invoice') // Extract info from data-* attributes
         
         $('.loader').show();
         $("#resp-clave").text('')

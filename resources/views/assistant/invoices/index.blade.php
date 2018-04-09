@@ -24,7 +24,10 @@
          <div>
            
             <a href="/assistant/invoices" class="btn btn-info">Regresar</a>
+             
             <a href="/assistant/invoices/create" class="btn btn-success">Crear Factura</a>
+          
+           
            
          </div>
           <div class="box box-default box-calendar">
@@ -33,7 +36,20 @@
                   <form action="/assistant/invoices" method="GET" class="form-horizontal">
                        <div class="form-group">
                        
+                          <div class="col-sm-2">
+                            <div class="input-group input-group-sm">
+                          
+                                
+                                <input type="text" name="q" class="form-control" placeholder="Cliente..." value="{{ isset($search) ? $search['q'] : '' }}">
+                                <div class="input-group-btn">
 
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                              
+                              
+                            </div>
+                           
+                          </div>
                           <div class="col-sm-2">
                             <div class="input-group input-group-sm">
                           
@@ -71,17 +87,17 @@
                     <table class="table no-margin">
                       <thead>
                       <tr>
-                        <th>#</th>
+                        <th>Consecutivo</th>
                         <th>Fecha</th>
                         <th>Cliente</th>
                         <th>Total</th>
-                         @if($fe)
                         <th>Tipo Doc</th>
-                        <th>Num. Consecutivo</th>
-                        <th>Estado Hacienda</th>
                         <th>Generar NC</th>
                         <th>Generar ND</th>
-                        <th>Ver XML</th>
+                        @if($office->fe)
+                          <th>Consecutivo Hacienda</th>
+                          <th>Estado Hacienda</th>
+                          <th>Ver XML</th>
                         @endif
                         
                         <th></th>
@@ -104,46 +120,61 @@
                                   <span class="label label-success">Facturada</span>
                                 @endif
                             </td> -->
-                             @if($fe)
-                              <td>
-                                  @if($invoice->fe)
-                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
-                                  @endif
-                              </td>
-                              <td>
-                                {{ $invoice->consecutivo_hacienda }}
-                              </td>
-                              <td>
-                                @if($invoice->fe)
-                                    @if($invoice->sent_to_hacienda)
-                                      @if($invoice->status_fe)
-                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
-                                      @else
-                                        <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
-                                      @endif
-                                    @elseif($invoice->status)
-                                        
-                                      <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
-                                    @endif
-                                @endif
-                              </td>
-                              <td>
-                                 @if($invoice->fe && $invoice->status)
-                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
-                                  @endif
-                              </td>
-                              <td>
-                                 @if($invoice->fe && $invoice->status)
-                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
-                                 @endif
-                              </td>
-                              <td>
-                                @if($invoice->fe && $invoice->status)
-                                <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
-                                @endif
-                              </td>
                             
-                            @endif
+                              <td>
+                                 
+                                  <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
+                                 
+                              </td>
+                              <td>
+                                 @if($invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                                   @else 
+                                      --
+                                  @endif
+                              </td>
+                              <td>
+                                 @if($invoice->status)
+                                  <a href="/assistant/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                                 @else 
+                                      --
+                                  @endif
+                              </td>
+                               @if($office->fe)
+                                  <td>
+                                  @if($invoice->fe)
+                                    {{ $invoice->consecutivo_hacienda }}
+                                  @else 
+                                    --
+                                  @endif
+                                  </td>
+                                  <td>
+                                    @if($invoice->fe)
+                                        @if($invoice->sent_to_hacienda)
+                                          @if($invoice->status_fe)
+                                            <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                          @else
+                                            <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                          @endif
+                                        @elseif($invoice->status)
+                                            
+                                          <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                        @endif
+                                    @else 
+                                      --
+                                    @endif
+                                  
+                                  </td>
+                                  
+                                  <td>
+                                    @if($invoice->status)
+                                    <a href="/assistant/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                                    @else 
+                                      --
+                                    @endif
+                                  </td>
+                             @endif
+                          
                             <td>
                                 @if($invoice->status)
                                   
@@ -165,7 +196,7 @@
                       @if ($invoices)
                         <tfoot>
                             <tr>
-                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['date' => $search['date'], 'medic' => $search['medic']])->render()!!}</td>
+                              <td  colspan="5" class="pagination-container">{!!$invoices->appends(['q' => $search['q'], 'date' => $search['date'], 'medic' => $search['medic']])->render()!!}</td>
                             </tr>
                             
                         </tfoot>
@@ -185,11 +216,14 @@
 
     </section>
 
-    @include('medic/invoices/partials/modal')
-  
- @if($fe)
+   
+  <invoice-modal url="/assistant/invoices"></invoice-modal>
+
+   @if($office->fe)
+    
     @include('medic/invoices/partials/status-hacienda-modal')
- @endif
+    
+   @endif
 
 @endsection
 @section('scripts')
@@ -198,6 +232,6 @@
 <script src="/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/js/plugins/fullcalendar/locale/es.js"></script>
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
-<script src="{{ elixir('/js/assistant.invoices.min.js') }}"></script>
+<script src="{{ elixir('/js/invoices.min.js') }}"></script>
   <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

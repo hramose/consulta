@@ -8,9 +8,12 @@
  
 		 <!-- Main content -->
     <section class="invoice">
-      
-      @include('medic/invoices/partials/invoice')
-
+      @if($invoice->obligadoTributario)
+        @include('medic/invoices/partials/invoiceHacienda')
+        @include('medic/invoices/partials/status-hacienda-modal')
+      @else
+        @include('medic/invoices/partials/invoice')
+      @endif
       <!-- this row will not appear when printing -->
       <div class="row no-print">
         <div class="col-xs-12">
@@ -32,7 +35,7 @@
  @section('scripts')
  <script src="/js/bootstrap.min.js"></script>
  <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
-
+ <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
  <script>
 
  	 function printSummary() {

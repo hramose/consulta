@@ -1,13 +1,13 @@
 <template>
     <div class="modal fade" id="modalInvoice" role="dialog" aria-labelledby="modalInvoice">      
-  <div class="modal-dialog " role="document">
+  <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             
               <loading :show="loader"></loading>
            
             <div class="modal-header">
             
-            <h4 class="modal-title" id="modalInvoiceLabel">Facturación</h4>
+            <h4 class="modal-title" id="modalInvoiceLabel">{{ invoice.tipo_documento_name }}</h4>
              <!-- <span class="label label-info pull-right">{{ medic }}</span>
              <span class="label label-success pull-left">{{ patient }}</span> -->
              
@@ -60,7 +60,7 @@
                         <th>Cantidad</th>
                         <th>Servicio</th>
                         <th>Precio</th>
-                        <th>Total</th>
+                        <th style="width:60px;">Total</th>
                         
                       </tr>
                       </thead>
@@ -81,9 +81,9 @@
                          
                           </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           
-                          <td colspan="3">
+                          <td colspan="2">
                           <label for="">Pago con</label>
                             <div class="input-group pay_with-field">
                             
@@ -93,8 +93,8 @@
                             
                           </div>
                           </td>
-                          <td colspan="3">
-                          <label for="">Vuelto</label> 
+                          <td colspan="2">
+                            <label for="">Vuelto</label> 
                             <div class="input-group change-field">
                               
                                 <span class="input-group-addon">₡</span>
@@ -103,10 +103,39 @@
                               
                             </div>
                          </td>
-                        </tr>
+                        </tr> -->
                       </tfoot>
                     </table>
                 </div>
+               
+                <div class="table-responsive" v-if="referencias.length">
+                   <h2>Documentos de referencia</h2>
+                    <table class="table no-margin" id="table-details">
+                      <thead>
+                      <tr>
+                        <th>Tipo Documento</th>
+                        <th>Numero Documento</th>
+                        <th>Fecha emision</th>
+                        <th>Codigo referencia</th>
+                        <th>Razon</th>
+                        
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in referencias">
+                            <td>{{ item.tipo_documento_name }} </td>
+                            <td>{{ item.numero_documento }} </td>
+                            <td>{{ item.fecha_emision }} </td>
+                            <td>{{ item.codigo_referencia_name }} </td>
+                            <td>{{ item.razon }} </td>
+
+                        </tr>
+                      
+                      </tbody>
+                    
+                    </table>
+                </div>
+
 
                  
             </div>
@@ -147,11 +176,14 @@ export default {
    data (){
        return {
            items:[],
+           referencias:[],
            invoice:{},
            endpoint: this.url ? this.url : '/medic/invoices',
            loader:false,
            type_printer:'normal',
-           invoiceId: false
+           invoiceId: false,
+           
+
        }
    },
     computed: {
@@ -166,6 +198,7 @@ export default {
     },
 
    methods:{
+      
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -185,6 +218,7 @@ export default {
     
                  this.invoice = response.data;
                  this.items = response.data.lines;
+                 this.referencias = response.data.documentos_referencia;
                    
                   this.loader = false;
 
@@ -253,6 +287,7 @@ export default {
                this.invoiceId = data
                this.invoice = {}
                this.items = []
+               this.referencias = []
                this.fetch()
         });
    }

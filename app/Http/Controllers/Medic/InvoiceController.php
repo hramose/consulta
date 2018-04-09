@@ -8,13 +8,15 @@ use App\InvoiceService;
 use App\Repositories\InvoiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use App\Repositories\FacturaRepository;
+use PDF;
 class InvoiceController extends Controller
 {
     public function __construct(InvoiceRepository $invoiceRepo)
     {
         $this->middleware('auth');
         $this->invoiceRepo = $invoiceRepo;
+       
     }
 
     /**
@@ -40,6 +42,7 @@ class InvoiceController extends Controller
             $invoices = $invoices->where('office_id', $search['clinic'])->orderBy('created_at', 'DESC')->paginate(20);
             $totalInvoicesAmount = $invoices->where('office_id', $search['clinic'])->sum('total');
         }
+
 
         return view('medic.invoices.index', compact('medic', 'invoices', 'totalInvoicesAmount', 'search'));
     }
@@ -81,6 +84,25 @@ class InvoiceController extends Controller
             'client_name' => 'required',
         ]);
 
+        if(auth()->user()->fe){
+
+            $config = auth()->user()->configFactura->first();
+            
+            if (!existsCertFile($config)) {
+          
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
+                ];
+          
+
+                return response()->json(['errors' => $errors], 422, []);
+            }
+
+            $invoice = $this->invoiceRepo->store(request()->all(), $config);
+
+            return $invoice;
+        }
+
         $invoice = $this->invoiceRepo->store(request()->all());
 
         return $invoice;
@@ -91,6 +113,34 @@ class InvoiceController extends Controller
     */
     public function update($id)
     {
+        $this->validate(request(), [
+            'office_id' => 'required',
+            'client_name' => 'required',
+        ]);
+
+        
+
+        if(auth()->user()->fe){
+
+            $invoice = $this->invoiceRepo->findById($id);
+            $config = $invoice->obligadoTributario;
+
+            if (!existsCertFile($config)) {
+            
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el médico lo tenga configurado en su perfil']
+                ];
+          
+
+                return response()->json(['errors' => $errors], 422, []);
+            }
+
+            $invoice = $this->invoiceRepo->update($id, request()->all(), $config);
+
+            return $invoice;
+
+        }
+
         $invoice = $this->invoiceRepo->update($id, request()->all());
 
         return $invoice;
@@ -104,6 +154,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($id);
         $invoice->load('lines');
         $invoice->load('user');
+        $invoice->load('documentosReferencia');
 
         return $invoice;
     }
@@ -161,6 +212,7 @@ class InvoiceController extends Controller
      */
     public function print($id)
     {
+       
         $invoice = $this->invoiceRepo->print($id);
 
         return view('medic.invoices.print', compact('invoice'));
@@ -171,8 +223,41 @@ class InvoiceController extends Controller
      */
     public function ticket($id)
     {
+      
         $invoice = $this->invoiceRepo->print($id);
 
         return view('medic.invoices.ticket', compact('invoice'));
+    }
+
+    public function downloadXml($id)
+    {
+        return $this->invoiceRepo->xml($id);
+    }
+
+    public function downloadPdf($id)
+    {
+        //return $this->invoiceRepo->pdf($id);
+        $invoice = $this->invoiceRepo->findById($id);
+
+        return view('medic.invoices.pdf', compact('invoice'));
+    }
+
+    /**
+     * imprime resumen de la consulta
+     */
+    public function pdf($id)
+    {
+        $invoice = $this->invoiceRepo->findById($id);
+
+        $html = request('htmltopdf');
+        $pdf = new PDF($orientation = 'L', $unit = 'in', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $pdfa = false);
+
+        $pdf::SetFont('helvetica', '', 9);
+
+        $pdf::SetTitle('Expediente Clínico');
+        $pdf::AddPage('L', 'A4');
+        $pdf::writeHTML($html, true, false, true, false, '');
+
+        $pdf::Output('gpsm_' . $invoice->clave_fe . '.pdf');
     }
 }

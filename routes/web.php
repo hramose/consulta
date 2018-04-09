@@ -185,27 +185,18 @@ Route::prefix('medic')->middleware('authByRole:medico')->group(function () {
     Route::get('/invoices/{id}/details', 'Medic\InvoiceController@getDetails');
     Route::get('/invoices/{id}/print', 'Medic\InvoiceController@print');
     Route::get('/invoices/{id}/ticket', 'Medic\InvoiceController@ticket');
+    Route::get('/invoices/{id}/download/xml', 'Medic\InvoiceController@downloadXml');
+    Route::get('/invoices/{id}/download/pdf', 'Medic\InvoiceController@downloadPdf');
+    Route::post('/invoices/{id}/pdf', 'Medic\InvoiceController@pdf');
+
+    Route::get('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@create');
+    Route::post('/invoices/{id}/notadebito', 'Medic\NotaDebitoController@store');
+
+    Route::get('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@create');
+    Route::post('/invoices/{id}/notacredito', 'Medic\NotaCreditoController@store');
+
     Route::resource('invoices', 'Medic\InvoiceController');
 
-
-    Route::get('/facturas', 'Medic\FacturaController@index');
-    Route::get('/facturas/create', 'Medic\FacturaController@create');
-    Route::put('/facturas/{id}', 'Medic\FacturaController@update');
-    Route::get('/facturas/{id}/details', 'Medic\FacturaController@getDetails');
-    Route::get('/facturas/{id}/print', 'Medic\FacturaController@print');
-    Route::get('/facturas/{id}/ticket', 'Medic\FacturaController@ticket');
-    Route::get('/facturas/{id}/recepcion', 'Medic\FacturaController@recepcion');
-    Route::get('/facturas/{id}/download/xml', 'Medic\FacturaController@downloadXml');
-    Route::get('/facturas/{id}/download/pdf', 'Medic\FacturaController@downloadPdf');
-    Route::post('/facturas/{id}/pdf', 'Medic\FacturaController@pdf');
-
-    Route::get('/facturas/{id}/notadebito', 'Medic\NotaDebitoController@create');
-    Route::post('/facturas/{id}/notadebito', 'Medic\NotaDebitoController@store');
-
-    Route::get('/facturas/{id}/notacredito', 'Medic\NotaCreditoController@create');
-    Route::post('/facturas/{id}/notacredito', 'Medic\NotaCreditoController@store');
-
-    Route::resource('facturas', 'Medic\FacturaController');
 
 
     Route::resource('diseasenotes', 'Medic\DiseaseNoteController');
@@ -273,10 +264,7 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
     Route::get('/patients/verify', 'Clinic\PatientController@verifyIsPatient');
     Route::get('/patients/{patient}/invoices', 'Clinic\PatientController@invoices');
     Route::resource('patients', 'Clinic\PatientController');
-    Route::put('/invoices/{id}', 'Clinic\InvoiceController@update');
-    Route::get('/invoices/{id}/details', 'Clinic\InvoiceController@getDetails');
-    Route::get('/invoices/{id}/print', 'Clinic\InvoiceController@print');
-    Route::get('/invoices/{id}/ticket', 'Clinic\InvoiceController@ticket');
+    
 
     Route::get('/appointments/list', 'Clinic\AppointmentController@getAppointments');
     Route::get('/appointments/{id}/print', 'Clinic\AppointmentController@printSummary');
@@ -297,6 +285,27 @@ Route::prefix('clinic')->middleware('authByRole:clinica,asistente')->group(funct
 
     Route::get('/register/office', 'Clinic\RegisterController@showRegistrationOfficeForm');
     Route::post('/register/office', 'Clinic\RegisterController@registerOffice');
+
+    Route::get('/invoices/services/list', 'Clinic\InvoiceController@getServices');
+    Route::post('/invoices/services', 'Clinic\InvoiceController@saveService');
+    Route::put('/invoices/services/{id}', 'Medic\InvoiceController@updateService');
+    Route::delete('/invoices/services/{id}', 'Medic\InvoiceController@deleteService');
+
+    Route::put('/invoices/{id}', 'Clinic\InvoiceController@update');
+    Route::get('/invoices/{id}/details', 'Clinic\InvoiceController@getDetails');
+    Route::get('/invoices/{id}/print', 'Clinic\InvoiceController@print');
+    Route::get('/invoices/{id}/ticket', 'Clinic\InvoiceController@ticket');
+    Route::get('/invoices/{id}/download/xml', 'Clinic\InvoiceController@downloadXml');
+    Route::get('/invoices/{id}/download/pdf', 'Clinic\InvoiceController@downloadPdf');
+    Route::post('/invoices/{id}/pdf', 'Clinic\InvoiceController@pdf');
+
+    Route::get('/invoices/{id}/notadebito', 'Clinic\NotaDebitoController@create');
+    Route::post('/invoices/{id}/notadebito', 'Clinic\NotaDebitoController@store');
+
+    Route::get('/invoices/{id}/notacredito', 'Clinic\NotaCreditoController@create');
+    Route::post('/invoices/{id}/notacredito', 'Clinic\NotaCreditoController@store');
+
+    Route::resource('invoices', 'Clinic\InvoiceController');
 });
 
 Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(function () {
@@ -358,6 +367,8 @@ Route::prefix('assistant')->middleware('authByRole:asistente,clinica')->group(fu
     Route::get('/patients/{patient}/invoices', 'Assistant\InvoiceController@patientInvoices');
 
     Route::resource('invoices', 'Assistant\InvoiceController');
+
+
 });
 
 Route::prefix('admin')->middleware('authByRole:administrador')->group(function () {

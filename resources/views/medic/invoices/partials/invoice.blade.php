@@ -19,21 +19,15 @@
           {{ $invoice->clinic->address }}<br>
           <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
          
-          @if($invoice->clinic->type == 'Consultorio Independiente')
-              @if($invoice->clinic->bill_to == 'C')
-                <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
-                <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
-              @else 
-                <b>Ced:</b> {{ $invoice->user->ide }}<br>
-                <b>Nombre:</b> {{ $invoice->user->name }}
-              @endif
-          @else
-            
-                <b>Ced:</b> {{ $invoice->user->ide }}<br>
-                <b>Nombre:</b> {{ $invoice->user->name }}
-              
-              
+         
+          @if($invoice->clinic->bill_to == 'C')
+            <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
+            <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
+          @else 
+            <b>Ced:</b> {{ $invoice->user->ide }}<br>
+            <b>Nombre:</b> {{ $invoice->user->name }}
           @endif
+        
 
          
          
@@ -44,7 +38,9 @@
         <div class="col-sm-4 invoice-col">
           
             <div class="invoice-number">
-              <h3>Nro. Factura:</h3>
+             
+              <h5> <b>{{ $invoice->tipo_documento_name }} :</b></h5>
+             
               <h4>{{$invoice->consecutivo }}</h4>
               
             </div>
@@ -157,4 +153,11 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-     
+      @if($invoice->documentosReferencia->count())
+      <div class="row">
+          <h2>Documentos de referencia</h2>
+          <div class="col-xs-12 table-responsive">
+            @include('medic/invoices/partials/referencias')
+          </div>
+      </div>
+      @endif

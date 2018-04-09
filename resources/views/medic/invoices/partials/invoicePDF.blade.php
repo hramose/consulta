@@ -27,7 +27,7 @@
                             {{ $invoice->clinic->address }}<br>
                             <b>Tel:</b> {{ $invoice->clinic->phone }}<br>
                            
-                                @if($invoice->clinic->type == 'Consultorio Independiente')
+                                
                                     @if($invoice->clinic->bill_to == 'C')
                                     <b>Ced. Jurídica:</b> {{ $invoice->clinic->ide }}<br>
                                     <b>Nombre:</b> {{ $invoice->clinic->ide_name }}
@@ -35,13 +35,7 @@
                                     <b>Ced:</b> {{ $invoice->user->ide }}<br>
                                         <b>Nombre:</b> {{ $invoice->user->name }}
                                     @endif
-                                @else
-                                   
-                                    <b>Ced:</b> {{ $invoice->user->ide }}<br>
-                                    <b>Nombre:</b> {{ $invoice->user->name }}
-                                    
-                                    
-                                @endif
+                               
 
                            
                             
@@ -54,7 +48,7 @@
 							<div class="col-sm-4 invoice-col" style="text-align: center;width: 33.33333333%;float: left;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;">
 							
                                
-                                <h3>Nro. Factura:</h3>
+                                 <h5> <b>{{ $invoice->tipo_documento_name }} :</b></h5>
                                 <h4>{{$invoice->consecutivo }}</h4>
                                 
                                  <span><b>Condicion venta:</b> {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}</span> <br>  
@@ -121,10 +115,10 @@
                              <table class="table table-striped" >
                                 <thead>
                                 <tr>
-                                <th>Cantidad</th>
-                                <th>Servicio</th>
-                                <th>Precio</th>
-                                <th>Total</th>
+                                <th><b>Cantidad</b></th>
+                                <th><b>Servicio</b></th>
+                                <th><b>Precio</b></th>
+                                <th><b>Total</b></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -175,6 +169,17 @@
                             </table>
                         </td>
                     </tr>
+                     @if($invoice->documentosReferencia->count())
+                        <tr>
+                            <td colspan="3">
+                                <h2>Documentos de referencia</h2>
+                                <div class="col-xs-12 table-responsive">
+                                    @include('medic/invoices/partials/referencias')
+                                </div>
+                            </td>
+                            
+                        </tr>
+                    @endif
 				
 			</table>
         </div>

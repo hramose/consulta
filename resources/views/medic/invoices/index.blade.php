@@ -87,17 +87,27 @@
                     <table class="table no-margin">
                       <thead>
                       <tr>
-                        <th>#</th>
+                        
+                        <th>Consecutivo</th>
                         <th>Fecha</th>
                         <th>Clínica</th>
                         <th>Cliente</th>
                         <th>Total</th>
+                        <th>Tipo Doc</th>
+                        <th>Generar NC</th>
+                        <th>Generar ND</th>
+                        @if(auth()->user()->fe)
+                          <th>Consecutivo Hacienda</th>
+                          <th>Estado Hacienda</th>
+                          <th>Ver XML</th>
+                        @endif
                         <th></th>
                       </tr>
                       </thead>
                       <tbody>
                         @foreach($invoices as $invoice)
                           <tr>
+                            
                             <td>{{ $invoice->consecutivo }}</td>
                         
                             <td>
@@ -117,8 +127,59 @@
                             </td>
                            
                             <td>{{ money($invoice->total) }}</span></td>
-                           
-                           
+                            <td>
+                               
+                                <span class="label label-{{ trans('utils.tipo_documento_color.'.$invoice->tipo_documento) }}"> {{ trans('utils.tipo_documento.'.$invoice->tipo_documento) }}</span>
+                                
+                              </td>
+                            <td>
+                                 @if($invoice->status)
+                                  <a href="/medic/invoices/{{ $invoice->id }}/notacredito">Generar Nota Crédito</a>
+                                   @else 
+                                      --
+                                  @endif
+                              </td>
+                              <td>
+                                 @if($invoice->status)
+                                  <a href="/medic/invoices/{{ $invoice->id }}/notadebito">Generar Nota Debito</a>
+                                 @else 
+                                      --
+                                  @endif
+                              </td>
+                               @if(auth()->user()->fe)
+                                  <td>
+                                    @if($invoice->fe)
+                                    {{ $invoice->consecutivo_hacienda }}
+                                    @else 
+                                      --
+                                    @endif
+                                  </td>
+                                  <td>
+                                  @if($invoice->fe)
+                                      @if($invoice->sent_to_hacienda)
+                                        @if($invoice->status_fe)
+                                          <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-{{ trans('utils.status_hacienda_color.'.$invoice->status_fe) }}">{{ title_case($invoice->status_fe) }}</span>   </a>
+                                        @else
+                                          <a href="#" data-toggle="modal" data-target="#modalRespHacienda" title="Click para comprobar estado de factura" data-invoice="{{ $invoice->id }}"><span class="label label-warning">Comprobar</span>   </a>
+                                        @endif
+                                      @elseif($invoice->status)
+                                          
+                                        <send-to-hacienda :invoice-id="{{ $invoice->id }}"></send-to-hacienda>
+                                      @endif
+                                    @else 
+                                      --
+                                  @endif
+                                
+                                </td>
+                                <td>
+                                  @if($invoice->status && $invoice->fe)
+                                  <a href="/medic/invoices/{{ $invoice->id }}/download/xml">XML</a>
+                                  @else 
+                                      --
+                                  @endif
+                                </td>
+                               
+                           @endif
                             <td>
                               @if($invoice->status)
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalInvoice" data-id="{{ $invoice->id }}" data-medic="{{ $medic->id }}">
@@ -159,7 +220,12 @@
     </section>
 
    <invoice-modal></invoice-modal>
-  
+   
+   @if(auth()->user()->fe)
+    
+    @include('medic/invoices/partials/status-hacienda-modal')
+    
+   @endif
 
 @endsection
 @section('scripts')
@@ -170,5 +236,5 @@
 <script src="/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script> 
 <script src="/js/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{ elixir('/js/invoices.min.js') }}"></script>
-
+<script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
 @endsection

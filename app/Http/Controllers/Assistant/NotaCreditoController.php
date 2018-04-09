@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
 use App\Invoice;
-use App\Repositories\InvoiceRepository;
 use Illuminate\Http\Request;
 use App\Repositories\FacturaElectronicaRepository;
+use App\Repositories\InvoiceRepository;
 
 class NotaCreditoController extends Controller
 {
@@ -14,12 +14,12 @@ class NotaCreditoController extends Controller
     {
         $this->middleware('authByRole:asistente');
         $this->invoiceRepo = $invoiceRepo;
-        $this->feRepo = new FacturaElectronicaRepository('test');
+        $this->feRepo = new FacturaElectronicaRepository(env('FE_ENV'));
     }
 
-    public function create($invoice_id)
+    public function create($invoiceId)
     {
-        $invoice = $this->invoiceRepo->findById($invoice_id);
+        $invoice = $this->invoiceRepo->findById($invoiceId);
         
         $office = auth()->user()->clinicsAssistants->first();
 
@@ -34,19 +34,26 @@ class NotaCreditoController extends Controller
     /**
      * Guardar consulta(cita)
      */
-    public function store($invoice_id)
+    public function store($invoiceId)
     {
-        $invoice = $this->invoiceRepo->findById($invoice_id);
+       
+        $invoice = $this->invoiceRepo->findById($invoiceId);
+        
 
-        if ($invoice->medic->fe && !existsCertFile($invoice->medic)) {
-            $errors = [
-                'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
-            ];
+        if ($invoice->fe) {
 
-            return response()->json(['errors' => $errors], 422, []);
+            $config = $invoice->obligadoTributario;
+
+            if (!existsCertFile($config)) {
+                $errors = [
+                    'certificate' => ['Parece que no tienes el certificado de hacienda ATV instalado. Para poder continuar verfica que el medico lo tenga configurado en su perfil']
+                ];
+
+                return response()->json(['errors' => $errors], 422, []);
+            }
         }
 
-        $notaCredito = $this->invoiceRepo->notaCreditoDebito(request()->all(), $invoice_id);
+        $notaCredito = $this->invoiceRepo->notaCreditoDebito(request()->all(), $invoiceId);
 
         return $notaCredito;
     }

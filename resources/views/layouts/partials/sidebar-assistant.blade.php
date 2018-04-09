@@ -34,8 +34,11 @@
         <li><a href="{{ url('/assistant/appointments')}}"><i class="fa fa-calendar"></i> <span>Agenda</span></a></li>
          <li><a href="{{ url('/assistant/medics')}}"><i class="fa fa-user-md"></i> <span>Médicos</span></a></li>
         <li><a href="{{ url('/assistant/patients')}}"><i class="fa fa-users"></i> <span>Pacientes</span></a></li>
-        <li><a href="{{ url('/assistant/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
-        <li><a href="{{ url('/assistant/invoices/balance')}}"><i class="fa fa-dollar"></i> <span>Cierre del Dia</span></a></li>
+       
+          <li><a href="{{ url('/assistant/invoices')}}"><i class="fa fa-money"></i> <span>Facturación</span></a></li>
+           <li><a href="{{ url('/assistant/invoices/balance')}}"><i class="fa fa-dollar"></i> <span>Cierre del Dia</span></a></li>
+       
+        
         <li><a href="#" data-toggle="modal" data-target="#contact-modal" data-user="{{ auth()->user()->email }}"><i class="fa fa-phone"></i> <span>Contácto / Soporte</span></a></li>
        
         

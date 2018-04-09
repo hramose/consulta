@@ -16,27 +16,21 @@
           <address style="word-wrap: break-word;">
             <strong>{{ $invoice->clinic->name }}</strong><br>
            
-                @if($invoice->clinic->type == 'Consultorio Independiente')
-                    @if($invoice->clinic->bill_to == 'C')
-                      Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
-                      Nombre: {{ $invoice->clinic->ide_name }}
-                    @else 
-                      Ced: {{ $invoice->user->ide }}<br>
-                      Nombre: {{ $invoice->user->name }}
-                    @endif
-                @else
-                   
-                    Ced: {{ $invoice->user->ide }}<br>
-                    Nombre: {{ $invoice->user->name }}
-                   
-                    
-                @endif
+               
+              @if($invoice->clinic->bill_to == 'C')
+                Ced. Jurídica: {{ $invoice->clinic->ide }}<br>
+                Nombre: {{ $invoice->clinic->ide_name }}
+              @else 
+                Ced: {{ $invoice->user->ide }}<br>
+                Nombre: {{ $invoice->user->name }}
+              @endif
+               
 
           
             {{ $invoice->clinic->address }}<br>
             Tel: {{ $invoice->clinic->phone }}<br>
             
-             Nro. Factura: {{$invoice->consecutivo }}<br>
+             {{ $invoice->tipo_documento_name }}: {{$invoice->consecutivo }}<br>
              Condicion venta: {{ trans('utils.condicion_venta.'.$invoice->condicion_venta) }}<br>
              Medio Pago: {{ trans('utils.medio_pago.'.$invoice->medio_pago) }}<br>
            

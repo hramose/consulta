@@ -61,13 +61,6 @@ elixir(mix => {
             'clinic.patients.js'
         ],'public/js/clinic.patients.min.js','resources/assets/js');
 
-        mix.scripts([
-            'clinic.invoices.js'
-        ],'public/js/clinic.invoices.min.js','resources/assets/js');
-
-      mix.scripts([
-            'assistant.invoices.js'
-        ],'public/js/assistant.invoices.min.js','resources/assets/js');
 
        mix.scripts([
             'invoices.js'
@@ -85,10 +78,7 @@ elixir(mix => {
         'pharmacy.patients.js'
     ], 'public/js/pharmacy.patients.min.js', 'resources/assets/js');
 
-    mix.scripts([
-        'facturas.js'
-    ], 'public/js/facturas.min.js', 'resources/assets/js');
-     
+   
     mix.version([
         'public/js/app.js',
         'public/js/appointments.min.js',
@@ -107,7 +97,6 @@ elixir(mix => {
         'public/js/invoices.min.js',
         'public/js/modalRespHacienda.min.js',
         'public/js/ubicaciones.min.js',
-        'public/js/facturas.min.js',
         'public/css/app.css',
         
     

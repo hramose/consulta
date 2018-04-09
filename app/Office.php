@@ -167,6 +167,7 @@ class Office extends Model
         
           return $this->users()->with(['invoices' => function ($query) use($date1, $date2) {
                                 $query->where('status', 1)
+                                ->where('office_id', $this->id)
                                 ->where([['invoices.created_at', '>=', $date1->startOfDay()],
                                     ['invoices.created_at', '<=', $date2->endOfDay()]]);
                             }])->whereHas('roles', function ($query){
@@ -174,6 +175,22 @@ class Office extends Model
                                                          
                                                 })->where('active', 1)->get();
     }
+
+    // public function medicsWithFacturas($date1, $date2)
+    // {
+
+    //     return $this->users()->with(['facturas' => function ($query) use ($date1, $date2) {
+    //         $query->where('status', 1)
+    //             ->where('office_id', $this->id)
+    //             ->where([
+    //                 ['facturas.created_at', '>=', $date1->startOfDay()],
+    //                 ['facturas.created_at', '<=', $date2->endOfDay()]
+    //             ]);
+    //     }])->whereHas('roles', function ($query) {
+    //         $query->where('name', 'medico');
+
+    //     })->where('active', 1)->get();
+    // }
      public function medicsWithIncomes($date1, $date2)
     {
 

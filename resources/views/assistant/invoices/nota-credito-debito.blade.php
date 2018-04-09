@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-assistant')
 @section('css')
   <link rel="stylesheet" href="/js/plugins/sweetalert2/sweetalert2.min.css">
 
@@ -28,7 +28,7 @@
             </div>
             <div class="box-body ">
              
-                <nota-credito-debito-form :invoice="{{ $invoice->load('lines') }}" type="{{ $typeDocument }}" url="/assistant/invoices"></nota-credito-debito-form>
+                <nota-credito-debito-form :invoice="{{ $invoice->load('lines') }}" type="{{ $typeDocument }}" url="/assistant/invoices" url-services="/assistant/invoices"></nota-credito-debito-form>
                
             </div>
             <!-- /.box-body -->

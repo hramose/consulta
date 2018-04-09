@@ -16,9 +16,15 @@
       <form action="/medic/invoices/{{ $invoice->id }}/pdf" method="POST" id="form-generate-pdf">
 		 		<input type="hidden" name="htmltopdf" value="" id="htmltopdf">
 				<button type="submit" class="btn btn-primary btn-lg">Descargar PDF</button>
-	  </form>
-       @include('medic/invoices/partials/invoice')
-       @include('medic/invoices/partials/invoicePDF')
+    </form>
+     @if($invoice->obligadoTributario)
+         @include('medic/invoices/partials/invoiceHacienda')
+         @include('medic/invoices/partials/invoicePDFHacienda')
+      @else
+         @include('medic/invoices/partials/invoice')
+         @include('medic/invoices/partials/invoicePDF')
+      @endif
+      
 
       <!-- this row will not appear when printing -->
       <div class="row no-print">

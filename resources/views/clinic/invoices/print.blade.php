@@ -7,37 +7,33 @@
 	
 		 <!-- Main content -->
     <section class="invoice">
-      <!-- title row -->
-  
-       @include('medic/invoices/partials/invoice')
-
+       @if($invoice->obligadoTributario)
+        @include('medic/invoices/partials/invoiceHacienda')
+        @include('medic/invoices/partials/status-hacienda-modal')
+      @else
+        @include('medic/invoices/partials/invoice')
+      @endif
       <!-- this row will not appear when printing -->
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="#" target="_blank" class="btn btn-default" onclick="printSummary();"><i class="fa fa-print"></i> Imprimir</a>
 
-          <a href="/clinic/patients" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a pacientes
+          <a href="/clinic/invoices" class="btn btn-info pull-right"><i class="fa fa-credit-card"></i> Regresar a facturación
           </a>
 
-          <a href="/clinic/patients/{{$invoice->patient_id }}/invoices" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Regresar a facturas del paciente
-          </a>
          
         </div>
       </div>
     </section>
     <!-- /.content -->
 		
-@if($invoice->fe)
-    @include('medic/invoices/partials/status-hacienda-modal')
-@endif
- 
 </section>
  @endsection
  @section('scripts')
- <script src="/js/bootstrap.min.js"></script>
- <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="{{ elixir('/js/modalRespHacienda.min.js') }}"></script>
  <script>
-
+  
  	 function printSummary() {
             window.print();
         }
