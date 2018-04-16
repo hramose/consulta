@@ -832,13 +832,14 @@ $(function () {
                               }
         
                             }
-                            
+                            //debugger
                             
                             calendar.fullCalendar('option', 'businessHours', bh);
                             calendar.fullCalendar('addEventSource',schedulesForAppointmentPage);
                          
                          
                         console.log(schedulesForAppointmentPage)
+                        console.log(businessHours)
 
                       },
                       error: function (resp) {
